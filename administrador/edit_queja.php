@@ -43,8 +43,6 @@ if ($nivel == 7) {
 
 <?php
 if (isset($_POST['edit_queja'])) {
-    // $req_fields = array('autoridad_responsable', 'agraviado');
-    // validate_fields($req_fields);
     if (empty($errors)) {
         $id = (int) $e_detalle['id_queja_date'];
         $fecha_presentacion = remove_junk($db->escape($_POST['fecha_presentacion']));
@@ -57,7 +55,7 @@ if (isset($_POST['edit_queja'])) {
         $id_area_asignada = remove_junk($db->escape($_POST['id_area_asignada']));
         $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
         $dom_calle = remove_junk($db->escape($_POST['dom_calle']));
-        $dom_numero = remove_junk($db->escape($_POST['dom_numero|']));
+        $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
@@ -187,10 +185,10 @@ if (isset($_POST['edit_queja'])) {
                         <div class="form-group">
                             <label for="id_estatus_queja">Estatus de Queja</label>
                             <select class="form-control" name="id_estatus_queja">
-                                <?php foreach ($id_estatus_quejas as $a): ?>
-                                    <option <?php if ($a['id_area'] === $e_detalle['id_area_asignada'])
-                                        echo 'selected="selected"'; ?> value="<?php echo $a['id_area']; ?>"><?php
-                                        echo ucwords($a['nombre_area']) ?>
+                                <?php foreach ($cat_estatus_queja as $estatus): ?>
+                                    <option <?php if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
+                                        echo 'selected="selected"'; ?> value="<?php echo $estatus['id_cat_est_queja']; ?>"><?php
+                                        echo ucwords($estatus['descripcion']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -201,7 +199,7 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="dom_calle">Calle</label>
-                            <input type="text" class="form-control" name="dom_calle" placeholder="Calle" value="<?php echo $e_detalle['dom_calle']?>" required>
+                            <input type="text" class="form-control" name="dom_calle" placeholder="Calle" value="<?php echo $e_detalle['dom_calle']?>">
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -213,7 +211,7 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="dom_colonia">Colonia</label>
-                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" value="<?php echo $e_detalle['dom_colonia']?>" required>
+                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" value="<?php echo $e_detalle['dom_colonia']?>">
                         </div>
                     </div>
                     <div class="col-md-2">
