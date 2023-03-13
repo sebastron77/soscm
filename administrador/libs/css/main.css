@@ -452,8 +452,11 @@ input.form-control:focus {
   background: #E3E3E3;
   color: #3A3D44;
 }
-input.readonly{
-  color:red;
+input.form-control:read-only{
+  background: rgb(207, 207, 207)
+}
+textarea.form-control:read-only{
+  background: rgb(207, 207, 207)
 }
 input.placeholder{
   color: red

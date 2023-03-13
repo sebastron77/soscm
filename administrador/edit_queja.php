@@ -66,10 +66,11 @@ if (isset($_POST['edit_queja'])) {
                         id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', id_area_asignada='$id_area_asignada', 
                         id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', 
                         fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
-
+        $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
+        $result2 = $db->query($sql2);
 
-        if (($result && $db->affected_rows() === 1)) {
+        if (($result && $db->affected_rows() === 1) && ($result2 && $db->affected_rows() === 1)) {
             $session->msg('s', "Información Actualizada ");
             redirect('quejas.php', false);
         } else {
@@ -233,6 +234,7 @@ if (isset($_POST['edit_queja'])) {
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
                             <input type="file" accept="application/pdf" class="form-control" name="adjunto"
                                 id="adjunto">
+                                <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_detalle['archivo']); ?></label>
                         </div>
                     </div> 
                 </div>

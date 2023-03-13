@@ -40,19 +40,27 @@ if ($nivel == 7) {
     page_require_level(7);
 }
 ?>
-
 <?php
 if (isset($_POST['seguimiento_queja'])) {
     if (empty($errors)) {
-        $id = (int) $e_detalle['id_queja_date'];
-        $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
+        $id = (int) $e_detalle['id_queja_date'];        
+        $fecha_avocamiento = remove_junk($db->escape($_POST['fecha_avocamiento']));        
+        $incompetencia = remove_junk($db->escape($_POST['incompetencia']));
+        $causa_incomp = remove_junk($db->escape($_POST['causa_incomp']));
+        $fecha_acuerdo_incomp = remove_junk($db->escape($_POST['fecha_acuerdo_incomp']));
+        $desechamiento = remove_junk($db->escape($_POST['desechamiento']));
+        $razon_desecha = remove_junk($db->escape($_POST['razon_desecha']));
+        $forma_conclusion = remove_junk($db->escape($_POST['forma_conclusion']));
+        $estado_procesal = remove_junk($db->escape($_POST['estado_procesal']));
+        $fecha_vencimiento = remove_junk($db->escape($_POST['fecha_vencimiento']));
+        $id_tipo_resolucion = remove_junk($db->escape($_POST['id_tipo_resolucion']));
+        $num_recomendacion = remove_junk($db->escape($_POST['num_recomendacion']));
+        $id_tipo_ambito = remove_junk($db->escape($_POST['id_tipo_ambito']));
+        $fecha_termino = remove_junk($db->escape($_POST['fecha_termino']));
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', observaciones='{$observaciones}', 
-                        id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', id_area_asignada='$id_area_asignada', 
-                        id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', 
-                        fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
+        $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',fecha_avocamiento='$fecha_avocamiento'  WHERE id_queja_date='{$db->escape($id)}'";
 
         $result = $db->query($sql);
 
@@ -107,7 +115,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_quejoso">Quejoso</label>
+                            <label for="id_cat_quejoso">Quejoso</label>                            
                             <input type="text" class="form-control" name="id_cat_quejoso"
                                 value="<?php echo remove_junk($e_detalle['nombre_quejoso'] . " " . $e_detalle['paterno_quejoso'] . " " . $e_detalle['materno_quejoso']); ?>"
                                 readonly>
@@ -159,42 +167,42 @@ if (isset($_POST['seguimiento_queja'])) {
                         <div class="form-group">
                             <label for="dom_calle">Calle</label>
                             <input type="text" class="form-control" name="dom_calle" placeholder="Calle"
-                                value="<?php echo $e_detalle['dom_calle'] ?>">
+                                value="<?php echo $e_detalle['dom_calle'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="dom_numero">Núm. ext/int</label>
                             <input type="text" class="form-control" name="dom_numero"
-                                value="<?php echo $e_detalle['dom_numero'] ?>" required>
+                                value="<?php echo $e_detalle['dom_numero'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="dom_colonia">Colonia</label>
                             <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia"
-                                value="<?php echo $e_detalle['dom_colonia'] ?>">
+                                value="<?php echo $e_detalle['dom_colonia'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_cat_mun">Municipio</label>
-                            <select class="form-control" name="id_cat_mun">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_municipios as $municipio): ?>
-                                    <option <?php if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
-                                        echo 'selected="selected"'; ?> value="<?php echo $municipio['id_cat_mun']; ?>"><?php
-                                              echo ucwords($municipio['descripcion']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
+                            <input type="text" class="form-control" name="id_cat_mun"
+                                value="<?php foreach ($cat_municipios as $municipio):
+                                    if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
+                                        echo ucwords($municipio['descripcion']) ?> <?php endforeach; ?>"
+                                readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="adjunto">Archivo adjunto (si es necesario)</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="adjunto"
-                                id="adjunto">
+                            <label for="adjunto">Archivo adjunto</label>
+                            <?php
+                            $folio_editar = $e_detalle['folio_queja'];
+                            $resultado = str_replace("/", "-", $folio_editar);
+                            ?>
+                                <label style="font-size:14px; color:#E3054F;">Archivo Actual: <a target="_blank" style="color:#0094FF"
+                                    href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a></label>
                         </div>
                     </div>
                 </div>
@@ -204,14 +212,14 @@ if (isset($_POST['seguimiento_queja'])) {
                             <label for="descripcion_hechos">Descripción de los hechos</label>
                             <textarea class="form-control" name="descripcion_hechos" id="descripcion_hechos" cols="30"
                                 rows="5"
-                                value="<?php echo $e_detalle['descripcion_hechos'] ?>"><?php echo $e_detalle['descripcion_hechos'] ?></textarea>
+                                value="<?php echo $e_detalle['descripcion_hechos'] ?>" readonly><?php echo $e_detalle['descripcion_hechos'] ?></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="observaciones">Notas Internas</label>
                             <textarea class="form-control" name="observaciones" id="observaciones" cols="30" rows="5"
-                                value="<?php echo $e_detalle['observaciones'] ?>"><?php echo $e_detalle['observaciones'] ?></textarea>
+                                value="<?php echo $e_detalle['observaciones'] ?>" readonly><?php echo $e_detalle['observaciones'] ?></textarea>
                         </div>
                     </div>
                 </div>
