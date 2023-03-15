@@ -20,6 +20,9 @@ $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
 $cat_estatus_queja = find_all_estatus_queja();
 $cat_municipios = find_all_cat_municipios();
+$cat_est_procesal = find_all('cat_est_procesal');
+$cat_tipo_resolucion = find_all('cat_tipo_res');
+$cat_tipo_ambito = find_all('cat_tipo_ambito');
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -43,8 +46,8 @@ if ($nivel == 7) {
 <?php
 if (isset($_POST['seguimiento_queja'])) {
     if (empty($errors)) {
-        $id = (int) $e_detalle['id_queja_date'];        
-        $fecha_avocamiento = remove_junk($db->escape($_POST['fecha_avocamiento']));        
+        $id = (int) $e_detalle['id_queja_date'];
+        $fecha_avocamiento = remove_junk($db->escape($_POST['fecha_avocamiento']));
         $incompetencia = remove_junk($db->escape($_POST['incompetencia']));
         $causa_incomp = remove_junk($db->escape($_POST['causa_incomp']));
         $fecha_acuerdo_incomp = remove_junk($db->escape($_POST['fecha_acuerdo_incomp']));
@@ -60,7 +63,10 @@ if (isset($_POST['seguimiento_queja'])) {
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',fecha_avocamiento='$fecha_avocamiento'  WHERE id_queja_date='{$db->escape($id)}'";
+        $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',fecha_avocamiento='$fecha_avocamiento',incompetencia='$incompetencia',
+                causa_incomp='$causa_incomp',fecha_acuerdo_incomp='$fecha_acuerdo_incomp',desechamiento='$desechamiento',razon_desecha='$razon_desecha',
+                forma_conclusion='$forma_conclusion',estado_procesal='$estado_procesal',fecha_vencimiento='$fecha_vencimiento',id_tipo_resolucion='$id_tipo_resolucion',
+                num_recomendacion='$num_recomendacion',id_tipo_ambito='$id_tipo_ambito',fecha_termino='$fecha_termino' WHERE id_queja_date='{$db->escape($id)}'";
 
         $result = $db->query($sql);
 
@@ -83,7 +89,7 @@ if (isset($_POST['seguimiento_queja'])) {
         <div class="panel-heading">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
-                <span>Seguimiento de queja
+                <span>Queja
                     <?php echo $e_detalle['folio_queja']; ?>
                 </span>
             </strong>
@@ -92,106 +98,45 @@ if (isset($_POST['seguimiento_queja'])) {
             <form method="post" action="seguimiento_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>"
                 enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="fecha_presentacion">Fecha de presentación</label>
-                            <input type="datetime-local" class="form-control" name="fecha_presentacion"
-                                value="<?php echo remove_junk($e_detalle['fecha_presentacion']); ?>" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="id_cat_med_pres">Medio Presetación</label>
-                            <input type="text" class="form-control" name="id_cat_med_pres"
-                                value="<?php echo remove_junk($e_detalle['medio_pres']); ?>" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-5">
+                    <div class="col-md-7">
                         <div class="form-group">
                             <label for="id_cat_aut">Autoridad Responsable</label>
                             <input type="text" class="form-control" name="id_cat_aut"
                                 value="<?php echo remove_junk($e_detalle['nombre_autoridad']); ?>" readonly>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_cat_quejoso">Quejoso</label>                            
+                            <label for="id_cat_quejoso">Nombre del Quejoso</label>
                             <input type="text" class="form-control" name="id_cat_quejoso"
                                 value="<?php echo remove_junk($e_detalle['nombre_quejoso'] . " " . $e_detalle['paterno_quejoso'] . " " . $e_detalle['materno_quejoso']); ?>"
                                 readonly>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_agraviado">Agraviado</label>
-                            <input type="text" class="form-control" name="id_cat_agraviado"
-                                value="<?php echo ucwords(remove_junk($e_detalle['nombre_agraviado'] . " " . $e_detalle['paterno_agraviado'] . " " . $e_detalle['materno_agraviado'])); ?>"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="id_user_asignado">Se asigna a</label>
-                            <input type="text" class="form-control" name="id_user_asignado"
-                                value="<?php foreach ($asigna_a as $asigna):
-                                    if ($asigna['id_det_usuario'] === $e_detalle['id_user_asignado'])
-                                        echo $asigna['nombre'] . " " . $asigna['apellidos']; ?> <?php endforeach; ?>"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="id_area_asignada">Área a la que se asigna</label>
-                            <input type="text" class="form-control" name="id_user_asignado"
-                                value="<?php foreach ($area as $a):
-                                    if ($a['id_area'] === $e_detalle['id_area_asignada'])
-                                        echo $a['nombre_area'] ?> <?php endforeach; ?>"
-                                readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="id_estatus_queja">Estatus de Queja</label>
-                            <input type="text" class="form-control" name="id_user_asignado"
-                                value="<?php foreach ($cat_estatus_queja as $estatus):
-                                    if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
-                                        echo ucwords($estatus['descripcion']) ?> <?php endforeach; ?>"
-                                readonly>
+                            <label for="id_area_asignada">Área a la que se asignó la queja</label>
+                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($area as $a):
+                                if ($a['id_area'] === $e_detalle['id_area_asignada'])
+                                    echo $a['nombre_area'] ?> <?php endforeach; ?>" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="dom_calle">Calle</label>
-                            <input type="text" class="form-control" name="dom_calle" placeholder="Calle"
-                                value="<?php echo $e_detalle['dom_calle'] ?>" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <label for="dom_numero">Núm. ext/int</label>
-                            <input type="text" class="form-control" name="dom_numero"
-                                value="<?php echo $e_detalle['dom_numero'] ?>" readonly>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="dom_colonia">Colonia</label>
-                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia"
-                                value="<?php echo $e_detalle['dom_colonia'] ?>" readonly>
+                            <label for="id_cat_mun">Municipio</label>
+                            <input type="text" class="form-control" name="id_cat_mun" value="<?php foreach ($cat_municipios as $municipio):
+                                if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
+                                    echo ucwords($municipio['descripcion']) ?> <?php endforeach; ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_cat_mun">Municipio</label>
-                            <input type="text" class="form-control" name="id_cat_mun"
-                                value="<?php foreach ($cat_municipios as $municipio):
-                                    if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
-                                        echo ucwords($municipio['descripcion']) ?> <?php endforeach; ?>"
-                                readonly>
+                            <label for="id_estatus_queja">Estatus de Queja</label>
+                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($cat_estatus_queja as $estatus):
+                                if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
+                                    echo ucwords($estatus['descripcion']) ?> <?php endforeach; ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -201,25 +146,135 @@ if (isset($_POST['seguimiento_queja'])) {
                             $folio_editar = $e_detalle['folio_queja'];
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
-                                <label style="font-size:14px; color:#E3054F;">Archivo Actual: <a target="_blank" style="color:#0094FF"
+                            <label style="font-size:14px; color:#E3054F;">Archivo Actual: <a target="_blank"
+                                    style="color:#0094FF"
                                     href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a></label>
                         </div>
                     </div>
                 </div>
+                <hr style="height: 1px; background-color: #370494; opacity: 1;">
+                <strong>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#7263F0" width="25px" height="25px"
+                        viewBox="0 0 24 24" style="margin-top:-0.3%;">
+                        <title>arrow-right-circle</title>
+                        <path
+                            d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M6,13H14L10.5,16.5L11.92,17.92L17.84,12L11.92,6.08L10.5,7.5L14,11H6V13Z" />
+                    </svg>
+                    <span style="font-size: 20px; color: #7263F0">SEGUIMIENTO DE LA QUEJA</span>
+                </strong>
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="descripcion_hechos">Descripción de los hechos</label>
-                            <textarea class="form-control" name="descripcion_hechos" id="descripcion_hechos" cols="30"
-                                rows="5"
-                                value="<?php echo $e_detalle['descripcion_hechos'] ?>" readonly><?php echo $e_detalle['descripcion_hechos'] ?></textarea>
+                            <label for="fecha_avocamiento">Fecha de avocamiento</label>
+                            <input type="date" class="form-control" name="fecha_avocamiento" required>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="observaciones">Notas Internas</label>
-                            <textarea class="form-control" name="observaciones" id="observaciones" cols="30" rows="5"
-                                value="<?php echo $e_detalle['observaciones'] ?>" readonly><?php echo $e_detalle['observaciones'] ?></textarea>
+                            <label for="incompetencia">Incompetencia</label>
+                            <select class="form-control" name="incompetencia" id="incompetencia">
+                                <option value="">Escoge una opción</option>
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label for="causa_incomp">Causa Incompetencia (Si la hay)</label>
+                            <textarea class="form-control" name="causa_incomp" id="causa_incomp" cols="40"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="fecha_acuerdo_incomp">Fecha de acuerdo de incompetencia</label>
+                            <input type="date" class="form-control" name="fecha_acuerdo_incomp" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="desechamiento">Desechamiento</label>
+                            <select class="form-control" name="desechamiento" id="desechamiento">
+                                <option value="">Escoge una opción</option>
+                                <option value="0">No</option>
+                                <option value="1">Sí</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="razon_desecha">Razón desechamiento (Si la hay)</label>
+                            <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="forma_conclusion">Forma Conclusión</label>
+                            <textarea class="form-control" name="forma_conclusion" id="forma_conclusion" cols="40"
+                                rows="3"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="fecha_conclusion">Fecha de conclusión</label>
+                            <input type="date" class="form-control" name="fecha_conclusion" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="est_procesal">Estado Procesal</label>
+                            <select class="form-control" name="est_procesal">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_est_procesal as $est_pros): ?>
+                                    <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>"><?php echo ucwords($est_pros['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="fecha_vencimiento">Fecha vencimiento</label>
+                            <input type="date" class="form-control" name="fecha_vencimiento" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="id_tipo_resolucion">Tipo Resolución</label>
+                            <select class="form-control" name="id_tipo_resolucion">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_tipo_resolucion as $tipo_res): ?>
+                                    <option value="<?php echo $tipo_res['id_cat_est_procesal']; ?>"><?php echo ucwords($tipo_res['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="num_recomendacion">Núm. Recomendación</label>
+                            <input type="text" class="form-control" name="num_recomendacion" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="id_tipo_ambito">Tipo Ámbito</label>
+                            <select class="form-control" name="id_tipo_ambito">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_tipo_ambito as $tipo_ambito): ?>
+                                    <option value="<?php echo $tipo_ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($tipo_ambito['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="fecha_termino">Fecha termino</label>
+                            <input type="date" class="form-control" name="fecha_termino" required>
                         </div>
                     </div>
                 </div>
