@@ -163,33 +163,47 @@ if (isset($_POST['seguimiento_queja'])) {
                     <span style="font-size: 20px; color: #7263F0">SEGUIMIENTO DE LA QUEJA</span>
                 </strong>
                 <div class="row">
-                    <div class="col-md-2">
+                <div class="col-md-2">
                         <div class="form-group">
-                            <label for="fecha_avocamiento">Fecha de avocamiento</label>
-                            <input type="date" class="form-control" name="fecha_avocamiento" required>
+                            <label for="id_tipo_resolucion">Tipo Resolución</label>
+                            <select class="form-control" id="id_tipo_resolucion" name="id_tipo_resolucion"
+                                onchange="showInp()">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_tipo_resolucion as $tipo_res): ?>
+                                    <option value="<?php echo $tipo_res['id_cat_tipo_res']; ?>"><?php echo ucwords($tipo_res['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <!-- <input id="andphone" type="tel" pattern="[3]{9}-[3]{9}" style="display: none" />
+                    <input id="espphone" type="tel" pattern="[3]{9}-[3]{9}-[3]{9}" style="display: none" />
+                    <input id="frphone" type="tel" pattern="[1]{9}[3]{9}-[3]{9}-[3]{9}" style="display: none" /> -->
+                    <div class="col-md-2" id="incompetencia" style="display: none">
                         <div class="form-group">
                             <label for="incompetencia">Incompetencia</label>
-                            <select class="form-control" name="incompetencia" id="incompetencia">
-                                <option value="">Escoge una opción</option>
-                                <option value="0">No</option>
+                            <select class="form-control" name="incompetencia">
                                 <option value="1">Sí</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+
+                    <div class="col-md-5" id="incompetencia2" style="display: none" >
                         <div class="form-group">
                             <label for="causa_incomp">Causa Incompetencia (Si la hay)</label>
                             <textarea class="form-control" name="causa_incomp" id="causa_incomp" cols="40"
                                 rows="3"></textarea>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-3" id="incompetencia3" style="display: none" >
                         <div class="form-group">
                             <label for="fecha_acuerdo_incomp">Fecha de acuerdo de incompetencia</label>
                             <input type="date" class="form-control" name="fecha_acuerdo_incomp" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="fecha_avocamiento">Fecha de avocamiento</label>
+                            <input type="date" class="form-control" name="fecha_avocamiento">
                         </div>
                     </div>
                 </div>
@@ -245,17 +259,6 @@ if (isset($_POST['seguimiento_queja'])) {
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_tipo_resolucion">Tipo Resolución</label>
-                            <select class="form-control" name="id_tipo_resolucion">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_tipo_resolucion as $tipo_res): ?>
-                                    <option value="<?php echo $tipo_res['id_cat_est_procesal']; ?>"><?php echo ucwords($tipo_res['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
                             <label for="num_recomendacion">Núm. Recomendación</label>
                             <input type="text" class="form-control" name="num_recomendacion" required>
                         </div>
@@ -289,4 +292,38 @@ if (isset($_POST['seguimiento_queja'])) {
         </div>
     </div>
 </div>
+<script>
+    function showInp() {
+        var getSelectValue = document.getElementById("id_tipo_resolucion").value;
+        console.log("ID: " + getSelectValue);
+
+        if (getSelectValue == "2") {
+            document.getElementById("incompetencia").style.display = "none";
+            document.getElementById("incompetencia2").style.display = "inline-block";
+            document.getElementById("incompetencia3").style.display = "inline-block";
+        }
+        if (getSelectValue == "1") {
+            document.getElementById("espphone").style.display = "inline-block";
+        }
+
+        if (getSelectValue == "3") {
+            document.getElementById("frphone").style.display = "inline-block";
+        }
+    }
+
+    if (document.getElementById("id_tipo_resolucion").value === "1") {
+        document.getElementById("incompetencia").addAttribute("required");
+
+    }
+
+    if (document.getElementById("id_tipo_resolucion").value === "2") {
+        document.getElementById("espphone").addAttribute("required");
+
+    }
+
+    if (document.getElementById("id_tipo_resolucion").value === "3") {
+        document.getElementById("frphone").addAttribute("required");
+
+    }
+</script>
 <?php include_once('layouts/footer.php'); ?>
