@@ -61,9 +61,7 @@ if (isset($_POST['add_queja'])) {
         $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         date_default_timezone_set('America/Mexico_City');
-        $creacion = date('Y-m-d H:i:s');
-
-        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');      
+        $creacion = date('Y-m-d H:i:s'); 
 
         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
@@ -105,15 +103,13 @@ if (isset($_POST['add_queja'])) {
         $temp = $_FILES['adjunto']['tmp_name'];
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');     
 
-
-        $query = "INSERT INTO quejas_dates (";
-        $query .= "folio_queja,fecha_presentacion,id_cat_med_pres,id_cat_aut,observaciones,id_cat_quejoso,id_cat_agraviado,id_user_creador,fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,
-        id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,id_cat_mun,descripcion_hechos";
-        $query .= ") VALUES (";
-        $query .= " '{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}','{$id_user_asignado}',
-        '{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$id_cat_mun}','{$descripcion_hechos}'";
-        $query .= ")";
+        $query = "INSERT INTO quejas_dates (folio_queja,fecha_presentacion,id_cat_med_pres,id_cat_aut,observaciones,id_cat_quejoso,id_cat_agraviado,id_user_creador,
+                    fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,id_cat_mun,descripcion_hechos,estado_procesal) 
+                    VALUES ('{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}',
+                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$id_cat_mun}',
+                    '{$descripcion_hechos}',NULL)";
 
         $query3 = "INSERT INTO folios (";
         $query3 .= "folio, contador";
@@ -122,8 +118,8 @@ if (isset($_POST['add_queja'])) {
         $query3 .= ")";
 
 	    //------------------BUSCA EL ID INSERTADO------------------
-        $dbh->exec($query);
         $dbh->exec($query3);
+        $dbh->exec($query);
         $id_insertado = $dbh->lastInsertId();
 
         $query2 = "INSERT INTO rel_queja_aut(id_cat_aut, id_queja_date) VALUES ({$id_cat_aut}, {$id_insertado})";

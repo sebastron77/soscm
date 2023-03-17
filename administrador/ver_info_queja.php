@@ -7,6 +7,7 @@ require_once('includes/load.php');
 $e_detalle = find_by_id_queja((int) $_GET['id']);
 $user = current_user();
 $nivel = $user['user_level'];
+$cat_est_procesal = find_all('cat_est_procesal');
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -50,14 +51,14 @@ if ($nivel == 7) {
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr style="height: 10px;" class="table-primary">
-                            <th style="width: 2%;" class="text-center">Folio</th>
-                            <th style="width: 3%;" class="text-center">Fecha Presentación</th>
-                            <th style="width: 3%;" class="text-center">Medio de Presentación</th>
+                            <th style="width: 1%;" class="text-center">Folio</th>
+                            <th style="width: 1%;" class="text-center">Fecha Presentación</th>
+                            <th style="width: 2%;" class="text-center">Medio de Presentación</th>
                             <th style="width: 7%;" class="text-center">Autoridad Responsable</th>
-                            <th style="width: 5%;" class="text-center">Fecha avocamiento</th>
-                            <th style="width: 3%;" class="text-center">Incompetencia</th>
+                            <th style="width: 0.1%;" class="text-center">Incompetencia</th>
                             <th style="width: 5%;" class="text-center">Causa Incompetencia</th>
-                            <th style="width: 5%;" class="text-center">Fecha Acuerdo Incompetencia</th>
+                            <th style="width: 1%;" class="text-center">Fecha Acuerdo Incompetencia</th>
+                            <th style="width: 7%;" class="text-center">¿A quién se traslada?</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -73,52 +74,52 @@ if ($nivel == 7) {
                             </td>
                             <td class="text-center">
                                 <?php echo remove_junk(ucwords($e_detalle['nombre_autoridad'])) ?>
+                            </td>                            
+                            <td class="text-center">
+                            <?php if ($e_detalle['incompetencia'] == "" || $e_detalle['incompetencia'] == 0) {
+                                echo "N/A";
+                            } else
+                                echo 'Sí' ?>
                             </td>
                             <td class="text-center">
-                                <?php if ($e_detalle['fecha_avocamiento'] == "") {
-                                    echo "N/A";
-                                } else
-                                    echo remove_junk(ucwords(($e_detalle['fecha_avocamiento']))) ?>
-                                </td>
-                                <td class="text-center">
-                                <?php if ($e_detalle['incompetencia'] == "") {
-                                    echo "N/A";
-                                } else
-                                    echo remove_junk(ucwords(($e_detalle['incompetencia']))) ?>
-                                </td>
-                                <td class="text-center">
-                                <?php if ($e_detalle['causa_incomp'] == "") {
-                                    echo "N/A";
-                                } else
-                                    echo remove_junk(ucwords(($e_detalle['causa_incomp']))) ?>
-                                </td>
-                                <td class="text-center">
-                                <?php if ($e_detalle['fecha_acuerdo_incomp'] == "") {
-                                    echo "N/A";
-                                } else
-                                    echo remove_junk(ucwords(($e_detalle['fecha_acuerdo_incomp']))) ?>
-                                </td>
+                            <?php if ($e_detalle['causa_incomp'] == "") {
+                                echo "N/A";
+                            } else
+                                echo remove_junk(ucwords(($e_detalle['causa_incomp']))) ?>
+                            </td>
+                            <td class="text-center">
+                            <?php if ($e_detalle['fecha_acuerdo_incomp'] == "") {
+                                echo "N/A";
+                            } else
+                                echo remove_junk(ucwords(($e_detalle['fecha_acuerdo_incomp']))) ?>
+                            </td>
+                            <td class="text-center">
+                            <?php if ($e_detalle['a_quien_se_traslada'] == "") {
+                                echo "N/A";
+                            } else
+                                echo remove_junk(ucwords(($e_detalle['a_quien_se_traslada']))) ?>
+                            </td>
                             </tr>
                         </tbody>
                     </table>
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr class="table-primary">
-                                <th style="width: 1%;" class="text-center">Desechamiento</th>
-                                <th style="width: 1%;" class="text-center">Razón Desechamiento</th>
-                                <th style="width: 1%;" class="text-center">Forma Conclusión</th>
+                                <th style="width: 0.1%;" class="text-center">Desechamiento</th>
+                                <th style="width: 7%;" class="text-center">Razón Desechamiento</th>
+                                <th style="width: 7%;" class="text-center">Forma Conclusión</th>
                                 <th style="width: 1%;" class="text-center">Fecha Conclusión</th>
                                 <th style="width: 3%;" class="text-center">Estado Procesal</th>
                                 <th style="width: 2%;" class="text-center">Tipo Resolución</th>
-                                <th style="width: 5%;" class="text-center">Num. Recomendación</th>
+                                <th style="width: 1%;" class="text-center">Num. Recomendación</th>
                                 <th style="width: 5%;" class="text-center">Tipo Ámbito</th>
-                                <th style="width: 5%;" class="text-center">Fecha termino</th>
+                                <th style="width: 3%;" class="text-center">Fecha termino</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
                                 <td class="text-center">
-                                <?php if ($e_detalle['desechamiento'] == "") {
+                                <?php if ($e_detalle['desechamiento'] == "" || $e_detalle['desechamiento'] == "0") {
                                     echo "N/A";
                                 } else
                                     echo remove_junk(ucwords($e_detalle['desechamiento'])) ?>
@@ -144,8 +145,13 @@ if ($nivel == 7) {
                                 <td class="text-center">
                                 <?php if ($e_detalle['estado_procesal'] == "") {
                                     echo "N/A";
-                                } else
-                                    echo remove_junk(ucwords($e_detalle['estado_procesal'])) ?>
+                                } else {
+                                    foreach ($cat_est_procesal as $est_pros) {
+                                        if($e_detalle['estado_procesal'] == $est_pros['id_cat_est_procesal']){
+                                        echo remove_junk(ucwords($est_pros['descripcion']));
+                                        }
+                                    }
+                                } ?>
                                 </td>
                                 <td class="text-center">
                                 <?php if ($e_detalle['tipo_resolucion'] == "") {
@@ -184,6 +190,7 @@ if ($nivel == 7) {
                                 <th style="width: 1%;" class="text-center">Asignado a</th>
                                 <th style="width: 5%;" class="text-center">Área asignada</th>
                                 <th style="width: 3%;" class="text-center">Fecha Vencimiento</th>
+                                <th style="width: 3%;" class="text-center">Fecha avocamiento</th>
                                 <th style="width: 5%;" class="text-center">Estatus Queja</th>
                                 <th style="width: 5%;" class="text-center">Archivo</th>
                             </tr>
@@ -208,6 +215,12 @@ if ($nivel == 7) {
                             <td>
                                 <?php echo remove_junk(ucwords($e_detalle['fecha_vencimiento'])) ?>
                             </td>
+                            <td class="text-center">
+                            <?php if ($e_detalle['fecha_avocamiento'] == "") {
+                                echo "N/A";
+                            } else
+                                echo remove_junk(ucwords(($e_detalle['fecha_avocamiento']))) ?>
+                            </td>
                             <td>
                                 <?php echo remove_junk(ucwords($e_detalle['estatus_queja'])) ?>
                             </td>
@@ -216,8 +229,7 @@ if ($nivel == 7) {
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
                             <td class="text-center"><a target="_blank" style="color:#0094FF"
-                                    href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php
-                                    echo $e_detalle['archivo']; ?></a></td>
+                                    href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a></td>
                         </tr>
                     </tbody>
                 </table>
