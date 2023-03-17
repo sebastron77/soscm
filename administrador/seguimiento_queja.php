@@ -4,6 +4,7 @@ require_once('includes/load.php');
 ?>
 <?php
 $e_detalle = find_by_id_queja((int) $_GET['id']);
+echo $e_detalle['id_queja_date'];
 if (!$e_detalle) {
     $session->msg("d", "ID de queja no encontrado.");
     redirect('quejas.php');
@@ -47,30 +48,48 @@ if ($nivel == 7) {
 if (isset($_POST['seguimiento_queja'])) {
     if (empty($errors)) {
         $id = (int) $e_detalle['id_queja_date'];
-        $fecha_avocamiento = remove_junk($db->escape($_POST['fecha_avocamiento']));
-        $incompetencia = remove_junk($db->escape($_POST['incompetencia']));
         $causa_incomp = remove_junk($db->escape($_POST['causa_incomp']));
         $fecha_acuerdo_incomp = remove_junk($db->escape($_POST['fecha_acuerdo_incomp']));
-        $desechamiento = remove_junk($db->escape($_POST['desechamiento']));
         $razon_desecha = remove_junk($db->escape($_POST['razon_desecha']));
-        $forma_conclusion = remove_junk($db->escape($_POST['forma_conclusion']));
         $estado_procesal = remove_junk($db->escape($_POST['estado_procesal']));
-        $fecha_vencimiento = remove_junk($db->escape($_POST['fecha_vencimiento']));
         $id_tipo_resolucion = remove_junk($db->escape($_POST['id_tipo_resolucion']));
         $num_recomendacion = remove_junk($db->escape($_POST['num_recomendacion']));
         $id_tipo_ambito = remove_junk($db->escape($_POST['id_tipo_ambito']));
-        $fecha_termino = remove_junk($db->escape($_POST['fecha_termino']));
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',fecha_avocamiento='$fecha_avocamiento',incompetencia='$incompetencia',
-                causa_incomp='$causa_incomp',fecha_acuerdo_incomp='$fecha_acuerdo_incomp',desechamiento='$desechamiento',razon_desecha='$razon_desecha',
-                forma_conclusion='$forma_conclusion',estado_procesal='$estado_procesal',fecha_vencimiento='$fecha_vencimiento',id_tipo_resolucion='$id_tipo_resolucion',
-                num_recomendacion='$num_recomendacion',id_tipo_ambito='$id_tipo_ambito',fecha_termino='$fecha_termino' WHERE id_queja_date='{$db->escape($id)}'";
+        // if ($causa_incomp == '') {
+        //     $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='$causa_incomp',fecha_acuerdo_incomp='$fecha_acuerdo_incomp',
+        //             estado_procesal='$estado_procesal',id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+        //     $result = $db->query($sql);
+        // } 
+        if (($causa_incomp != '') && ($id_tipo_resolucion == 2)) {
+            $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='1',causa_incomp='$causa_incomp',fecha_acuerdo_incomp='$fecha_acuerdo_incomp',desechamiento=0,razon_desecha='',
+                    num_recomendacion='',estado_procesal='$estado_procesal',id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+            $result = $db->query($sql);
+        }
+        // if ($num_recomendacion == '') {
+        //     $sql2= "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',num_recomendacion='0',estado_procesal='$estado_procesal',
+        //             id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+        //     $result2 = $db->query($sql2);
+        // }
+        if (($num_recomendacion != '')  && ($id_tipo_resolucion == 5)) {
+            $sql2 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp='0000-00-00',desechamiento=0,razon_desecha='',
+                    num_recomendacion='$num_recomendacion',estado_procesal='$estado_procesal',id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+            $result2 = $db->query($sql2);
+        }
+        // if ($razon_desecha == '') {
+        //     $sql3 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',razon_desecha='',estado_procesal='$estado_procesal',
+        //             id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+        //     $result3 = $db->query($sql3);
+        // }
+        if (($razon_desecha != '')  && ($id_tipo_resolucion == 6)) {
+            $sql3 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp='0000-00-00',desechamiento=1,razon_desecha='$razon_desecha',
+            num_recomendacion='',estado_procesal='$estado_procesal',id_tipo_resolucion='$id_tipo_resolucion',id_tipo_ambito='$id_tipo_ambito' WHERE id_queja_date='{$db->escape($id)}'";
+            $result3 = $db->query($sql3);
+        }
 
-        $result = $db->query($sql);
-
-        if (($result && $db->affected_rows() === 1)) {
+        if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1)) {
             $session->msg('s', "Información actualizada con su Seguimiento");
             redirect('quejas.php', false);
         } else {
@@ -163,9 +182,9 @@ if (isset($_POST['seguimiento_queja'])) {
                     <span style="font-size: 20px; color: #7263F0">SEGUIMIENTO DE LA QUEJA</span>
                 </strong>
                 <div class="row">
-                <div class="col-md-2">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_tipo_resolucion">Tipo Resolución</label>
+                            <label for="id_tipo_resolucion">Tipo de Resolución</label>
                             <select class="form-control" id="id_tipo_resolucion" name="id_tipo_resolucion"
                                 onchange="showInp()">
                                 <option value="">Escoge una opción</option>
@@ -174,77 +193,41 @@ if (isset($_POST['seguimiento_queja'])) {
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div>
+                    </div>                    
                     <!-- <input id="andphone" type="tel" pattern="[3]{9}-[3]{9}" style="display: none" />
                     <input id="espphone" type="tel" pattern="[3]{9}-[3]{9}-[3]{9}" style="display: none" />
                     <input id="frphone" type="tel" pattern="[1]{9}[3]{9}-[3]{9}-[3]{9}" style="display: none" /> -->
-                    <div class="col-md-2" id="incompetencia" style="display: none">
-                        <div class="form-group">
-                            <label for="incompetencia">Incompetencia</label>
-                            <select class="form-control" name="incompetencia">
-                                <option value="1">Sí</option>
-                            </select>
-                        </div>
-                    </div>
 
-                    <div class="col-md-5" id="incompetencia2" style="display: none" >
+                    <div class="col-md-5" id="incompetencia2" style="display: none">
                         <div class="form-group">
                             <label for="causa_incomp">Causa Incompetencia (Si la hay)</label>
                             <textarea class="form-control" name="causa_incomp" id="causa_incomp" cols="40"
-                                rows="3"></textarea>
+                                rows="3"><?php echo $e_detalle['causa_incomp']?></textarea>
                         </div>
                     </div>
-                    <div class="col-md-3" id="incompetencia3" style="display: none" >
+                    <div class="col-md-3" id="incompetencia3" style="display: none">
                         <div class="form-group">
-                            <label for="fecha_acuerdo_incomp">Fecha de acuerdo de incompetencia</label>
-                            <input type="date" class="form-control" name="fecha_acuerdo_incomp" required>
+                            <label for="fecha_acuerdo_incomp">Fecha de Acuerdo de Incompetencia</label>
+                            <input type="date" class="form-control" name="fecha_acuerdo_incomp" value="<?php echo $e_detalle['fecha_acuerdo_incomp'];?>">
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" id="recomendacion" style="display: none">
                         <div class="form-group">
-                            <label for="fecha_avocamiento">Fecha de avocamiento</label>
-                            <input type="date" class="form-control" name="fecha_avocamiento">
+                            <label for="num_recomendacion">Núm. Recomendación</label>
+                            <input type="text" class="form-control" name="num_recomendacion" value="<?php echo $e_detalle['num_recomendacion'];?>">
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-4" id="desechamiento2" style="display: none">
                         <div class="form-group">
-                            <label for="desechamiento">Desechamiento</label>
-                            <select class="form-control" name="desechamiento" id="desechamiento">
-                                <option value="">Escoge una opción</option>
-                                <option value="0">No</option>
-                                <option value="1">Sí</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="razon_desecha">Razón desechamiento (Si la hay)</label>
+                            <label for="razon_desecha">Razón Desechamiento (Si la hay)</label>
                             <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40"
-                                rows="3"></textarea>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="forma_conclusion">Forma Conclusión</label>
-                            <textarea class="form-control" name="forma_conclusion" id="forma_conclusion" cols="40"
-                                rows="3"></textarea>
+                                rows="3"><?php echo $e_detalle['razon_desecha']?></textarea>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="fecha_conclusion">Fecha de conclusión</label>
-                            <input type="date" class="form-control" name="fecha_conclusion" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="est_procesal">Estado Procesal</label>
-                            <select class="form-control" name="est_procesal">
-                                <option value="">Escoge una opción</option>
+                            <label for="estado_procesal">Estado Procesal</label>
+                            <select class="form-control" name="estado_procesal">
                                 <?php foreach ($cat_est_procesal as $est_pros): ?>
                                     <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>"><?php echo ucwords($est_pros['descripcion']); ?></option>
                                 <?php endforeach; ?>
@@ -253,31 +236,14 @@ if (isset($_POST['seguimiento_queja'])) {
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="fecha_vencimiento">Fecha vencimiento</label>
-                            <input type="date" class="form-control" name="fecha_vencimiento" required>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="num_recomendacion">Núm. Recomendación</label>
-                            <input type="text" class="form-control" name="num_recomendacion" required>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
                             <label for="id_tipo_ambito">Tipo Ámbito</label>
                             <select class="form-control" name="id_tipo_ambito">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_tipo_ambito as $tipo_ambito): ?>
-                                    <option value="<?php echo $tipo_ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($tipo_ambito['descripcion']); ?></option>
+                                <?php foreach ($cat_tipo_ambito as $ambito): ?>
+                                    <option <?php if ($ambito['id_cat_tipo_ambito'] === $e_detalle['id_tipo_ambito'])
+                                        echo 'selected="selected"'; ?> value="<?php echo $ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($ambito['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="fecha_termino">Fecha termino</label>
-                            <input type="date" class="form-control" name="fecha_termino" required>
                         </div>
                     </div>
                 </div>
@@ -297,32 +263,39 @@ if (isset($_POST['seguimiento_queja'])) {
         var getSelectValue = document.getElementById("id_tipo_resolucion").value;
         console.log("ID: " + getSelectValue);
 
-        if (getSelectValue == "2") {
-            document.getElementById("incompetencia").style.display = "none";
+        if (getSelectValue == "2") { //Incompetencia
             document.getElementById("incompetencia2").style.display = "inline-block";
             document.getElementById("incompetencia3").style.display = "inline-block";
+            document.getElementById("recomendacion").style.display = "none";
+            document.getElementById("desechamiento2").style.display = "none";
         }
-        if (getSelectValue == "1") {
-            document.getElementById("espphone").style.display = "inline-block";
+        if (getSelectValue == "5") {
+            document.getElementById("recomendacion").style.display = "inline-block";
+            document.getElementById("incompetencia2").style.display = "none";
+            document.getElementById("incompetencia3").style.display = "none";
+            document.getElementById("desechamiento2").style.display = "none";
         }
 
-        if (getSelectValue == "3") {
-            document.getElementById("frphone").style.display = "inline-block";
+        if (getSelectValue == "6") {
+            document.getElementById("desechamiento2").style.display = "inline-block";
+            document.getElementById("recomendacion").style.display = "none";
+            document.getElementById("incompetencia2").style.display = "none";
+            document.getElementById("incompetencia3").style.display = "none";
         }
-    }
-
-    if (document.getElementById("id_tipo_resolucion").value === "1") {
-        document.getElementById("incompetencia").addAttribute("required");
-
     }
 
     if (document.getElementById("id_tipo_resolucion").value === "2") {
-        document.getElementById("espphone").addAttribute("required");
+        document.getElementById("incompetencia2").addAttribute("required");
 
     }
 
-    if (document.getElementById("id_tipo_resolucion").value === "3") {
-        document.getElementById("frphone").addAttribute("required");
+    if (document.getElementById("id_tipo_resolucion").value === "5") {
+        document.getElementById("recomendacion").addAttribute("required");
+
+    }
+
+    if (document.getElementById("id_tipo_resolucion").value === "6") {
+        document.getElementById("desechamiento2").addAttribute("required");
 
     }
 </script>

@@ -45,7 +45,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 <?php include_once('layouts/header.php'); ?>
 
 <a href="solicitudes.php" class="btn btn-info">Regresar a Áreas</a><br><br>
-<h1>Solicitudes de Orientación Legal, Quejas y Seguimiento</h1>
+<h1 style="color:#3A3D44">Solicitudes de Orientación Legal, Quejas y Seguimiento</h1>
 
 
 <div class="row">

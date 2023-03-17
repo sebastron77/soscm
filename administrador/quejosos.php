@@ -45,9 +45,9 @@ endif;
             </div>
 
             <div class="panel-body">
-                <table class="datatable table table-dark table-bordered table-striped">
+                <table class="datatable table table-bordered table-striped">
                     <thead>
-                        <tr style="height: 10px;" class="table-info">
+                        <tr style="height: 10px;" class="table-primary">
                             <th style="width: 1%;">#</th>
                             <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
                             <th style="width: 10%;">Nombre(s)</th>

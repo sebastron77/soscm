@@ -41,9 +41,9 @@ endif;
                 <?php endif ?>
             </div>
             <div class="panel-body">
-                <table class="datatable table table-dark table-bordered table-striped">
+                <table class="datatable table table-bordered table-striped">
                     <thead>
-                        <tr class="table-info">
+                        <tr class="table-primary">
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 20%;">Nombre del cargo</th>
                             <th class="text-center" style="width: 30%;">Área</th>
