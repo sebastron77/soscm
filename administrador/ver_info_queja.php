@@ -50,8 +50,8 @@ if ($nivel == 7) {
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr style="height: 10px;" class="table-primary">
+                    <thead class="thead-purple">
+                        <tr style="height: 10px;">
                             <th style="width: 1%;" class="text-center">Folio</th>
                             <th style="width: 1%;" class="text-center">Fecha Presentación</th>
                             <th style="width: 2%;" class="text-center">Medio de Presentación</th>
@@ -104,8 +104,8 @@ if ($nivel == 7) {
                         </tbody>
                     </table>
                     <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-primary">
+                        <thead class="thead-purple">
+                            <tr>
                                 <th style="width: 0.1%;" class="text-center">Desechamiento</th>
                                 <th style="width: 7%;" class="text-center">Razón Desechamiento</th>
                                 <th style="width: 7%;" class="text-center">Forma Conclusión</th>
@@ -183,8 +183,8 @@ if ($nivel == 7) {
                         </tbody>
                     </table>
                     <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-primary">
+                        <thead class="thead-purple">
+                            <tr>
                                 <th style="width: 10%;" class="text-center">Quejoso</th>
                                 <th style="width: 10%;" class="text-center">Agraviado</th>
                                 <th style="width: 3%;" class="text-center">Fecha Creación</th>
@@ -235,8 +235,8 @@ if ($nivel == 7) {
                     </tbody>
                 </table>
                 <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr class="table-primary">
+                    <thead class="thead-purple">
+                        <tr>
                             <th style="width: 5%;" class="text-center">Calle</th>
                             <th style="width: 0.5%;" class="text-center">Núm.</th>
                             <th style="width: 5%;" class="text-center">Colonia</th>

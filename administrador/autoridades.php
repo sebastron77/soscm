@@ -39,9 +39,9 @@ endif;
                 <?php endif ?>
             </div>
             <div class="panel-body">
-                <table class="datatable table table-dark table-bordered table-striped">
+                <table class="datatable table table-bordered table-striped">
                     <thead>
-                        <tr class="table-info">
+                        <tr class="thead-purple">
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 50%;">Nombre de la autoridad</th>
                             <th class="text-center" style="width: 30%;">Tipo de autoridad</th>

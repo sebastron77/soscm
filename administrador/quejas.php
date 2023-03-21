@@ -1,4 +1,5 @@
 <?php
+use Dompdf\Css\Style;
 error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Lista de quejas';
 
@@ -84,7 +85,6 @@ if (isset($_POST["export_data"])) {
     exit;
 }
 
-
 ?>
 <?php include_once('layouts/header.php'); ?>
 <a href="solicitudes_quejas.php" class="btn btn-success">Regresar</a><br><br>
@@ -118,8 +118,8 @@ require_once('includes/sql.php');
 
         <div class="panel-body">
             <table class="datatable table table-bordered table-striped">
-                <thead>
-                    <tr class="table-primary">
+                <thead class="thead-purple">
+                    <tr>
                         <th width="5%">Folio</th>
                         <th width="10%">Fecha presentación</th>
                         <th width="10%">Medio presentación</th>

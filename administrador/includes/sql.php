@@ -916,6 +916,26 @@ function find_by_id_cat_quejoso($id)
   else
     return null;
 }
+function find_by_id_cat_agraviado($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT q.id_cat_agrav,q.nombre,q.paterno,q.materno,cg.descripcion as genero,q.edad,cn.descripcion as nacionalidad,cm.descripcion as municipio,
+  ce.descripcion as escolaridad,co.descripcion as ocupacion,q.leer_escribir,cgv.descripcion as grupo_vuln,cd.descripcion as discapacidad,cc.descripcion as comunidad,q.telefono,q.email
+  FROM cat_agraviados q 
+  INNER JOIN cat_genero cg ON cg.id_cat_gen = q.id_cat_gen
+  INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.id_cat_nacionalidad
+  INNER JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
+  INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.id_cat_escolaridad
+  INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.id_cat_ocup
+  INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.id_cat_grupo_vuln
+  INNER JOIN cat_discapacidades cd ON cd.id_cat_disc = q.id_cat_disc
+  INNER JOIN cat_comunidades cc ON cc.id_cat_comun = q.id_cat_comun WHERE q.id_cat_agrav = '{$db->escape($id)}'");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
 /*------------------------------------------------------------------*/
 /* Funcion para encontrar el ultimo id de folios para despues
    sumarle uno y que el nuevo registro tome ese valor */

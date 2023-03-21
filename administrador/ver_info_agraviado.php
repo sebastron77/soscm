@@ -1,12 +1,12 @@
 <?php
-$page_title = 'Datos quejoso';
+$page_title = 'Datos Agraviado';
 require_once('includes/load.php');
 ?>
 <?php
 header('Content-Type: text/html; charset=UTF-8');
 page_require_level(2);
 //$all_detalles = find_all_trabajadores();
-$e_detalle = find_by_id_cat_quejoso((int)$_GET['id']);
+$e_detalle = find_by_id_cat_agraviado((int)$_GET['id']);
 $user = current_user();
 $nivel = $user['user_level'];
 ?>
@@ -31,7 +31,7 @@ $nivel = $user['user_level'];
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
-                            <th class="text-center" style="width: 3%;">ID Quejoso</th>
+                            <th class="text-center" style="width: 3%;">ID Agraviado</th>
                             <th class="text-center" style="width: 12%;">Nombre</th>
                             <th class="text-center" style="width: 12%;">Apellidos</th>
                             <th class="text-center" style="width: 2%;">Sexo</th>
@@ -44,7 +44,7 @@ $nivel = $user['user_level'];
                     <tbody>
                         <tr>
                             <!-- <td class="text-center"><?php echo count_id(); ?></td> -->
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['id_cat_quejoso']) ?></td>
+                            <td  class="text-center"><?php echo remove_junk($e_detalle['id_cat_agrav']) ?></td>
                             <td  class="text-center"><?php echo remove_junk($e_detalle['nombre']) ?></td>
                             <td  class="text-center"><?php echo remove_junk($e_detalle['paterno']." ".$e_detalle['materno']) ?></td>
                             <td  class="text-center"><?php echo remove_junk($e_detalle['genero']) ?></td>
@@ -82,7 +82,7 @@ $nivel = $user['user_level'];
                 </table>
                 <div class="row">
                     <div class="col-md-9">
-                        <a href="quejosos.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+                        <a href="agraviados.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                             Regresar
                         </a>
                     </div>

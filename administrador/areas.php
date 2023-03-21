@@ -45,8 +45,8 @@ endif;
             </div>
             <div class="panel-body">
                 <table class="datatable table table-bordered table-striped">
-                    <thead>
-                        <tr class="table-primary">
+                    <thead class="thead-purple">
+                        <tr>
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 40%;">Nombre del área</th>
                             <th class="text-center" style="width: 15%;">Abreviación del área</th>

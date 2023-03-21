@@ -296,7 +296,7 @@ include_once('layouts/header.php'); ?>
                         </div>
                     </div>
 
-                </div><br>
+                </div>
 
                 <p class="text-left" style="font-weight: bold; color: white; font-size: 17px">¿Quien presenta la queja
                     es el "agraviado/a"?</p>

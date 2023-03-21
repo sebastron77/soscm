@@ -79,7 +79,7 @@ if (isset($_POST['add_user'])) {
             <a href="users.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
               Regresar
             </a>
-            <button type="submit" name="add_user" class="btn btn-primary">Guardar</button>
+            <button type="submit" name="add_user" class="btn btn-primary" style="background: #5c1699; border-color: #5c1699;">Guardar</button>
           </div>
         </form>
       </div>

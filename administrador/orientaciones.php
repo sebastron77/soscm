@@ -91,8 +91,8 @@ if (isset($_POST["export_data"])) {
 
             <div class="panel-body">
                 <table class="datatable table table-bordered table-striped">
-                    <thead>
-                        <tr class="table-primary">
+                    <thead class="thead-purple">
+                        <tr>
                             <th width="20%">Folio</th>
                             <th width="15%">Fecha creación</th>
                             <!-- <th style="width: 5%;">Tipo</th> -->

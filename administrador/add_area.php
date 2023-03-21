@@ -45,13 +45,11 @@ if (isset($_POST['add'])) {
 <style>
     .login-page2 {
         width: 350px;
-        height: 500px;
+        height: 470px;
         margin: 7% auto;
         padding: 0 20px;
-        background-color: #282A2F;
-        border: 1px solid #000000;
+        background-color: #FFFFFF;
         border-radius: 15px;
-        box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
         margin-top: 30px;
     }
 

@@ -43,8 +43,8 @@ endif;
 
             <div class="panel-body">
                 <table class="datatable table table-bordered table-striped">
-                    <thead>
-                        <tr style="height: 10px;" class="table-primary">
+                    <thead class="thead-purple">
+                        <tr style="height: 10px;">
                             <th style="width: 1%;">#</th>
                             <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
                             <th style="width: 10%;">Nombre(s)</th>
@@ -107,7 +107,7 @@ endif;
                                 <?php if ($otro == 1 || $nivel_user == 1): ?>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="ver_info_quejoso.php?id=<?php echo (int) $a_detalle['id_cat_quejoso']; ?>"
+                                            <a href="ver_info_agraviado.php?id=<?php echo (int) $a_detalle['id_cat_agrav']; ?>"
                                                 class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                             </a>

@@ -413,8 +413,8 @@ table tfoot tr td:last-child {
 a.btn.btn-info {
   font-size: 14px;
   color: rgb(255, 255, 255);
-  background: #0075ff;
-  border-color: #0075ff;
+  background: #215ba6;
+  border-color: #215ba6;
 }
 a.btn.btn-info:hover,
 .btn-info:focus,
@@ -422,11 +422,21 @@ a.btn.btn-info:hover,
 .btn-info:active,
 .btn-info.active {
   color: #fff;
-  background-color: #1357bd;
-  border-color: #1357bd;
+  background-color: #1f4c88;
+  border-color: #1f4c88;
 }
 a.btn.btn-warning {
   font-size: 14px;
+  background-color: #f2d43d;
+}
+a.btn.btn-warning:hover,
+.btn-warning:focus,
+.btn-warning.focus,
+.btn-warning:active,
+.btn-warning.active {
+  color: #fff;
+  background-color: #d3b935;
+  border-color: #d3b935;
 }
 a.btn.btn-success {
   font-size: 14px;
@@ -483,11 +493,11 @@ label {
 }
 
 .label-success {
-  background-color: #3ca73c;
+  background-color: #56b856;
 }
 
 .label-danger {
-  background-color: #d13232;
+  background-color: #d84b4b;
 }
 
 label.control-label {
@@ -575,8 +585,8 @@ a.btn.btn-primary:hover,
 }
 a.btn.btn-secondary {
   color: #fff;
-  background-color: #6f1cb8;
-  border-color: #6f1cb8;
+  background-color: #e2594c;
+  border-color: #e2594c;
 }
 a.btn.btn-secondary:hover,
 a.btn.btn-secondary:focus,
@@ -584,18 +594,18 @@ a.btn.btn-secondary.focus,
 a.btn.btn-secondary:active,
 a.btn.btn-secondary.active {
   color: #fff;
-  background-color: #5c1699;
-  border-color: #5c1699;
+  background-color: #be4f44;
+  border-color: #be4f44;
 }
 a.btn.btn-success {
-  background-color: #23a534;
+  background-color: #04897a;
 }
 a.btn.btn-success:hover,
 .btn-success:focus,
 .btn-success.focus,
 .btn-success:active,
 .btn-success.active {
-  background-color: #1f972f;
+  background-color: #06685c;
 }
 a.btn-queja {
   background-color: #3a8ffe;
@@ -638,7 +648,7 @@ a.btn-queja:hover,
   color: white;
 }
 a.btn-danger {
-  background-color: #dd0e0e;
+  background-color: #ee3b3b;
 }
 a.btn-danger:hover,
 .btn-danger:focus,
@@ -648,7 +658,7 @@ a.btn-danger:hover,
   background-color: #b61316;
 }
 a.btn-delete {
-  background-color: #740a0a;
+  background-color: #363636;
   color: #fff;
 }
 a.btn-delete:hover,
@@ -656,7 +666,7 @@ a.btn-delete:hover,
 .btn-delete.focus,
 .btn-delete:active,
 .btn-delete.active {
-  background-color: #550808;
+  background-color: #272727;
   color: #fff;
 }
 a.btn-pdf {
@@ -941,4 +951,11 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #e7e7fd;
+}
+.thead-purple {
+  background-color: #7263F0;
+  color: white;
 }

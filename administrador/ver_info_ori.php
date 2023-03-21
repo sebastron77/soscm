@@ -49,8 +49,8 @@ if ($nivel == 7) {
 
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr style="height: 10px;" class="table-primary">
+                    <thead class="thead-purple">
+                        <tr style="height: 10px;">
                             <th style="width: 1%;" class="text-center">Folio</th>
                             <th style="width: 3%;" class="text-center">Fecha de Creación</th>
                             <th style="width: 3%;" class="text-center">Medio de presentación</th>
@@ -75,8 +75,8 @@ if ($nivel == 7) {
                     </tbody>
                 </table>
                 <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr class="table-primary">
+                    <thead class="thead-purple">
+                        <tr>
                             <th style="width: 1%;" class="text-center">Edad</th>
                             <th style="width: 1%;" class="text-center">Telefono</th>
                             <th style="width: 1%;" class="text-center">Extensión</th>
@@ -102,8 +102,8 @@ if ($nivel == 7) {
                     </tbody>
                 </table>
                 <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr class="table-primary">
+                    <thead class="thead-purple">
+                        <tr>
                             <th style="width: 5%;" class="text-center">Colonia</th>
                             <th style="width: 2%;" class="text-center">Código Postal</th>
                             <th style="width: 2%;" class="text-center">Municipio</th>

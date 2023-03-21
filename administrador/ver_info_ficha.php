@@ -58,8 +58,8 @@ if ($nivel == 7) {
             </div>
 
             <div class="panel-body">
-                <table class="table table-dark table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
                         <tr style="height: 10px;" class="table-info">
                             <th class="text-center" style="width: 1%;">Folio</th>
                             <th class="text-center" style="width: 4%;">Función</th>
@@ -80,8 +80,8 @@ if ($nivel == 7) {
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-dark table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
                         <tr style="height: 10px;" class="table-info">
                             <th class="text-center" style="width: 3%;">Escolaridad</th>
                             <th class="text-center" style="width: 10%;">Presuntos Hechos Violatorios</th>

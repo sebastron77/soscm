@@ -33,8 +33,8 @@ $nivel = $user['user_level'];
 
             <div class="panel-body">
 
-                <table class="table table-dark table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
                         <tr style="height: 10px;">
                             <th style="width: 12%;">ID Trabajador</th>
                             <th>Nombre</th>
@@ -75,8 +75,8 @@ $nivel = $user['user_level'];
                         </tr>
                     </tbody>
                 </table>
-                <table class="table table-dark table-bordered table-striped">
-                    <thead>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
                         <tr>
                             <th style="width: 5%;">Celular</th>
                             <th>Calle y No.</th>
