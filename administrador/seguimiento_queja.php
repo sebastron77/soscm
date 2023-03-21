@@ -191,35 +191,60 @@ if (isset($_POST['seguimiento_queja'])) {
                             </select>
                         </div>
                     </div>
+                    <?php if($e_detalle['id_tipo_resolucion'] == 2):?>
+                        <div class="col-md-4" id="incompetencia2">
+                    <?php endif;?>
+                    <?php if($e_detalle['id_tipo_resolucion'] != 2):?>
                     <div class="col-md-4" id="incompetencia2" style="display: none">
+                    <?php endif;?>
                         <div class="form-group">
                             <label for="causa_incomp">Causa Incompetencia (Si la hay)</label>
                             <textarea class="form-control" name="causa_incomp" id="causa_incomp" cols="40"
                                 rows="3"><?php echo $e_detalle['causa_incomp'] ?></textarea>
                         </div>
                     </div>
-                    <div class="col-md-3" id="incompetencia3" style="display: none">
+                    <?php if($e_detalle['id_tipo_resolucion'] == 2):?>
+                        <div class="col-md-2" id="incompetencia3">
+                    <?php endif;?>
+                    <?php if($e_detalle['id_tipo_resolucion'] != 2):?>
+                    <div class="col-md-2" id="incompetencia3" style="display: none">
+                    <?php endif;?>
                         <div class="form-group">
                             <label for="fecha_acuerdo_incomp">Fecha de Acuerdo de Incompetencia</label>
                             <input type="date" class="form-control" name="fecha_acuerdo_incomp"
                                 value="<?php echo $e_detalle['fecha_acuerdo_incomp']; ?>">
                         </div>
                     </div>
-                    <div class="col-md-3" id="incompetencia4" style="display: none">
+                    <?php if($e_detalle['id_tipo_resolucion'] == 2):?>
+                        <div class="col-md-4" id="incompetencia4">
+                    <?php endif;?>
+                    <?php if($e_detalle['id_tipo_resolucion'] != 2):?>
+                    <div class="col-md-4" id="incompetencia4" style="display: none">
+                    <?php endif;?>
                         <div class="form-group">
                             <label for="a_quien_se_traslada">¿A quién se traslada?</label>
                             <textarea class="form-control" name="a_quien_se_traslada" id="a_quien_se_traslada" cols="40"
                                 rows="3"><?php echo $e_detalle['a_quien_se_traslada'] ?></textarea>
                         </div>
                     </div>
+                    <?php if($e_detalle['id_tipo_resolucion'] == 5):?>
+                        <div class="col-md-2" id="recomendacion">
+                    <?php endif;?>
+                    <?php if($e_detalle['id_tipo_resolucion'] != 5):?>
                     <div class="col-md-2" id="recomendacion" style="display: none">
+                    <?php endif;?>
                         <div class="form-group">
                             <label for="num_recomendacion">Núm. Recomendación</label>
                             <input type="text" class="form-control" name="num_recomendacion"
                                 value="<?php echo $e_detalle['num_recomendacion']; ?>">
                         </div>
                     </div>
+                    <?php if($e_detalle['id_tipo_resolucion'] == 6):?>
+                        <div class="col-md-4" id="desechamiento2">
+                    <?php endif;?>
+                    <?php if($e_detalle['id_tipo_resolucion'] != 6):?>
                     <div class="col-md-4" id="desechamiento2" style="display: none">
+                    <?php endif;?>
                         <div class="form-group">
                             <label for="razon_desecha">Razón Desechamiento (Si la hay)</label>
                             <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40"
