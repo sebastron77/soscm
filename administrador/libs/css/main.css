@@ -885,7 +885,7 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #e7e7fd;
+  background-color: #f2f2ff;
 }
 .thead-purple {
   background-color: #7263f0;

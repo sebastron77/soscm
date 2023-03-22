@@ -193,7 +193,7 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="telefonoQ">Num. Telefónico</label>
+                            <label for="telefonoQ">Teléfono</label>
                             <input type="text" class="form-control" maxlength="10" name="telefonoQ" required>
                         </div>
                     </div>
@@ -273,7 +273,7 @@ include_once('layouts/header.php'); ?>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="id_cat_grupo_vulnQ">Grupo Vulnerable</label>
                             <select class="form-control" name="id_cat_grupo_vulnQ">
@@ -284,7 +284,7 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_cat_comunQ">Comunidad</label>
                             <select class="form-control" name="id_cat_comunQ">
@@ -350,7 +350,7 @@ include_once('layouts/header.php'); ?>
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                                <label for="telefono">Num. Telefónico</label>
+                                <label for="telefono">Teléfono</label>
                                 <input type="text" class="form-control" maxlength="10" name="telefono">
                             </div>
                         </div>
@@ -430,7 +430,7 @@ include_once('layouts/header.php'); ?>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-2">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <label for="id_cat_grupo_vuln">Grupo Vulnerable</label>
                                 <select class="form-control" name="id_cat_grupo_vuln">
@@ -441,7 +441,7 @@ include_once('layouts/header.php'); ?>
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <label for="id_cat_comun">Comunidad</label>
                                 <select class="form-control" name="id_cat_comun">

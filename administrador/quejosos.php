@@ -49,14 +49,12 @@ endif;
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
                             <th style="width: 1%;">#</th>
-                            <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
                             <th style="width: 10%;">Nombre(s)</th>
                             <th style="width: 9%;">Apellido Paterno</th>
                             <th style="width: 9%;">Apellido Materno</th>
                             <th style="width: 5%;">Correo</th>
                             <th style="width: 5%;">Celular</th>
                             <th style="width: 15%;">Grupo Vuln.</th>
-                            <!-- <th style="width: 1%;">Estatus</th> -->
                             <?php if ($otro == 1 || $nivel_user == 1): ?>
                                 <th style="width: 5%;" class="text-center">Acciones</th>
                             <?php endif ?>
@@ -86,17 +84,6 @@ endif;
                                 <td>
                                     <?php echo remove_junk(ucwords($a_detalle['grupo_vuln'])) ?>
                                 </td>
-                                <!-- <td class="text-center">
-                                        <?php if ($a_detalle['estatus_detalle'] === '1'): ?>
-                                                <span class="label label-success">
-                                                    <?php echo "Activo"; ?>
-                                                </span>
-                                        <?php else: ?>
-                                                <span class="label label-danger">
-                                                    <?php echo "Inactivo"; ?>
-                                                </span>
-                                        <?php endif; ?>
-                                    </td> -->
                                 <?php if ($otro == 1 || $nivel_user == 1): ?>
                                     <td class="text-center">
                                         <div class="btn-group">
@@ -104,19 +91,10 @@ endif;
                                                 class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                                 <i class="glyphicon glyphicon-eye-open"></i>
                                             </a>
-                                            <!-- <?php if ($nivel == 1): ?>
-                                                            <?php if ($a_detalle['estatus_detalle'] == 0): ?>
-                                                                    <a href="activate_detalle_usuario.php?id=<?php echo (int) $a_detalle['detalleID']; ?>"
-                                                                        class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
-                                                                        <span class="glyphicon glyphicon-ok"></span>
-                                                                    </a>
-                                                            <?php else: ?>
-                                                                    <a href="inactivate_detalle_usuario.php?id=<?php echo (int) $a_detalle['detalleID']; ?>"
-                                                                        class="btn btn-danger btn-md" title="Inactivar" data-toggle="tooltip">
-                                                                        <span class="glyphicon glyphicon-ban-circle"></span>
-                                                                    </a>
-                                                            <?php endif; ?>
-                                                    <?php endif; ?> -->
+                                            <a href="edit_quejoso.php?id=<?php echo (int) $a_detalle['id_cat_quejoso']; ?>"
+                                                class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+                                                <i class="glyphicon glyphicon-pencil"></i>
+                                            </a>                                        
                                         </div>
                                     </td>
                                 <?php endif ?>
