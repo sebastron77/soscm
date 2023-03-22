@@ -663,7 +663,7 @@ function find_all_product_info_by_title_marca($title, $marca, $modelo)
 function midetalle($id)
 {
   global $db;
-  $sql  = "SELECT d.id FROM detalles_usuario d INNER JOIN users u ON u.id_detalle_user = d.id WHERE u.id = {$id} LIMIT 1";
+  $sql  = "SELECT d.id_det_usuario FROM detalles_usuario d INNER JOIN users u ON u.id_detalle_user = d.id_det_usuario WHERE u.id_user = {$id} LIMIT 1";
   return find_by_sql($sql);
 }
 

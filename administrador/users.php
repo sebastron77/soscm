@@ -43,9 +43,9 @@ endif;
         <?php endif ?>
       </div>
       <div class="panel-body">
-        <table class="datatable table table-striped table-bordered table-light">
-          <thead>
-            <tr class="table-primary">
+        <table class="datatable table table-striped table-bordered">
+          <thead class="thead-purple">
+            <tr>
               <th class="text-center" style="width: 1px;">#</th>
               <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
               <th style="width: 20%;">Nombre</th>

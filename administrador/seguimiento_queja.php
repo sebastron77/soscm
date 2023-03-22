@@ -4,7 +4,7 @@ require_once('includes/load.php');
 ?>
 <?php
 $e_detalle = find_by_id_queja((int) $_GET['id']);
-echo $e_detalle['id_queja_date'];
+// echo $e_detalle['id_queja_date'];
 if (!$e_detalle) {
     $session->msg("d", "ID de queja no encontrado.");
     redirect('quejas.php');
@@ -109,14 +109,14 @@ if (isset($_POST['seguimiento_queja'])) {
             <form method="post" action="seguimiento_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>"
                 enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="id_cat_aut">Autoridad Responsable</label>
                             <input type="text" class="form-control" name="id_cat_aut"
                                 value="<?php echo remove_junk($e_detalle['nombre_autoridad']); ?>" readonly>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_cat_quejoso">Nombre del Quejoso</label>
                             <input type="text" class="form-control" name="id_cat_quejoso"
@@ -127,9 +127,9 @@ if (isset($_POST['seguimiento_queja'])) {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_area_asignada">Área a la que se asignó la queja</label>
-                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($area as $a):
+                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($area as $a){
                                 if ($a['id_area'] === $e_detalle['id_area_asignada'])
-                                    echo $a['nombre_area'] ?> <?php endforeach; ?>" readonly>
+                                    echo $a['nombre_area'];} ?>" readonly>
                         </div>
                     </div>
                 </div>
@@ -137,17 +137,17 @@ if (isset($_POST['seguimiento_queja'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_cat_mun">Municipio</label>
-                            <input type="text" class="form-control" name="id_cat_mun" value="<?php foreach ($cat_municipios as $municipio):
+                            <input type="text" class="form-control" name="id_cat_mun" value="<?php foreach ($cat_municipios as $municipio){
                                 if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
-                                    echo ucwords($municipio['descripcion']) ?> <?php endforeach; ?>" readonly>
+                                    echo ucwords($municipio['descripcion']);} ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_estatus_queja">Estatus de Queja</label>
-                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($cat_estatus_queja as $estatus):
+                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($cat_estatus_queja as $estatus){
                                 if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
-                                    echo ucwords($estatus['descripcion']) ?> <?php endforeach; ?>" readonly>
+                                    echo ucwords($estatus['descripcion']);}?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">

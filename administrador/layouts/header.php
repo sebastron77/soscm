@@ -165,7 +165,7 @@
               </a>
               <ul class="dropdown-menu" style="background-color: #FFFFFF;">
                 <li>
-                  <a href="profile.php?id=<?php echo (int)$user['id']; ?>">
+                  <a href="profile.php?id=<?php echo (int)$user['id_user']; ?>">
                     <i class="glyphicon glyphicon-user"></i>
                     Perfil
                   </a>

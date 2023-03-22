@@ -62,10 +62,26 @@ if (isset($_POST['edit_queja'])) {
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
 
-        $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', observaciones='{$observaciones}', 
-                        id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', id_area_asignada='$id_area_asignada', 
-                        id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', 
-                        fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
+        $folio_editar = $e_detalle['folio_queja'];
+        $resultado = str_replace("/", "-", $folio_editar);
+        $carpeta = 'uploads/quejas/' . $resultado;
+
+        $name = $_FILES['adjunto']['name'];
+        $size = $_FILES['adjunto']['size'];
+        $type = $_FILES['adjunto']['type'];
+        $temp = $_FILES['adjunto']['tmp_name'];
+
+        if (is_dir($carpeta)) {
+            $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+        } else {
+            mkdir($carpeta, 0777, true);
+            $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+        }
+
+        $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
+                observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
+                id_area_asignada='$id_area_asignada', id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
+                id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
         $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
         $result2 = $db->query($sql2);

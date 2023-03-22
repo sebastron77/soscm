@@ -14,7 +14,7 @@ if (isset($_POST['update'])) {
     $id = (int)$_POST['id'];
     $password = remove_junk($db->escape($_POST['new-password']));
     $h_pass   = sha1($password);
-    $sql = "UPDATE users SET password='{$h_pass}' WHERE id='{$db->escape($id)}'";
+    $sql = "UPDATE users SET password='{$h_pass}' WHERE id_user='{$db->escape($id)}'";
     $result = $db->query($sql);
     if ($result && $db->affected_rows() === 1) {
       $session->logout();
