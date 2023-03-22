@@ -1,5 +1,5 @@
 <?php header('Content-type: text/html; charset=utf-8');
-$page_title = 'Agregar trabajador';
+$page_title = 'Agregar quejoso';
 require_once('includes/load.php');
 
 page_require_level(1);
@@ -74,7 +74,7 @@ if (isset($_POST['add_quejoso'])) {
             $query .= ") VALUES (";
             $query .= " '{$nombreQ}','{$paternoQ}','{$maternoQ}','{$id_cat_genQ}','{$edadQ}','{$id_cat_nacionalidadQ}',
                     '{$id_cat_munQ}','{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}',
-                    '{$id_cat_discQ}',0,0,{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}'";
+                    '{$id_cat_discQ}',0,null,{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}'";
             $query .= ")";
 
             if (($db->query($query2)) && ($db->query($query))) {
@@ -103,7 +103,7 @@ if (isset($_POST['add_quejoso'])) {
             $query3 .= ") VALUES (";
             $query3 .= " '{$nombre}','{$paterno}','{$materno}','{$id_cat_gen}','{$edad}','{$id_cat_nacionalidad}',
                     '{$id_cat_mun}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$leer_escribir}','{$id_cat_grupo_vuln}',
-                    '{$id_cat_disc}','{$ppl}','{$id_cat_ppl}',{$id_cat_comun},'{$telefono}','{$email}'";
+                    '{$id_cat_disc}',{$ppl},{$id_cat_ppl},{$id_cat_comun},'{$telefono}','{$email}'";
             $query3 .= ")";
 
             if (($db->query($query4)) && ($db->query($query3))) {
@@ -298,7 +298,7 @@ include_once('layouts/header.php'); ?>
 
                 </div>
 
-                <p class="text-left" style="font-weight: bold; color: white; font-size: 17px">¿Quien presenta la queja
+                <p class="text-left" style="font-weight: bold; font-size: 17px; margin-top:40px;">¿Quien presenta la queja
                     es el "agraviado/a"?</p>
                 <label class="switch" style="float:left;">
                     <div class="row">
@@ -466,7 +466,7 @@ include_once('layouts/header.php'); ?>
                             <div class="form-group">
                                 <label for="id_cat_ppl">Si es PPL, ¿Quién presenta la queja?</label>
                                 <select class="form-control" name="id_cat_ppl">
-                                    <option value="">Escoge una opción</option>
+                                    <option value="NULL">Escoge una opción</option>
                                     <?php foreach ($ppls as $ppl): ?>
                                         <option value="<?php echo $ppl['id_cat_ppl']; ?>"><?php echo ucwords($ppl['descripcion']); ?></option>
                                     <?php endforeach; ?>

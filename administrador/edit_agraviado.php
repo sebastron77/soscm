@@ -66,7 +66,7 @@ if (isset($_POST['update'])) {
         $sql = "UPDATE cat_agraviados SET nombre='{$nombre}', paterno='{$paterno}', materno='{$materno}', id_cat_gen='{$id_cat_gen}', edad='{$edad}', 
                         id_cat_nacionalidad='{$id_cat_nacionalidad}', id_cat_mun='{$id_cat_mun}', id_cat_escolaridad='{$id_cat_escolaridad}', 
                         id_cat_ocup='{$id_cat_ocup}', leer_escribir='{$leer_escribir}', id_cat_grupo_vuln='{$id_cat_grupo_vuln}', id_cat_disc='{$id_cat_disc}', 
-                        ppl='{$ppl}',id_cat_ppl='{$id_cat_ppl}',id_cat_comun='{$id_cat_comun}', telefono='{$telefono}', email='{$email}' WHERE id_cat_agrav='{$db->escape($id)}'";
+                        ppl={$ppl},id_cat_ppl={$id_cat_ppl},id_cat_comun='{$id_cat_comun}', telefono='{$telefono}', email='{$email}' WHERE id_cat_agrav='{$db->escape($id)}'";
         $result = $db->query($sql);
 
         if ($result && $db->affected_rows() === 1) {
@@ -279,7 +279,7 @@ if (isset($_POST['update'])) {
                             <div class="form-group">
                                 <label for="id_cat_ppl">Si es PPL, ¿Quién presenta la queja?</label>
                                 <select class="form-control" name="id_cat_ppl">
-                                    <option value="">Escoge una opción</option>
+                                    <option value="NULL">Escoge una opción</option>
                                     <?php foreach ($ppls as $ppl): ?>
                                         <option <?php if ($ppl['id_cat_ppl'] === $e_detalle['id_cat_ppl'])
                                             echo 'selected="selected"'; ?> value="<?php echo $ppl['id_cat_ppl']; ?>">
