@@ -120,8 +120,8 @@ require_once('includes/sql.php');
             <table class="datatable table table-bordered table-striped">
                 <thead class="thead-purple">
                     <tr>
-                        <th width="5%">Folio</th>
-                        <th width="10%">Fecha presentación</th>
+                        <th width="7%">Folio</th>
+                        <th width="3%">Fecha presentación</th>
                         <th width="10%">Medio presentación</th>
                         <th width="15%">Autoridad responsable</th>
                         <th width="10%">Adjunto</th>

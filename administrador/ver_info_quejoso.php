@@ -22,7 +22,7 @@ $nivel = $user['user_level'];
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Información completa de <?php echo remove_junk(ucwords($e_detalle['nombre'] . " " .$e_detalle['paterno']. " " .$e_detalle['materno'])) ?></span>
+                    <span>Información completa del quejoso: <?php echo remove_junk(ucwords($e_detalle['nombre'] . " " .$e_detalle['paterno']. " " .$e_detalle['materno'])) ?></span>
                 </strong>
             </div>
 
