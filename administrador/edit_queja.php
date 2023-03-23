@@ -158,7 +158,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_quejosos as $quejoso): ?>
                                     <option <?php if ($quejoso['id_cat_quejoso'] === $e_detalle['id_cat_quejoso'])
                                         echo 'selected="selected"'; ?> value="<?php echo $quejoso['id_cat_quejoso']; ?>"><?php
-                                              echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?>
+                                            echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

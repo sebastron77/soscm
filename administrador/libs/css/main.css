@@ -651,8 +651,8 @@ td img.img-thumbnail {
   color: white;
 }
 img.img-size-2 {
-  width: 125px;
-  height: 125px;
+  width: 150px;
+  height: 150px;
 }
 .profile-block {
   display: flex;
