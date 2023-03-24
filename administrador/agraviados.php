@@ -46,17 +46,15 @@ endif;
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
                             <th style="width: 1%;">#</th>
-                            <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
-                            <th style="width: 10%;">Nombre(s)</th>
-                            <th style="width: 9%;">Apellido Paterno</th>
-                            <th style="width: 9%;">Apellido Materno</th>
-                            <th style="width: 5%;">Correo</th>
-                            <th style="width: 5%;">Celular</th>
+                            <th style="width: 7%;">Nombre(s)</th>
+                            <th style="width: 7%;">Apellido Paterno</th>
+                            <th style="width: 7%;">Apellido Materno</th>
+                            <th style="width: 10%;">Correo</th>
+                            <th style="width: 1%;">Teléfono</th>
                             <th style="width: 15%;">Grupo Vuln.</th>
-                            <th style="width: 15%;">PPL</th>
-                            <!-- <th style="width: 1%;">Estatus</th> -->
+                            <th style="width: 1%;">PPL</th>
                             <?php if ($otro == 1 || $nivel_user == 1): ?>
-                                <th style="width: 5%;" class="text-center">Acciones</th>
+                                <th style="width: 1%;" class="text-center">Acciones</th>
                             <?php endif ?>
                         </tr>
                     </thead>

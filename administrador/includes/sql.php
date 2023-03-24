@@ -675,9 +675,10 @@ function find_all_orientaciones()
   global $db;
   $sql = "SELECT o.id_or_can as idor,o.folio,o.correo_electronico,o.nombre_completo,o.nivel_estudios,o.ocupacion,o.edad,o.telefono,o.extension,o.sexo,o.calle_numero,
           o.colonia,o.codigo_postal,o.municipio_localidad,o.entidad,o.nacionalidad,o.tipo_solicitud,o.medio_presentacion,o.observaciones,o.adjunto,o.creacion,o.id_creador,
-          u.id_user,u.id_detalle_user,d.nombre,d.apellidos";
+          u.id_user,u.id_detalle_user,d.nombre,d.apellidos,cmp.descripcion as medio_pres";
   $sql .= " FROM orientacion_canalizacion as o";
   $sql .= " LEFT JOIN users as u ON u.id_user = o.id_creador";
+  $sql .= " LEFT JOIN cat_medio_pres as cmp ON cmp.id_cat_med_pres = o.medio_presentacion";
   $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=1";
   return find_by_sql($sql);
 }

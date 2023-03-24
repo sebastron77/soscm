@@ -6,7 +6,7 @@ require_once('includes/load.php');
 header('Content-Type: text/html; charset=UTF-8');
 page_require_level(2);
 //$all_detalles = find_all_trabajadores();
-$e_detalle = find_by_id_cat_quejoso((int)$_GET['id']);
+$e_detalle = find_by_id_cat_quejoso((int) $_GET['id']);
 $user = current_user();
 $nivel = $user['user_level'];
 ?>
@@ -22,7 +22,9 @@ $nivel = $user['user_level'];
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Información completa del quejoso: <?php echo remove_junk(ucwords($e_detalle['nombre'] . " " .$e_detalle['paterno']. " " .$e_detalle['materno'])) ?></span>
+                    <span>Información completa del quejoso:
+                        <?php echo remove_junk(ucwords($e_detalle['nombre'] . " " . $e_detalle['paterno'] . " " . $e_detalle['materno'])) ?>
+                    </span>
                 </strong>
             </div>
 
@@ -31,27 +33,47 @@ $nivel = $user['user_level'];
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
-                            <th class="text-center" style="width: 3%;">ID Quejoso</th>
-                            <th class="text-center" style="width: 12%;">Nombre</th>
-                            <th class="text-center" style="width: 12%;">Apellidos</th>
-                            <th class="text-center" style="width: 2%;">Sexo</th>
-                            <th class="text-center" style="width: 2%;">Edad</th>
-                            <th class="text-center" style="width: 7%;">Nacionalidad</th>
-                            <th class="text-center" style="width: 10%;">Municipio</th>
-                            <th class="text-center" style="width: 8%;">Escolaridad</th>
+                            <th class="text-center" style="width: 1%;">ID Quejoso</th>
+                            <th class="text-center" style="width: 10%;">Nombre</th>
+                            <th class="text-center" style="width: 10%;">Apellidos</th>
+                            <th class="text-center" style="width: 1%;">Sexo</th>
+                            <th class="text-center" style="width: 1%;">Edad</th>
+                            <th class="text-center" style="width: 3%;">Nacionalidad</th>
+                            <th class="text-center" style="width: 8%;">Municipio</th>
+                            <th class="text-center" style="width: 7%;">Escolaridad</th>
+                            <th class="text-center" style="width: 10%;">Ocupación</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <!-- <td class="text-center"><?php echo count_id(); ?></td> -->
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['id_cat_quejoso']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['nombre']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['paterno']." ".$e_detalle['materno']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['genero']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['edad']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['nacionalidad']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['municipio']) ?></td>
-                            <td  class="text-center"><?php echo remove_junk($e_detalle['escolaridad']) ?></td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['id_cat_quejoso']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['nombre']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['paterno'] . " " . $e_detalle['materno']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['genero']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['edad']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['nacionalidad']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['municipio']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['escolaridad']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['ocupacion']) ?>
+                            </td>
                         </tr>
                     </tbody>
 
@@ -59,24 +81,34 @@ $nivel = $user['user_level'];
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr>
-                            <th class="text-center" style="width: 10%;">Ocupación</th>
+                            <th class="text-center" style="width: 3%;">Teléfono</th>
+                            <th class="text-center" style="width: 15%;">Email</th>
                             <th class="text-center" style="width: 8%;">¿Sabe leer y/o escribir?</th>
                             <th class="text-center" style="width: 15%;">Grupo Vulnerable</th>
                             <th class="text-center" style="width: 8%;">¿Tiene alguna discapacidad?</th>
                             <th class="text-center" style="width: 8%;">Comunidad a la que pertenece</th>
-                            <th class="text-center" style="width: 3%;">Teléfono</th>
-                            <th class="text-center" style="width: 15%;">Email</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['ocupacion']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['leer_escribir']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['grupo_vuln']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['discapacidad']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['comunidad']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['telefono']) ?></td>
-                            <td class="text-center"><?php echo remove_junk($e_detalle['email']) ?></td>                            
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['telefono']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['email']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['leer_escribir']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['grupo_vuln']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['discapacidad']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['comunidad']) ?>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -87,26 +119,26 @@ $nivel = $user['user_level'];
                         </a>
                     </div>
                     <div class="col-md-3">
-                        
-                            <!-- <a href="edit_quejoso.php?id=<?php echo (int)$e_detalle['id_cat_quejoso']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+
+                        <!-- <a href="edit_quejoso.php?id=<?php echo (int) $e_detalle['id_cat_quejoso']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                 Editar
                             </a> -->
-                        
-                        <!-- <?php if ($nivel == 1) : ?>
-                            <?php if ($e_detalle['estatus_detalle'] == 1) : ?>
-                                <a href="inactivate_detalle_usuario.php?id=<?php echo (int)$e_detalle['id_det_usuario']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
+
+                        <!-- <?php if ($nivel == 1): ?>
+                            <?php if ($e_detalle['estatus_detalle'] == 1): ?>
+                                <a href="inactivate_detalle_usuario.php?id=<?php echo (int) $e_detalle['id_det_usuario']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
                                     Inactivar
                                 </a>
                             <?php endif; ?>
-                            <?php if ($e_detalle['estatus_detalle'] == 0) : ?>
-                                <a href="activate_detalle_usuario.php?id=<?php echo (int)$e_detalle['id_det_usuario']; ?>" class="btn btn-md btn-success" data-toggle="tooltip" title="Activar">
+                            <?php if ($e_detalle['estatus_detalle'] == 0): ?>
+                                <a href="activate_detalle_usuario.php?id=<?php echo (int) $e_detalle['id_det_usuario']; ?>" class="btn btn-md btn-success" data-toggle="tooltip" title="Activar">
                                     Activar
                                 </a>
                             <?php endif; ?> -->
-                            <!-- <a href="delete_detalle_usuario.php?id=<?php echo (int)$e_detalle['id']; ?>" class="btn btn-delete btn-md" title="Eliminar" data-toggle="tooltip" onclick="return confirm('¿Seguro que deseas eliminar este trabajador? También se eliminarán su usuario, asignaciones y resguardos.');">
+                            <!-- <a href="delete_detalle_usuario.php?id=<?php echo (int) $e_detalle['id']; ?>" class="btn btn-delete btn-md" title="Eliminar" data-toggle="tooltip" onclick="return confirm('¿Seguro que deseas eliminar este trabajador? También se eliminarán su usuario, asignaciones y resguardos.');">
                                 Eliminar
                             </a> -->
-                        <!-- <?php endif; ?> -->
+                            <!-- <?php endif; ?> -->
                     </div>
                 </div>
             </div>

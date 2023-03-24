@@ -153,13 +153,13 @@ include_once('layouts/header.php'); ?>
         <div class="panel-body">
             <form method="post" action="add_queja.php" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="fecha_presentacion">Fecha de presentación</label>
                             <input type="datetime-local" class="form-control" name="fecha_presentacion" required>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_cat_med_pres">Medio Presetación</label>
                             <select class="form-control" name="id_cat_med_pres">

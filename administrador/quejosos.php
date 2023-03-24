@@ -13,10 +13,10 @@ $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-if ($nivel_user > 2 && $nivel_user < 7):
+if ($nivel_user > 2 && $nivel_user < 5):
     redirect('home.php');
 endif;
-if ($nivel_user > 7):
+if ($nivel_user > 5 && $nivel_user == 7):
     redirect('home.php');
 endif;
 ?>
@@ -39,7 +39,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Quejosos</span>
                 </strong>
-                <?php if ($otro == 1 || $nivel_user == 1): ?>
+                <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 5): ?>
                     <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar quejoso</a>
                 <?php endif ?>
             </div>
@@ -49,11 +49,11 @@ endif;
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
                             <th style="width: 1%;">#</th>
-                            <th style="width: 10%;">Nombre(s)</th>
-                            <th style="width: 9%;">Apellido Paterno</th>
-                            <th style="width: 9%;">Apellido Materno</th>
-                            <th style="width: 5%;">Correo</th>
-                            <th style="width: 5%;">Celular</th>
+                            <th style="width: 7%;">Nombre(s)</th>
+                            <th style="width: 7%;">Apellido Paterno</th>
+                            <th style="width: 7%;">Apellido Materno</th>
+                            <th style="width: 10%;">Correo</th>
+                            <th style="width: 5%;">Teléfono</th>
                             <th style="width: 15%;">Grupo Vuln.</th>
                             <?php if ($otro == 1 || $nivel_user == 1): ?>
                                 <th style="width: 5%;" class="text-center">Acciones</th>
