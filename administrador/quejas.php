@@ -34,7 +34,9 @@ endif;
 if ($nivel_user > 7 && $nivel_user < 19):
     redirect('home.php');
 endif;
-
+if ($nivel_user > 19):
+    redirect('home.php');
+endif;
 
 $conexion = mysqli_connect ("localhost", "root", "");
 mysqli_set_charset($conexion,"utf8");

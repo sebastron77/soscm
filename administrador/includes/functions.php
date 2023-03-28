@@ -61,14 +61,14 @@ function validate_fields($var)
 }
 /*--------------------------------------------------------------*/
 /* Funcion para mostrar mensaje de sesion
-   Ex echo displayt_msg($message);
+Ex echo displayt_msg($message);
 /*--------------------------------------------------------------*/
 function display_msg($msg = '') //antes lo tenia con $msg = ''
 {
   $output = array();
   if (!empty($msg)) {
     foreach ($msg as $key => $value) {
-      $output  = "<div class=\"alert alert-{$key}\">";
+      $output = "<div class=\"alert alert-{$key}\">";
       $output .= "<a href=\"#\" class=\"close\" data-dismiss=\"alert\">&times;</a>";
       $output .= remove_junk(first_character($value));
       $output .= "</div>";
@@ -132,7 +132,7 @@ function make_date()
 {
   $mifecha = date('Y-m-d H:i:s');
   $NuevaFecha = strtotime('-7 hour', strtotime($mifecha));
-  $NuevaFecha = date ( 'Y-m-d H:i:s' , $NuevaFecha); 
+  $NuevaFecha = date('Y-m-d H:i:s', $NuevaFecha);
   return $NuevaFecha;
 }
 /*--------------------------------------------------------------*/
@@ -140,10 +140,11 @@ function make_date()
 /*--------------------------------------------------------------*/
 function make_date_no_seg()
 {
-  $mifecha = date('Y-m-d H:i:s');
-  $NuevaFecha = strtotime('-7 hour', strtotime($mifecha));
-  $NuevaFecha = date ( 'Y-m-d H:i' , $NuevaFecha); 
-  return $NuevaFecha;
+  date_default_timezone_set('America/Mexico_City');
+  $mifecha = date('Y-m-d H:i');
+  // $NuevaFecha = strtotime('-7 hour', strtotime($mifecha));
+  // $NuevaFecha = date ( 'Y-m-d H:i' , $mifecha); 
+  return $mifecha;
 }
 /*--------------------------------------------------------------*/
 /* Funcion para hacer fecha sin hora

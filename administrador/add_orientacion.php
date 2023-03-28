@@ -3,7 +3,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Orientación';
 require_once('includes/load.php');
-// $user = current_user();
 $user = current_user();
 $detalle = $user['id_user'];
 $id_ori_canal = last_id_oricanal();
@@ -20,7 +19,6 @@ $autoridades = find_all_autoridades();
 $entidades = find_all('cat_entidad_fed');
 $nacionalidad = find_all('cat_nacionalidades');
 $medios_pres = find_all('cat_medio_pres');
-
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -66,8 +64,7 @@ if (isset($_POST['add_orientacion'])) {
         $adjunto = remove_junk($db->escape($_POST['adjunto']));
         $institucion_canaliza = remove_junk($db->escape($_POST['institucion_canaliza']));
         date_default_timezone_set('America/Mexico_City');
-        $creacion = date('Y-m-d');
-        // $id_creador   = remove_junk($db->escape($_POST['creador']));        
+        $creacion = date('Y-m-d');       
 
         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
@@ -86,8 +83,6 @@ if (isset($_POST['add_orientacion'])) {
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                //$nuevo_id_folio = (int)$nuevo['id'] + 1;
-                //$no_folio1 = sprintf('%04d', (int)$nuevo['id'] + 1);
                 $nuevo_id_folio = (int) $nuevo['contador'] + 1;
                 $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
             }
@@ -114,9 +109,11 @@ if (isset($_POST['add_orientacion'])) {
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
+                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}','{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}',
+                        '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -126,9 +123,11 @@ if (isset($_POST['add_orientacion'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
+                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}','{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}',
+                        '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -291,7 +290,7 @@ include_once('layouts/header.php'); ?>
                                 <?php foreach ($entidades as $entidad): ?>
                                     <option value="<?php echo $entidad['id_cat_ent_fed']; ?>"><?php echo ucwords($entidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
-                            </select>    
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -326,7 +325,7 @@ include_once('layouts/header.php'); ?>
                                 <?php foreach ($autoridades as $autoridad): ?>
                                     <option value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
-                            </select>    
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">

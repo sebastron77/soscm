@@ -1,6 +1,5 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-// header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Queja';
 require_once('includes/load.php');
 $user = current_user();
@@ -27,12 +26,21 @@ if ($nivel_user == 5) {
     page_require_level_exacto(5);
 }
 if ($nivel_user == 7) {
-    redirect('home.php');
+    page_require_level_exacto(7);
+}
+if ($nivel_user == 19) {
+    page_require_level_exacto(19);
 }
 if ($nivel_user > 2 && $nivel_user < 5):
     redirect('home.php');
 endif;
-if ($nivel_user > 5):
+if ($nivel_user > 5 && $nivel_user < 7):
+    redirect('home.php');
+endif;
+if ($nivel_user > 7):
+    redirect('home.php');
+endif;
+if ($nivel_user > 19):
     redirect('home.php');
 endif;
 ?>
@@ -40,7 +48,8 @@ endif;
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_queja'])) {
 
-    $req_fields = array('fecha_presentacion','id_cat_med_pres','id_cat_aut','id_cat_quejoso','id_cat_agrav','id_user_asignado','id_area_asignada','id_estatus_queja','dom_calle','dom_numero','dom_colonia','descripcion_hechos');
+    $req_fields = array('fecha_presentacion','id_cat_med_pres','id_cat_aut','id_cat_quejoso','id_cat_agrav','id_user_asignado','id_area_asignada','id_estatus_queja','dom_calle',
+                        'dom_numero','dom_colonia','descripcion_hechos');
     validate_fields($req_fields);
 
     if (empty($errors)) {
@@ -63,8 +72,6 @@ if (isset($_POST['add_queja'])) {
         date_default_timezone_set('America/Mexico_City');
         $creacion = date('Y-m-d H:i:s'); 
 
-        //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
-        //La variable $no_folio sirve para el numero de folio
         if (count($id_queja) == 0) {
             $nuevo_id_queja = 1;
             $no_folio = sprintf('%04d', 1);
@@ -85,9 +92,7 @@ if (isset($_POST['add_queja'])) {
             }
         }
 
-        //Se crea el número de folio
         $year = date("Y");
-        // Se crea el folio orientacion
         $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-Q';
 
         $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-Q';

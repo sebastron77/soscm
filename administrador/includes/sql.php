@@ -778,7 +778,6 @@ function find_all_trabajadores_area($area)
 
 function find_all_localidades($id)
 {
-  $id = $id;
   $sql = "SELECT * FROM cat_localidades WHERE id_cat_municipios = {$id} ORDER BY nnombre_localidad ASC";
   $result = find_by_sql($sql);
   return $result;

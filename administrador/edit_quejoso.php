@@ -2,7 +2,30 @@
 $page_title = 'Editar Datos de Quejoso';
 require_once('includes/load.php');
 
-page_require_level(1);
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel_user == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel_user == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel_user > 2 && $nivel_user < 5):
+    redirect('home.php');
+endif;
+if ($nivel_user > 5 && $nivel_user < 7):
+    redirect('home.php');
+endif;
+if ($nivel_user > 7):
+    redirect('home.php');
+endif;
+if ($nivel_user > 19):
+    redirect('home.php');
+endif;
 ?>
 <?php
 $e_detalle = find_by_id('cat_quejosos', (int) $_GET['id'], 'id_cat_quejoso');

@@ -639,8 +639,8 @@ td img.img-thumbnail {
 
 .jumbotron {
   margin-bottom: 0;
-  background-color: #282a2f;
-  border: 1px solid #000000;
+  background-color: #FFFFFF;
+  border: 1px solid #FFFFFF;
 }
 
 .list-group-item:first-child,
