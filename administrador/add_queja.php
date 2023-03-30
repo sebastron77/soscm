@@ -31,16 +31,16 @@ if ($nivel_user == 7) {
 if ($nivel_user == 19) {
     page_require_level_exacto(19);
 }
-if ($nivel_user > 2 && $nivel_user < 5):
+if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user > 5 && $nivel_user < 7):
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7):
+if ($nivel_user > 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19):
+if ($nivel_user > 19) :
     redirect('home.php');
 endif;
 ?>
@@ -48,8 +48,10 @@ endif;
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_queja'])) {
 
-    $req_fields = array('fecha_presentacion','id_cat_med_pres','id_cat_aut','id_cat_quejoso','id_cat_agrav','id_user_asignado','id_area_asignada','id_estatus_queja','dom_calle',
-                        'dom_numero','dom_colonia','descripcion_hechos');
+    $req_fields = array(
+        'fecha_presentacion', 'id_cat_med_pres', 'id_cat_aut', 'id_cat_quejoso', 'id_cat_agrav', 'id_user_asignado', 'id_area_asignada', 'id_estatus_queja', 'dom_calle',
+        'dom_numero', 'dom_colonia', 'descripcion_hechos'
+    );
     validate_fields($req_fields);
 
     if (empty($errors)) {
@@ -68,9 +70,11 @@ if (isset($_POST['add_queja'])) {
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
         $fecha_vencimiento = remove_junk($db->escape($_POST['fecha_vencimiento']));
         $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
+        $ent_fed = remove_junk($db->escape($_POST['ent_fed']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $localidad = remove_junk($db->escape($_POST['localidad']));
         date_default_timezone_set('America/Mexico_City');
-        $creacion = date('Y-m-d H:i:s'); 
+        $creacion = date('Y-m-d H:i:s');
 
         if (count($id_queja) == 0) {
             $nuevo_id_queja = 1;
@@ -108,13 +112,14 @@ if (isset($_POST['add_queja'])) {
         $temp = $_FILES['adjunto']['tmp_name'];
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');     
+        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
 
         $query = "INSERT INTO quejas_dates (folio_queja,fecha_presentacion,id_cat_med_pres,id_cat_aut,observaciones,id_cat_quejoso,id_cat_agraviado,id_user_creador,
-                    fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,id_cat_mun,descripcion_hechos,estado_procesal) 
+                    fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,ent_fed,id_cat_mun,localidad,
+                    descripcion_hechos,estado_procesal) 
                     VALUES ('{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}',
-                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$id_cat_mun}',
-                    '{$descripcion_hechos}',NULL)";
+                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
+                    '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}',NULL)";
 
         $query3 = "INSERT INTO folios (";
         $query3 .= "folio, contador";
@@ -122,7 +127,7 @@ if (isset($_POST['add_queja'])) {
         $query3 .= " '{$folio}','{$no_folio1}'";
         $query3 .= ")";
 
-	    //------------------BUSCA EL ID INSERTADO------------------
+        //------------------BUSCA EL ID INSERTADO------------------
         $dbh->exec($query3);
         $dbh->exec($query);
         $id_insertado = $dbh->lastInsertId();
@@ -169,7 +174,7 @@ include_once('layouts/header.php'); ?>
                             <label for="id_cat_med_pres">Medio Presetación</label>
                             <select class="form-control" name="id_cat_med_pres">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_medios_pres as $medio_pres): ?>
+                                <?php foreach ($cat_medios_pres as $medio_pres) : ?>
                                     <option value="<?php echo $medio_pres['id_cat_med_pres']; ?>"><?php echo ucwords($medio_pres['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -180,7 +185,7 @@ include_once('layouts/header.php'); ?>
                             <label for="id_cat_aut">Autoridad Responsable</label>
                             <select class="form-control" name="id_cat_aut">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_autoridades as $autoridades): ?>
+                                <?php foreach ($cat_autoridades as $autoridades) : ?>
                                     <option value="<?php echo $autoridades['id_cat_aut']; ?>"><?php echo ucwords($autoridades['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -191,7 +196,7 @@ include_once('layouts/header.php'); ?>
                             <label for="id_cat_quejoso">Quejoso</label>
                             <select class="form-control" name="id_cat_quejoso">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_quejosos as $quejoso): ?>
+                                <?php foreach ($cat_quejosos as $quejoso) : ?>
                                     <option value="<?php echo $quejoso['id_cat_quejoso']; ?>"><?php echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -204,7 +209,7 @@ include_once('layouts/header.php'); ?>
                             <label for="id_cat_agrav">Agraviado</label>
                             <select class="form-control" name="id_cat_agrav">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_agraviados as $agraviado): ?>
+                                <?php foreach ($cat_agraviados as $agraviado) : ?>
                                     <option value="<?php echo $agraviado['id_cat_agrav']; ?>"><?php echo ucwords($agraviado['nombre'] . " " . $agraviado['paterno'] . " " . $agraviado['materno']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -215,8 +220,8 @@ include_once('layouts/header.php'); ?>
                             <label for="id_user_asignado">Se asigna a</label>
                             <select class="form-control" name="id_user_asignado">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($asigna_a as $asigna): ?>
-                                    <option value="<?php echo $asigna['id_det_usuario']; ?>"><?php echo ucwords($asigna['nombre']." ".$asigna['apellidos']); ?></option>
+                                <?php foreach ($asigna_a as $asigna) : ?>
+                                    <option value="<?php echo $asigna['id_det_usuario']; ?>"><?php echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -226,9 +231,9 @@ include_once('layouts/header.php'); ?>
                             <label for="id_area_asignada">Área a la que se asigna</label>
                             <select class="form-control" name="id_area_asignada">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($area as $a): ?>
+                                <?php foreach ($area as $a) : ?>
                                     <option value="<?php echo $a['id_area']; ?>"><?php echo ucwords($a['nombre_area']); ?></option>
-                                <?php endforeach; ?>                                
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -237,15 +242,15 @@ include_once('layouts/header.php'); ?>
                             <label for="id_estatus_queja">Estatus de Queja</label>
                             <select class="form-control" name="id_estatus_queja">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_estatus_queja as $estatus): ?>
+                                <?php foreach ($cat_estatus_queja as $estatus) : ?>
                                     <option value="<?php echo $estatus['id_cat_est_queja']; ?>"><?php echo ucwords($estatus['descripcion']); ?></option>
-                                <?php endforeach; ?>                                
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                 </div>
-                <div class="row">                    
-                    <div class="col-md-3">
+                <div class="row">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="dom_calle">Calle</label>
                             <input type="text" class="form-control" name="dom_calle" placeholder="Calle" required>
@@ -254,13 +259,22 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="dom_numero">Núm. ext/int</label>
-                            <input type="text" class="form-control" name="dom_numero"  required>
+                            <input type="text" class="form-control" name="dom_numero" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="dom_colonia">Colonia</label>
+                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" required>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="dom_colonia">Colonia</label>
-                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" required>
+                            <label for="ent_fed">Entidad Federativa</label>
+                            <select class="form-control" name="ent_fed" required>
+                                <option value="">Escoge una opción</option>
+                                <option value="Michoacán">Michoacán</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -268,19 +282,26 @@ include_once('layouts/header.php'); ?>
                             <label for="id_cat_mun">Municipio</label>
                             <select class="form-control" name="id_cat_mun">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_municipios as $id_cat_municipio): ?>
+                                <?php foreach ($cat_municipios as $id_cat_municipio) : ?>
                                     <option value="<?php echo $id_cat_municipio['id_cat_mun']; ?>"><?php echo ucwords($id_cat_municipio['descripcion']); ?></option>
-                                <?php endforeach; ?>                                
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="localidad">Localidad</label>
+                            <input type="text" class="form-control" name="localidad" placeholder="Localidad" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="adjunto"
-                                id="adjunto">
+                            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
                         </div>
-                    </div>                   
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -300,8 +321,7 @@ include_once('layouts/header.php'); ?>
                     <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
                     </a>
-                    <button style="background: #300285; border-color:#300285;" type="submit" name="add_queja" class="btn btn-primary"
-                        onclick="return confirm('La queja será guardada. Verifica el folio generado por el sistema para que lo asignes de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
+                    <button style="background: #300285; border-color:#300285;" type="submit" name="add_queja" class="btn btn-primary" onclick="return confirm('La queja será guardada. Verifica el folio generado por el sistema para que lo asignes de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
                 </div>
             </form>
         </div>

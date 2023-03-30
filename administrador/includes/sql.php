@@ -961,6 +961,13 @@ function last_id_queja()
   $result = find_by_sql($sql);
   return $result;
 }
+function last_id_quejaR()
+{
+  global $db;
+  $sql = "SELECT * FROM quejas_dates_public ORDER BY id_queja_date_p DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
 
 /*------------------------------------------------------------------*/
 /* Funcion para encontrar el ultimo id de orientaciones y canalizaciones
