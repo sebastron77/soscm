@@ -19,32 +19,38 @@ function find_all_order($table, $order)
     return find_by_sql("SELECT * FROM " . $db->escape($table) . " ORDER BY " . $db->escape($order));
   }
 }
-function find_all_medio_pres(){
+function find_all_medio_pres()
+{
   $sql = "SELECT * FROM cat_medio_pres ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_aut_res(){
+function find_all_aut_res()
+{
   $sql = "SELECT * FROM cat_autoridades ORDER BY nombre_autoridad ASC";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_estatus_queja(){
+function find_all_estatus_queja()
+{
   $sql = "SELECT * FROM cat_estatus_queja ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_cat_localidades(){
+function find_all_cat_localidades()
+{
   $sql = "SELECT * FROM cat_localidades ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_cat_municipios(){
+function find_all_cat_municipios()
+{
   $sql = "SELECT * FROM cat_municipios ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_quejas(){
+function find_all_quejas()
+{
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, q.incompetencia, q.causa_incomp, 
           q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.observaciones, cq.nombre as nombre_quejoso, 
           cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
@@ -62,7 +68,25 @@ function find_all_quejas(){
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_quejosos(){
+function find_all_quejasR()
+{
+  $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
+          co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.colonia,
+          q.codigo_postal, q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
+          FROM quejas_dates_public q 
+          -- LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
+          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
+          INNER JOIN cat_genero cg ON cg.id_cat_gen = q.genero
+          INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.cat_nacionalidad
+          INNER JOIN cat_municipios cm ON cm.id_cat_mun = q.municipio
+          INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.cat_escolaridad
+          INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.cat_ocupacion
+          INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_all_quejosos()
+{
   $sql = "SELECT q.id_cat_quejoso,q.nombre,q.paterno,q.materno,cg.descripcion as genero,q.edad,cn.descripcion as nacionalidad,cm.descripcion as municipio,
   ce.descripcion as escolaridad,co.descripcion as ocupacion,q.leer_escribir,cgv.descripcion as grupo_vuln,cd.descripcion as discapacidad,cc.descripcion as comunidad,q.telefono,q.email
   FROM cat_quejosos q 
@@ -77,7 +101,8 @@ function find_all_quejosos(){
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_agraviados(){
+function find_all_agraviados()
+{
   $sql = "SELECT q.id_cat_agrav,q.nombre,q.paterno,q.materno,cg.descripcion as genero,q.edad,cn.descripcion as nacionalidad,cm.descripcion as municipio,
   ce.descripcion as escolaridad,co.descripcion as ocupacion,q.leer_escribir,cgv.descripcion as grupo_vuln,cd.descripcion as discapacidad,cc.descripcion as comunidad,q.telefono,q.email,q.ppl
   FROM cat_agraviados q 
@@ -206,7 +231,7 @@ function inactivate_by_id($table, $id, $campo_estatus, $nombre_id)
   if (tableExists($table)) {
     $sql = "UPDATE " . $db->escape($table) . " SET ";
     $sql .= $db->escape($campo_estatus) . "=0";
-    $sql .= " WHERE ".$db->escape($nombre_id)."=" . $db->escape($id);
+    $sql .= " WHERE " . $db->escape($nombre_id) . "=" . $db->escape($id);
     $db->query($sql);
     return ($db->affected_rows() === 1) ? true : false;
   }
@@ -276,7 +301,7 @@ function activate_by_id($table, $id, $campo_estatus, $nombre_id)
   if (tableExists($table)) {
     $sql = "UPDATE " . $db->escape($table) . " SET ";
     $sql .= $campo_estatus . "=1";
-    $sql .= " WHERE ".$db->escape($nombre_id)."=" . $db->escape($id);
+    $sql .= " WHERE " . $db->escape($nombre_id) . "=" . $db->escape($id);
     $db->query($sql);
     return ($db->affected_rows() === 1) ? true : false;
   }
@@ -375,11 +400,11 @@ function correspondencia_pdf($id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de algun campo para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id($table,$nombre_id)
+function count_by_id($table, $nombre_id)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(".$db->escape($nombre_id).") AS total FROM " . $db->escape($table);
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table);
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -387,11 +412,11 @@ function count_by_id($table,$nombre_id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de orientacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_orientacion($table,$nombre_id)
+function count_by_id_orientacion($table, $nombre_id)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(".$db->escape($nombre_id).") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 1";
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 1";
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -400,11 +425,11 @@ function count_by_id_orientacion($table,$nombre_id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de canalizacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_canalizacion($table,$nombre_id)
+function count_by_id_canalizacion($table, $nombre_id)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(".$db->escape($nombre_id).") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 2";
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 2";
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -828,6 +853,28 @@ function find_by_id_queja($id)
                       LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
                       LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
                       WHERE id_queja_date='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+function find_by_id_quejaR($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
+                      co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.colonia,
+                      q.codigo_postal, q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
+                      FROM quejas_dates_public q 
+                      LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
+                      INNER JOIN cat_genero cg ON cg.id_cat_gen = q.genero
+                      INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.cat_nacionalidad
+                      INNER JOIN cat_municipios cm ON cm.id_cat_mun = q.municipio
+                      INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.cat_escolaridad
+                      INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.cat_ocupacion
+                      INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable
+                      WHERE id_queja_date_p='{$db->escape($id)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else
