@@ -47,7 +47,6 @@ if ($nivel == 7) {
                     <span>Información de Queja</span>
                 </strong>
             </div>
-
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
@@ -112,7 +111,6 @@ if ($nivel == 7) {
                             <th style="width: 15%;" class="text-center">Colonia</th>
                             <th style="width: 3%;" class="text-center">Código Postal</th>
                             <th style="width: 30%;" class="text-center">Descripción de los hechos</th>
-
                         </tr>
                     </thead>
                     <tbody>
@@ -124,7 +122,7 @@ if ($nivel == 7) {
                                 <?php echo remove_junk(ucwords($e_detalle['telefono'])) ?>
                             </td>
                             <td class="text-center">
-                                <?php echo remove_junk(ucwords($e_detalle['calle'])) ?>
+                                <?php echo remove_junk(ucwords($e_detalle['calle'] . " #" . $e_detalle['numero'])) ?>
                             </td>
                             <td class="text-center">
                                 <?php echo remove_junk(ucwords($e_detalle['colonia'])) ?>
@@ -135,8 +133,6 @@ if ($nivel == 7) {
                             <td class="text-center">
                                 <?php echo remove_junk(ucwords($e_detalle['descripcion_hechos'])) ?>
                             </td>
-
-                            
                         </tr>
                     </tbody>
                 </table>
@@ -149,7 +145,6 @@ if ($nivel == 7) {
                             <th style="width: 7%;" class="text-center">Autoridad Responsable</th>
                             <th style="width: 7%;" class="text-center">Archivo</th>
                         </tr>
-
                     </thead>
                     <tbody>
                         <tr>

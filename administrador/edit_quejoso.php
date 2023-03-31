@@ -2,6 +2,9 @@
 $page_title = 'Editar Datos de Quejoso';
 require_once('includes/load.php');
 
+$user = current_user();
+$nivel_user = $user['user_level'];
+
 if ($nivel_user <= 2) {
     page_require_level(2);
 }
@@ -83,11 +86,15 @@ if (isset($_POST['update'])) {
         $id_cat_comun = $_POST['id_cat_comun'];
         $telefono = $_POST['telefono'];
         $email = $_POST['email'];
+        $calleQ = remove_junk($db->escape($_POST['calleQ']));
+        $numeroQ = remove_junk($db->escape($_POST['numeroQ']));
+        $coloniaQ = remove_junk($db->escape($_POST['coloniaQ']));
 
-        $sql = "UPDATE cat_quejosos SET nombre='{$nombre}', paterno='{$paterno}', materno='{$materno}', id_cat_gen='{$id_cat_gen}', edad='{$edad}', 
-                        id_cat_nacionalidad='{$id_cat_nacionalidad}', id_cat_mun='{$id_cat_mun}', id_cat_escolaridad='{$id_cat_escolaridad}', 
-                        id_cat_ocup='{$id_cat_ocup}', leer_escribir='{$leer_escribir}', id_cat_grupo_vuln='{$id_cat_grupo_vuln}', id_cat_disc='{$id_cat_disc}', 
-                        id_cat_comun='{$id_cat_comun}', telefono='{$telefono}', email='{$email}' WHERE id_cat_quejoso='{$db->escape($id)}'";
+        $sql = "UPDATE cat_quejosos SET nombre='{$nombre}', paterno='{$paterno}', materno='{$materno}', id_cat_gen='{$id_cat_gen}', edad='{$edad}',
+                        id_cat_nacionalidad='{$id_cat_nacionalidad}', id_cat_mun='{$id_cat_mun}', id_cat_escolaridad='{$id_cat_escolaridad}',
+                        id_cat_ocup='{$id_cat_ocup}', leer_escribir='{$leer_escribir}', id_cat_grupo_vuln='{$id_cat_grupo_vuln}', id_cat_disc='{$id_cat_disc}',
+                        id_cat_comun='{$id_cat_comun}', telefono='{$telefono}', email='{$email}', calle_quejoso='{$calleQ}', numero_quejoso='{$numeroQ}',
+                        colonia_quejoso='{$coloniaQ}' WHERE id_cat_quejoso='{$db->escape($id)}'";
         $result = $db->query($sql);
 
         if ($result && $db->affected_rows() === 1) {
@@ -281,6 +288,27 @@ if (isset($_POST['update'])) {
                                             <?php echo ucwords($comunidad['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="calleQ">Calle</label>
+                                <input type="text" class="form-control" name="calleQ"
+                                    value="<?php echo $e_detalle['calle_quejoso'] ?>">
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-group">
+                                <label for="numeroQ">Num.</label>
+                                <input type="text" class="form-control" name="numeroQ"
+                                    value="<?php echo $e_detalle['numero_quejoso'] ?>">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="coloniaQ">Colonia</label>
+                                <input type="text" class="form-control" name="coloniaQ"
+                                    value="<?php echo $e_detalle['colonia_quejoso'] ?>">
                             </div>
                         </div>
                     </div>

@@ -38,6 +38,7 @@ if (isset($_POST['add_queja_publica'])) {
         $correo = remove_junk($db->escape($_POST['correo']));
         $telefono = remove_junk($db->escape($_POST['telefono']));
         $calle = remove_junk($db->escape($_POST['calle']));
+        $numero = remove_junk($db->escape($_POST['numero']));
         $colonia = remove_junk($db->escape($_POST['colonia']));
         $codigo_postal = remove_junk($db->escape($_POST['codigo_postal']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
@@ -69,9 +70,9 @@ if (isset($_POST['add_queja_publica'])) {
         }
 
         $year = date("Y");
-        $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-QR';
+        $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-Q';
 
-        $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-QR';
+        $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-Q';
         $carpeta = 'uploads/quejas_publicas/' . $folio_carpeta;
 
         if (!is_dir($carpeta)) {
@@ -85,10 +86,10 @@ if (isset($_POST['add_queja_publica'])) {
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
 
-        $query = "INSERT INTO quejas_dates_public (folio_queja_p,fecha_creacion,nombre,paterno,materno,genero,edad,cat_escolaridad,cat_ocupacion,grupo_vulnerable,cat_nacionalidad,
-                                correo,telefono, calle, colonia, codigo_postal,descripcion_hechos,entidad,municipio,localidad,autoridad_responsable,archivo) 
+        $query = "INSERT INTO quejas_dates_public (folio_queja_p, fecha_creacion, nombre, paterno, materno, genero,edad, cat_escolaridad, cat_ocupacion, grupo_vulnerable, cat_nacionalidad,
+                                correo, telefono, calle, numero, colonia, codigo_postal, descripcion_hechos, entidad, municipio, localidad, autoridad_responsable, archivo) 
                     VALUES ('$folio','{$fecha_creacion}','{$nombre}','{$paterno}','{$materno}','{$genero}','{$edad}','{$cat_escolaridad}','{$cat_ocupacion}','{$grupo_vulnerable}',
-                            '{$cat_nacionalidad}','{$correo}','{$telefono}','$calle','$colonia','$codigo_postal','{$descripcion_hechos}','{$entidad}','{$municipio}',
+                            '{$cat_nacionalidad}','{$correo}','{$telefono}','$calle','{$numero}','$colonia','$codigo_postal','{$descripcion_hechos}','{$entidad}','{$municipio}',
                             '{$localidad}','{$autoridad_responsable}','{$name}')";
 
         $query3 = "INSERT INTO folios (";
@@ -100,7 +101,7 @@ if (isset($_POST['add_queja_publica'])) {
         if ($db->query($query) && $db->query($query3)) {
             //sucess
             $session->msg('s', " Su queja ha sido agregada con éxito.");
-            redirect('quejas_publicas.php', false);
+            redirect('add_queja_publica.php', false);
         } else {
             //failed
             $session->msg('d', ' No se pudo agregar su queja. Vuelva a intentarlo.');
@@ -292,8 +293,14 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="calle"> Calle y núm.</label>
+                            <label for="calle"> Calle</label>
                             <input type="text" class="form-control" name="calle">
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="numero">Núm.</label>
+                            <input type="text" class="form-control" name="numero">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -313,7 +320,7 @@ include_once('layouts/header.php'); ?>
                     <a href="quejas_publicas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
                     </a>
-                    <button style="background: #300285; border-color:#300285;" type="submit" name="add_queja_publica" class="btn btn-primary" onclick="return confirm('La queja será guardada. Verifica el folio generado por el sistema para que lo asignes de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
+                    <button style="background: #300285; border-color:#300285;" type="submit" name="add_queja_publica" class="btn btn-primary">Guardar</button>
                 </div>
             </form>
         </div>

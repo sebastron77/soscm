@@ -56,16 +56,19 @@ if (isset($_POST['add_quejoso'])) {
         $id_cat_comunQ = remove_junk($db->escape($_POST['id_cat_comunQ']));
         $telefonoQ = remove_junk($db->escape($_POST['telefonoQ']));
         $emailQ = remove_junk($db->escape($_POST['emailQ']));
+        $calleQ = remove_junk($db->escape($_POST['calleQ']));
+        $numeroQ = remove_junk($db->escape($_POST['numeroQ']));
+        $coloniaQ = remove_junk($db->escape($_POST['coloniaQ']));
 
 
         if (!$pplTrue) {
             $query2 = "INSERT INTO cat_quejosos (";
-            $query2 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,
-                    id_cat_ocup,leer_escribir,id_cat_grupo_vuln,id_cat_disc,id_cat_comun,telefono,email";
+            $query2 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,id_cat_ocup,
+                        leer_escribir,id_cat_grupo_vuln,id_cat_disc,id_cat_comun,telefono,email,calle_quejoso,numero_quejoso,colonia_quejoso";
             $query2 .= ") VALUES (";
             $query2 .= " '{$nombreQ}','{$paternoQ}','{$maternoQ}','{$id_cat_genQ}','{$edadQ}','{$id_cat_nacionalidadQ}',
                     '{$id_cat_munQ}','{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}',
-                    '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}'";
+                    '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}','{$calleQ}','{$numeroQ}','{$coloniaQ}'";
             $query2 .= ")";
 
             $query = "INSERT INTO cat_agraviados (";
@@ -89,12 +92,12 @@ if (isset($_POST['add_quejoso'])) {
 
         } else {
             $query4 = "INSERT INTO cat_quejosos (";
-            $query4 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,
-                    id_cat_ocup,leer_escribir,id_cat_grupo_vuln,id_cat_disc,id_cat_comun,telefono,email";
+            $query4 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,id_cat_ocup,
+                        leer_escribir,id_cat_grupo_vuln,id_cat_disc,id_cat_comun,telefono,email,calle_quejoso,numero_quejoso,colonia_quejoso";
             $query4 .= ") VALUES (";
             $query4 .= " '{$nombreQ}','{$paternoQ}','{$maternoQ}','{$id_cat_genQ}','{$edadQ}','{$id_cat_nacionalidadQ}',
                     '{$id_cat_munQ}','{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}',
-                    '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}'";
+                    '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}','{$calleQ}','{$numeroQ}','{$coloniaQ}'";
             $query4 .= ")";
 
             $query3 = "INSERT INTO cat_agraviados (";
@@ -287,7 +290,24 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="calleQ"> Calle</label>
+                            <input type="text" class="form-control" name="calleQ" required>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="numeroQ">Núm.</label>
+                            <input type="text" class="form-control" name="numeroQ" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="coloniaQ">Colonia</label>
+                            <input type="text" class="form-control" name="coloniaQ" required>
+                        </div>
+                    </div>
                 </div>
 
                 <p class="text-left" style="font-weight: bold; font-size: 17px; margin-top:40px;">¿Quien presenta la queja

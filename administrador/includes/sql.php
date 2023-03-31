@@ -864,7 +864,7 @@ function find_by_id_quejaR($id)
   global $db;
   $id = (int)$id;
   $sql = $db->query("SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
-                      co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.colonia,
+                      co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.numero, q.colonia,
                       q.codigo_postal, q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
                       FROM quejas_dates_public q 
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
@@ -948,7 +948,8 @@ function find_by_id_cat_quejoso($id)
   global $db;
   $id = (int)$id;
   $sql = $db->query("SELECT q.id_cat_quejoso,q.nombre,q.paterno,q.materno,cg.descripcion as genero,q.edad,cn.descripcion as nacionalidad,cm.descripcion as municipio,
-  ce.descripcion as escolaridad,co.descripcion as ocupacion,q.leer_escribir,cgv.descripcion as grupo_vuln,cd.descripcion as discapacidad,cc.descripcion as comunidad,q.telefono,q.email
+  ce.descripcion as escolaridad,co.descripcion as ocupacion,q.leer_escribir,cgv.descripcion as grupo_vuln,cd.descripcion as discapacidad,cc.descripcion as comunidad,
+  q.telefono,q.email,q.calle_quejoso,q.numero_quejoso,q.colonia_quejoso
   FROM cat_quejosos q 
   INNER JOIN cat_genero cg ON cg.id_cat_gen = q.id_cat_gen
   INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.id_cat_nacionalidad

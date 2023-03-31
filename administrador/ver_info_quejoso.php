@@ -87,6 +87,9 @@ $nivel = $user['user_level'];
                             <th class="text-center" style="width: 15%;">Grupo Vulnerable</th>
                             <th class="text-center" style="width: 8%;">¿Tiene alguna discapacidad?</th>
                             <th class="text-center" style="width: 8%;">Comunidad a la que pertenece</th>
+                            <th class="text-center" style="width: 8%;">Calle</th>
+                            <th class="text-center" style="width: 8%;">Número</th>
+                            <th class="text-center" style="width: 8%;">Colonia</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -108,6 +111,15 @@ $nivel = $user['user_level'];
                             </td>
                             <td class="text-center">
                                 <?php echo remove_junk($e_detalle['comunidad']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['calle_quejoso']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['numero_quejoso']) ?>
+                            </td>
+                            <td class="text-center">
+                                <?php echo remove_junk($e_detalle['colonia_quejoso']) ?>
                             </td>
                         </tr>
                     </tbody>
