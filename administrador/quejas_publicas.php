@@ -44,16 +44,17 @@ $conexion = mysqli_connect("localhost", "root", "");
 mysqli_set_charset($conexion, "utf8");
 mysqli_select_db($conexion, "libroquejas2");
 $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
-co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.colonia,
-q.codigo_postal, q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
+co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle_queja, q.numero_queja, q.colonia_queja,
+q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
 FROM quejas_dates_public q 
+-- LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
 LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
 INNER JOIN cat_genero cg ON cg.id_cat_gen = q.genero
 INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.cat_nacionalidad
 INNER JOIN cat_municipios cm ON cm.id_cat_mun = q.municipio
 INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.cat_escolaridad
 INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.cat_ocupacion
-INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable;";
+INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable";
 $resultado = mysqli_query($conexion, $sql) or die;
 $quejas = array();
 while ($rows = mysqli_fetch_assoc($resultado)) {

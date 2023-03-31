@@ -71,8 +71,8 @@ function find_all_quejas()
 function find_all_quejasR()
 {
   $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
-          co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle, q.colonia,
-          q.codigo_postal, q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
+          co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle_queja, q.numero_queja, q.colonia_queja,
+          q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
           FROM quejas_dates_public q 
           -- LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
           LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
