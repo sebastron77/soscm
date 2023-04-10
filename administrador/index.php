@@ -5,13 +5,17 @@
 ?>
 <div class="body2">
 <div class="login-page">
+<div style="height:50px; width:300px; margin:0px auto; ">
+                            <br/>
+                            <img border="0" src="medios/LOGO-CEDH-H.png" width="150px" title="Agregar Área"  alt="" style="margin:auto;display:block;"/>
+                        </div>
   <div class="text-center">
-    <h1 style="margin-top:25px; font-weight: bold; color:#3A3D56;">Bienvenido</h1>
-    <!-- <i class="large material-icons">account_circle</i> -->
+    <h1 style="margin-top:25px; font-weight: bold; color:#3A3D56;padding-top: 20px;">Bienvenido</h1>    
     <p style="font-size:16px; color:#3A3D56;">Iniciar sesión </p>
   </div>
   <?php echo display_msg($msg); ?>
   <form method="post" action="auth.php" class="clearfix">
+  
     <div class="form-group">
       <label for="username" class="control-label">Usuario</label>
       <input type="name" style="background:#E3E3E3; color:#E3E3E3;" class="form-control" name="username" placeholder="Usuario">

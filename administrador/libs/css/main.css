@@ -1,7 +1,7 @@
 .body2 {
   overflow-x: hidden;
   overflow-y: auto;
-  background-image: url("../../fondo_login.jpeg");
+  background-image: url("../../medios/fondo-onda_banner_500223-116.avif");
   height: 100%;
   width: 100%;
   background-size: cover;
@@ -34,8 +34,8 @@ a {
 }
 
 .login-page {
-  width: 350px;
-  height: 300px;
+  width: 450px;
+  height: 380px;
   margin: 7% auto;
   padding: 0 20px;
   background-color: #ffffff;
@@ -898,3 +898,4 @@ input:checked + .slider:before {
   background-color: #7263f0;
   color: white;
 }
+

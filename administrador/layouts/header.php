@@ -148,10 +148,10 @@
 <body style="background-color: #E3E3E3; color: white;">
   <?php if ($session->isUserLoggedIn(true)) : ?>
     <header id="header">
-      <div class="logo pull-left">Sistema General de Quejas</div>
+      <div class="logo pull-left">Sistema Gestor de Quejas</div>
       <div class="header-content">
         <div class="header-date pull-left">
-          <strong><?php echo make_date_no_seg(); ?></strong>
+          <strong><?php //echo make_date_no_seg(); ?></strong>
         </div>
         <div class="pull-right clearfix">
           <ul class="info-menu list-inline list-unstyled">

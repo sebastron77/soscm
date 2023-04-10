@@ -1,3 +1,5 @@
+<script type="text/javascript" src="libs/js/quejoso.js"></script>
+<script type="text/javascript" src="libs/js/agraviado.js"></script>
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Agregar Queja';
@@ -49,7 +51,7 @@ endif;
 if (isset($_POST['add_queja'])) {
 
     $req_fields = array(
-        'fecha_presentacion', 'id_cat_med_pres', 'id_cat_aut', 'id_cat_quejoso', 'id_cat_agrav', 'id_user_asignado', 'id_area_asignada', 'id_estatus_queja', 'dom_calle',
+        'fecha_presentacion', 'id_cat_med_pres', 'id_cat_aut', 'id_user_asignado', 'id_area_asignada', 'id_estatus_queja', 'dom_calle',
         'dom_numero', 'dom_colonia', 'descripcion_hechos'
     );
     validate_fields($req_fields);
@@ -58,8 +60,8 @@ if (isset($_POST['add_queja'])) {
         $fecha_presentacion = remove_junk($db->escape($_POST['fecha_presentacion']));
         $id_cat_med_pres = remove_junk($db->escape($_POST['id_cat_med_pres']));
         $id_cat_aut = remove_junk($db->escape($_POST['id_cat_aut']));
-        $id_cat_quejoso = remove_junk($db->escape($_POST['id_cat_quejoso']));
-        $id_cat_agraviado = remove_junk($db->escape($_POST['id_cat_agrav']));
+        $id_cat_quejoso = remove_junk($db->escape($_POST['quejoso']));
+        $id_cat_agraviado = remove_junk($db->escape($_POST['agraviado']));
         $id_user_asignado = remove_junk($db->escape($_POST['id_user_asignado']));
         $id_area_asignada = remove_junk($db->escape($_POST['id_area_asignada']));
         $id_estatus_quja = remove_junk($db->escape($_POST['id_estatus_quja']));
@@ -194,12 +196,17 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_cat_quejoso">Quejoso</label>
-                            <select class="form-control" name="id_cat_quejoso">
+                            <div class="input_container">
+                                <input class="form-control" autocomplete="off" type="text" id="id_cat_quejoso" onkeyup="autocompletar()">
+                                <input type="hidden" id="quejoso" name="quejoso">
+                                <ul id="lista_id"></ul>
+                            </div>
+                            <!-- <select class="form-control" name="id_cat_quejoso">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($cat_quejosos as $quejoso) : ?>
                                     <option value="<?php echo $quejoso['id_cat_quejoso']; ?>"><?php echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?></option>
                                 <?php endforeach; ?>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                 </div>
@@ -207,12 +214,17 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_cat_agrav">Agraviado</label>
-                            <select class="form-control" name="id_cat_agrav">
+                            <div class="input_container2">
+                                <input class="form-control" autocomplete="off" type="text" id="id_cat_agrav" onkeyup="autocompletar2()">
+                                <input type="hidden" id="agraviado" name="agraviado">
+                                <ul id="lista_id2"></ul>
+                            </div>
+                            <!-- <select class="form-control" name="id_cat_agrav">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($cat_agraviados as $agraviado) : ?>
                                     <option value="<?php echo $agraviado['id_cat_agrav']; ?>"><?php echo ucwords($agraviado['nombre'] . " " . $agraviado['paterno'] . " " . $agraviado['materno']); ?></option>
                                 <?php endforeach; ?>
-                            </select>
+                            </select> -->
                         </div>
                     </div>
                     <div class="col-md-3">

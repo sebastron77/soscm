@@ -9,7 +9,7 @@ $quejas_libro = find_all_quejas();
 
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
+// $id_user = $user['id'];
 $nivel_user = $user['user_level'];
 
 if ($nivel_user <= 2) {

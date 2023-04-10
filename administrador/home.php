@@ -15,7 +15,7 @@ if (!$session->isUserLoggedIn(true)) {
       <div class="jumbotron text-center"
         style="background: #7263F0; border-radius: 15px; border: 1px solid rgb(114, 99, 240);">
         <h1 style="color: white;">Página principal</h1>
-        <h4 style="color: white">Libro Electrónico de la Comisión Estatal de los Derechos Humanos</h4>
+        <h4 style="color: white">Sistema Gestor de Quejas de la Comisión Estatal de los Derechos Humanos Michoacáns</h4>
       </div>
     </div>
   </div>
