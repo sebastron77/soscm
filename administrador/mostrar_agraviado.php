@@ -19,5 +19,5 @@ foreach ($lista as $milista) {
 	$id = $milista['id_cat_agrav'];
 	//str_replace coloca en el input el valor elegido
 	//nombre2 muestra los valores de la lista
-    echo '<li class="form-control"  style="list-style: none" value="'.$id.'" onclick="set_item2('.$id.',\''.str_replace("'", "\'", $milista['nombre'])." ".$milista['paterno']." ".$milista['materno'].'\')">'.$nombre2.'</li>';
+    echo '<li style="list-style: none" value="'.$id.'" onclick="set_item2('.$id.',\''.str_replace("'", "\'", $milista['nombre'])." ".$milista['paterno']." ".$milista['materno'].'\')">'.$nombre2.'</li>';
 }
