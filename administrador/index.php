@@ -22,7 +22,7 @@
     </div>
     <div class="form-group">
       <label for="Password" class="control-label">Contraseña</label>
-      <input type="password" style="background:#E3E3E3; color:#E3E3E3;" name= "password" class="form-control" placeholder="Contraseña">
+      <input type="password" style="background:#E3E3E3; " name= "password" class="form-control" placeholder="Contraseña">
     </div>
     <div class="form-group">
       <button type="submit" class="btn btn-info  pull-right" style="background: #370494; border-color: #370494;">Entrar</button>
