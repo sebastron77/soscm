@@ -3,33 +3,35 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Solicitudes - Quejas';
 require_once('includes/load.php');
 $user = current_user();
-$id_usuario = $user['id'];
+//$id_usuario = $user['id'];
 
 $user = current_user();
+$id_user = $user['id_user'];
+$busca_area = area_usuario($id_user);
+$otro = $busca_area['nivel_grupo'];
 $nivel = $user['user_level'];
-$id_user = $user['id'];
-$nivel_user = $user['user_level'];
 
-if ($nivel_user <= 2) {
+
+if ($nivel <= 2) {
     page_require_level(2);
 }
-if ($nivel_user == 5) {
+if ($nivel == 5) {
     page_require_level_exacto(5);
 }
-if ($nivel_user == 7) {
+if ($nivel == 7) {
     page_require_level_exacto(7);
 }
-if ($nivel_user == 19) {
+if ($nivel == 19) {
     page_require_level_exacto(19);
 }
 
-if ($nivel_user > 2 && $nivel_user < 5):
+if ($nivel > 2 && $nivel < 5):
     redirect('home.php');
 endif;
-if ($nivel_user > 5 && $nivel_user < 7):
+if ($nivel > 5 && $nivel < 7):
     redirect('home.php');
 endif;
-if ($nivel_user > 7 && $nivel_user < 19):
+if ($nivel > 7 && $nivel < 19):
     redirect('home.php');
 endif;
 ?>
@@ -45,7 +47,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 <?php include_once('layouts/header.php'); ?>
 
 <a href="solicitudes.php" class="btn btn-info">Regresar a Áreas</a><br><br>
-<h1 style="color:#3A3D44">Solicitudes de Orientación Legal, Quejas y Seguimiento</h1>
+<h1 style="color:#3A3D44">Procesos de Orientación Legal, Quejas y Seguimiento</h1>
 
 
 <div class="row">
@@ -53,7 +55,14 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
         <?php echo display_msg($msg); ?>
     </div>
 </div>
-
+<a href="quejas.php" class="tile">
+				<div class="tile-tittle">Quejas</div>
+				<div class="tile-icon">
+				<svg style="width:100px;height:100px" fill="#455a64"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>account-child</title><path d="M12,2A3,3 0 0,1 15,5A3,3 0 0,1 12,8A3,3 0 0,1 9,5A3,3 0 0,1 12,2M12,9C13.63,9 15.12,9.35 16.5,10.05C17.84,10.76 18.5,11.61 18.5,12.61V18.38C18.5,19.5 17.64,20.44 15.89,21.19V19C15.89,18.05 15.03,17.38 13.31,16.97C12.75,16.84 12.31,16.78 12,16.78C11.13,16.78 10.3,16.95 9.54,17.3C8.77,17.64 8.31,18.08 8.16,18.61C9.5,19.14 10.78,19.41 12,19.41L13,19.31V21.94L12,22C10.63,22 9.33,21.72 8.11,21.19C6.36,20.44 5.5,19.5 5.5,18.38V12.61C5.5,11.61 6.16,10.76 7.5,10.05C8.88,9.35 10.38,9 12,9M12,11A2,2 0 0,0 10,13A2,2 0 0,0 12,15A2,2 0 0,0 14,13A2,2 0 0,0 12,11Z" /></svg>
+					<i class="fas fa-user-tie"></i>
+				</div>
+				
+		</a>
 
 <!-- <div class="row" style="margin-top: 10px;"> -->
 <div class="row">

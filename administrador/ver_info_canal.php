@@ -108,6 +108,7 @@ if ($nivel == 7) {
                         <tr>
                             <th style="width: 5%;" class="text-center">Institución que se canaliza</th>
                             <th style="width: 2%;" class="text-center">Municipio</th>
+                            <th style="width: 2%;" class="text-center">Localidad</th>
                             <th style="width: 2%;" class="text-center">Entidad</th>
                             <th style="width: 1%;" class="text-center">Nacionalidad</th>
                             <th style="width: 5%;" class="text-center">Observaciones</th>
@@ -116,8 +117,9 @@ if ($nivel == 7) {
                     </thead>
                     <tbody>
                         <tr>
-                            <td class="text-center"><?php echo remove_junk(ucwords($e_detalle['aut'])) ?></td>
-                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['municipio_localidad']))) ?></td>
+                            <td class="text-center"><?php echo remove_junk(ucwords($e_detalle['aut'])) ?></td>                            
+                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['municipio']))) ?></td>
+                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['localidad']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['ent']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords($e_detalle['nac'])) ?></td>
                             <td><?php echo remove_junk(ucwords($e_detalle['observaciones'])) ?></td>

@@ -20,6 +20,9 @@ $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
 $cat_estatus_queja = find_all_estatus_queja();
 $cat_municipios = find_all_cat_municipios();
+$cat_est_procesal = find_all('cat_est_procesal');
+$cat_tipo_resolucion = find_all('cat_tipo_res');
+$cat_tipo_ambito = find_all('cat_tipo_ambito');
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -64,17 +67,17 @@ if (isset($_POST['add_queja'])) {
         $id_cat_agraviado = remove_junk($db->escape($_POST['agraviado']));
         $id_user_asignado = remove_junk($db->escape($_POST['id_user_asignado']));
         $id_area_asignada = remove_junk($db->escape($_POST['id_area_asignada']));
-        $id_estatus_quja = remove_junk($db->escape($_POST['id_estatus_quja']));
         $dom_calle = remove_junk($db->escape($_POST['dom_calle']));
         $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
-        $fecha_vencimiento = remove_junk($db->escape($_POST['fecha_vencimiento']));
         $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
         $ent_fed = remove_junk($db->escape($_POST['ent_fed']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $localidad = remove_junk($db->escape($_POST['localidad']));
+        $estado_procesal = remove_junk($db->escape($_POST['estado_procesal']));
+        $id_tipo_ambito = remove_junk($db->escape($_POST['id_tipo_ambito']));
         date_default_timezone_set('America/Mexico_City');
         $creacion = date('Y-m-d H:i:s');
 
@@ -112,16 +115,17 @@ if (isset($_POST['add_queja'])) {
         $size = $_FILES['adjunto']['size'];
         $type = $_FILES['adjunto']['type'];
         $temp = $_FILES['adjunto']['tmp_name'];
-
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
+
+        $dbh = new PDO('mysql:host=localhost; dbname=libroquejas2', 'root', '');
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $query = "INSERT INTO quejas_dates (folio_queja,fecha_presentacion,id_cat_med_pres,id_cat_aut,observaciones,id_cat_quejoso,id_cat_agraviado,id_user_creador,
                     fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,ent_fed,id_cat_mun,localidad,
-                    descripcion_hechos,estado_procesal) 
+                    descripcion_hechos,estado_procesal,id_tipo_ambito) 
                     VALUES ('{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}',
                     '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
-                    '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}',NULL)";
+                    '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}', $estado_procesal, $id_tipo_ambito)";
 
         $query3 = "INSERT INTO folios (";
         $query3 .= "folio, contador";
@@ -162,6 +166,19 @@ include_once('layouts/header.php'); ?>
                 <span>Agregar Queja</span>
             </strong>
         </div>
+
+
+        <div class="panel-heading" style="text-align: right;">
+            <button type="button" class="btn btn-success" onclick="javascript:window.open('./add_quejoso_On.php','popup','width=600,height=600');">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
+                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>
+                    <path d="M8.256 14a4.474 4.474 0 0 1-.229-1.004H3c.001-.246.154-.986.832-1.664C4.484 10.68 5.711 10 8 10c.26 0 .507.009.74.025.226-.341.496-.65.804-.918C9.077 9.038 8.564 9 8 9c-5 0-6 3-6 4s1 1 1 1h5.256Z"></path>
+                </svg>
+                Agregar Quejoso
+            </button>
+        </div>
+
+
         <div class="panel-body">
             <form method="post" action="add_queja.php" enctype="multipart/form-data">
                 <div class="row">
@@ -312,6 +329,33 @@ include_once('layouts/header.php'); ?>
                         <div class="form-group">
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
                             <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="estado_procesal">Estado Procesal</label>
+                            <select class="form-control" name="estado_procesal">
+                                <!-- <?php foreach ($cat_est_procesal as $est_pros): ?>
+                                    <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>"><?php echo ucwords($est_pros['descripcion']); ?></option>
+                                <?php endforeach; ?> -->
+                                <?php foreach ($cat_est_procesal as $est_pros): ?>
+                                    <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
+                                        echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
+                                        <?php echo ucwords($est_pros['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="id_tipo_ambito">Tipo Ámbito</label>
+                            <select class="form-control" name="id_tipo_ambito">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_tipo_ambito as $ambito): ?>
+                                    <option <?php if ($ambito['id_cat_tipo_ambito'] === $e_detalle['id_tipo_ambito'])
+                                        echo 'selected="selected"'; ?> value="<?php echo $ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($ambito['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                 </div>

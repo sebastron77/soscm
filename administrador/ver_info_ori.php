@@ -107,6 +107,7 @@ if ($nivel == 7) {
                             <th style="width: 5%;" class="text-center">Colonia</th>
                             <th style="width: 2%;" class="text-center">Código Postal</th>
                             <th style="width: 2%;" class="text-center">Municipio</th>
+                            <th style="width: 2%;" class="text-center">Localidad</th>
                             <th style="width: 2%;" class="text-center">Entidad</th>
                             <th style="width: 1%;" class="text-center">Nacionalidad</th>
                             <th style="width: 5%;" class="text-center">Observaciones</th>
@@ -117,7 +118,8 @@ if ($nivel == 7) {
                         <tr>
                             <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['colonia']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords($e_detalle['codigo_postal'])) ?></td>
-                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['municipio_localidad']))) ?></td>
+                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['municipio']))) ?></td>
+                            <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['localidad']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords(($e_detalle['ent']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords($e_detalle['nac'])) ?></td>
                             <td><?php echo remove_junk(ucwords($e_detalle['observaciones'])) ?></td>

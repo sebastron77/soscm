@@ -13,38 +13,50 @@ $escolaridades = find_all('cat_escolaridad');
 $ocupaciones = find_all('cat_ocupaciones');
 $grupos_vuln = find_all('cat_grupos_vuln');
 $nacionalidades = find_all('cat_nacionalidades');
+$municipios = find_all('cat_municipios');
+$discapacidades = find_all('cat_discapacidades');
+$comunidades = find_all('cat_comunidades');
 ?>
 
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_queja_publica'])) {
 
-    $req_fields = array(
-        'nombre', 'paterno', 'materno', 'genero', 'edad', 'cat_escolaridad', 'grupo_vulnerable', 'cat_nacionalidad',
-        'correo', 'telefono', 'calle', 'colonia', 'descripcion_hechos', 'entidad', 'municipio', 'localidad',
-        'autoridad_responsable'
-    );
-    validate_fields($req_fields);
+    // $req_fields = array(
+    // 'nombreQ', 'paternoQ', 'maternoQ', 'id_cat_genQ', 'edadQ', 'id_cat_escolaridadQ', 'id_cat_grupo_vulnQ', 'id_cat_nacionalidadQ',
+    // 'emailQ', 'telefonoQ', 'calleQ', 'coloniaQ', 'descripcion_hechos', 'ent_fed', 'id_cat_mun', 'localidad', 'autoridad_responsable'
+    // );
+    // validate_fields($req_fields);
 
     if (empty($errors)) {
-        $nombre = remove_junk($db->escape($_POST['nombre']));
-        $paterno = remove_junk($db->escape($_POST['paterno']));
-        $materno = remove_junk($db->escape($_POST['materno']));
-        $genero = remove_junk($db->escape($_POST['genero']));
-        $edad = remove_junk($db->escape($_POST['edad']));
-        $cat_escolaridad = remove_junk($db->escape($_POST['cat_escolaridad']));
-        $cat_ocupacion = remove_junk($db->escape($_POST['cat_ocupacion']));
-        $grupo_vulnerable = remove_junk($db->escape($_POST['grupo_vulnerable']));
-        $cat_nacionalidad = remove_junk($db->escape($_POST['cat_nacionalidad']));
-        $correo = remove_junk($db->escape($_POST['correo']));
-        $telefono = remove_junk($db->escape($_POST['telefono']));
-        $calle = remove_junk($db->escape($_POST['calle']));
-        $numero = remove_junk($db->escape($_POST['numero']));
-        $colonia = remove_junk($db->escape($_POST['colonia']));
-        $codigo_postal = remove_junk($db->escape($_POST['codigo_postal']));
+        //DATOS QUEJOSO Y AGRAVIADO
+        $nombreQ = remove_junk($db->escape($_POST['nombreQ']));
+        $paternoQ = remove_junk($db->escape($_POST['paternoQ']));
+        $maternoQ = remove_junk($db->escape($_POST['maternoQ']));
+        $id_cat_genQ = remove_junk($db->escape($_POST['id_cat_genQ']));
+        $edadQ = remove_junk($db->escape($_POST['edadQ']));
+        $id_cat_nacionalidadQ = remove_junk($db->escape($_POST['id_cat_nacionalidadQ']));
+        $id_cat_munQ = remove_junk($db->escape($_POST['id_cat_munQ']));
+        $id_cat_escolaridadQ = remove_junk($db->escape($_POST['id_cat_escolaridadQ']));
+        $id_cat_ocupQ = remove_junk($db->escape($_POST['id_cat_ocupQ']));
+        $id_cat_grupo_vulnQ = remove_junk($db->escape($_POST['id_cat_grupo_vulnQ']));
+        $telefonoQ = remove_junk($db->escape($_POST['telefonoQ']));
+        $emailQ = remove_junk($db->escape($_POST['emailQ']));
+        $calleQ = remove_junk($db->escape($_POST['calleQ']));
+        $numeroQ = remove_junk($db->escape($_POST['numeroQ']));
+        $coloniaQ = remove_junk($db->escape($_POST['coloniaQ']));
+        $codigo_postalQ = remove_junk($db->escape($_POST['codigo_postalQ']));
+        $leer_escribirQ = remove_junk($db->escape($_POST['leer_escribirQ']));
+        $id_cat_discQ = remove_junk($db->escape($_POST['id_cat_discQ']));
+        $id_cat_comunQ = remove_junk($db->escape($_POST['id_cat_comunQ']));
+
+        //DATOS QUEJA
+        $dom_calle = remove_junk($db->escape($_POST['dom_calle']));
+        $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
+        $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
-        $entidad = remove_junk($db->escape($_POST['entidad']));
-        $municipio = remove_junk($db->escape($_POST['municipio']));
+        $ent_fed = remove_junk($db->escape($_POST['ent_fed']));
         $localidad = remove_junk($db->escape($_POST['localidad']));
+        $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $autoridad_responsable = remove_junk($db->escape($_POST['autoridad_responsable']));
         date_default_timezone_set('America/Mexico_City');
         $fecha_creacion = date('Y-m-d H:i:s');
@@ -73,7 +85,7 @@ if (isset($_POST['add_queja_publica'])) {
         $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-Q';
 
         $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-Q';
-        $carpeta = 'uploads/quejas_publicas/' . $folio_carpeta;
+        $carpeta = 'uploads/quejas/' . $folio_carpeta;
 
         if (!is_dir($carpeta)) {
             mkdir($carpeta, 0777, true);
@@ -86,19 +98,45 @@ if (isset($_POST['add_queja_publica'])) {
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
 
-        $query = "INSERT INTO quejas_dates_public (folio_queja_p, fecha_creacion, nombre, paterno, materno, genero,edad, cat_escolaridad, cat_ocupacion, grupo_vulnerable, cat_nacionalidad,
-                                correo, telefono, calle, numero, colonia, codigo_postal, descripcion_hechos, entidad, municipio, localidad, autoridad_responsable, archivo) 
-                    VALUES ('$folio','{$fecha_creacion}','{$nombre}','{$paterno}','{$materno}','{$genero}','{$edad}','{$cat_escolaridad}','{$cat_ocupacion}','{$grupo_vulnerable}',
-                            '{$cat_nacionalidad}','{$correo}','{$telefono}','$calle','{$numero}','$colonia','$codigo_postal','{$descripcion_hechos}','{$entidad}','{$municipio}',
-                            '{$localidad}','{$autoridad_responsable}','{$name}')";
 
-        $query3 = "INSERT INTO folios (";
-        $query3 .= "folio, contador";
-        $query3 .= ") VALUES (";
-        $query3 .= " '{$folio}','{$no_folio1}'";
-        $query3 .= ")";
+        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
+        // set the PDO error mode to exception
+        $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        if ($db->query($query) && $db->query($query3)) {
+        $query2 = "INSERT INTO cat_quejosos (nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,id_cat_ocup,
+                                leer_escribir,id_cat_grupo_vuln,id_cat_disc,id_cat_comun,telefono,email,calle_quejoso,numero_quejoso,colonia_quejoso) 
+                                VALUES ('{$nombreQ}','{$paternoQ}','{$maternoQ}','{$id_cat_genQ}','{$edadQ}','{$id_cat_nacionalidadQ}','{$id_cat_munQ}',
+                                        '{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}','{$id_cat_discQ}','{$id_cat_comunQ}',
+                                        '{$telefonoQ}','{$emailQ}','{$calleQ}','{$numeroQ}','{$coloniaQ}')";
+
+        $dbh->exec($query2);
+        $id_quejoso = $dbh->lastInsertId();
+
+
+
+        $dbh2 = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
+
+        $query3 = "INSERT INTO cat_agraviados (nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,id_cat_ocup,
+                                leer_escribir,id_cat_grupo_vuln,id_cat_disc,ppl,id_cat_ppl,id_cat_comun,telefono,email) 
+                                VALUES ('{$nombreQ}','{$paternoQ}','{$maternoQ}','{$id_cat_genQ}','{$edadQ}','{$id_cat_nacionalidadQ}','{$id_cat_munQ}',
+                                        '{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}','{$id_cat_discQ}',0,6,'{$id_cat_comunQ}',
+                                        '{$telefonoQ}','{$emailQ}')";
+
+        $dbh->exec($query3);
+        $id_agraviado = $dbh->lastInsertId();
+
+        $query = "INSERT INTO quejas_dates (folio_queja, fecha_presentacion, id_cat_med_pres, id_cat_aut, estado_procesal,id_cat_quejoso, id_cat_agraviado, fecha_creacion, 
+                                id_estatus_queja, archivo, dom_calle, dom_numero, dom_colonia, ent_fed, localidad, id_cat_mun, descripcion_hechos)
+                                VALUES ('{$folio}','{$fecha_creacion}',5,'{$autoridad_responsable}',1,{$id_quejoso},{$id_agraviado},'{$fecha_creacion}',9,'{$name}',
+                                        '{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}','{$localidad}', '{$id_cat_mun}', '{$descripcion_hechos}')";
+
+        $query4 = "INSERT INTO folios (";
+        $query4 .= "folio, contador";
+        $query4 .= ") VALUES (";
+        $query4 .= " '{$folio}','{$no_folio1}'";
+        $query4 .= ")";
+
+        if ($db->query($query) && $db->query($query4)) {
             //sucess
             $session->msg('s', " Su queja ha sido agregada con éxito.");
             redirect('add_queja_publica.php', false);
@@ -142,10 +180,28 @@ include_once('layouts/header.php'); ?>
                     </div>
                 </div>
                 <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dom_calle">Calle</label>
+                            <input type="text" class="form-control" name="dom_calle" placeholder="Calle" required>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="dom_numero">Núm.</label>
+                            <input type="text" class="form-control" name="dom_numero" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="dom_colonia">Colonia</label>
+                            <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" required>
+                        </div>
+                    </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="entidad">Entidad Federativa</label>
-                            <select class="form-control" name="entidad" required>
+                            <label for="ent_fed">Entidad Federativa</label>
+                            <select class="form-control" name="ent_fed" required>
                                 <option value="">Escoge una opción</option>
                                 <option value="Michoacán">Michoacán</option>
                             </select>
@@ -153,8 +209,8 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="municipio">Municipio</label>
-                            <select class="form-control" name="municipio">
+                            <label for="id_cat_mun">Municipio</label>
+                            <select class="form-control" name="id_cat_mun">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($cat_municipios as $id_cat_municipio) : ?>
                                     <option value="<?php echo $id_cat_municipio['id_cat_mun']; ?>"><?php echo ucwords($id_cat_municipio['descripcion']); ?></option>
@@ -162,6 +218,8 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="localidad">Localidad</label>
@@ -179,8 +237,6 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row" style="margin-bottom: 10px">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
@@ -198,26 +254,26 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" class="form-control" name="nombre" placeholder="Nombre(s)" required>
+                            <label for="nombreQ">Nombre</label>
+                            <input type="text" class="form-control" name="nombreQ" placeholder="Nombre(s)" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="paterno">Apellido Paterno</label>
-                            <input type="text" class="form-control" name="paterno" placeholder="Apellido Paterno" required>
+                            <label for="paternoQ">Apellido Paterno</label>
+                            <input type="text" class="form-control" name="paternoQ" placeholder="Apellido Paterno" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="materno">Apellido Materno</label>
-                            <input type="text" class="form-control" name="materno" placeholder="Apellido Materno" required>
+                            <label for="maternoQ">Apellido Materno</label>
+                            <input type="text" class="form-control" name="maternoQ" placeholder="Apellido Materno" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="genero">Género</label>
-                            <select class="form-control" name="genero">
+                            <label for="id_cat_genQ">Género</label>
+                            <select class="form-control" name="id_cat_genQ">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($generos as $genero) : ?>
                                     <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
@@ -227,14 +283,14 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
-                            <label for="edad">Edad</label>
-                            <input type="number" class="form-control" min="1" max="130" maxlength="4" name="edad" required>
+                            <label for="edadQ">Edad</label>
+                            <input type="number" class="form-control" min="1" max="130" maxlength="4" name="edadQ" required>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="cat_escolaridad">Escolaridad</label>
-                            <select class="form-control" name="cat_escolaridad">
+                            <label for="id_cat_escolaridadQ">Escolaridad</label>
+                            <select class="form-control" name="id_cat_escolaridadQ">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($escolaridades as $escolaridad) : ?>
                                     <option value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
@@ -246,8 +302,8 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="cat_ocupacion">Ocupación</label>
-                            <select class="form-control" name="cat_ocupacion">
+                            <label for="id_cat_ocupQ">Ocupación</label>
+                            <select class="form-control" name="id_cat_ocupQ">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($ocupaciones as $ocupacion) : ?>
                                     <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
@@ -257,8 +313,8 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="grupo_vulnerable">Grupo Vulnerable</label>
-                            <select class="form-control" name="grupo_vulnerable">
+                            <label for="id_cat_grupo_vulnQ">Grupo Vulnerable</label>
+                            <select class="form-control" name="id_cat_grupo_vulnQ">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                                     <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
@@ -268,8 +324,8 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="cat_nacionalidad">Nacionalidad</label>
-                            <select class="form-control" name="cat_nacionalidad">
+                            <label for="id_cat_nacionalidadQ">Nacionalidad</label>
+                            <select class="form-control" name="id_cat_nacionalidadQ">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($nacionalidades as $nacionalidad) : ?>
                                     <option value="<?php echo $nacionalidad['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacionalidad['descripcion']); ?></option>
@@ -279,40 +335,86 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="telefono">Teléfono</label>
-                            <input type="text" class="form-control" maxlength="10" name="telefono">
+                            <label for="telefonoQ">Teléfono</label>
+                            <input type="text" class="form-control" maxlength="10" name="telefonoQ">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="correo">Email</label>
-                            <input type="text" class="form-control" name="correo">
+                            <label for="emailQ">Email</label>
+                            <input type="text" class="form-control" name="emailQ">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="calle"> Calle</label>
-                            <input type="text" class="form-control" name="calle">
+                            <label for="calleQ"> Calle</label>
+                            <input type="text" class="form-control" name="calleQ">
                         </div>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
-                            <label for="numero">Núm.</label>
-                            <input type="text" class="form-control" name="numero">
+                            <label for="numeroQ">Núm.</label>
+                            <input type="text" class="form-control" name="numeroQ">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="colonia">Colonia</label>
-                            <input type="text" class="form-control" name="colonia">
+                            <label for="coloniaQ">Colonia</label>
+                            <input type="text" class="form-control" name="coloniaQ">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="codigo_postal">código Postal</label>
-                            <input type="text" class="form-control" name="codigo_postal">
+                            <label for="codigo_postalQ">código Postal</label>
+                            <input type="text" class="form-control" name="codigo_postalQ">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_cat_munQ">Municipio</label>
+                            <select class="form-control" name="id_cat_munQ">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($municipios as $municipio) : ?>
+                                    <option value="<?php echo $municipio['id_cat_mun']; ?>"><?php echo ucwords($municipio['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="leer_escribirQ">¿Sabe leer y escribir?</label>
+                            <select class="form-control" name="leer_escribirQ">
+                                <option value="">Escoge una opción</option>
+                                <option value="Leer">Leer</option>
+                                <option value="Escribir">Escribir</option>
+                                <option value="Ambos">Ambos</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_cat_discQ">¿Tiene alguna discapacidad?</label>
+                            <select class="form-control" name="id_cat_discQ">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($discapacidades as $discapacidad) : ?>
+                                    <option value="<?php echo $discapacidad['id_cat_disc']; ?>"><?php echo ucwords($discapacidad['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_cat_comunQ">Comunidad</label>
+                            <select class="form-control" name="id_cat_comunQ">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($comunidades as $comunidad) : ?>
+                                    <option value="<?php echo $comunidad['id_cat_comun']; ?>"><?php echo ucwords($comunidad['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                 </div>

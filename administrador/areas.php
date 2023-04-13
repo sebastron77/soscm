@@ -8,12 +8,11 @@ $all_areas = find_all_order('area', 'nombre_area');
 $user = current_user();
 $nivel = $user['user_level'];
 
-// $user = current_user();
-$id_usuario = $user['id'];
+//$id_usuario = $user['id'];
 
 // $user = current_user();
-$id_user = $user['id'];
-$busca_area = area_usuario($id_usuario);
+$id_user = $user['id_user'];
+$busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 //@$level = find_user_level('users', (int)$_GET['id']);

@@ -18,6 +18,7 @@ $autoridades = find_all_autoridades();
 $entidades = find_all('cat_entidad_fed');
 $nacionalidad = find_all('cat_nacionalidades');
 $medios_pres = find_all('cat_medio_pres');
+$cat_municipios = find_all_cat_municipios();
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -38,7 +39,7 @@ endif;
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_canalizacion'])) {
 
-    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal', 'municipio', 'entidad', 'nacionalidad', 'medio', 'grupo_vulnerable', 'lengua', 'institucion_canaliza');
+    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal', 'id_cat_mun','localidad', 'entidad', 'nacionalidad', 'medio', 'grupo_vulnerable', 'lengua', 'institucion_canaliza');
     validate_fields($req_fields);
 
     if (empty($errors)) {
@@ -53,7 +54,9 @@ if (isset($_POST['add_canalizacion'])) {
         $calle = remove_junk($db->escape($_POST['calle']));
         $colonia = remove_junk($db->escape($_POST['colonia']));
         $cpostal = remove_junk($db->escape($_POST['cpostal']));
-        $municipio = remove_junk($db->escape($_POST['municipio']));
+        //$municipio = remove_junk($db->escape($_POST['municipio']));
+		$id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $localidad = remove_junk($db->escape($_POST['localidad']));
         $entidad = remove_junk($db->escape($_POST['entidad']));
         $nacionalidad = remove_junk($db->escape($_POST['nacionalidad']));
         $medio = remove_junk($db->escape($_POST['medio']));
@@ -110,9 +113,9 @@ if (isset($_POST['add_canalizacion'])) {
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
             $query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
@@ -121,9 +124,9 @@ if (isset($_POST['add_canalizacion'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$municipio}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
             $query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
@@ -269,7 +272,7 @@ include_once('layouts/header.php'); ?>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="institucion_canaliza">Autoridad señalada</label>
                             <select class="form-control" name="institucion_canaliza">
@@ -280,14 +283,25 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-2">
+					<div class="form-group">
+                            <label for="id_cat_mun">Municipio</label>
+                            <select class="form-control" name="id_cat_mun">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_municipios as $id_cat_municipio) : ?>
+                                    <option value="<?php echo $id_cat_municipio['id_cat_mun']; ?>"><?php echo ucwords($id_cat_municipio['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+						</div>
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="municipio">Municipio/Localidad</label>
-                            <input type="text" class="form-control" name="municipio" placeholder="Municipio/Localidad"
+                            <input type="text" class="form-control" name="localidad" placeholder="Localidad"
                                 required>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="entidad">Entidad</label>
                             <select class="form-control" name="entidad">
@@ -298,7 +312,7 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="nacionalidad">Nacionalidad</label>
                             <select class="form-control" name="nacionalidad">
