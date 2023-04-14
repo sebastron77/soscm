@@ -26,11 +26,11 @@ endif;
 ?>
 
 <?php
-$c_categoria     = count_by_id('categorias');
-$c_user          = count_by_id('users');
-$c_trabajadores          = count_by_id('detalles_usuario');
-$c_areas          = count_by_id('area');
-$c_cargos          = count_by_id('cargos');
+// $c_categoria     = count_by_id('categorias',id_);
+$c_user          = count_by_id('users', 'id_user');
+$c_trabajadores          = count_by_id('detalles_usuario', 'id_det_usuario');
+$c_areas          = count_by_id('area','id_area');
+$c_cargos          = count_by_id('cargos','id_cargos');
 ?>
 
 <?php include_once('layouts/header.php'); ?>

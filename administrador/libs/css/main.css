@@ -13,7 +13,7 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 
   font-weight: 400;
   overflow-x: hidden;
@@ -62,14 +62,14 @@ a {
 }
 
 h1 {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 
   color: #3a3d44;
 }
 
 p {
   font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 .bg-violet {
@@ -89,7 +89,7 @@ p {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   padding: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #3a3d44;
   border-radius: 10px 10px 10px 10px;
 }
@@ -100,7 +100,7 @@ p {
   text-align: center;
   border: 1px solid rgb(255, 255, 255);
   border-radius: 10px 10px 10px 10px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 10px;
   background-color: rgb(255, 255, 255);
   color: #3a3d44;
@@ -167,7 +167,7 @@ dataTables_wrapper form-inline dt-bootstrap no-footer {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   font-size: 15.5px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 header > .logo {
   font-size: 14px;
@@ -254,7 +254,7 @@ header > .logo {
   width: 260px;
   background: #ffffff;
   text-align: center;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 .sidebar ul li:hover,
 .submenu ul li:hover {
@@ -427,7 +427,7 @@ option {
 
 label {
   font-size: 14.5px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   color: #3a3d44;
 }
 
@@ -441,12 +441,12 @@ label {
 
 label.control-label {
   font-size: 14px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 input.form-control {
   font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background: #e3e3e3;
   /* border-color:#0d0d0f; */
   color: #3a3d44;
@@ -471,12 +471,12 @@ input.placeholder {
 
 input.btn.btn-default.btn-file {
   font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 
 select.form-control {
   font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background: #e3e3e3;
   color: #3a3d44;
 }
@@ -495,13 +495,13 @@ textarea.form-control:focus {
 }
 textarea.form-control {
   font-size: 15px;
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   background: #e3e3e3;
   color: #3a3d44;
 }
 
 div.panel-body {
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
   font-size: 15px;
 }
 
@@ -639,8 +639,8 @@ td img.img-thumbnail {
 
 .jumbotron {
   margin-bottom: 0;
-  background-color: #FFFFFF;
-  border: 1px solid #FFFFFF;
+  background-color: #ffffff;
+  border: 1px solid #ffffff;
 }
 
 .list-group-item:first-child,
@@ -807,14 +807,12 @@ span.red {
 }
 
 div.alert.alert-success {
-	
-	font-size: 20px;
-    /* background: #84d696; */
-    /* border-color: #176939; */
-    color: #fff;
-    border: 0px;
-    text-shadow: 0 0 0.6em #fff, 0 0 0.5em #370494;
-	
+  font-size: 20px;
+  /* background: #84d696; */
+  /* border-color: #176939; */
+  color: #fff;
+  border: 0px;
+  text-shadow: 0 0 0.6em #fff, 0 0 0.5em #370494;
 }
 div.alert.alert-warning {
   font-size: 14px;
@@ -830,8 +828,9 @@ span.glyphicon.glyphicon-edit {
 .siguiente {
   /* background: #FFFFFF; */
   color: #3a3d44;
-}.siguiente:hover {
-  color: #FFFFFF;
+}
+.siguiente:hover {
+  color: #ffffff;
 }
 
 /* BOTÓN PARA MOSTRAR Y QUITAR DENUNCIA ANONIMA */
@@ -903,80 +902,133 @@ input:checked + .slider:before {
   color: white;
 }
 
-
-
 /*************************************************************/
 .tile {
-    height: 200px;
-    width: 200px;
-    margin: 10px;
-    display: inline-block;
-    text-decoration: none;
-    color: #000;
-    border: 1px solid #d8d8d8;
-    border-radius: 5px;
-    user-select: none;
-    transition: all .2s ease-in-out;
-    background-color: #FFF;
-	text-align: center;
+  height: 200px;
+  width: 200px;
+  margin: 10px;
+  display: inline-block;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
+  text-align: center;
 }
 
 .tile-tittle {
-    margin: 0;
-    width: 100%;
-    padding: 0;
-    height: 40px;
-    line-height: 40px;
-    box-sizing: border-box;
-    text-transform: uppercase;
-    border-bottom: 1px solid #d8d8d8;
-    transition: all .2s ease-in-out;
-    font-size: 15px;
-    font-weight:600;
-}.tile:hover .tile-tittle{
-	color: #7263f0;
+  margin: 0;
+  width: 100%;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d8d8d8;
+  transition: all 0.2s ease-in-out;
+  font-size: 15px;
+  font-weight: 600;
 }
-.material-symbols-outlined{
+.tile:hover .tile-tittle {
+  color: #7263f0;
+}
+.material-symbols-outlined {
   color: #455a64;
-}.material-symbols-rounded{
+}
+.material-symbols-rounded {
   color: #455a64;
 }
 .tile-icon {
-    width: 100%;
-    height: 160px;
-    box-sizing: border-box;
-    padding-top: 22px;
-}.tile-icon:hover>span{
-  color: #7263f0
-}.tile-icon:hover>svg{
-  fill: #7263f0
+  width: 100%;
+  height: 160px;
+  box-sizing: border-box;
+  padding-top: 22px;
+}
+.tile-icon:hover > span {
+  color: #7263f0;
+}
+.tile-icon:hover > svg {
+  fill: #7263f0;
 }
 
-.fa, .fas {
-    font-family: 'Font Awesome 5 Free';
-    font-weight: 900;
+.fa,
+.fas {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
 }
 
 .tile:hover .tile-icon > i,
-.tile:hover .tile-icon > p{
-	color: #7263f0;
+.tile:hover .tile-icon > p {
+  color: #7263f0;
 }
-
 
 /*En tu hoja de estilos */
-a:link, a:visited, a:active {
-    text-decoration:none;
+a:link,
+a:visited,
+a:active {
+  text-decoration: none;
 }
 
-
 .tile-container {
-    text-align: center;
-    padding: 20px 25px;
+  text-align: center;
+  padding: 20px 25px;
 }
 
 .full-box {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    width: 100%;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.tileA {
+  height: 200px;
+  width: 200px;
+  margin: 10px;
+  display: inline-block;
+  text-decoration: none;
+  color: #000;
+  border: 1px solid #d8d8d8;
+  border-radius: 5px;
+  user-select: none;
+  transition: all 0.2s ease-in-out;
+  background-color: #fff;
+  text-align: center;
+}
+
+.tileA-tittle {
+  margin: 0;
+  width: 100%;
+  padding: 0;
+  height: 40px;
+  line-height: 40px;
+  box-sizing: border-box;
+  text-transform: uppercase;
+  border-bottom: 1px solid #d8d8d8;
+  transition: all 0.2s ease-in-out;
+  font-size: 15px;
+  font-weight: 600;
+}
+.tileA:hover .tileA-tittle {
+  color: #7263f0;
+}
+.material-symbols-outlined {
+  color: #455a64;
+}
+.material-symbols-rounded {
+  color: #455a64;
+}
+.tileA-icon {
+  width: 100%;
+  height: 160px;
+  box-sizing: border-box;
+  padding-top: 22px;
+}
+.tileA-icon:hover > span {
+  color: #7263f0;
+}
+.tileA-icon:hover > svg {
+  fill: #7263f0;
 }

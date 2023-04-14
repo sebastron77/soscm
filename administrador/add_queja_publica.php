@@ -126,8 +126,8 @@ if (isset($_POST['add_queja_publica'])) {
         $id_agraviado = $dbh->lastInsertId();
 
         $query = "INSERT INTO quejas_dates (folio_queja, fecha_presentacion, id_cat_med_pres, id_cat_aut, estado_procesal,id_cat_quejoso, id_cat_agraviado, fecha_creacion, 
-                                id_estatus_queja, archivo, dom_calle, dom_numero, dom_colonia, ent_fed, localidad, id_cat_mun, descripcion_hechos)
-                                VALUES ('{$folio}','{$fecha_creacion}',5,'{$autoridad_responsable}',1,{$id_quejoso},{$id_agraviado},'{$fecha_creacion}',9,'{$name}',
+                                id_area_asignada, id_estatus_queja, archivo, dom_calle, dom_numero, dom_colonia, ent_fed, localidad, id_cat_mun, descripcion_hechos)
+                                VALUES ('{$folio}','{$fecha_creacion}',5,'{$autoridad_responsable}',1,{$id_quejoso},{$id_agraviado},'{$fecha_creacion}',3,9,'{$name}',
                                         '{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}','{$localidad}', '{$id_cat_mun}', '{$descripcion_hechos}')";
 
         $query4 = "INSERT INTO folios (";

@@ -92,7 +92,7 @@ $c_quejas = count_by_id('quejas_dates', 'id_queja_date');
 			</div>
 		</a>
 
-		<a href="quejas.php" class="tile">
+		<a href="orientaciones.php" class="tile">
 			<div class="tile-tittle">Orientaciones</div>
 			<div class="tile-icon">
 				<span class="material-symbols-rounded" style="font-size:95px;">psychology_alt</span>
@@ -105,7 +105,7 @@ $c_quejas = count_by_id('quejas_dates', 'id_queja_date');
 			</div>
 		</a>
 
-		<a href="quejas.php" class="tile">
+		<a href="canalizaciones.php" class="tile">
 			<div class="tile-tittle">Canalizaciones</div>
 			<div class="tile-icon">
 				<span class="material-symbols-rounded" style="font-size:95px;">
