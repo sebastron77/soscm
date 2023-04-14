@@ -1,5 +1,7 @@
 <?php
+
 use Dompdf\Css\Style;
+
 error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Lista de quejas';
 
@@ -25,22 +27,22 @@ if ($nivel_user == 19) {
     page_require_level_exacto(19);
 }
 
-if ($nivel_user > 2 && $nivel_user < 5):
+if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user > 5 && $nivel_user < 7):
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7 && $nivel_user < 19):
+if ($nivel_user > 7 && $nivel_user < 19) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19):
+if ($nivel_user > 19) :
     redirect('home.php');
 endif;
 
-$conexion = mysqli_connect ("localhost", "root", "");
-mysqli_set_charset($conexion,"utf8");
-mysqli_select_db ($conexion, "libroquejas2");
+$conexion = mysqli_connect("localhost", "root", "");
+mysqli_set_charset($conexion, "utf8");
+mysqli_select_db($conexion, "libroquejas2");
 $sql = "SELECT q.folio_queja,q.id_queja_date, mp.descripcion as medio_presentacion, au.nombre_autoridad as autoridad_responsable, cq.nombre as nombre_quejoso, cq.paterno a_paterno_quejoso,
         cq.materno a_materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as a_paterno_agraviado, ca.materno as a_materno_agraviado, u.username as usuario_creador, a.nombre_area as area_asignada,
         eq.descripcion as estatus_queja,tr.descripcion as tipo_resolucion,ta.descripcion as tipo_ambito, q.fecha_presentacion, mp.descripcion as medio_presentacion, q.fecha_avocamiento, 
@@ -58,9 +60,9 @@ $sql = "SELECT q.folio_queja,q.id_queja_date, mp.descripcion as medio_presentaci
         LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
         LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
         LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun;";
-$resultado = mysqli_query ($conexion, $sql) or die;
+$resultado = mysqli_query($conexion, $sql) or die;
 $quejas = array();
-while( $rows = mysqli_fetch_assoc($resultado) ) {
+while ($rows = mysqli_fetch_assoc($resultado)) {
     $quejas[] = $rows;
 }
 
@@ -70,7 +72,7 @@ if (isset($_POST["export_data"])) {
     if (!empty($quejas)) {
         header('Content-Encoding: UTF-8');
         header('Content-type: application/vnd.ms-excel;charset=UTF-8');
-        header("Content-Disposition: attachment; filename=quejas.xls");        
+        header("Content-Disposition: attachment; filename=quejas.xls");
         $filename = "quejas.xls";
         $mostrar_columnas = false;
 
@@ -108,12 +110,11 @@ require_once('includes/sql.php');
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Quejas</span>
                 </strong>
-                <?php if (($nivel <= 2) || ($nivel == 5)): ?>
+                <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
                     <a href="add_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Queja</a>
                 <?php endif; ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data'
-                        value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
+                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
             </div>
         </div>
@@ -129,13 +130,13 @@ require_once('includes/sql.php');
                         <th width="10%">Adjunto</th>
                         <th width="10%">Quejoso</th>
                         <th width="1%">Estatus</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5)): ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
                             <th width="3%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($quejas_libro as $queja): ?>
+                    <?php foreach ($quejas_libro as $queja) : ?>
                         <tr>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['folio_queja'])) ?>
@@ -153,27 +154,23 @@ require_once('includes/sql.php');
                             <td>
                                 <?php echo remove_junk(ucwords($queja['nombre_autoridad'])) ?>
                             </td>
-                            <td><a target="_blank" style="color: #0094FF;"
-                                    href="uploads/quejas/<?php echo $resultado . '/' . $queja['archivo']; ?>"><?php echo $queja['archivo']; ?></a></td>
+                            <td><a target="_blank" style="color: #0094FF;" href="uploads/quejas/<?php echo $resultado . '/' . $queja['archivo']; ?>"><?php echo $queja['archivo']; ?></a></td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['nombre_quejoso'] . " " . $queja['paterno_quejoso'] . " " . $queja['materno_quejoso'])) ?>
                             </td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['estatus_queja'])) ?>
                             </td>
-                            <?php if (($nivel <= 2) || ($nivel == 5)): ?>
+                            <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
                                 <td class="text-center">
                                     <div class="btn-group">
-                                        <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>"
-                                            class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
+                                        <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                         </a>
-                                        <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>"
-                                            class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
+                                        <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>
-                                        <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>"
-                                            class="btn btn-secondary btn-md" title="Seguimiento" data-toggle="tooltip">
+                                        <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-secondary btn-md" title="Seguimiento" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-arrow-right"></span>
                                         </a>
                                     </div>
