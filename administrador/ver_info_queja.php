@@ -37,6 +37,8 @@ if ($nivel == 7) {
         border: 1px solid #ccc;
         background-color: #f1f1f1;
         color: black;
+        width: 97.5%;
+        margin-left: 1.2%;
     }
 
     /* Style the buttons inside the tab */
@@ -62,12 +64,12 @@ if ($nivel == 7) {
     }
 
     /* Style the tab content */
-    .tabcontent {
+    /* .tabcontent {
         display: none;
-        padding: 6px 12px;
+        padding: -1px -1px;
         border: 1px solid #ccc;
         border-top: none;
-    }
+    } */
 
     .rectangulo {
         width: 90%;
@@ -189,6 +191,9 @@ if ($nivel == 7) {
         <?php echo display_msg($msg); ?>
     </div>
 </div>
+<div>
+
+</div>
 <div class="tab">
     <button class="tablinks" onclick="openCity(event, 'Generales')">Generales</button>
     <button class="tablinks1" onclick="openCity(event, 'Seguimiento')">Seguimiento</button>
@@ -196,111 +201,49 @@ if ($nivel == 7) {
 </div>
 <div class="row">
     <div id="Generales" class="tabcontent">
+
+        <body onload="return openCity(event, 'Generales');"></body>
         <div class="col-md-12">
             <div class="panel panel-default">
                 <div class="panel-heading clearfix">
                     <strong>
                         <span class="glyphicon glyphicon-th"></span>
-                        <span>Información de Queja</span>
+                        <span>Información general de la Queja</span>
                     </strong>
                 </div>
 
                 <div class="panel-body">
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-purple">
-                            <tr style="height: 10px;">
-                                <th style="width: 2%;" class="text-center">Folio</th>
-                                <th style="width: 1%;" class="text-center">Fecha Presentación</th>
-                                <th style="width: 2%;" class="text-center">Medio de Presentación</th>
-                                <th style="width: 7%;" class="text-center">Autoridad Responsable</th>
-                                <th style="width: 0.1%;" class="text-center">Incompetencia</th>
-                                <th style="width: 5%;" class="text-center">Causa Incompetencia</th>
-                                <th style="width: 1%;" class="text-center">Fecha Acuerdo Incompetencia</th>
-                                <th style="width: 7%;" class="text-center">¿A quién se traslada?</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['folio_queja'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['fecha_presentacion'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['medio_pres'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['nombre_autoridad'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['incompetencia'] == "" || $e_detalle['incompetencia'] == 0) {
-                                        echo "N/A";
-                                    } else
-                                        echo 'Sí' ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['causa_incomp'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords(($e_detalle['causa_incomp']))) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['fecha_acuerdo_incomp'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords(($e_detalle['fecha_acuerdo_incomp']))) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['a_quien_se_traslada'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords(($e_detalle['a_quien_se_traslada']))) ?>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-purple">
-                            <tr>
-                                <th style="width: 0.1%;" class="text-center">Desechamiento</th>
-                                <th style="width: 7%;" class="text-center">Razón Desechamiento</th>
-                                <th style="width: 7%;" class="text-center">Forma Conclusión</th>
-                                <th style="width: 1%;" class="text-center">Fecha Conclusión</th>
-                                <th style="width: 3%;" class="text-center">Estado Procesal</th>
-                                <th style="width: 2%;" class="text-center">Tipo Resolución</th>
-                                <th style="width: 1%;" class="text-center">Num. Recomendación</th>
-                                <th style="width: 1%;" class="text-center">Tipo de Ámbito</th>
-                                <th style="width: 3%;" class="text-center">Fecha termino</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['desechamiento'] == "" || $e_detalle['desechamiento'] == "0") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['desechamiento'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['razon_desecha'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['razon_desecha'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['forma_conclusion'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk($e_detalle['forma_conclusion']) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['fecha_conclusion'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['fecha_conclusion'])) ?>
-                                </td>
-                                <td class="text-center">
+                    <table style="color:#3a3d44; margin-top: -10px">
+                        <tr>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Folio: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['folio_queja'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 4%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Fecha de presentación: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['fecha_presentacion'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Medio de presentación: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['medio_pres'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 3%;">
+                                <span class="text-center" style="height:5%;">
+                                    <span style="font-weight: bold;">Autoridad responsable: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['nombre_autoridad'])) ?><br><br>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Estado procesal: </span>
                                     <?php if ($e_detalle['estado_procesal'] == "") {
                                         echo "N/A";
                                     } else {
@@ -309,110 +252,57 @@ if ($nivel == 7) {
                                                 echo remove_junk(ucwords($est_pros['descripcion']));
                                             }
                                         }
-                                    } ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['tipo_resolucion'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['tipo_resolucion'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['num_recomendacion'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['num_recomendacion'])) ?>
-                                </td>
-                                <td class="text-center">
+                                    } ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 4%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Tipo de ámbito: </span>
                                     <?php if ($e_detalle['tipo_ambito'] == "") {
                                         echo "N/A";
                                     } else
-                                        echo remove_junk(ucwords($e_detalle['tipo_ambito'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['fecha_termino'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords($e_detalle['fecha_termino'])) ?>
-                                </td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-purple">
-                            <tr>
-                                <th style="width: 10%;" class="text-center">Quejoso</th>
-                                <th style="width: 10%;" class="text-center">Agraviado</th>
-                                <th style="width: 3%;" class="text-center">Fecha Creación</th>
-                                <th style="width: 1%;" class="text-center">Asignado a</th>
-                                <th style="width: 5%;" class="text-center">Área asignada</th>
-                                <th style="width: 3%;" class="text-center">Fecha Vencimiento</th>
-                                <th style="width: 3%;" class="text-center">Fecha avocamiento</th>
-                                <th style="width: 5%;" class="text-center">Estatus Queja</th>
-                                <th style="width: 5%;" class="text-center">Archivo</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords(($e_detalle['nombre_quejoso'] . " " . $e_detalle['paterno_quejoso'] . " " . $e_detalle['materno_quejoso']))) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['nombre_agraviado'] . " " . $e_detalle['paterno_agraviado'] . " " . $e_detalle['materno_agraviado'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['fecha_creacion'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords(($e_detalle['username']))) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords(($e_detalle['nombre_area']))) ?>
-                                </td>
-                                <td>
-                                    <?php echo remove_junk(ucwords($e_detalle['fecha_vencimiento'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php if ($e_detalle['fecha_avocamiento'] == "") {
-                                        echo "N/A";
-                                    } else
-                                        echo remove_junk(ucwords(($e_detalle['fecha_avocamiento']))) ?>
-                                </td>
-                                <td>
-                                    <?php echo remove_junk(ucwords($e_detalle['estatus_queja'])) ?>
-                                </td>
+                                        echo remove_junk(ucwords($e_detalle['tipo_ambito'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 2%;">
+                                <span>
+                                    <span style="font-weight: bold;">Estatus de la queja: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['estatus_queja'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 3%;">
                                 <?php
                                 $folio_editar = $e_detalle['folio_queja'];
                                 $resultado = str_replace("/", "-", $folio_editar);
                                 ?>
-                                <td class="text-center"><a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <table class="table table-bordered table-striped">
-                        <thead class="thead-purple">
-                            <tr>
-                                <th style="width: 5%;" class="text-center">Calle</th>
-                                <th style="width: 0.5%;" class="text-center">Núm.</th>
-                                <th style="width: 5%;" class="text-center">Colonia</th>
-                                <th style="width: 5%;" class="text-center">Municipio</th>
-                                <th style="width: 10%;" class="text-center">Descripción Hechos</th>
-                                <th style="width: 10%;" class="text-center">Notas internas</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['dom_calle'])) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk($e_detalle['dom_numero']) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk(ucwords($e_detalle['dom_colonia'])) ?>
-                                </td>
-                                <td class="text-center">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Documento: </span>
+                                    <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a><br><br>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Usuario creador: </span>
+                                    <?php echo remove_junk(ucwords(($e_detalle['username']))) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 4%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Área del usuario: </span>
+                                    <?php echo remove_junk(ucwords(($e_detalle['nombre_area']))) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Colonia: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['dom_colonia'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 3%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Municipio: </span>
                                     <!-- <?php echo remove_junk(ucwords($e_detalle['id_cat_mun'])) ?> -->
                                     <?php
                                     foreach ($cat_municipios as $municipios) {
@@ -420,46 +310,253 @@ if ($nivel == 7) {
                                             echo remove_junk(ucwords($municipios['descripcion']));
                                         }
                                     }
-                                    ?>
-                                </td>
-                                <td class="text-center">
+                                    ?><br><br>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Calle y núm: </span>
+                                    <?php echo remove_junk(ucwords($e_detalle['dom_calle'] . " #" . $e_detalle['dom_numero'])) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 4%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Observaciones: </span>
+                                    <?php echo remove_junk($e_detalle['observaciones']) ?><br><br>
+                                </span>
+                            </td>
+                        </tr>
+                        <table>
+                            <tr>
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Descripción de los hechos: </span>
                                     <?php echo remove_junk($e_detalle['descripcion_hechos']) ?>
-                                </td>
-                                <td class="text-center">
-                                    <?php echo remove_junk($e_detalle['observaciones']) ?>
-                                </td>
+                                </span>
                             </tr>
-                        </tbody>
+                        </table>
                     </table>
-                    <!-- <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-                    Regresar
-                </a> -->
+
+                    <h3 style="margin-top: 5%; margin-bottom:1%; font-weight: bold;">Información del Quejoso y Agraviado</h3>
+                    <table style="color: #3a3d44">
+                        <tr>
+                            <td style="width: 1%">
+                                <span style="font-weight: bold;">Nombre completo del quejoso: </span>
+                                <span onclick="javascript:window.open('./ver_info_qa.php?id=<?php echo $e_detalle['id_cat_quejoso'] ?>&t=q','popup','width=750,height=400');" class="text-center">
+                                    <a href="">
+                                        <?php echo remove_junk(ucwords(($e_detalle['nombre_quejoso'] . " " . $e_detalle['paterno_quejoso'] . " " . $e_detalle['materno_quejoso']))) ?>
+                                    </a>
+                                </span>
+                            </td>
+                            <td style="width: 1%">
+                                <span style="font-weight: bold;">Nombre completo del agraviado: </span>
+                                <span onclick="javascript:window.open('./ver_info_qa.php?id=<?php echo $e_detalle['id_cat_agraviado'] ?>&t=a','popup','width=700,height=400');" class="text-center">
+                                    <a href="">
+                                        <?php echo remove_junk(ucwords(($e_detalle['nombre_agraviado'] . " " . $e_detalle['paterno_agraviado'] . " " . $e_detalle['materno_agraviado']))) ?>
+                                    </a>
+                                </span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="Seguimiento" class="tabcontent">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <strong>
+                        <span class="glyphicon glyphicon-th"></span>
+                        <span>Seguimiento de la Queja</span>
+                    </strong>
+                </div>
+
+                <div class="panel-body">
+                    <table style="color:#3a3d44; margin-top: -10px">
+                        <tr>
+                            <td>
+                                <span style="font-weight: bold;">Tipo de resolución: </span>
+                                <?php if ($e_detalle['tipo_resolucion'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['tipo_resolucion'])) ?>
+                                <br><br>
+                            </td>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Incompetencia: </span>
+                                    <?php if ($e_detalle['incompetencia'] == "" || $e_detalle['incompetencia'] == 0) {
+                                        echo "N/A";
+                                    } else
+                                        echo 'Sí' ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 3%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Causa de incompetencia: </span>
+                                    <?php if ($e_detalle['causa_incomp'] == "") {
+                                        echo "N/A";
+                                    } else
+                                        echo remove_junk(ucwords(($e_detalle['causa_incomp']))) ?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 2%;">
+                                <span>
+                                    <span style="font-weight: bold;">Fecha de acuerdo de incompetencia: </span>
+                                    <?php if ($e_detalle['fecha_acuerdo_incomp'] == "") {
+                                        echo "N/A";
+                                    } else
+                                        echo remove_junk(ucwords(($e_detalle['fecha_acuerdo_incomp']))) ?>
+                                    <br><br>
+                                </span>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">¿A quién se traslada?: </span>
+                                    <?php if ($e_detalle['a_quien_se_traslada'] == "") {
+                                        echo "N/A";
+                                    } else
+                                        echo remove_junk(ucwords(($e_detalle['a_quien_se_traslada']))) ?>
+                                    <br><br>
+                                </span>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Desechamiento: </span>
+                                <?php if ($e_detalle['desechamiento'] == "" || $e_detalle['desechamiento'] == "0") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['desechamiento'])) ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Razón de Desechamiento: </span>
+                                <?php if ($e_detalle['razon_desecha'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['razon_desecha'])) ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Forma de conclusión: </span>
+                                <?php if ($e_detalle['forma_conclusion'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk($e_detalle['forma_conclusion']) ?>
+                                <br><br>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="font-weight: bold;">Fecha de conclusión: </span>
+                                <?php if ($e_detalle['fecha_conclusion'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['fecha_conclusion'])) ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Núm. de recomendación: </span>
+                                <?php if ($e_detalle['num_recomendacion'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['num_recomendacion'])) ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Fecha de termino: </span>
+                                <?php if ($e_detalle['fecha_termino'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords($e_detalle['fecha_termino'])) ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Fecha de avocamiento: </span>
+                                <?php if ($e_detalle['fecha_avocamiento'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords(($e_detalle['fecha_avocamiento']))) ?>
+                                <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <span style="font-weight: bold;">Descripción (Sin materia): </span>
+                                <?php if ($e_detalle['descripcion_sin_materia'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords(($e_detalle['descripcion_sin_materia']))) ?>
+                                <br><br>
+                            </td>
+                            <td style="width: 3%;">
+                                <span style="font-weight: bold;">Archivo (Sin materia): </span>
+                                <?php
+                                $folio_editar = $e_detalle['folio_queja'];
+                                $resultado = str_replace("/", "-", $folio_editar);
+                                ?>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Sin_Materia/' . $e_detalle['archivo_sin_materia']; ?>"><?php echo $e_detalle['archivo_sin_materia']; ?></a>
+                                <br><br>
+                            </td>
+                            <td style="width: 3%;">
+                                <span style="font-weight: bold;">Archivo (ANV): </span>
+                                <?php
+                                $folio_editar = $e_detalle['folio_queja'];
+                                $resultado = str_replace("/", "-", $folio_editar);
+                                ?>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/ANV/' . $e_detalle['archivo_anv']; ?>"><?php echo $e_detalle['archivo_anv']; ?></a>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Fecha de desistimiento: </span>
+                                <?php if ($e_detalle['fecha_desistimiento'] == "") {
+                                    echo "N/A";
+                                } else
+                                    echo remove_junk(ucwords(($e_detalle['fecha_desistimiento']))) ?>
+                                <br><br>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 3%;">
+                                <span style="font-weight: bold;">Archivo (Desistimiento): </span>
+                                <?php
+                                $folio_editar = $e_detalle['folio_queja'];
+                                $resultado = str_replace("/", "-", $folio_editar);
+                                ?>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Desistimiento/' . $e_detalle['archivo_desistimiento']; ?>"><?php echo $e_detalle['archivo_desistimiento']; ?></a>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 </div>
 <script>
-            function openCity(evt, cityName) {
-                var i, tabcontent, tablinks;
-                tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
-                tablinks = document.getElementsByClassName("tablinks");
-                for (i = 0; i < tablinks.length; i++) {
-                    tablinks[i].className = tablinks[i].className.replace(" active", "");
-                }
-                document.getElementById(cityName).style.display = "block";
-                evt.currentTarget.className += " active";
-            }
+    function openCity(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+    }
 
-            function prueba(pestana){
-                if(pestana == 1){
-                    return openCity(event, 'Generales');
-                }
-            }
-        </script>
+    function prueba(pestana) {
+        if (pestana == 1) {
+            return openCity(event, 'Generales');
+        }
+    }
+</script>
 <script>
     function cambiarPestanna(pestannas, pestanna) {
 

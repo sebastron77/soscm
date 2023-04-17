@@ -844,7 +844,7 @@ function find_by_id_queja($id)
                       cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
                       q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
                       q.num_recomendacion, q.fecha_termino, ta.descripcion as tipo_ambito, u.username, a.nombre_area, q.fecha_vencimiento, q.descripcion_sin_materia, q.archivo_sin_materia,
-                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento
+                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso
                       FROM quejas_dates q
                       LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
@@ -893,11 +893,11 @@ function find_by_id_orientacion($id)
   global $db;
   $id = (int)$id;
   $sql = $db->query("SELECT o.id_or_can as idcan,o.folio,o.correo_electronico,o.nombre_completo,cesc.descripcion as cesc,ocup.descripcion as ocup,o.edad,
-                      o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero,o.colonia,o.codigo_postal,o.localidad,o.lengua,
+                      o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero,o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
                       o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,
-                      o.medio_presentacion, mp.descripcion as municipio, o.id_cat_mun 
+                      o.medio_presentacion
                       FROM orientacion_canalizacion as o 
                       LEFT JOIN users as u ON u.id_user = o.id_creador 
                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
@@ -907,7 +907,7 @@ function find_by_id_orientacion($id)
                       LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = o.institucion_canaliza
                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
-                      LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
+                      -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
   WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=1 LIMIT 1");
@@ -924,10 +924,10 @@ function find_by_id_canalizacion($id)
   global $db;
   $id = (int)$id;
   $sql = $db->query("SELECT o.id_or_can as idcan,o.folio,o.correo_electronico, o.nombre_completo,cesc.descripcion as cesc,ocup.descripcion as ocup,o.edad,
-                      o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero, o.colonia,o.codigo_postal,o.localidad,o.lengua,
+                      o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero, o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
-                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,o.medio_presentacion, mp.descripcion as municipio, o.id_cat_mun 
+                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,o.medio_presentacion
                       FROM orientacion_canalizacion as o 
                       LEFT JOIN users as u ON u.id_user = o.id_creador 
                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
@@ -938,7 +938,7 @@ function find_by_id_canalizacion($id)
                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
-					            LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
+                      -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
                       WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=2 LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
