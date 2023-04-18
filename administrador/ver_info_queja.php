@@ -4,7 +4,9 @@ $page_title = 'Queja';
 require_once('includes/load.php');
 ?>
 <?php
-$e_detalle = find_by_id_queja((int) $_GET['id']);
+$id = (int) $_GET['id'];
+$e_detalle = find_by_id_queja($id);
+$e_detalle2 = find_by_id_acuerdo($id);
 $user = current_user();
 $nivel = $user['user_level'];
 $cat_est_procesal = find_all('cat_est_procesal');
@@ -35,10 +37,13 @@ if ($nivel == 7) {
     .tab {
         overflow: hidden;
         border: 1px solid #ccc;
-        background-color: #f1f1f1;
+        background-color: #FFFFFF;
         color: black;
-        width: 97.5%;
+        width: 48%;
         margin-left: 1.2%;
+        margin-bottom: -15px;
+        border-radius: 10px 10px 10px 10px;
+        height: 9%;
     }
 
     /* Style the buttons inside the tab */
@@ -51,6 +56,7 @@ if ($nivel == 7) {
         padding: 14px 16px;
         transition: 0.3s;
         font-size: 17px;
+        width: 33%;
     }
 
     /* Change background color of buttons on hover */
@@ -72,7 +78,7 @@ if ($nivel == 7) {
     } */
 
     .rectangulo {
-        width: 90%;
+        width: 100%;
         height: 100%;
         border: 3px solid #D6D6D6;
         border-radius: 5px;
@@ -170,7 +176,7 @@ if ($nivel == 7) {
 
     #pestanas a:link {
         text-decoration: none;
-        color: white;
+        color: white;        
     }
 
     #contenidopestanas {
@@ -208,7 +214,7 @@ if ($nivel == 7) {
                 <div class="panel-heading clearfix">
                     <strong>
                         <span class="glyphicon glyphicon-th"></span>
-                        <span>Información general de la Queja</span>
+                        <span>Información general de la Queja <?php echo remove_junk(ucwords($e_detalle['folio_queja'])) ?></span>
                     </strong>
                 </div>
 
@@ -284,7 +290,7 @@ if ($nivel == 7) {
                         <tr>
                             <td style="width: 2%;">
                                 <span class="text-center">
-                                    <span style="font-weight: bold;">Usuario creador: </span>
+                                    <span style="font-weight: bold;">Usuario asignado: </span>
                                     <?php echo remove_junk(ucwords(($e_detalle['username']))) ?><br><br>
                                 </span>
                             </td>
@@ -369,7 +375,7 @@ if ($nivel == 7) {
                 <div class="panel-heading clearfix">
                     <strong>
                         <span class="glyphicon glyphicon-th"></span>
-                        <span>Seguimiento de la Queja</span>
+                        <span>Seguimiento de la Queja <?php echo remove_junk(ucwords($e_detalle['folio_queja'])) ?></span>
                     </strong>
                 </div>
 
@@ -532,6 +538,73 @@ if ($nivel == 7) {
                         </tr>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="Expedientes" class="tabcontent">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <strong>
+                        <span class="glyphicon glyphicon-th"></span>
+                        <span>Expedientes de la Queja</span>
+                    </strong>
+                </div>
+                <?php foreach ($e_detalle2 as $detalle) : ?>
+                <div class="panel-body">
+                    <table style="color:#3a3d44; margin-top: -10px">
+                        <tr>
+                            <td>
+                                <span style="font-weight: bold;">Folio: </span>
+                                <?php echo remove_junk(ucwords($detalle['folio_queja'])) ?>
+                                <br><br>
+                            </td>
+                            <td style="width: 2%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Tipo de acuerdo: </span>
+                                    <?php echo $detalle['tipo_acuerdo']?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 3%;">
+                                <span class="text-center">
+                                    <span style="font-weight: bold;">Fecha de acuerdo: </span>
+                                    <?php echo $detalle['fecha_acuerdo']?><br><br>
+                                </span>
+                            </td>
+                            <td style="width: 2%;">
+                                <span>
+                                    <span style="font-weight: bold;">Acuerdo adjunto: </span>
+                                    <?php echo $detalle['acuerdo_adjunto'] ?>
+                                    <br><br>
+                                </span>
+                            </td>
+                        </tr>
+                        <tr>
+                        <td style="width: 2%;">
+                                <span>
+                                    <span style="font-weight: bold;">Acuerdo público adjunto: </span>
+                                    <?php echo $detalle['acuerdo_adjunto_publico'] ?>
+                                    <br><br>
+                                </span>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Versión pública: </span>
+                                <?php if ($detalle['publico'] == 1) {
+                                    echo "Sí";
+                                } else
+                                    echo "No"; ?>
+                                <br><br>
+                            </td>
+                            <td>
+                                <span style="font-weight: bold;">Razón de Desechamiento: </span>
+                                <?php echo $detalle['sintesis_documento'] ?>
+                                <br><br>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr style="height: 1.5px; background-color: #5306e0; opacity: 1;">
+                </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

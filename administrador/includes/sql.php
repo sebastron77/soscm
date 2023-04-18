@@ -4262,7 +4262,6 @@ function find_all_autoridades()
 /*--------------------------------------------------------------*/
 function quejas()
 {
-  global $db;
   $sql = "SELECT DISTINCT t.number as Folio_Queja, t.lastupdate as Ultima_Actualizacion, d.subject as Autoridad_Responsable,u.name as Creado_Por,";
   $sql .= " d.priority as Prioridad, s.firstname as Asignado_Nombre, s.lastname as Asignado_Apellido, st.state, t.status_id, t.isoverdue, t.isanswered, t.created, d.ticket_id, d.n_autoridad";
   $sql .= " FROM ost_ticket as t";
@@ -4278,4 +4277,34 @@ function find_by_sql2($sql)
   $result = $db->query($sql);
   $result_set = $db->while_loop($result);
   return $result_set;
+}
+/*--------------------------------------------------------------*/
+/* Funcion para mostrar las acuerdo de quejas
+/*--------------------------------------------------------------*/
+
+function find_acuerdo_quejas($id){	
+  global $db;
+  $sql  = "SELECT id_rel_queja_acuerdos,tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico FROM `rel_queja_acuerdos` WHERE id_queja_date= {$id}";
+  return $db->query($sql);
+  
+}
+
+function find_by_id_acuerdo($id)
+{
+  global $db;
+  $id = (int)$id;
+  // $sql = $db->query("SELECT rqa.id_queja_date, qd.folio_queja, rqa.tipo_acuerdo, rqa.fecha_acuerdo, rqa.acuerdo_adjunto, rqa.acuerdo_adjunto_publico, rqa.sintesis_documento, rqa.publico, rqa.fecha_alta 
+  //         FROM rel_queja_acuerdos as rqa 
+  //         LEFT JOIN quejas_dates as qd ON qd.id_queja_date = rqa.id_queja_date 
+  //         WHERE qd.id_queja_date='{$db->escape($id)}';");
+  // if ($result = $db->fetch_assoc($sql))
+  //   return $result;
+  // else
+  //   return null;
+    // global $db;
+    $sql  = "SELECT rqa.id_queja_date, qd.folio_queja, rqa.tipo_acuerdo, rqa.fecha_acuerdo, rqa.acuerdo_adjunto, rqa.acuerdo_adjunto_publico, rqa.sintesis_documento, rqa.publico, rqa.fecha_alta 
+    FROM rel_queja_acuerdos as rqa 
+    LEFT JOIN quejas_dates as qd ON qd.id_queja_date = rqa.id_queja_date 
+    WHERE qd.id_queja_date='{$db->escape($id)}';";
+    return $db->query($sql);
 }

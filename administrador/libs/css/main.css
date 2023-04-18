@@ -808,11 +808,11 @@ span.red {
 
 div.alert.alert-success {
   font-size: 20px;
-  /* background: #84d696; */
+  background: #7163f050;
   /* border-color: #176939; */
-  color: #fff;
+  color: white;
   border: 0px;
-  text-shadow: 0 0 0.6em #fff, 0 0 0.5em #370494;
+  /* text-shadow: 0 0 0.6em #370494, 0 0 0.5em #370494; */
 }
 div.alert.alert-warning {
   font-size: 14px;
@@ -1031,4 +1031,19 @@ a:active {
 }
 .tileA-icon:hover > svg {
   fill: #7263f0;
+}
+a.btn.btn-gre {
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  background: #0f861b;
+  border-color: #0f861b;
+}
+a.btn.btn-gre:hover,
+.btn-gre:focus,
+.btn-gre.focus,
+.btn-gre:active,
+.btn-gre.active {
+  color: #fff;
+  background-color: #0c6c15;
+  border-color: #0c6c15;
 }
