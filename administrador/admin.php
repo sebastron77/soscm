@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-$page_title = 'SGQ-CEDH';
+$page_title = 'SUIGCEDH';
 require_once('includes/load.php');
 
 $user = current_user();

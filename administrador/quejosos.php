@@ -37,10 +37,10 @@ endif;
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Lista de Quejosos</span>
+                    <span>Lista de Promoventes</span>
                 </strong>
                 <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 5): ?>
-                    <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar quejoso</a>
+                    <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar promovente</a>
                 <?php endif ?>
             </div>
 

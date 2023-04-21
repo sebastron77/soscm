@@ -5,14 +5,20 @@
       <span>Panel de control</span>
     </a>
   </li>
-  <li style="margin-bottom: 7px;">
-    <a href="#" class="submenu-toggle">
-      <i class="glyphicon glyphicon-file"></i>
-      <span>Solicitudes</span>
+  <li style="margin-bottom: 18px;">
+    <a href="#" class="submenu-toggle" style="left: 18px; top:20px">
+      <svg style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z" />
+        <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z" />
+        <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z" />
+      </svg>
+      <!--<svg style="width:22px;height:22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>note</title><path d="M14,10V4.5L19.5,10M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V9L15,3H5Z" /></svg>  -->
+      <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Solicitudes</span>
     </a>
-    <ul class="nav submenu">
-      <li><a href="solicitudes.php">Ver solicitudes</a> </li>
-      <!-- <li><a href="quejas.php">Seguimiento de Solicitudes</a> </li> -->
+    <ul style="margin-top:25px" class="nav submenu">
+      <li><a href="quejas.php">Quejas</a> </li>
+      <li><a href="orientaciones.php">Orientaciones</a> </li>
+      <li><a href="canalizaciones.php">Canalizaciones</a> </li>
     </ul>
   </li>
   <li>

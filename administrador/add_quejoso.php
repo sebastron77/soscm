@@ -141,12 +141,12 @@ include_once('layouts/header.php'); ?>
         <div class="panel-heading">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
-                <span>Agregar quejoso</span>
+                <span>Agregar promovente</span>
             </strong>
         </div>
         <div class="panel-body">
             <form method="post" action="add_quejoso.php">
-                <h1>Agregar datos quejoso</h1>
+                <h1>Agregar datos promovente</h1>
                 <div class="row" style="margin-top: 2%">
                     <div class="col-md-2">
                         <div class="form-group">
