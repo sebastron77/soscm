@@ -5,12 +5,38 @@ require_once('includes/load.php');
 $user = current_user();
 $id_usuario = $user['id_user'];
 
-// $user = current_user();
-//$id_user = $user['id'];
 $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
+$nivel = $user['user_level'];
 
-page_require_level(50);
+if ($nivel <= 2) {
+    page_require_level(2);
+}
+if ($nivel == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel > 21) {
+    page_require_level_exacto(21);
+}
+
+if ($nivel > 2 && $nivel < 5) :
+    redirect('home.php');
+endif;
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7 && $nivel < 19) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
+    redirect('home.php');
+endif;
 
 ?>
 
@@ -34,7 +60,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
 	<div class="full-box tile-container">
-		<?php if (($otro <= 2)) : ?>
+		<?php if (($otro <= 2) || ($otro == 21)) : ?>
 			<a href="solicitudes_presidencia.php" class="tileA">
 				<div class="tileA-tittle">Consejo</div>
 				<div class="tileA-icon">
@@ -44,7 +70,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 				</div>
 			</a>
 		<?php endif ?>
-		<?php if (($otro <= 2)) : ?>
+		<?php if (($otro <= 2) || ($otro == 21)) : ?>
 			<a href="solicitudes_presidencia.php" class="tileA">
 				<div class="tileA-tittle">Presidencia</div>
 				<div class="tileA-icon">
@@ -55,7 +81,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 			</a>
 		<?php endif ?>
 
-		<?php if (($otro == 8) || ($otro <= 2)) : ?>
+		<?php if (($otro == 8) || ($otro <= 2) || ($otro == 21)) : ?>
 			<a href="solicitudes_tecnica.php" class="tileA">
 				<div class="tileA-tittle">Secretaría Técnica</div>
 				<div class="tileA-icon">
@@ -66,7 +92,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 			</a>
 		<?php endif ?>
 
-		<?php if (($otro <= 2)) : ?>
+		<?php if (($otro <= 2) || ($otro == 21)) : ?>
 			<a href="solicitudes_presidencia.php" class="tileA">
 				<div class="tileA-tittle">Mecanismos y Agendas</div>
 				<div class="tileA-icon">
@@ -77,7 +103,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 			</a>
 		<?php endif ?>
 
-		<?php if (($otro == 5) || ($otro <= 2) || ($otro == 19) || ($otro == 20)) : ?>
+		<?php if (($otro == 5) || ($otro <= 2) || ($otro == 19) || ($otro == 20) || ($otro == 21)) : ?>
 			<a href="solicitudes_quejas.php" class="tileA">
 				<div class="tileA-tittle">Quejas y Seguimiento</div>
 				<div class="tileA-icon">

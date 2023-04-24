@@ -49,8 +49,31 @@ function find_all_cat_municipios()
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_quejas()
+function find_all_quejas($id)
 {
+  global $db;
+  $id = (int)$id;
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, q.incompetencia, q.causa_incomp, 
+          q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.observaciones, cq.nombre as nombre_quejoso, 
+          cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
+          q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
+          q.num_recomendacion, q.fecha_termino
+          FROM quejas_dates q 
+          LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
+          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
+          LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
+          LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
+          LEFT JOIN users u ON u.id_user = q.id_user_asignado
+          LEFT JOIN area a ON a.id_area = q.id_area_asignada
+          LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
+          LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
+          WHERE q.id_area_asignada = '{$db->escape($id)}';";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_all_quejas_admin()
+{
+  global $db;
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, q.incompetencia, q.causa_incomp, 
           q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.observaciones, cq.nombre as nombre_quejoso, 
           cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
@@ -4282,11 +4305,11 @@ function find_by_sql2($sql)
 /* Funcion para mostrar las acuerdo de quejas
 /*--------------------------------------------------------------*/
 
-function find_acuerdo_quejas($id){	
+function find_acuerdo_quejas($id)
+{
   global $db;
   $sql  = "SELECT id_rel_queja_acuerdos,tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico FROM `rel_queja_acuerdos` WHERE id_queja_date= {$id}";
   return $db->query($sql);
-  
 }
 
 function find_by_id_acuerdo($id)
@@ -4301,10 +4324,54 @@ function find_by_id_acuerdo($id)
   //   return $result;
   // else
   //   return null;
-    // global $db;
-    $sql  = "SELECT rqa.id_queja_date, qd.folio_queja, rqa.tipo_acuerdo, rqa.fecha_acuerdo, rqa.acuerdo_adjunto, rqa.acuerdo_adjunto_publico, rqa.sintesis_documento, rqa.publico, rqa.fecha_alta 
+  // global $db;
+  $sql  = "SELECT rqa.id_queja_date, qd.folio_queja, rqa.tipo_acuerdo, rqa.fecha_acuerdo, rqa.acuerdo_adjunto, rqa.acuerdo_adjunto_publico, rqa.sintesis_documento, rqa.publico, rqa.fecha_alta 
     FROM rel_queja_acuerdos as rqa 
     LEFT JOIN quejas_dates as qd ON qd.id_queja_date = rqa.id_queja_date 
     WHERE qd.id_queja_date='{$db->escape($id)}';";
-    return $db->query($sql);
+  return $db->query($sql);
 }
+
+function muestra_area($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql  = $db->query("SELECT d.nombre, d.apellidos, c.nombre_cargo, a.id_area, a.nombre_area
+            FROM users as u
+            LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
+            LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo
+            LEFT JOIN area as a ON a.id_area = c.id_area
+            WHERE u.id_user = '{$db->escape($id)}' LIMIT 1;");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+// function find_by_id_orientacion($id)
+// {
+//   global $db;
+//   $id = (int)$id;
+//   $sql = $db->query("SELECT o.id_or_can as idcan,o.folio,o.correo_electronico,o.nombre_completo,cesc.descripcion as cesc,ocup.descripcion as ocup,o.edad,
+//                       o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero,o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
+//                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
+//                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
+//                       o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,
+//                       o.medio_presentacion
+//                       FROM orientacion_canalizacion as o 
+//                       LEFT JOIN users as u ON u.id_user = o.id_creador 
+//                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
+//                       LEFT JOIN cat_ocupaciones as ocup ON ocup.id_cat_ocup = o.ocupacion 
+//                       LEFT JOIN cat_grupos_vuln as gvuln ON gvuln.id_cat_grupo_vuln = o.grupo_vulnerable 
+//                       LEFT JOIN cat_genero gen ON gen.id_cat_gen = o.sexo 
+//                       LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = o.institucion_canaliza
+//                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
+//                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
+//                       -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
+//                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
+//                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
+//   WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=1 LIMIT 1");
+//   if ($result = $db->fetch_assoc($sql))
+//     return $result;
+//   else
+//     return null;
+// }

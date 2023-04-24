@@ -5,18 +5,34 @@ require_once('includes/load.php');
 <?php
 $user = current_user();
 $id_user = $user['id_user'];
-$nivel_user = $user['user_level'];
+$nivel = $user['user_level'];
 
-if ($nivel_user <= 2) :
+if ($nivel <= 2) {
     page_require_level(2);
-endif;
-if ($nivel_user == 7) :
+}
+if ($nivel == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel == 7) {
     page_require_level_exacto(7);
-endif;
-if ($nivel_user > 2 && $nivel_user < 7) :
+}
+if ($nivel == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel > 21) {
+    page_require_level_exacto(21);
+}
+
+if ($nivel > 2 && $nivel < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7 && $nivel < 19) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
     redirect('home.php');
 endif;
 ?>

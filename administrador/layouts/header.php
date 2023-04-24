@@ -33,8 +33,8 @@
   <script src="script.js"></script>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
   <!-- <link href="https://fonts.googleapis.com/css2?family=Questrial&display=swap" rel="stylesheet"> -->
 
   <link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet" />
@@ -154,7 +154,8 @@
       <div class="logo pull-left"><span>Sistema Único de Información y Gestión de la CEDH (SUIGCEDH)</span></div>
       <div class="header-content">
         <div class="header-date pull-left">
-          <strong><?php //echo make_date_no_seg(); ?></strong>
+          <strong><?php //echo make_date_no_seg(); 
+                  ?></strong>
         </div>
         <div class="pull-right clearfix">
           <ul class="info-menu list-inline list-unstyled">
@@ -264,6 +265,10 @@
       <?php elseif ($user['user_level'] === '18') : ?>
         <!-- Presidencia y Secretaría Técnica -->
         <?php include_once('oficialia_menu.php'); ?>
+
+      <?php elseif ($user['user_level'] === '21') : ?>
+        <!-- Presidencia y Secretaría Técnica -->
+        <?php include_once('consejo_menu.php'); ?>
 
       <?php endif; ?>
     </div>

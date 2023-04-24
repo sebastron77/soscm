@@ -18,7 +18,7 @@
   
     <div class="form-group">
       <label for="username" class="control-label">Usuario</label>
-      <input type="name" style="background:#E3E3E3; color:#E3E3E3;" class="form-control" name="username" placeholder="Usuario">
+      <input type="name" style="background:#E3E3E3;" class="form-control" name="username" placeholder="Usuario">
     </div>
     <div class="form-group">
       <label for="Password" class="control-label">Contraseña</label>

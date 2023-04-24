@@ -12,22 +12,42 @@ $otro = $busca_area['id'];
 
 $nivel_user = $user['user_level'];
 
-if (($nivel_user > 2 && $nivel_user < 7)) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 7) :
-    redirect('home.php');
-endif;
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel_user == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel_user == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel_user > 21) {
+    page_require_level_exacto(21);
+}
 
-// page_require_level(2);
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 5 && $nivel_user < 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 7 && $nivel_user < 19) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
+    redirect('home.php');
+endif;
 ?>
 
 <?php
-$c_categoria     = count_by_id('categorias');
-$c_user          = count_by_id('users');
-$c_trabajadores          = count_by_id('detalles_usuario');
-$c_areas          = count_by_id('area');
-$c_cargos          = count_by_id('cargos');
+// $c_categoria     = count_by_id('categorias');
+// $c_user          = count_by_id('users');
+// $c_trabajadores          = count_by_id('detalles_usuario');
+// $c_areas          = count_by_id('area');
+// $c_cargos          = count_by_id('cargos');
 ?>
 
 <?php include_once('layouts/header.php'); ?>

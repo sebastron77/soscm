@@ -7,12 +7,17 @@ $page_title = 'Lista de quejas';
 
 require_once('includes/load.php');
 
-$quejas_libro = find_all_quejas();
-
 $user = current_user();
 $nivel = $user['user_level'];
 // $id_user = $user['id'];
 $nivel_user = $user['user_level'];
+$id_u = $user['id_user'];
+$area_user = muestra_area($id_u);
+if(($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 21)){
+    $quejas_libro = find_all_quejas_admin();    
+} else {
+    $quejas_libro = find_all_quejas($area_user['id_area']);
+}
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -26,6 +31,9 @@ if ($nivel_user == 7) {
 if ($nivel_user == 19) {
     page_require_level_exacto(19);
 }
+if ($nivel_user > 21) {
+    page_require_level_exacto(21);
+}
 
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
@@ -36,7 +44,7 @@ endif;
 if ($nivel_user > 7 && $nivel_user < 19) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19) :
+if ($nivel_user > 19 && $nivel_user < 21) :
     redirect('home.php');
 endif;
 
@@ -110,7 +118,7 @@ require_once('includes/sql.php');
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Quejas</span>
                 </strong>
-                <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
+                <?php if (($nivel == 1) || ($nivel == 5)) : ?>
                     <a href="add_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Queja</a>
                 <?php endif; ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
@@ -130,7 +138,7 @@ require_once('includes/sql.php');
                         <th width="5%">Adjunto</th>
                         <th width="10%">Quejoso</th>
                         <th width="1%">Estatus</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 21)) : ?>
                             <th width="3%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>
@@ -170,12 +178,12 @@ require_once('includes/sql.php');
                             <td>
                                 <?php echo remove_junk(ucwords($queja['estatus_queja'])) ?>
                             </td>
-                            <?php if (($nivel <= 2) || ($nivel == 5)) : ?>
-                                <td class="text-center">
-                                    <div class="btn-group">
-                                        <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
-                                            <i class="glyphicon glyphicon-eye-open"></i>
-                                        </a>&nbsp;
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                    </a>&nbsp;
+                                    <?php if (($nivel == 1) || ($nivel == 5)) : ?>
                                         <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>&nbsp;
@@ -185,9 +193,9 @@ require_once('includes/sql.php');
                                         <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-gre btn-md" title="Acuerdos" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-retweet"></span>
                                         </a>&nbsp;
+                                        <?php endif; ?>
                                     </div>
                                 </td>
-                            <?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

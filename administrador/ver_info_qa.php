@@ -33,21 +33,31 @@ $cat_municipios = find_all_cat_municipios();
 if ($nivel <= 2) {
     page_require_level(2);
 }
-if ($nivel == 3) {
-    redirect('home.php');
-}
-if ($nivel == 4) {
-    redirect('home.php');
-}
 if ($nivel == 5) {
-    page_require_level(5);
-}
-if ($nivel == 6) {
-    redirect('home.php');
+    page_require_level_exacto(5);
 }
 if ($nivel == 7) {
-    redirect('home.php');
+    page_require_level_exacto(7);
 }
+if ($nivel == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel > 21) {
+    page_require_level_exacto(21);
+}
+
+if ($nivel > 2 && $nivel < 5) :
+    redirect('home.php');
+endif;
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7 && $nivel < 19) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
+    redirect('home.php');
+endif;
 ?>
 <div class="row">
     <div class="col-md-12">
