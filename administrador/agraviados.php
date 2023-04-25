@@ -13,10 +13,32 @@ $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-if ($nivel_user > 2 && $nivel_user < 7):
+if ($nivel <= 2) {
+    page_require_level(2);
+}
+if ($nivel == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel == 19) {
+    page_require_level_exacto(19);
+}
+if ($nivel > 21) {
+    page_require_level_exacto(21);
+}
+
+if ($nivel > 2 && $nivel < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7):
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7 && $nivel < 19) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
     redirect('home.php');
 endif;
 ?>
@@ -53,13 +75,13 @@ endif;
                             <th style="width: 1%;">Teléfono</th>
                             <th style="width: 15%;">Grupo Vuln.</th>
                             <th style="width: 1%;">PPL</th>
-                            <?php if ($otro == 1 || $nivel_user == 1): ?>
+                            <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 5 || $nivel_user == 7) : ?>
                                 <th style="width: 1%;" class="text-center">Acciones</th>
                             <?php endif ?>
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($all_detalles as $a_detalle): ?>
+                        <?php foreach ($all_detalles as $a_detalle) : ?>
                             <tr>
                                 <td>
                                     <?php echo remove_junk(ucwords($a_detalle['id_cat_agrav'])) ?>
@@ -91,20 +113,18 @@ endif;
                                     }
                                     ?>
                                 </td>
-                                <?php if ($otro == 1 || $nivel_user == 1): ?>
-                                    <td class="text-center">
+                                <td class="text-center">
+                                    <a href="ver_info_agraviado.php?id=<?php echo (int) $a_detalle['id_cat_agrav']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
+                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                    </a>
+                                    <?php if ($otro == 1 || $nivel_user <= 2 || $nivel_user == 5) : ?>
                                         <div class="btn-group">
-                                            <a href="ver_info_agraviado.php?id=<?php echo (int) $a_detalle['id_cat_agrav']; ?>"
-                                                class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
-                                                <i class="glyphicon glyphicon-eye-open"></i>
-                                            </a>
-                                            <a href="edit_agraviado.php?id=<?php echo (int) $a_detalle['id_cat_agrav']; ?>"
-                                                class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+                                            <a href="edit_agraviado.php?id=<?php echo (int) $a_detalle['id_cat_agrav']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                 <i class="glyphicon glyphicon-pencil"></i>
-                                            </a> 
+                                            </a>
                                         </div>
-                                    </td>
-                                <?php endif ?>
+                                    <?php endif ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

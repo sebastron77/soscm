@@ -113,7 +113,7 @@ if (isset($_POST["export_data"])) {
                         <th style="width: 5%;">Nombre Completo</th>
                         <!-- <th style="width: 5%;">Ocupación</th> -->
                         <th style="width: 3%;">Creador</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 21)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21)) : ?>
                             <th style="width: 10%;" class="text-center">Acciones</th>
                         <?php endif ?>
                     </tr>

@@ -11,10 +11,10 @@ if (isset($_POST['add'])) {
     $req_fields = array('cargo-name');
     validate_fields($req_fields);
 
-    if (find_by_cargoName($_POST['cargo-name']) === false) {
-        $session->msg('d', '<b>Error!</b> El nombre del cargo realmente existe en la base de datos');
-        redirect('add_cargo.php', false);
-    }
+    // if (find_by_cargoName($_POST['cargo-name']) === false) {
+    //     $session->msg('d', '<b>Error!</b> El nombre del cargo realmente existe en la base de datos');
+    //     redirect('add_cargo.php', false);
+    // }
 
     if (empty($errors)) {
         $name = remove_junk($db->escape($_POST['cargo-name']));

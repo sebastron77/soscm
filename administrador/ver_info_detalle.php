@@ -36,14 +36,12 @@ $nivel = $user['user_level'];
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
-                            <th style="width: 12%;">ID Trabajador</th>
-                            <th>Nombre</th>
-                            <th>Apellidos</th>
-                            <th style="width: 5%;">Sexo</th>
-                            <th>CURP</th>
-                            <th>RFC</th>
-                            <th>Correo</th>
-                            <th>Tel. casa</th>
+                            <th style="width: 10%;">ID Trabajador</th>
+                            <th style="width: 12%;">Nombre</th>
+                            <th style="width: 12%;">Apellidos</th>
+                            <th style="width: 1%;">Sexo</th>
+                            <th style="width: 20%;">Correo</th>
+                            <th style="width: 20%;">Cargo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -61,51 +59,7 @@ $nivel = $user['user_level'];
                                 <?php echo remove_junk($e_detalle['sexo']) ?>
                             </td>
                             <td>
-                                <?php echo remove_junk($e_detalle['curp']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['rfc']) ?>
-                            </td>
-                            <td>
                                 <?php echo remove_junk($e_detalle['correo']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['telefono_casa']) ?>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <table class="table table-bordered table-striped">
-                    <thead class="thead-purple">
-                        <tr>
-                            <th style="width: 5%;">Celular</th>
-                            <th>Calle y No.</th>
-                            <th>Colonia</th>
-                            <th>Municipio</th>
-                            <th>Estado</th>
-                            <th style="width: 8%;">País</th>
-                            <th style="width: 20%;">Cargo</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <?php echo remove_junk($e_detalle['telefono_celular']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['calle_numero']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['colonia']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['municipio']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['estado']) ?>
-                            </td>
-                            <td>
-                                <?php echo remove_junk($e_detalle['pais']) ?>
                             </td>
                             <td>
                                 <?php

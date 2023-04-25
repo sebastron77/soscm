@@ -138,7 +138,7 @@ require_once('includes/sql.php');
                         <th width="5%">Adjunto</th>
                         <th width="10%">Quejoso</th>
                         <th width="1%">Estatus</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 21)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21)) : ?>
                             <th width="3%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>

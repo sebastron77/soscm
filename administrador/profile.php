@@ -70,8 +70,7 @@ endif;
           <div class="col-md-4">
             <div class="form-group">
               <label for="cargo">Cargo</label>
-              <input readonly type="text" class="form-control" name="cargo" value="<?php foreach ($cargos as $cargo) : if ($cargo['id'] === $e_detalle['id_cargo']) echo $cargo['nombre_cargo'];
-                                                                          endforeach; ?>">
+              <input readonly type="text" class="form-control" name="cargo" value="<?php foreach ($cargos as $cargo) : if ($cargo['id_cargos'] === $e_detalle['id_cargo']) echo $cargo['nombre_cargo']; endforeach; ?>">
             </div>
           </div>
         </div>
@@ -81,67 +80,8 @@ endif;
             <input readonly type="text" class="form-control" name="sexo" value="<?php echo $e_detalle['sexo'] == 'H' ? 'Hombre' : 'Mujer' ?>">
           </div>
           <div class="col-md-4">
-            <div class="form-group">
-              <label for="curp" class="control-label">CURP</label>
-              <input readonly type="text" class="form-control" name="curp" value="<?php echo remove_junk(ucwords($e_detalle['curp'])); ?>">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="rfc" class="control-label">RFC</label>
-              <input readonly type="text" class="form-control" name="rfc" value="<?php echo remove_junk(ucwords($e_detalle['rfc'])); ?>">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4">
             <label for="correo" class="control-label">Correo</label>
             <input readonly type="text" class="form-control" name="correo" value="<?php echo remove_junk($e_detalle['correo']); ?>">
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="tel-casa" class="control-label">Teléfono Casa</label>
-              <input readonly type="text" class="form-control" name="tel-casa" value="<?php echo remove_junk(ucwords($e_detalle['telefono_casa'])); ?>">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="tel-cel" class="control-label">Teléfono Celular</label>
-              <input readonly type="text" class="form-control" name="tel-cel" value="<?php echo remove_junk(ucwords($e_detalle['telefono_celular'])); ?>">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-6">
-            <label for="calle-num" class="control-label">Calle y número</label>
-            <input readonly type="text" class="form-control" name="calle-num" value="<?php echo (ucwords($e_detalle['calle_numero'])); ?>">
-          </div>
-          <div class="col-md-6">
-            <div class="form-group">
-              <label for="colonia" class="control-label">Colonia</label>
-              <input readonly type="text" class="form-control" name="colonia" value="<?php echo (ucwords($e_detalle['colonia'])); ?>">
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="municipio" class="control-label">Municipio</label>
-              <input readonly type="text" class="form-control" name="municipio" value="<?php echo (ucwords($e_detalle['municipio'])); ?>">
-            </div>
-          </div>
-          <div class="col-md-4">
-            <label for="estado" class="control-label">Estado</label>
-            <input readonly type="text" class="form-control" name="estado" value="<?php echo (ucwords($e_detalle['estado'])); ?>">
-          </div>
-          <div class="col-md-4">
-            <div class="form-group">
-              <label for="pais" class="control-label">País</label>
-              <input readonly type="text" class="form-control" name="pais" value="<?php echo (ucwords($e_detalle['pais'])); ?>">
-            </div>
           </div>
         </div>
       </form>

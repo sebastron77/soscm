@@ -8,29 +8,20 @@ $cargos = find_all_cargos2();
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_detalle_usuario'])) {
 
-    $req_fields = array('nombre', 'apellidos', 'sexo', 'curp', 'rfc', 'correo', 'tel-casa', 'tel-cel', 'calle-num', 'colonia', 'municipio', 'estado', 'pais', 'cargo');
+    $req_fields = array('nombre', 'apellidos', 'sexo', 'correo', 'cargo');
     validate_fields($req_fields);
 
     if (empty($errors)) {
         $nombre   = remove_junk($db->escape($_POST['nombre']));
         $apellidos   = remove_junk($db->escape($_POST['apellidos']));
         $sexo   = remove_junk($db->escape($_POST['sexo']));
-        $curp   = remove_junk(upper_case($db->escape($_POST['curp'])));
-        $rfc   = remove_junk(upper_case($db->escape($_POST['rfc'])));
         $correo   = remove_junk($db->escape($_POST['correo']));
-        $casa   = remove_junk($db->escape($_POST['tel-casa']));
-        $cel   = remove_junk($db->escape($_POST['tel-cel']));
-        $calle   = remove_junk($db->escape($_POST['calle-num']));
-        $colonia   = remove_junk($db->escape($_POST['colonia']));
-        $municipio   = remove_junk($db->escape($_POST['municipio']));
-        $estado   = remove_junk($db->escape($_POST['estado']));
-        $pais   = remove_junk($db->escape($_POST['pais']));
         $cargo   = (int)$db->escape($_POST['cargo']);
 
         $query = "INSERT INTO detalles_usuario (";
-        $query .= "nombre,apellidos,sexo,curp,rfc,correo,telefono_casa,telefono_celular,calle_numero,colonia,municipio,estado,pais,id_cargo,estatus_detalle";
+        $query .= "nombre,apellidos,sexo,correo,id_cargo,estatus_detalle";
         $query .= ") VALUES (";
-        $query .= " '{$nombre}','{$apellidos}','{$sexo}','{$curp}','{$rfc}','{$correo}','{$casa}','{$cel}','{$calle}','{$colonia}','{$municipio}','{$estado}','{$pais}',{$cargo},'1'";
+        $query .= " '{$nombre}','{$apellidos}','{$sexo}','{$correo}',{$cargo},'1'";
         $query .= ")";
         if ($db->query($query)) {
             //sucess
@@ -102,62 +93,8 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="rfc">RFC</label>
-                            <input type="text" class="form-control" name="rfc" placeholder="RFC" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
                             <label for="correo">Correo</label>
                             <input type="text" class="form-control" name="correo" placeholder="ejemplo@correo.com" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="tel-casa">Teléfono Casa</label>
-                            <input type="text" class="form-control" name="tel-casa" placeholder="Teléfono de casa" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="tel-cel">Teléfono Celular</label>
-                            <input type="text" class="form-control" name="tel-cel" placeholder="Teléfono Celular" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="calle-num">Calle y número</label>
-                            <input type="text" class="form-control" name="calle-num" placeholder="Calle y número" required>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <label for="colonia">Colonia</label>
-                            <input type="text" class="form-control" name="colonia" placeholder="Colonia" required>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="municipio">Municipio</label>
-                            <input type="text" class="form-control" name="municipio" placeholder="Municipio" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="estado">Estado</label>
-                            <input type="text" class="form-control" name="estado" placeholder="Estado" required>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="pais">País</label>
-                            <input type="text" class="form-control" name="pais" placeholder="País" required>
                         </div>
                     </div>
                 </div>

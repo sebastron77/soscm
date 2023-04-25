@@ -93,10 +93,10 @@ function find_all_quejas_admin()
 }
 function find_all_quejasR()
 {
-  $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
+  $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad,
           co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle_queja, q.numero_queja, q.colonia_queja,
           q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo
-          FROM quejas_dates_public q 
+          FROM quejas_dates_public q
           -- LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
           LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
           INNER JOIN cat_genero cg ON cg.id_cat_gen = q.genero
@@ -575,7 +575,7 @@ function find_all_trabajadores()
 {
   global $db;
   $results = array();
-  $sql = "SELECT d.id_det_usuario as detalleID,d.nombre,d.apellidos,d.correo,d.telefono_casa,d.telefono_celular,d.id_cargo,d.estatus_detalle,c.id_cargos,c.nombre_cargo,c.id_area,a.id_area,a.nombre_area ";
+  $sql = "SELECT d.id_det_usuario as detalleID,d.nombre,d.apellidos,d.correo,d.id_cargo,d.estatus_detalle,c.id_cargos,c.nombre_cargo,c.id_area,a.id_area,a.nombre_area ";
   $sql .= "FROM detalles_usuario d LEFT JOIN cargos c ON c.id_cargos = d.id_cargo LEFT JOIN area a ON a.id_area = c.id_area ORDER BY d.nombre";
   $result = find_by_sql($sql);
   return $result;
