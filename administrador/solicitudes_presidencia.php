@@ -75,19 +75,11 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
             </div>
         </a>
-        <a href="#" class="tileO">
+        <a href="eventos_pres.php" class="tileO">
             <div class="tileO-tittle">Actividades</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     arrow_circle_right
-                </span>
-            </div>
-        </a>
-        <a href="#" class="tileO">
-            <div class="tileO-tittle">Acuerdos</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    handshake
                 </span>
             </div>
         </a>

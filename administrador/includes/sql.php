@@ -4347,31 +4347,14 @@ function muestra_area($id)
   else
     return null;
 }
-// function find_by_id_orientacion($id)
-// {
-//   global $db;
-//   $id = (int)$id;
-//   $sql = $db->query("SELECT o.id_or_can as idcan,o.folio,o.correo_electronico,o.nombre_completo,cesc.descripcion as cesc,ocup.descripcion as ocup,o.edad,
-//                       o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero,o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
-//                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
-//                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
-//                       o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,
-//                       o.medio_presentacion
-//                       FROM orientacion_canalizacion as o 
-//                       LEFT JOIN users as u ON u.id_user = o.id_creador 
-//                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
-//                       LEFT JOIN cat_ocupaciones as ocup ON ocup.id_cat_ocup = o.ocupacion 
-//                       LEFT JOIN cat_grupos_vuln as gvuln ON gvuln.id_cat_grupo_vuln = o.grupo_vulnerable 
-//                       LEFT JOIN cat_genero gen ON gen.id_cat_gen = o.sexo 
-//                       LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = o.institucion_canaliza
-//                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
-//                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
-//                       -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
-//                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
-//                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
-//   WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=1 LIMIT 1");
-//   if ($result = $db->fetch_assoc($sql))
-//     return $result;
-//   else
-//     return null;
-// }
+/*----------------------------------------------*/
+/* Funcion que encuentra todas las consejo */
+/*----------------------------------------------*/
+function find_all_consejo()
+{
+  global $db;
+  $results = array();
+  $sql = "SELECT * FROM consejo";
+  $result = find_by_sql($sql);
+  return $result;
+}
