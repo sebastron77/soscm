@@ -4,17 +4,33 @@ require_once('includes/load.php');
 
 $user = current_user();
 $nivel_user = $user['user_level'];
+$id_folio = last_id_folios();
 
-if ($nivel_user <= 2) :
+if ($nivel_user <= 2) {
     page_require_level(2);
+}
+if ($nivel_user == 5) {
+    redirect('home.php');
+}
+if ($nivel_user == 7) {
+    page_require_level(7);
+}
+if ($nivel_user == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel_user == 19) {
+    redirect('home.php');
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
 endif;
-if ($nivel_user == 7) :
-    page_require_level_exacto(7);
-endif;
-if ($nivel_user > 2 && $nivel_user < 7) :
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
 if ($nivel_user > 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
     redirect('home.php');
 endif;
 ?>
@@ -28,27 +44,21 @@ if (isset($_POST['add_gestion'])) {
         date_default_timezone_set('America/Mexico_City');
         $fecha_subida = date('Y-m-d H:i:s');
 
-        
-        
-        $dbh = new PDO('mysql:host=localhost;dbname=servidor_libro', 'root', '');
-        
-        $query = "INSERT INTO gestiones_jurisdiccionales (";
-        $query .= "tipo_gestion, descripcion, documento, observaciones, fecha_subida";
-        $query .= ") VALUES (";
-        $query .= " '{$tipo_gestion}','{$descripcion}','{$name}','{$observaciones}','{$fecha_subida}'";
-        $query .= ")";
+        if (count($id_folio) == 0) {
+            $nuevo_id_folio = 1;
+            $no_folio1 = sprintf('%04d', 1);
+        } else {
+            foreach ($id_folio as $nuevo) {
+                $nuevo_id_folio = (int)$nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int)$nuevo['contador'] + 1);
+            }
+        }
+    
+        $year = date("Y");
+        $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-GESTJ';
 
-        // $dbh->exec($queryInsert3);
-
-	//------------------BUSCA EL ID INSERTADO------------------
-        $dbh->exec($query);
-	    $id_insertado = $dbh->lastInsertId();
-        echo "AAAAAAAAAAAAA: ".$id_insertado;
-        $carpeta = 'uploads/gestiones/'.$id_insertado;
-
-        // $dbh = null;
-        $dbh = null;
-
+        $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-GESTJ';
+        $carpeta = 'uploads/gestiones/' . $folio_carpeta;
 
         if (!is_dir($carpeta)) {
             mkdir($carpeta, 0777, true);
@@ -61,11 +71,36 @@ if (isset($_POST['add_gestion'])) {
 
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
 
-        $query = "UPDATE gestiones_jurisdiccionales SET documento = '$name' WHERE id = '$id_insertado'";
-	    // $dbh->exec($queryUpdate);
-        if ($db->query($query)) {
+        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
+
+        $query = "INSERT INTO gestiones_jurisdiccionales (";
+        $query .= "folio,tipo_gestion, descripcion, documento, observaciones, fecha_subida";
+        $query .= ") VALUES (";
+        $query .= " '{$folio}','{$tipo_gestion}','{$descripcion}','{$name}','{$observaciones}','{$fecha_subida}'";
+        $query .= ")";
+
+        $query2 = "INSERT INTO folios (";
+        $query2 .= "folio, contador";
+        $query2 .= ") VALUES (";
+        $query2 .= " '{$folio}','{$no_folio1}'";
+        $query2 .= ")";
+        // $dbh->exec($queryInsert3);
+
+        //------------------BUSCA EL ID INSERTADO------------------
+        $dbh->exec($query);
+        $id_insertado = $dbh->lastInsertId();
+        echo "AAAAAAAAAAAAA: " . $id_insertado;
+        
+
+        // $dbh = null;
+        $dbh = null;       
+
+        $query = "UPDATE gestiones_jurisdiccionales SET documento = '$name' WHERE id_gestion = '$id_insertado'";
+        // $dbh->exec($queryUpdate);
+        if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', "Registro creado con éxito");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó registro en gestiones, Folio: '.$folio.'.', 1);
             redirect('add_gestion.php', false);
         } else {
             //failed
@@ -112,7 +147,7 @@ if (isset($_POST['add_gestion'])) {
                 Regresar
             </a>
             <button type="submit" name="add_gestion" class="btn btn-info">Guardar</button>
-        </div>       
+        </div>
     </form>
 </div>
 

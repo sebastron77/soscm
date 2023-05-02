@@ -2,10 +2,38 @@
 $page_title = 'Editar Consejo';
 require_once('includes/load.php');
 $user = current_user();
-$detalle = $user['id'];
+$detalle = $user['id_user'];
 $a_consejo = find_by_id_consejo((int)$_GET['id']);
 $id_folio = last_id_folios();
-page_require_level(3);
+$nivel = $user['user_level'];
+
+if ($nivel <= 2) {
+    page_require_level(2);
+}
+if ($nivel == 5) {
+    redirect('home.php');
+}
+if ($nivel == 7) {
+    page_require_level(7);
+}
+if ($nivel == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel == 19) {
+    redirect('home.php');
+}
+if ($nivel > 2 && $nivel < 5) :
+    redirect('home.php');
+endif;
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
+    redirect('home.php');
+endif;
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['edit_consejo'])) {
@@ -14,7 +42,7 @@ if (isset($_POST['edit_consejo'])) {
     validate_fields($req_fields);
 
     if (empty($errors)) {
-        $id = (int)$a_consejo['id'];
+        $id = (int)$a_consejo['id_acta_consejo'];
         $num_sesion   = remove_junk($db->escape($_POST['num_sesion']));
         $tipo_sesion   = remove_junk($db->escape($_POST['tipo_sesion']));
         $fecha_sesion   = remove_junk($db->escape($_POST['fecha_sesion']));
@@ -53,30 +81,31 @@ if (isset($_POST['edit_consejo'])) {
         }
 
         if ($name != '' && $name2 != '') {
-            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', orden_dia='{$name}', acta_acuerdos='{$name2}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', orden_dia='{$name}', acta_acuerdos='{$name2}' WHERE id_acta_consejo='{$db->escape($id)}'";
         }
         if ($name == '' && $name2 == '') {
-            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}' WHERE id_acta_consejo='{$db->escape($id)}'";
         }
         if ($name != '' && $name2 == '') {
-            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', orden_dia='{$name}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', orden_dia='{$name}' WHERE id_acta_consejo='{$db->escape($id)}'";
         }
         if ($name == '' && $name2 != '') {
-            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', acta_acuerdos='{$name2}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE consejo SET num_sesion='{$num_sesion}', tipo_sesion='{$tipo_sesion}', fecha_sesion='{$fecha_sesion}', hora='{$hora}', lugar='{$lugar}', num_asistentes='{$num_asistentes}', acta_acuerdos='{$name2}' WHERE id_acta_consejo='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', " El consejo ha sido editado con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" editó registro en consejo, Folio: '.$folio_editar.'.', 2);
             redirect('consejo.php', false);
         } else {
             //failed
             $session->msg('d', ' No se pudo editar el consejo.');
-            redirect('edit_consejo.php?id=' . (int)$a_consejo['id'], false);
+            redirect('edit_consejo.php?id=' . (int)$a_consejo['id_acta_consejo'], false);
         }
     } else {
         $session->msg("d", $errors);
-        redirect('edit_consejo.php?id=' . (int)$a_consejo['id'], false);
+        redirect('edit_consejo.php?id=' . (int)$a_consejo['id_acta_consejo'], false);
     }
 }
 ?>
@@ -92,7 +121,7 @@ include_once('layouts/header.php'); ?>
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="edit_consejo.php?id=<?php echo (int)$a_consejo['id']; ?>" enctype="multipart/form-data">
+            <form method="post" action="edit_consejo.php?id=<?php echo (int)$a_consejo['id_acta_consejo']; ?>" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">

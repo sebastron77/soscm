@@ -1,7 +1,7 @@
 .body2 {
   overflow-x: hidden;
   overflow-y: auto;
-  background-image: url("../../medios/fondo-onda_banner_500223-116.avif");
+  background-image: url("../../medios/1.jpg");
   height: 100%;
   width: 100%;
   background-size: cover;
@@ -59,6 +59,20 @@ a {
   top: 50px;
   left: 0;
   padding: 35px 15px 20px 270px;
+}
+
+.login-page3{
+  width: 600px;
+  height: 620px;
+  margin: 7% auto;
+  padding: 0 10px;
+  background-color: #FFFFFF;
+  border-radius: 15px;
+  color: #3a3d44;
+  box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
+  margin-top: -5px;
+}.login-page3 .text-center{
+  margin-bottom: 10px;
 }
 
 h1 {

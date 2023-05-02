@@ -2,10 +2,38 @@
 $page_title = 'Agregar';
 require_once('includes/load.php');
 $user = current_user();
-$detalle = $user['id'];
-$id_ori_canal = last_id_oricanal();
-$id_folio = last_id_folios_general();
-page_require_level(3);
+$detalle = $user['id_user'];
+$id_folio = last_id_folios();
+$nivel_user = $user['user_level'];
+
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    redirect('home.php');
+}
+if ($nivel_user == 7) {
+    page_require_level(7);
+}
+if ($nivel_user == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel_user == 19) {
+    redirect('home.php');
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 5 && $nivel_user < 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
+    redirect('home.php');
+endif;
+
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_consejo'])) {
@@ -31,8 +59,8 @@ if (isset($_POST['add_consejo'])) {
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int)$nuevo['id'] + 1;
-                $no_folio1 = sprintf('%04d', (int)$nuevo['id'] + 1);
+                $nuevo_id_folio = (int)$nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
             }
         }
 
@@ -69,7 +97,7 @@ if (isset($_POST['add_consejo'])) {
             $query .= " '{$folio}','{$num_sesion}','{$tipo_sesion}','{$fecha_sesion}','{$hora}','{$lugar}','{$num_asistentes}','{$name}','{$name2}'";
             $query .= ")";
 
-            $query2 = "INSERT INTO folios_general (";
+            $query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
             $query2 .= ") VALUES (";
             $query2 .= " '{$folio}','{$no_folio1}'";
@@ -79,6 +107,7 @@ if (isset($_POST['add_consejo'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " El registro se ha agregado con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó registro en consejo, Folio: '.$folio.'.', 1);
             redirect('consejo.php', false);
         } else {
             //failed
@@ -150,13 +179,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="orden_dia">Orden del día</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="orden_dia" id="orden_dia" required>
+                            <input type="file" accept="application/pdf" class="form-control" name="orden_dia" id="orden_dia">
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="acta_acuerdos">Acta de acuerdos (firmada)</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="acta_acuerdos" id="acta_acuerdos" required>
+                            <input type="file" accept="application/pdf" class="form-control" name="acta_acuerdos" id="acta_acuerdos">
                         </div>
                     </div>
                 </div>

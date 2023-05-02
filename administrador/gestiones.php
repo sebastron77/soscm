@@ -4,7 +4,7 @@ $page_title = 'Lista de gestiones jurisdiccionales';
 require_once('includes/load.php');
 
 // page_require_level(2);
-$all_autoridades = find_all('gestiones_jurisdiccionales');
+$all_gestiones = find_all('gestiones_jurisdiccionales');
 $user = current_user();
 $nivel = $user['user_level'];
 
@@ -13,18 +13,29 @@ $id_user = $user['id'];
 $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
-//@$level = find_user_level('users', (int)$_GET['id']);
 
-if ($nivel_user <= 2) :
-    page_require_level(2);
-endif;
-if ($nivel_user == 7) :
+if ($nivel_user <= 3) {
+    page_require_level(3);
+}
+if ($nivel_user == 7) {
     page_require_level_exacto(7);
+}
+if ($nivel_user == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel_user == 19) {
+    redirect('home.php');
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
 endif;
-if ($nivel_user > 2 && $nivel_user < 7) :
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
 if ($nivel_user > 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
     redirect('home.php');
 endif;
 ?>
@@ -47,9 +58,9 @@ endif;
                 <?php endif ?>
             </div>
             <div class="panel-body">
-                <table class="datatable table table-dark table-bordered table-striped">
-                    <thead>
-                        <tr class="table-info">
+                <table class="datatable table table-bordered table-striped">
+                    <thead class="thead-purple">
+                        <tr >
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 20%;">Tipo Gestión</th>
                             <th class="text-center" style="width: 30%;">Descripción</th>
@@ -61,26 +72,27 @@ endif;
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($all_autoridades as $a_autoridad) : ?>
+                        <?php foreach ($all_gestiones as $a_gestion) : ?>
                             <tr>
                                 <td class="text-center"><?php echo count_id(); ?></td>
-                                <td><?php echo remove_junk(ucwords($a_autoridad['tipo_gestion'])) ?></td>
+                                <td><?php echo remove_junk(ucwords($a_gestion['tipo_gestion'])) ?></td>
                                 <td class="text-center">
-                                    <?php echo remove_junk(ucwords($a_autoridad['descripcion'])) ?>
+                                    <?php echo remove_junk(ucwords($a_gestion['descripcion'])) ?>
                                 </td>
                                 <?php
-                                    $folio_editar = $a_autoridad['id'];
+                                    $folio_editar = $a_gestion['folio'];
+                                    $resultado = str_replace("/", "-", $folio_editar);
                                 ?>
                                 <td class="text-center">
-                                    <a target="_blank" style="color: #0094FF;" href="uploads/gestiones/<?php echo $folio_editar . '/' . $a_autoridad['documento']; ?>"><?php echo $a_autoridad['documento']; ?></a>
+                                    <a target="_blank" style="color: #0094FF;" href="uploads/gestiones/<?php echo $resultado . '/' . $a_gestion['documento']; ?>"><?php echo $a_gestion['documento']; ?></a>
                                 </td>
                                 <td class="text-center">
-                                    <?php echo remove_junk(ucwords($a_autoridad['observaciones'])) ?>
+                                    <?php echo remove_junk(ucwords($a_gestion['observaciones'])) ?>
                                 </td>
                                 <?php if ($otro <= 2) : ?>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="edit_gestion.php?id=<?php echo (int)$a_autoridad['id']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+                                            <a href="edit_gestion.php?id=<?php echo (int)$a_gestion['id_gestion']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                 <i class="glyphicon glyphicon-pencil"></i>
                                             </a>
                                         </div>

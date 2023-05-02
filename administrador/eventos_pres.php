@@ -10,7 +10,30 @@ $nivel = $user['user_level'];
 $id_user = $user['id_user'];
 
 
-page_require_level(2);
+if ($nivel <= 3) {
+    page_require_level(3);
+}
+if ($nivel == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel == 19) {
+    redirect('home.php');
+}
+if ($nivel > 2 && $nivel < 5) :
+    redirect('home.php');
+endif;
+if ($nivel > 5 && $nivel < 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 7) :
+    redirect('home.php');
+endif;
+if ($nivel > 19 && $nivel < 21) :
+    redirect('home.php');
+endif;
 
 
 $conexion = mysqli_connect("localhost", "root", "");
@@ -112,7 +135,7 @@ if (isset($_POST["export_data"])) {
 
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <a href="edit_evento_pres.php?id=<?php echo (int)$a_evento['id']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
+                                    <a href="edit_evento_pres.php?id=<?php echo (int)$a_evento['id_eventos_presidencia']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                         <span class="glyphicon glyphicon-edit"></span>
                                     </a>
                                 </div>

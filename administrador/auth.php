@@ -12,9 +12,12 @@ if (empty($errors)) {
     $session->login($user_id);
     //Actualiza fecha de inicio de sesion
     updateLastLogIn($user_id);
+
+    
     $session->msg("s", "Bienvenido al Sistema Único de Información y Gestión de la CEDH (SUIGCEDH)");
     $user = current_user();
     $nivel = $user['user_level'];
+    insertAccion($user['id_user'],'El usuario "'.$user['username'].'" inició sesión.',0);
     if ($nivel == 1) {
       redirect('admin.php', false);
     }

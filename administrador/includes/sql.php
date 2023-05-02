@@ -1053,7 +1053,7 @@ function last_id_quejaR()
 function last_id_folios()
 {
   global $db;
-  $sql = "SELECT contador FROM folios ORDER BY id_folio DESC LIMIT 1";
+  $sql = "SELECT * FROM folios ORDER BY id_folio DESC LIMIT 1";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -4357,4 +4357,28 @@ function find_all_consejo()
   $sql = "SELECT * FROM consejo";
   $result = find_by_sql($sql);
   return $result;
+}
+/*----------------------------------------------------------------------------------*/
+/* Funcion que encuentra una ficha técnica por id, que ayudara al momento de editar */
+/*----------------------------------------------------------------------------------*/
+function find_by_id_consejo($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT * FROM consejo WHERE id_acta_consejo='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+/*----------------------------------------------------------------------------*/
+/* Funcion para ingresar actividad del usuario en el sistema                   */
+/*----------------------------------------------------------------------------*/
+
+function insertAccion($user_id, $accion, $id_accion)
+{
+  global $db;  
+  $sql = "INSERT INTO registro_actividades (id_usuarios, fecha_accion, descripcion, accion) VALUES ({$user_id}, NOW(),'{$accion}', {$id_accion});";
+  $result = $db->query($sql);
+  return ($result && $db->affected_rows() === 1 ? true : false);
 }

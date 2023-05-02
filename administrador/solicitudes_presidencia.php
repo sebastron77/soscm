@@ -137,7 +137,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="#" class="tileO">
+        <a href="recomendaciones_generales.php" class="tileO">
             <div class="tileO-tittle">Recomendaciones</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

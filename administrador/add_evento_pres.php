@@ -1,12 +1,38 @@
 <?php header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Evento';
 require_once('includes/load.php');
-$id_folio = last_id_folios_general();
+$id_folio = last_id_folios();
 $user = current_user();
-$nivel = $user['user_level'];
-$id_user = $user['id'];
+$nivel_user = $user['user_level'];
+// $id_user = $user['id'];
 
-page_require_level(2);
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    redirect('home.php');
+}
+if ($nivel_user == 7) {
+    page_require_level(7);
+}
+if ($nivel_user == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel_user == 19) {
+    redirect('home.php');
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 5 && $nivel_user < 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
+    redirect('home.php');
+endif;
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 
@@ -32,8 +58,8 @@ if (isset($_POST['add_evento_pres'])) {
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int)$nuevo['id'] + 1;
-                $no_folio1 = sprintf('%04d', (int)$nuevo['id'] + 1);
+                $nuevo_id_folio = (int)$nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int)$nuevo['contador'] + 1);
             }
         }
         //Se crea el número de folio
@@ -48,7 +74,7 @@ if (isset($_POST['add_evento_pres'])) {
         $query .= " '{$folio}', '{$nombre_evento}', '{$tipo_evento}', '{$ambito_evento}', '{$fecha}', '{$hora}', '{$lugar}', '{$depto_org}', '{$modalidad}', '{$fecha_creacion}'";
         $query .= ")";
 
-        $query2 = "INSERT INTO folios_general (";
+        $query2 = "INSERT INTO folios (";
         $query2 .= "folio, contador";
         $query2 .= ") VALUES (";
         $query2 .= " '{$folio}','{$no_folio1}'";
@@ -57,6 +83,7 @@ if (isset($_POST['add_evento_pres'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " El evento ha sido agregado con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó registro en eventos, Folio: '.$folio.'.', 1);
             redirect('eventos_pres.php', false);
         } else {
             //failed
