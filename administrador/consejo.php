@@ -42,9 +42,9 @@ if ($nivel_user > 3 && $nivel_user < 21) :
 endif;
 
 
-$conexion = mysqli_connect("localhost", "root", "");
+$conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion, "utf8");
-mysqli_select_db($conexion, "libroquejas2");
+mysqli_select_db($conexion, "suigcedh");
 $sql = "SELECT * FROM consejo";
 $resultado = mysqli_query($conexion, $sql) or die;
 $consejo = array();

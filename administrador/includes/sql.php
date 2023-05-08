@@ -53,41 +53,28 @@ function find_all_quejas($id)
 {
   global $db;
   $id = (int)$id;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, q.incompetencia, q.causa_incomp, 
-          q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.observaciones, cq.nombre as nombre_quejoso, 
-          cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
-          q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
-          q.num_recomendacion, q.fecha_termino
-          FROM quejas_dates q 
-          LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
-          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
-          LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
-          LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
-          LEFT JOIN users u ON u.id_user = q.id_user_asignado
-          LEFT JOIN area a ON a.id_area = q.id_area_asignada
-          LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
-          LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
-          WHERE q.id_area_asignada = '{$db->escape($id)}';";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
+  $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion,eq.descripcion as estatus_queja, q.archivo";
+  $sql .= " FROM quejas_dates q";
+  $sql .= " INNER JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
+  $sql .= " INNER JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
+  $sql .= " INNER JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
+  $sql .= " INNER JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja";
+  $sql .= " WHERE q.id_area_asignada = '{$db->escape($id)}'";
   $result = find_by_sql($sql);
   return $result;
 }
+
 function find_all_quejas_admin()
 {
-  global $db;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, q.incompetencia, q.causa_incomp, 
-          q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.observaciones, cq.nombre as nombre_quejoso, 
-          cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
-          q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
-          q.num_recomendacion, q.fecha_termino
-          FROM quejas_dates q 
-          LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
-          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
-          LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
-          LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
-          LEFT JOIN users u ON u.id_user = q.id_user_asignado
-          LEFT JOIN area a ON a.id_area = q.id_area_asignada
-          LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
-          LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion;";
+  // global $db;
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
+  $sql .= "cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion,eq.descripcion as estatus_queja, q.archivo";
+  $sql .= " FROM quejas_dates q";
+  $sql .= " INNER JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
+  $sql .= " INNER JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
+  $sql .= " INNER JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
+  $sql .= " INNER JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -866,8 +853,8 @@ function find_by_id_queja($id)
                       q.fecha_conclusion, q.estado_procesal, q.observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso,
                       cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
                       q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
-                      q.num_recomendacion, q.fecha_termino, ta.descripcion as tipo_ambito, u.username, a.nombre_area, q.fecha_vencimiento, q.descripcion_sin_materia, q.archivo_sin_materia,
-                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso
+                      re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito, u.username, a.nombre_area, q.fecha_vencimiento, q.descripcion_sin_materia, q.archivo_sin_materia,
+                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion
                       FROM quejas_dates q
                       LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
@@ -879,7 +866,8 @@ function find_by_id_queja($id)
                       LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
                       LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
                       LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
-                      WHERE id_queja_date='{$db->escape($id)}' LIMIT 1");
+                      LEFT JOIN rel_recomendacion re ON re.id_rel_recom = q.num_recomendacion
+                      WHERE q.id_queja_date='{$db->escape($id)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else
@@ -901,7 +889,7 @@ function find_by_id_quejaR($id)
                       INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.cat_escolaridad
                       INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.cat_ocupacion
                       INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable
-                      WHERE id_queja_date_p='{$db->escape($id)}' LIMIT 1");
+                      WHERE q.id_queja_date_p='{$db->escape($id)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else
@@ -4377,7 +4365,7 @@ function find_by_id_consejo($id)
 
 function insertAccion($user_id, $accion, $id_accion)
 {
-  global $db;  
+  global $db;
   $sql = "INSERT INTO registro_actividades (id_usuarios, fecha_accion, descripcion, accion) VALUES ({$user_id}, NOW(),'{$accion}', {$id_accion});";
   $result = $db->query($sql);
   return ($result && $db->affected_rows() === 1 ? true : false);

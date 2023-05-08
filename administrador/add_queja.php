@@ -117,7 +117,7 @@ if (isset($_POST['add_queja'])) {
         $temp = $_FILES['adjunto']['tmp_name'];
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
 
-        $dbh = new PDO('mysql:host=localhost; dbname=libroquejas2', 'root', '');
+        $dbh = new PDO('mysql:host=localhost; dbname=suigcedh', 'suigcedh', '9DvkVuZ915H!');
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         $query = "INSERT INTO quejas_dates (folio_queja,fecha_presentacion,id_cat_med_pres,id_cat_aut,observaciones,id_cat_quejoso,id_cat_agraviado,id_user_creador,
@@ -143,6 +143,7 @@ if (isset($_POST['add_queja'])) {
         if ($db->query($query2)) {
             //sucess
             $session->msg('s', " La queja ha sido agregada con éxito.");
+            insertAccion($user['id_user'],'"'.$user['username'].'" agregó queja, Folio: '.$folio.'.',1);
             redirect('quejas.php', false);
         } else {
             //failed

@@ -40,9 +40,9 @@ if ($nivel_user > 19) :
     redirect('home.php');
 endif;
 
-$conexion = mysqli_connect("localhost", "root", "");
+$conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion, "utf8");
-mysqli_select_db($conexion, "libroquejas2");
+mysqli_select_db($conexion, "suigcedh");
 $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad, 
 co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle_queja, q.numero_queja, q.colonia_queja,
 q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo

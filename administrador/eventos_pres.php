@@ -36,9 +36,9 @@ if ($nivel > 19 && $nivel < 21) :
 endif;
 
 
-$conexion = mysqli_connect("localhost", "root", "");
+$conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion, "utf8");
-mysqli_select_db($conexion, "servidor_libro");
+mysqli_select_db($conexion, "suigcedh");
 $sql = "SELECT * FROM eventos_presidencia";
 $resultado = mysqli_query($conexion, $sql) or die;
 $eventos = array();

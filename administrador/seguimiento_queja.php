@@ -70,7 +70,7 @@ if (isset($_POST['seguimiento_queja'])) {
             $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='',id_tipo_resolucion='$id_tipo_resolucion',
                     descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',archivo_anv='',archivo_sin_materia='' WHERE id_queja_date='{$db->escape($id)}'";
-            $result = $db->query($sql);
+            $result = $db->query($sql);            
         }
         //Incompetencia
         if (($causa_incomp != '') && ($id_tipo_resolucion == 2)) {
@@ -79,6 +79,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     num_recomendacion='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',archivo_anv='',archivo_sin_materia=''
                     WHERE id_queja_date='{$db->escape($id)}'";
             $result2 = $db->query($sql2);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "Incompetencia", Folio: '.$folio_editar.'.', 2);
         }
         //Sin Materia
         if (($descripcion_sin_materia != '') && ($id_tipo_resolucion == 3)) {
@@ -101,6 +102,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='{$descripcion_sin_materia}',archivo_sin_materia='{$nameSM}', 
                     fecha_desistimiento=NULL,archivo_desistimiento='',archivo_anv='' WHERE id_queja_date='{$db->escape($id)}'";
             $result3 = $db->query($sql3);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "Sin Materia", Folio: '.$folio_editar.'.', 2);
         }
         //ANV
         if (($id_tipo_resolucion == 4)) {
@@ -123,6 +125,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',archivo_anv='{$nameANV}', 
                     fecha_desistimiento=NULL,archivo_desistimiento='',archivo_sin_materia='' WHERE id_queja_date='{$db->escape($id)}'";
             $result3 = $db->query($sql3);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "ANV", Folio: '.$folio_editar.'.', 2);
         }
         //Recomendacion
         if (($num_recomendacion != '') && ($id_tipo_resolucion == 5)) {
@@ -130,6 +133,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='$num_recomendacion',id_tipo_resolucion='$id_tipo_resolucion',
                     descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',archivo_anv='',archivo_sin_materia='' WHERE id_queja_date='{$db->escape($id)}'";
             $result5 = $db->query($sql5);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "Recomendación", Folio: '.$folio_editar.'.', 2);
         }
         //Desechamiento
         if (($razon_desecha != '') && ($id_tipo_resolucion == 6)) {
@@ -137,6 +141,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     a_quien_se_traslada='',desechamiento=1,razon_desecha='$razon_desecha',num_recomendacion='',id_tipo_resolucion='$id_tipo_resolucion',
                     descripcion_sin_materia='',archivo_desistimiento='',archivo_anv='',archivo_sin_materia='',fecha_desistimiento=NULL WHERE id_queja_date='{$db->escape($id)}'";
             $result6 = $db->query($sql6);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "Desechamiento", Folio: '.$folio_editar.'.', 2);
         }
 
         //Desistimiento
@@ -160,6 +165,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',fecha_desistimiento='{$fecha_desistimiento}',
                     archivo_desistimiento='{$nameDesis}',archivo_anv='',archivo_sin_materia='' WHERE id_queja_date='{$db->escape($id)}'";
             $result10 = $db->query($sql10);
+            insertAccion($user['id_user'], '"'.$user['username'].'" dió seguimiento a queja como "Desistimiento", Folio: '.$folio_editar.'.', 2);
         }
 
         if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1) || 

@@ -11,9 +11,9 @@ $nivel = $user['user_level'];
 
 page_require_level(2);
 
-$conexion = mysqli_connect("localhost", "root", "");
+$conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion, "utf8");
-mysqli_select_db($conexion, "probar_antes_server");
+mysqli_select_db($conexion, "suigcedh");
 $sql = "SELECT * FROM recomendaciones_generales";
 $resultado = mysqli_query($conexion, $sql) or die;
 $resoluciones = array();

@@ -92,6 +92,7 @@ if (isset($_POST['edit_queja'])) {
         $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
         $result2 = $db->query($sql2);
+        insertAccion($user['id_user'], '"'.$user['username'].'" editó la queja, Folio: '.$folio_editar.'.', 2);
 
         if (($result && $db->affected_rows() === 1) && ($result2 && $db->affected_rows() === 1)) {
             $session->msg('s', "Información Actualizada ");
