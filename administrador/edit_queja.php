@@ -58,6 +58,7 @@ if (isset($_POST['edit_queja'])) {
         $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $transferir = remove_junk($db->escape($_POST['transferir']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
@@ -77,22 +78,47 @@ if (isset($_POST['edit_queja'])) {
             mkdir($carpeta, 0777, true);
             $move = move_uploaded_file($temp, $carpeta . "/" . $name);
         }
-        if ($name != '') {
-            $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
+
+        $nombre = $e_detalle['nombre_quejoso'];
+        $paterno = $e_detalle['paterno_quejoso'];
+        $materno = $e_detalle['materno_quejoso'];
+        $email = $e_detalle['email'];
+        $telefono = $e_detalle['telefono'];
+        $id_cat_ocup = $e_detalle['id_cat_ocup'];
+        $id_cat_grupo_vuln = $e_detalle['id_cat_grupo_vuln'];
+        $id_cat_escolaridad = $e_detalle['id_cat_escolaridad'];
+        $edad = $e_detalle['edad'];
+        $id_cat_gen = $e_detalle['id_cat_gen'];
+        $nacionalidad = $e_detalle['id_cat_nacionalidad'];
+        $med_pres = 5;
+        // if ($user['id_user'] <= 3 && $e_detalle['id_cat_med_pres'] == 5) {
+            // $sql = "INSERT INTO orientacion_canalizacion (";
+            // $sql .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
+            //             nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            // $sql .= ") VALUES (";
+            // $sql .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
+            //             '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            // $sql .= ")";
+        // }
+        // if ($e_detalle['id_cat_med_pres'] >= 1) {
+            if ($name != '') {
+                $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
                     id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
-        }
-        if ($name == '') {
-            $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
+            }
+            if ($name == '') {
+                $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja='$id_estatus_queja', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
                     id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
-        }
+            }
+        // }
+
         $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
         $result2 = $db->query($sql2);
-        insertAccion($user['id_user'], '"'.$user['username'].'" editó la queja, Folio: '.$folio_editar.'.', 2);
+        insertAccion($user['id_user'], '"' . $user['username'] . '" editó la queja, Folio: ' . $folio_editar . '.', 2);
 
         if (($result && $db->affected_rows() === 1) && ($result2 && $db->affected_rows() === 1)) {
             $session->msg('s', "Información Actualizada ");
@@ -114,12 +140,12 @@ if (isset($_POST['edit_queja'])) {
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
                 <span>Editar queja
-                    <?php echo $e_detalle['folio_queja']; ?>
+                    <?php echo $e_detalle['folio_queja']?>
                 </span>
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="edit_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" enctype="multipart/form-data">
+            <form method="post" action="edit_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" enctype="multipart/form-data">                
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
@@ -157,13 +183,14 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_quejosos as $quejoso) : ?>
                                     <option <?php if ($quejoso['id_cat_quejoso'] === $e_detalle['id_cat_quejoso'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $quejoso['id_cat_quejoso']; ?>"><?php
-                                                                                                                            echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?>
+                                                                                                                                    echo ucwords($quejoso['nombre'] . " " . $quejoso['paterno'] . " " . $quejoso['materno']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                 </div>
+
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -172,7 +199,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_agraviados as $agraviado) : ?>
                                     <option <?php if ($agraviado['id_cat_agrav'] === $e_detalle['id_cat_agraviado'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $agraviado['id_cat_agrav']; ?>"><?php
-                                                                                                                            echo ucwords($agraviado['nombre'] . " " . $agraviado['paterno'] . " " . $agraviado['materno']); ?>
+                                                                                                                                    echo ucwords($agraviado['nombre'] . " " . $agraviado['paterno'] . " " . $agraviado['materno']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -185,7 +212,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($asigna_a as $asigna) : ?>
                                     <option <?php if ($asigna['id_det_usuario'] === $e_detalle['id_user_asignado'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $asigna['id_det_usuario']; ?>"><?php
-                                                                                                                        echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
+                                                                                                                                echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -198,7 +225,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($area as $a) : ?>
                                     <option <?php if ($a['id_area'] === $e_detalle['id_area_asignada'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $a['id_area']; ?>"><?php
-                                                                                                            echo ucwords($a['nombre_area']) ?>
+                                                                                                                    echo ucwords($a['nombre_area']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -211,7 +238,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_estatus_queja as $estatus) : ?>
                                     <option <?php if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $estatus['id_cat_est_queja']; ?>"><?php
-                                                                                                                            echo ucwords($estatus['descripcion']) ?>
+                                                                                                                                    echo ucwords($estatus['descripcion']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -245,7 +272,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_municipios as $municipio) : ?>
                                     <option <?php if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $municipio['id_cat_mun']; ?>"><?php
-                                                                                                                        echo ucwords($municipio['descripcion']) ?>
+                                                                                                                                echo ucwords($municipio['descripcion']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

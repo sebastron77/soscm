@@ -3,9 +3,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Lista de quejas';
 require_once('includes/load.php');
 ?>
-<!-- <?php
-        // require_once('includes/sql.php');
-        ?> -->
 <?php
 
 $user = current_user();
@@ -189,8 +186,14 @@ if (isset($_POST["export_data"])) {
                                             <span class="glyphicon glyphicon-arrow-right"></span>
                                         </a>&nbsp;
                                         <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-gre btn-md" title="Acuerdos" data-toggle="tooltip">
-                                            <span class="glyphicon glyphicon-retweet"></span>
+                                            <!-- <span class="glyphicon glyphicon-retweet"></span> -->
+                                            <span class="glyphicon glyphicon-file"></span>
                                         </a>&nbsp;
+                                        <?php if(($id_u <= 3) && ($queja['id_cat_med_pres'] == 5)):?>
+                                            <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv btn-md" title="Convertir" data-toggle="tooltip">
+                                                <span class="glyphicon glyphicon-retweet"></span>
+                                            </a>
+                                        <?php endif; ?>    
                                     <?php endif; ?>
                                 </div>
                             </td>

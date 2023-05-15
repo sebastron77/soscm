@@ -34,6 +34,7 @@ if (isset($_POST['update'])) {
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             $session->msg('s', "Información Actualizada ");
+            insertAccion($user['id_user'], '"'.$user['username'].'" editó al trabajador(a): '.$nombre.' '.$apellidos.'.', 2);
             redirect('edit_detalle_usuario.php?id=' . (int)$e_detalle['id_det_usuario'], false);
         } else {
             $session->msg('d', ' Lo siento no se actualizaron los datos.');

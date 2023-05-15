@@ -23,13 +23,13 @@ if ($nivel == 19) {
     page_require_level_exacto(19);
 }
 
-if ($nivel > 2 && $nivel < 5):
+if ($nivel > 2 && $nivel < 5) :
     redirect('home.php');
 endif;
-if ($nivel > 5 && $nivel < 7):
+if ($nivel > 5 && $nivel < 7) :
     redirect('home.php');
 endif;
-if ($nivel > 7 && $nivel < 19):
+if ($nivel > 7 && $nivel < 19) :
     redirect('home.php');
 endif;
 
@@ -47,9 +47,6 @@ $comunidades = find_all('cat_comunidades');
 
 <?php /*header('Content-type: text/html; charset=utf-8');*/
 if (isset($_POST['add_quejoso'])) {
-
-    // $req_fields = array('nombre', 'paterno', 'materno', 'id_cat_gen', 'edad', 'id_cat_nacionalidad', 'id_cat_mun', 'id_cat_escolaridad', 'id_cat_ocup', 'id_cat_grupo_vuln', 'id_cat_comun', 'telefono');
-    // validate_fields($req_fields);
 
     if (empty($errors)) {
         $pplTrue = isset($_POST['c1']) ? 1 : 0;
@@ -100,7 +97,7 @@ if (isset($_POST['add_quejoso'])) {
                     '{$id_cat_munQ}','{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}',
                     '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}','{$calleQ}','{$numeroQ}','{$coloniaQ}'";
             $query2 .= ")";
-echo "2".$query2;
+            echo "2" . $query2;
             $query = "INSERT INTO cat_agraviados (";
             $query .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,
                     id_cat_ocup,leer_escribir,id_cat_grupo_vuln,id_cat_disc,ppl,id_cat_ppl,id_cat_comun,telefono,email";
@@ -113,18 +110,17 @@ echo "2".$query2;
             if (($db->query($query2)) && ($db->query($query))) {
                 //sucess
                 $session->msg('s', " El quejoso/agraviado ha sido agregado con éxito.");
-                ?>
-			<script language="javascript">
+?>
+                <script language="javascript">
                     window.opener.location.reload();
                     window.close();
                 </script>
-				<?php
+            <?php
             } else {
                 //failed
                 $session->msg('d', ' No se pudo agregar el quejoso/agraviado.');
                 redirect('add_quejoso_On.php', false);
             }
-
         } else {
             $query4 = "INSERT INTO cat_quejosos (";
             $query4 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,id_cat_ocup,
@@ -134,9 +130,9 @@ echo "2".$query2;
                     '{$id_cat_munQ}','{$id_cat_escolaridadQ}','{$id_cat_ocupQ}','{$leer_escribirQ}','{$id_cat_grupo_vulnQ}',
                     '{$id_cat_discQ}',{$id_cat_comunQ},'{$telefonoQ}','{$emailQ}','{$calleQ}','{$numeroQ}','{$coloniaQ}'";
             $query4 .= ")";
-	
-		echo $query4;
-		
+
+            echo $query4;
+
             $query3 = "INSERT INTO cat_agraviados (";
             $query3 .= "nombre,paterno,materno,id_cat_gen,edad,id_cat_nacionalidad,id_cat_mun,id_cat_escolaridad,
                     id_cat_ocup,leer_escribir,id_cat_grupo_vuln,id_cat_disc,ppl,id_cat_ppl,id_cat_comun,telefono,email";
@@ -150,18 +146,20 @@ echo "2".$query2;
             if (($db->query($query4)) && ($db->query($query3))) {
                 //sucess
                 $session->msg('s', " El ciudadano agraviado ha sido agregado con éxito.");
-				?>
-			<script language="javascript">
+                insertAccion($user['id_user'], '"' . $user['username'] . '" agregó al quejoso: ' . $nombreQ . ' ' . $paternoQ . ' ' . $maternoQ . '.', 1);
+                insertAccion($user['id_user'], '"' . $user['username'] . '" agregó al agraviado: ' . $nombre . ' ' . $paterno . ' ' . $materno . '.', 1);
+            ?>
+                <script language="javascript">
                     window.opener.location.reload();
                     window.close();
                 </script>
-				<?php
+<?php
             } else {
                 //failed
                 $session->msg('d', ' No se pudo agregar el ciudadano agraviada.');
                 redirect('add_quejoso_On.php', false);
             }
-        }    
+        }
     } else {
         $session->msg("d", $errors);
         redirect('add_quejoso_On.php', false);
@@ -170,14 +168,15 @@ echo "2".$query2;
 ?>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
-  <link rel="stylesheet" href="libs/css/main.css" />
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet" />
-  <style>
-  body{
-	  zoom: 70%;
-  }
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
+<link rel="stylesheet" href="libs/css/main.css" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link href="https://harvesthq.github.io/chosen/chosen.css" rel="stylesheet" />
+<style>
+    body {
+        zoom: 70%;
+    }
+
     .login-page2 {
         width: 350px;
         height: 340px;
@@ -224,15 +223,13 @@ echo "2".$query2;
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="paternoQ">Apellido Paterno</label>
-                            <input type="text" class="form-control" name="paternoQ" placeholder="Apellido Paterno"
-                                required>
+                            <input type="text" class="form-control" name="paternoQ" placeholder="Apellido Paterno" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="maternoQ">Apellido Materno</label>
-                            <input type="text" class="form-control" name="maternoQ" placeholder="Apellido Materno"
-                                required>
+                            <input type="text" class="form-control" name="maternoQ" placeholder="Apellido Materno" required>
                         </div>
                     </div>
                     <div class="col-md-1">
@@ -240,7 +237,7 @@ echo "2".$query2;
                             <label for="id_cat_genQ">Género</label>
                             <select class="form-control" name="id_cat_genQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($generos as $genero): ?>
+                                <?php foreach ($generos as $genero) : ?>
                                     <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -249,8 +246,7 @@ echo "2".$query2;
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="edadQ">Edad</label>
-                            <input type="number" class="form-control" min="1" max="130" maxlength="4" name="edadQ"
-                                required>
+                            <input type="number" class="form-control" min="1" max="130" maxlength="4" name="edadQ" required>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -272,7 +268,7 @@ echo "2".$query2;
                             <label for="id_cat_nacionalidadQ">Nacionalidad</label>
                             <select class="form-control" name="id_cat_nacionalidadQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($nacionalidades as $nacionalidad): ?>
+                                <?php foreach ($nacionalidades as $nacionalidad) : ?>
                                     <option value="<?php echo $nacionalidad['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacionalidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -283,7 +279,7 @@ echo "2".$query2;
                             <label for="id_cat_munQ">Municipio</label>
                             <select class="form-control" name="id_cat_munQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($municipios as $municipio): ?>
+                                <?php foreach ($municipios as $municipio) : ?>
                                     <option value="<?php echo $municipio['id_cat_mun']; ?>"><?php echo ucwords($municipio['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -294,7 +290,7 @@ echo "2".$query2;
                             <label for="id_cat_escolaridadQ">Escolaridad</label>
                             <select class="form-control" name="id_cat_escolaridadQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($escolaridades as $escolaridad): ?>
+                                <?php foreach ($escolaridades as $escolaridad) : ?>
                                     <option value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -305,7 +301,7 @@ echo "2".$query2;
                             <label for="id_cat_ocupQ">Ocupación</label>
                             <select class="form-control" name="id_cat_ocupQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($ocupaciones as $ocupacion): ?>
+                                <?php foreach ($ocupaciones as $ocupacion) : ?>
                                     <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -327,7 +323,7 @@ echo "2".$query2;
                             <label for="id_cat_discQ">¿Tiene alguna discapacidad?</label>
                             <select class="form-control" name="id_cat_discQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($discapacidades as $discapacidad): ?>
+                                <?php foreach ($discapacidades as $discapacidad) : ?>
                                     <option value="<?php echo $discapacidad['id_cat_disc']; ?>"><?php echo ucwords($discapacidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -340,7 +336,7 @@ echo "2".$query2;
                             <label for="id_cat_grupo_vulnQ">Grupo Vulnerable</label>
                             <select class="form-control" name="id_cat_grupo_vulnQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($grupos_vuln as $grupo_vuln): ?>
+                                <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                                     <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -351,7 +347,7 @@ echo "2".$query2;
                             <label for="id_cat_comunQ">Comunidad</label>
                             <select class="form-control" name="id_cat_comunQ">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($comunidades as $comunidad): ?>
+                                <?php foreach ($comunidades as $comunidad) : ?>
                                     <option value="<?php echo $comunidad['id_cat_comun']; ?>"><?php echo ucwords($comunidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -415,7 +411,7 @@ echo "2".$query2;
                                 <label for="id_cat_gen">Género</label>
                                 <select class="form-control" name="id_cat_gen">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($generos as $genero): ?>
+                                    <?php foreach ($generos as $genero) : ?>
                                         <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -446,7 +442,7 @@ echo "2".$query2;
                                 <label for="id_cat_nacionalidad">Nacionalidad</label>
                                 <select class="form-control" name="id_cat_nacionalidad">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($nacionalidades as $nacionalidad): ?>
+                                    <?php foreach ($nacionalidades as $nacionalidad) : ?>
                                         <option value="<?php echo $nacionalidad['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacionalidad['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -457,7 +453,7 @@ echo "2".$query2;
                                 <label for="id_cat_mun">Municipio</label>
                                 <select class="form-control" name="id_cat_mun">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($municipios as $municipio): ?>
+                                    <?php foreach ($municipios as $municipio) : ?>
                                         <option value="<?php echo $municipio['id_cat_mun']; ?>"><?php echo ucwords($municipio['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -468,7 +464,7 @@ echo "2".$query2;
                                 <label for="id_cat_escolaridad">Escolaridad</label>
                                 <select class="form-control" name="id_cat_escolaridad">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($escolaridades as $escolaridad): ?>
+                                    <?php foreach ($escolaridades as $escolaridad) : ?>
                                         <option value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -479,7 +475,7 @@ echo "2".$query2;
                                 <label for="id_cat_ocup">Ocupación</label>
                                 <select class="form-control" name="id_cat_ocup">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($ocupaciones as $ocupacion): ?>
+                                    <?php foreach ($ocupaciones as $ocupacion) : ?>
                                         <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -501,7 +497,7 @@ echo "2".$query2;
                                 <label for="id_cat_disc">¿Tiene alguna discapacidad?</label>
                                 <select class="form-control" name="id_cat_disc">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($discapacidades as $discapacidad): ?>
+                                    <?php foreach ($discapacidades as $discapacidad) : ?>
                                         <option value="<?php echo $discapacidad['id_cat_disc']; ?>"><?php echo ucwords($discapacidad['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -514,7 +510,7 @@ echo "2".$query2;
                                 <label for="id_cat_grupo_vuln">Grupo Vulnerable</label>
                                 <select class="form-control" name="id_cat_grupo_vuln">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($grupos_vuln as $grupo_vuln): ?>
+                                    <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                                         <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -525,7 +521,7 @@ echo "2".$query2;
                                 <label for="id_cat_comun">Comunidad</label>
                                 <select class="form-control" name="id_cat_comun">
                                     <option value="">Escoge una opción</option>
-                                    <?php foreach ($comunidades as $comunidad): ?>
+                                    <?php foreach ($comunidades as $comunidad) : ?>
                                         <option value="<?php echo $comunidad['id_cat_comun']; ?>"><?php echo ucwords($comunidad['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -546,7 +542,7 @@ echo "2".$query2;
                                 <label for="id_cat_ppl">Si es PPL, ¿Quién presenta la queja?</label>
                                 <select class="form-control" name="id_cat_ppl">
                                     <option value="6">Escoge una opción</option>
-                                    <?php foreach ($ppls as $ppl): ?>
+                                    <?php foreach ($ppls as $ppl) : ?>
                                         <option value="<?php echo $ppl['id_cat_ppl']; ?>"><?php echo ucwords($ppl['descripcion']); ?></option>
                                     <?php endforeach; ?>
                                 </select>
@@ -556,8 +552,8 @@ echo "2".$query2;
                 </div>
 
                 <div class="form-group clearfix">
-					<button type="button"  class="btn btn-md btn-success" onclick="javascript:window.close();">Cancelar</button>&nbsp;&nbsp;
-                    
+                    <button type="button" class="btn btn-md btn-success" onclick="javascript:window.close();">Cancelar</button>&nbsp;&nbsp;
+
                     <button type="submit" name="add_quejoso" class="btn btn-primary">Guardar</button>
                 </div>
             </form>

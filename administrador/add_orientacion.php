@@ -40,7 +40,7 @@ endif;
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_orientacion'])) {
 
-    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal', 'id_cat_mun','localidad', 'entidad', 'nacionalidad', 'medio', 'grupo_vulnerable', 'lengua');
+    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal', 'id_cat_mun', 'entidad', 'nacionalidad', 'medio', 'grupo_vulnerable', 'lengua');
     validate_fields($req_fields);
 
     if (empty($errors)) {
@@ -112,10 +112,10 @@ if (isset($_POST['add_orientacion'])) {
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
                         nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}',
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
                         '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
@@ -126,10 +126,10 @@ if (isset($_POST['add_orientacion'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
                         nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}',
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
                         '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
@@ -143,6 +143,7 @@ if (isset($_POST['add_orientacion'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " La orientación ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó orientación, Folio: '.$folio.'.', 1);
             redirect('orientaciones.php', false);
         } else {
             //failed

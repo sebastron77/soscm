@@ -33,6 +33,7 @@ if (isset($_POST['update'])) {
     $result = $db->query($sql);
     if ($result && $db->affected_rows() === 1) {
       $session->msg('s', "Cuenta Actualizada ");
+      insertAccion($user['id_user'], '"'.$user['username'].'" editó el usuario: '.$username.'.', 1);
       redirect('edit_user.php?id=' . (int)$e_user['id_user'], false);
     } else {
       $session->msg('d', ' Lo siento no se actualizaron los datos.');
@@ -57,6 +58,7 @@ if (isset($_POST['update-pass'])) {
     $result = $db->query($sql);
     if ($result && $db->affected_rows() === 1) {
       $session->msg('s', "Se ha actualizado la contraseña del usuario. ");
+      insertAccion($user['id_user'], '"'.$user['username'].'" editó contraseña del usuario: '.$e_user['username'].'.', 2);
       redirect('edit_user.php?id=' . (int)$e_user['id_user'], false);
     } else {
       $session->msg('d', 'No se pudo actualizar la contraseña de usuario..');

@@ -1064,6 +1064,21 @@ a.btn.btn-gre:hover,
   background-color: #0c6c15;
   border-color: #0c6c15;
 }
+a.btn.btn-conv {
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  background: #7C36E6;
+  border-color: #7C36E6;
+}
+a.btn.btn-conv:hover,
+.btn-conv:focus,
+.btn-conv.focus,
+.btn-conv:active,
+.btn-conv.active {
+  color: #fff;
+  background-color: #5827a0;
+  border-color: #5827a0;
+}
 /*************************************************************/
 .tileO {
   height: 200px;

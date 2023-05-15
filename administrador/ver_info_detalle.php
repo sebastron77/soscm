@@ -4,7 +4,7 @@ require_once('includes/load.php');
 ?>
 <?php
 header('Content-Type: text/html; charset=UTF-8');
-page_require_level(2);
+page_require_level(1);
 $e_detalle = find_by_id('detalles_usuario', (int) $_GET['id'], 'id_det_usuario');
 $e_detalle_cargo = find_detalle_cargo((int) $_GET['id']);
 $cargos = find_all('cargos');

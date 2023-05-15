@@ -5,6 +5,7 @@ require_once('includes/load.php');
 page_require_level(1);
 $groups = find_all('grupo_usuarios');
 $trabajadores = find_all_trabajadores();
+$user = current_user();
 ?>
 <?php
 if (isset($_POST['add_user'])) {
@@ -26,6 +27,7 @@ if (isset($_POST['add_user'])) {
     if ($db->query($query)) {
       //sucess
       $session->msg('s', " La cuenta de usuario ha sido creada con éxito.");
+      insertAccion($user['id_user'], '"'.$user['username'].'" agregó el usuario: '.$username.'.', 1);
       redirect('add_user.php', false);
     } else {
       //failed

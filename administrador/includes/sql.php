@@ -53,7 +53,7 @@ function find_all_quejas($id)
 {
   global $db;
   $id = (int)$id;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
   $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion,eq.descripcion as estatus_queja, q.archivo";
   $sql .= " FROM quejas_dates q";
   $sql .= " INNER JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
@@ -68,7 +68,7 @@ function find_all_quejas($id)
 function find_all_quejas_admin()
 {
   // global $db;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
   $sql .= "cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion,eq.descripcion as estatus_queja, q.archivo";
   $sql .= " FROM quejas_dates q";
   $sql .= " INNER JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
@@ -854,7 +854,9 @@ function find_by_id_queja($id)
                       cq.materno as materno_quejoso, ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, 
                       q.fecha_actualizacion, eq.descripcion as estatus_queja, q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, 
                       re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito, u.username, a.nombre_area, q.fecha_vencimiento, q.descripcion_sin_materia, q.archivo_sin_materia,
-                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion
+                      q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion, q.servidor_publico, q.fecha_recomendacion, 
+                      q.observaciones_recomendacion, q.adjunto_recomendacion, q.adjunto_rec_publico, cq.email, cq.telefono, cq.id_cat_ocup, cq.id_cat_grupo_vuln, cq.id_cat_escolaridad,
+                      cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad
                       FROM quejas_dates q
                       LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut

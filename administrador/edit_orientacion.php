@@ -45,7 +45,7 @@ if ($nivel_user == 7) {
 
 <?php
 if (isset($_POST['edit_orientacion'])) {
-    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal', 'id_cat_mun','localidad', 'entidad', 'nacionalidad', 'grupo_vulnerable', 'lengua');
+    $req_fields = array('nombre', 'nestudios', 'ocupacion', 'edad', 'tel', 'sexo', 'calle', 'colonia', 'cpostal','entidad', 'nacionalidad', 'grupo_vulnerable', 'lengua');
     validate_fields($req_fields);
     if (empty($errors)) {
         $id = (int)$e_detalle['idcan'];
@@ -62,8 +62,8 @@ if (isset($_POST['edit_orientacion'])) {
         $colonia   = remove_junk($db->escape($_POST['colonia']));
         $cpostal   = remove_junk($db->escape($_POST['cpostal']));
         //$municipio   = remove_junk($db->escape($_POST['municipio']));
-		$id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
-        $localidad = remove_junk($db->escape($_POST['localidad']));
+        // $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $localidad = remove_junk($db->escape($_POST['municipio_localidad']));
         $entidad   = remove_junk($db->escape($_POST['entidad']));
         $nacionalidad   = remove_junk($db->escape($_POST['nacionalidad']));
         $institucion_canaliza   = remove_junk($db->escape($_POST['institucion_canaliza']));
@@ -93,11 +93,11 @@ if (isset($_POST['edit_orientacion'])) {
 
         if ($name != '') {
             $sql = "UPDATE folios SET folio='{$folio_orientacion}' WHERE folio='{$db->escape($la_orientacion)}'";
-            $sql2 = "UPDATE orientacion_canalizacion SET folio='{$folio_orientacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', id_cat_mun='{$id_cat_mun}', localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', institucion_canaliza='{$institucion_canaliza}', observaciones='{$observaciones}', adjunto='{$name}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
+            $sql2 = "UPDATE orientacion_canalizacion SET folio='{$folio_orientacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', institucion_canaliza='{$institucion_canaliza}', observaciones='{$observaciones}', adjunto='{$name}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
         }
         if ($name == '') {
             $sql3 = "UPDATE folios SET folio='{$folio_orientacion}' WHERE folio='{$db->escape($la_orientacion)}'";
-            $sql4 = "UPDATE orientacion_canalizacion SET folio='{$folio_orientacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', id_cat_mun='{$id_cat_mun}', localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', institucion_canaliza='{$institucion_canaliza}', observaciones='{$observaciones}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
+            $sql4 = "UPDATE orientacion_canalizacion SET folio='{$folio_orientacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', institucion_canaliza='{$institucion_canaliza}', observaciones='{$observaciones}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
         }
 
         $result = $db->query($sql);
@@ -107,6 +107,7 @@ if (isset($_POST['edit_orientacion'])) {
 
         if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1)) {
             $session->msg('s', "Información Actualizada ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó orientación, Folio: ' . $folio_orientacion . '.', 2);
             redirect('orientaciones.php', false);
         } else {
             $session->msg('d', ' Lo siento no se actualizaron los datos.');
@@ -159,15 +160,15 @@ if (isset($_POST['edit_orientacion'])) {
                             <label for="nestudios">Nivel de Estudios</label>
                             <select class="form-control" name="nestudios">
                                 <?php foreach ($niv_estudios as $estudios) : ?>
-                                    
+
                                     <option <?php if ($estudios['id_cat_escolaridad'] === $e_detalle['est']) echo 'selected="selected"'; ?> value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div>                   
+                    </div>
                 </div>
                 <div class="row">
-                <div class="col-md-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="ocupacion">Ocupacion</label>
                             <select class="form-control" name="ocupacion">
@@ -243,23 +244,24 @@ if (isset($_POST['edit_orientacion'])) {
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <!-- <div class="col-md-3">
                         <div class="form-group">
                             <label for="municipio">Municipio</label>
                             <select class="form-control" name="id_cat_mun">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_municipios as $municipio): ?>
-                                    <option <?php if ($mun icipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
-                                        echo 'selected="selected"'; ?> value="<?php echo $municipio['id_cat_mun']; ?>"><?php
-                                              echo ucwords($municipio['descripcion']) ?>
+                                <?php foreach ($cat_municipios as $municipio) : ?>
+                                    <option <?php if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $municipio['id_cat_mun']; ?>"><?php
+                                                                                                                        echo ucwords($municipio['descripcion']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div><div class="col-md-3">
+                    </div> -->
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="municipio">Localidad</label>
-                            <input type="text" class="form-control" name="localidad" placeholder="Localidad" value="<?php echo remove_junk($e_detalle['localidad']); ?>">
+                            <label for="municipio_localidad">Localidad</label>
+                            <input type="text" class="form-control" name="municipio_localidad" placeholder="Localidad" value="<?php echo remove_junk($e_detalle['municipio_localidad']); ?>">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -282,8 +284,6 @@ if (isset($_POST['edit_orientacion'])) {
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="medio">Medio de presentación</label>
@@ -294,6 +294,8 @@ if (isset($_POST['edit_orientacion'])) {
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">                    
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="institucion_canaliza">Institución señalada como responsable</label>

@@ -14,11 +14,14 @@ $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-if ($nivel_user <= 3) {
-    page_require_level(3);
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    redirect('home.php');
 }
 if ($nivel_user == 7) {
-    page_require_level_exacto(7);
+    page_require_level(7);
 }
 if ($nivel_user == 21) {
     page_require_level_exacto(21);
@@ -54,7 +57,7 @@ endif;
                     <span>Gestiones Jurisdiccionales</span>
                 </strong>
                 <?php if ($otro <= 2) : ?>
-                    <a href="add_gestion.php" class="btn btn-info pull-right btn-md"> Agregar gestión</a>
+                    <a href="add_gestion.php?a=4" class="btn btn-info pull-right btn-md"> Agregar gestión</a>
                 <?php endif ?>
             </div>
             <div class="panel-body">

@@ -14,13 +14,7 @@ $id_user = $user['id_user'];
 $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
-
-if ($nivel_user > 3 && $nivel_user < 7):
-    redirect('home.php');
-endif;
-if ($nivel_user > 7):
-    redirect('home.php');
-endif;
+page_require_level(1);
 ?>
 
 <?php include_once('layouts/header.php'); ?>

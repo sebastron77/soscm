@@ -4,6 +4,7 @@ require_once('includes/load.php');
 
 page_require_level(1);
 $cargos = find_all_cargos2();
+$user = current_user();
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_detalle_usuario'])) {
@@ -26,6 +27,7 @@ if (isset($_POST['add_detalle_usuario'])) {
         if ($db->query($query)) {
             //sucess
             $session->msg('s', " El trabajador ha sido agregado con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó al trabajador(a): '.$nombre.' '.$apellidos.'.', 1);
             redirect('detalles_usuario.php', false);
         } else {
             //failed

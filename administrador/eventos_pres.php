@@ -8,30 +8,33 @@ $all_eventos = find_all('eventos_presidencia');
 $user = current_user();
 $nivel = $user['user_level'];
 $id_user = $user['id_user'];
+$nivel_user = $user['user_level'];
 
-
-if ($nivel <= 3) {
-    page_require_level(3);
+if ($nivel_user <= 2) {
+    page_require_level(2);
 }
-if ($nivel == 7) {
-    page_require_level_exacto(7);
+if ($nivel_user == 5) {
+    redirect('home.php');
 }
-if ($nivel == 21) {
+if ($nivel_user == 7) {
+    page_require_level(7);
+}
+if ($nivel_user == 21) {
     page_require_level_exacto(21);
 }
-if ($nivel == 19) {
+if ($nivel_user == 19) {
     redirect('home.php');
 }
-if ($nivel > 2 && $nivel < 5) :
+if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
-if ($nivel > 5 && $nivel < 7) :
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel > 7) :
+if ($nivel_user > 7) :
     redirect('home.php');
 endif;
-if ($nivel > 19 && $nivel < 21) :
+if ($nivel_user > 19 && $nivel_user < 21) :
     redirect('home.php');
 endif;
 

@@ -93,7 +93,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 		<?php endif ?>
 
 		<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : ?>
-			<a href="solicitudes_presidencia.php" class="tileA">
+			<a href="#" class="tileA">
 				<div class="tileA-tittle">Mecanismos y Agendas</div>
 				<div class="tileA-icon">
 					<span class="material-symbols-rounded" style="font-size: 95px;">

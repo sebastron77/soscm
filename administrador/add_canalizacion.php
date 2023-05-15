@@ -64,8 +64,8 @@ if (isset($_POST['add_canalizacion'])) {
         $lengua = remove_junk($db->escape($_POST['lengua']));
         $institucion_canaliza = remove_junk($db->escape($_POST['institucion_canaliza']));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
-        $adjunto = remove_junk($db->escape($_POST['adjunto']));
-        $adjunto = remove_junk($db->escape($_POST['adjunto']));
+        // $adjunto = remove_junk($db->escape($_POST['adjunto']));
+        // $adjunto = remove_junk($db->escape($_POST['adjunto']));
         date_default_timezone_set('America/Mexico_City');
         $creacion = date('Y-m-d');
 
@@ -76,8 +76,8 @@ if (isset($_POST['add_canalizacion'])) {
             $no_folio = sprintf('%04d', 1);
         } else {
             foreach ($id_ori_canal as $nuevo) {
-                $nuevo_id_ori_canal = (int) $nuevo['id'] + 1;
-                $no_folio = sprintf('%04d', (int) $nuevo['id'] + 1);
+                $nuevo_id_ori_canal = (int) $nuevo['id_or_can'] + 1;
+                $no_folio = sprintf('%04d', (int) $nuevo['id_or_can'] + 1);
             }
         }
 
@@ -113,9 +113,9 @@ if (isset($_POST['add_canalizacion'])) {
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
             $query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
@@ -124,9 +124,9 @@ if (isset($_POST['add_canalizacion'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,id_cat_mun,localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$localidad}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}','{$entidad}','{$nacionalidad}','2','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
             $query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
@@ -137,6 +137,7 @@ if (isset($_POST['add_canalizacion'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " La canalización ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó canalización, Folio: '.$folio.'.', 1);
             redirect('canalizaciones.php', false);
         } else {
             //failed

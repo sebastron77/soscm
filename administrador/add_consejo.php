@@ -48,8 +48,8 @@ if (isset($_POST['add_consejo'])) {
         $hora   = remove_junk($db->escape($_POST['hora']));
         $lugar   = remove_junk(upper_case($db->escape($_POST['lugar'])));
         $num_asistentes   = remove_junk(upper_case($db->escape($_POST['num_asistentes'])));
-        $orden_dia   = remove_junk($db->escape($_POST['orden_dia']));
-        $acta_acuerdos   = remove_junk($db->escape($_POST['acta_acuerdos']));
+        // $orden_dia   = remove_junk($db->escape($_POST['orden_dia']));
+        // $acta_acuerdos   = remove_junk($db->escape($_POST['acta_acuerdos']));
 
         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio

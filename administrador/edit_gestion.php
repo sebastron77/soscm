@@ -5,16 +5,31 @@ require_once('includes/load.php');
 $user = current_user();
 $nivel_user = $user['user_level'];
 
-if ($nivel_user <= 2) :
+if ($nivel_user <= 2) {
     page_require_level(2);
+}
+if ($nivel_user == 5) {
+    redirect('home.php');
+}
+if ($nivel_user == 7) {
+    page_require_level(7);
+}
+if ($nivel_user == 21) {
+    page_require_level_exacto(21);
+}
+if ($nivel_user == 19) {
+    redirect('home.php');
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
+    redirect('home.php');
 endif;
-if ($nivel_user == 7) :
-    page_require_level_exacto(7);
-endif;
-if ($nivel_user > 2 && $nivel_user < 7) :
+if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
 if ($nivel_user > 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user > 19 && $nivel_user < 21) :
     redirect('home.php');
 endif;
 ?>
@@ -66,7 +81,7 @@ if (isset($_POST['update'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', "Registro actualizado con éxito. ");
-            insertAccion($user['id_user'], '"'.$user['username'].'" editó registro en gestiones, Folio: '.$folio_editar.'.', 1);
+            insertAccion($user['id_user'], '"'.$user['username'].'" editó registro en gestiones, Folio: '.$folio_editar.'.', 2);
             redirect('gestiones.php', false);
         } else {
             //failed
