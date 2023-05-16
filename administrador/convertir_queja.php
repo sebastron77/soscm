@@ -4,13 +4,16 @@ require_once('includes/load.php');
 ?>
 <?php
 $e_detalle = find_by_id_queja((int) $_GET['id']);
-// echo $e_detalle['id_queja_date'];
 if (!$e_detalle) {
     $session->msg("d", "ID de queja no encontrado.");
     redirect('quejas.php');
 }
 $user = current_user();
 $nivel = $user['user_level'];
+$detalle = $user['id_user'];
+$id_ori_canal = last_id_oricanal();
+$id_folio = last_id_folios();
+$entidades = find_all('cat_entidad_fed');
 
 $cat_medios_pres = find_all_medio_pres();
 $cat_autoridades = find_all_aut_res();
@@ -46,49 +49,122 @@ if ($nivel == 7) {
 if (isset($_POST['convertir_queja'])) {
     if (empty($errors)) {
         $id = (int) $e_detalle['id_queja_date'];
-        $incompetencia = remove_junk($db->escape($_POST['incompetencia']));
-        $causa_incomp = remove_junk($db->escape($_POST['causa_incomp']));
-        $fecha_acuerdo_incomp = remove_junk($db->escape($_POST['fecha_acuerdo_incomp']));
-        $a_quien_se_traslada = remove_junk($db->escape($_POST['a_quien_se_traslada']));
-        $desechamiento = remove_junk($db->escape($_POST['desechamiento']));
-        $razon_desecha = remove_junk($db->escape($_POST['razon_desecha']));
-        $id_tipo_resolucion = remove_junk($db->escape($_POST['id_tipo_resolucion']));
-        $num_recomendacion = remove_junk($db->escape($_POST['num_recomendacion']));
-        $servidor_publico = remove_junk($db->escape($_POST['servidor_publico']));
-        $observaciones_recomendacion = remove_junk($db->escape($_POST['observaciones_recomendacion']));
-        $fecha_recomendacion = remove_junk($db->escape($_POST['fecha_recomendacion']));
-        $descripcion_sin_materia = remove_junk($db->escape($_POST['descripcion_sin_materia']));
-        $fecha_desistimiento = remove_junk($db->escape($_POST['fecha_desistimiento']));
-        // $archivo_sin_materia = remove_junk($db->escape($_POST['archivo_sin_materia']));
+        $solicitud = remove_junk($db->escape($_POST['solicitud']));
+        $lengua = remove_junk($db->escape($_POST['lengua']));
+        $localidad = remove_junk($db->escape($_POST['localidad']));
+        $cod_post = remove_junk($db->escape($_POST['cod_post']));
+        $entidad = remove_junk($db->escape($_POST['entidad']));
+        $observaciones = remove_junk($db->escape($_POST['observaciones']));
+        
         date_default_timezone_set('America/Mexico_City');
-        $fecha_actualizacion = date('Y-m-d H:i:s');
+        $fecha_actualizacion = date('Y-m-d');
 
+        $nombre = $e_detalle['nombre_quejoso'];
+        $paterno = $e_detalle['paterno_quejoso'];
+        $materno = $e_detalle['materno_quejoso'];
+        $nombreC = $e_detalle['nombre_quejoso'] . ' ' . $paterno = $e_detalle['paterno_quejoso'] . ' ' .$materno = $e_detalle['materno_quejoso'];;
+        $email = $e_detalle['email'];
+        $telefono = $e_detalle['telefono'];
+        $id_cat_ocup = $e_detalle['id_cat_ocup'];
+        $id_cat_grupo_vuln = $e_detalle['id_cat_grupo_vuln'];
+        $id_cat_escolaridad = $e_detalle['id_cat_escolaridad'];
+        $edad = $e_detalle['edad'];
+        $id_cat_gen = $e_detalle['id_cat_gen'];
+        $nacionalidad = $e_detalle['id_cat_nacionalidad'];
+        $med_pres = 5;
+        $calle_num = $e_detalle['dom_calle'].' #'.$e_detalle['dom_numero'];
+        $colonia = $e_detalle['dom_colonia'];
+        $municipio = $e_detalle['localidad'];
+        $autoridad = $e_detalle['id_cat_aut'];
 
         $folio_editar = $e_detalle['folio_queja'];
         $resultado = str_replace("/", "-", $folio_editar);
 
 
-        //En tramite
-        if (($id_tipo_resolucion == 1)) {
-            $sql = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
-                    a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='',servidor_publico='',
-                    fecha_recomendacion=NULL,observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',
-                    id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',archivo_anv='',archivo_sin_materia='' 
-                    WHERE id_queja_date='{$db->escape($id)}'";
-            $result = $db->query($sql);
+         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
+        //La variable $no_folio sirve para el numero de folio
+        if (count($id_ori_canal) == 0) {
+            $nuevo_id_ori_canal = 1;
+            $no_folio = sprintf('%04d', 1);
+        } else {
+            foreach ($id_ori_canal as $nuevo) {
+                $nuevo_id_ori_canal = (int) $nuevo['id_or_can'] + 1;
+                $no_folio = sprintf('%04d', (int) $nuevo['id_or_can'] + 1);
+            }
         }
 
-        if (($result && $db->affected_rows() === 1))
-        {
-            $session->msg('s', "Queja actualizada con su Seguimiento");
-            redirect('quejas.php', false);
+        if (count($id_folio) == 0) {
+            $nuevo_id_folio = 1;
+            $no_folio1 = sprintf('%04d', 1);
         } else {
-            $session->msg('d', ' Lo siento no se pudieron actualizar los datos.');
-            redirect('convertir_queja.php?id=' . (int) $e_detalle['id'], false);
+            foreach ($id_folio as $nuevo) {
+                $nuevo_id_folio = (int) $nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
+            }
+        }
+
+        //Se crea el número de folio
+        $year = date("Y");
+        // Se crea el folio orientacion
+        $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-O';
+
+        $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-O';
+        $carpeta = 'uploads/orientacioncanalizacion/orientacion/' . $folio_carpeta;
+
+        if (!is_dir($carpeta)) {
+            mkdir($carpeta, 0777, true);
+        }
+
+        $name = $_FILES['adjunto']['name'];
+        $size = $_FILES['adjunto']['size'];
+        $type = $_FILES['adjunto']['type'];
+        $temp = $_FILES['adjunto']['tmp_name'];
+
+        $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+
+        if ($move && $name != '') {
+            $query = "INSERT INTO orientacion_canalizacion (";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
+                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= ") VALUES (";
+            $query .= " '{$folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
+                        '{$entidad}','{$nacionalidad}','{$solicitud}','{$med_pres}','{$autoridad}','{$id_cat_grupo_vuln}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$fecha_actualizacion}'";
+            $query .= ")";
+
+            $query2 = "INSERT INTO folios (";
+            $query2 .= "folio, contador";
+            $query2 .= ") VALUES (";
+            $query2 .= " '{$folio}','{$no_folio1}'";
+            $query2 .= ")";
+        } else {
+            $query = "INSERT INTO orientacion_canalizacion (";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
+                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= ") VALUES (";
+            $query .= " '{$folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
+                        '{$entidad}','{$nacionalidad}','{$solicitud}','{$med_pres}','{$autoridad}','{$id_cat_grupo_vuln}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$fecha_actualizacion}'";
+            $query .= ")";
+
+            $query2 = "INSERT INTO folios (";
+            $query2 .= "folio, contador";
+            $query2 .= ") VALUES (";
+            $query2 .= " '{$folio}','{$no_folio1}'";
+            $query2 .= ")";
+        }
+
+        if ($db->query($query) && $db->query($query2)) {
+            //sucess
+            $session->msg('s', " La orientación ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"'.$user['username'].'" agregó orientación, Folio: '.$folio.'.', 1);
+            redirect('solicitudes_quejas.php', false);
+        } else {
+            //failed
+            $session->msg('d', ' No se pudo agregar la orientación.');
+            redirect('solicitudes_quejas.php', false);
         }
     } else {
         $session->msg("d", $errors);
-        redirect('convertir_queja.php?id=' . (int) $e_detalle['id'], false);
+        redirect('solicitudes_quejas.php', false);
     }
 }
 ?>
@@ -98,62 +174,100 @@ if (isset($_POST['convertir_queja'])) {
         <div class="panel-heading">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
-                <span>Queja
-                    <?php echo $e_detalle['folio_queja']; ?>
-                </span>
+                <span>Conversión a Orientación/Canalización</span>
             </strong>
         </div>
         <div class="panel-body">
             <form method="post" action="convertir_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-6">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_aut">Autoridad Responsable</label>
-                            <input type="text" class="form-control" name="id_cat_aut" value="<?php echo remove_junk($e_detalle['nombre_autoridad']); ?>" readonly>
+                            <label for="nombre_quejoso">Nombre del Quejoso</label>
+                            <input type="text" class="form-control" name="nombre_quejoso" value="<?php echo remove_junk($e_detalle['nombre_quejoso'] . ' ' . $e_detalle['paterno_quejoso'] . ' ' . $e_detalle['materno_quejoso']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="ocupacion">Ocupación del Quejoso</label>
+                            <input type="text" class="form-control" name="ocupacion" value="<?php echo remove_junk($e_detalle['ocup']); ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_quejoso">Nombre del Quejoso</label>
-                            <input type="text" class="form-control" name="id_cat_quejoso" value="<?php echo remove_junk($e_detalle['nombre_quejoso'] . " " . $e_detalle['paterno_quejoso'] . " " . $e_detalle['materno_quejoso']); ?>" readonly>
+                            <label for="email">Correo</label>
+                            <input type="text" class="form-control" name="email" value="<?php echo remove_junk($e_detalle['email']); ?>" readonly>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_area_asignada">Área a la que se asignó la queja</label>
-                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($area as $a) {
-                                                                                                        if ($a['id_area'] === $e_detalle['id_area_asignada']) echo $a['nombre_area'];
-                                                                                                    } ?>" readonly>
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" class="form-control" name="telefono" value="<?php echo remove_junk($e_detalle['telefono']); ?>" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_cat_mun">Municipio</label>
-                            <input type="text" class="form-control" name="id_cat_mun" value="<?php foreach ($cat_municipios as $municipio) {
-                                                                                                    if ($municipio['id_cat_mun'] === $e_detalle['id_cat_mun'])
-                                                                                                        echo ucwords($municipio['descripcion']);
-                                                                                                } ?>" readonly>
+                            <label for="escolaridad">Nivel de Estudios</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['escolaridad']); ?>" readonly>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <div class="form-group">
-                            <label for="id_estatus_queja">Estatus de Queja</label>
-                            <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($cat_estatus_queja as $estatus) {
-                                                                                                        if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
-                                                                                                            echo ucwords($estatus['descripcion']);
-                                                                                                    } ?>" readonly>
+                            <label for="edad">Edad</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['edad']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="gv">Grupo vulnerable</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['gv']); ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="adjunto">Archivo adjunto</label>
-                            <?php
-                            $folio_editar = $e_detalle['folio_queja'];
-                            $resultado = str_replace("/", "-", $folio_editar);
-                            ?>
-                            <label style="font-size:14px; color:#E3054F;">Archivo Actual: <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/' . $e_detalle['archivo']; ?>"><?php echo $e_detalle['archivo']; ?></a></label>
+                            <label for="genero">Género</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['genero']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="genero">Nacionalidad</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['nacionalidad']); ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="calle">Calle y Num.</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['dom_calle'] . ' #' . $e_detalle['dom_numero']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="colonia">Colonia</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['dom_colonia']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="municipio">Municipio</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['localidad']); ?>" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="mp">Medio de Presentación</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['medio_pres']); ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label for="autr">Autoridad Responsable</label>
+                            <input type="text" class="form-control" value="<?php echo remove_junk($e_detalle['nombre_autoridad']); ?>" readonly>
                         </div>
                     </div>
                 </div>
@@ -164,245 +278,66 @@ if (isset($_POST['convertir_queja'])) {
                         <title>arrow-right-circle</title>
                         <path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M6,13H14L10.5,16.5L11.92,17.92L17.84,12L11.92,6.08L10.5,7.5L14,11H6V13Z" />
                     </svg>
-                    <span style="font-size: 20px; color: #7263F0">CONVERTIR QUEJA A ORIENTACIÓN/CANALIZACIÓN</span>
+                    <span style="font-size: 20px; color: #7263F0">CONVERTIR QUEJA A ORIENTACIÓN/CANALIZACIÓN</span><br><br>
+                    <span style="font-size: 15px;">* Completa la siguiente información</span><br><br>
                 </strong>
                 <div class="row">
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_tipo_resolucion">Tipo de Resolución</label>
-                            <select class="form-control" id="id_tipo_resolucion" name="id_tipo_resolucion" onchange="showInp()">
+                            <label for="solicitud">Tipo de Solicitud</label>
+                            <select class="form-control" id="solicitud" name="solicitud">
                                 <option value="">Escoge una opción</option>
-                                <!-- <?php foreach ($cat_tipo_resolucion as $tipo_res) : ?>
-                                    <option value="<?php echo $tipo_res['id_cat_tipo_res']; ?>"><?php echo ucwords($tipo_res['descripcion']); ?></option>
-                                <?php endforeach; ?> -->
-                                <?php foreach ($cat_tipo_resolucion as $tipo_res) : ?>
-                                    <option <?php if ($tipo_res['id_cat_tipo_res'] === $e_detalle['id_tipo_resolucion'])
-                                                echo 'selected="selected"'; ?> value="<?php echo $tipo_res['id_cat_tipo_res']; ?>"><?php echo ucwords($tipo_res['descripcion']); ?></option>
+                                <option value="1">Orientación</option>
+                                <option value="2">Canalización</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="lengua">Lengua</label>
+                            <input type="text" class="form-control" name="lengua" required>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="cod_post">Código Postal</label>
+                            <input type="text" class="form-control" name="cod_post" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="entidad">Entidad</label>
+                            <select class="form-control" name="entidad">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($entidades as $entidad): ?>
+                                    <option value="<?php echo $entidad['id_cat_ent_fed']; ?>"><?php echo ucwords($entidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
-                    <?php if ($e_detalle['id_tipo_resolucion'] == 2) : ?>
-                        <div class="col-md-4" id="incompetencia2">
-                        <?php endif; ?>
-                        <?php if ($e_detalle['id_tipo_resolucion'] != 2) : ?>
-                            <div class="col-md-4" id="incompetencia2" style="display: none">
-                            <?php endif; ?>
-                            <div class="form-group">
-                                <label for="causa_incomp">Causa Incompetencia (Si la hay)</label>
-                                <textarea class="form-control" name="causa_incomp" id="causa_incomp" cols="40" rows="3"><?php echo $e_detalle['causa_incomp'] ?></textarea>
-                            </div>
-                            </div>
-                            <?php if ($e_detalle['id_tipo_resolucion'] == 2) : ?>
-                                <div class="col-md-2" id="incompetencia3">
-                                <?php endif; ?>
-                                <?php if ($e_detalle['id_tipo_resolucion'] != 2) : ?>
-                                    <div class="col-md-2" id="incompetencia3" style="display: none">
-                                    <?php endif; ?>
-                                    <div class="form-group">
-                                        <label for="fecha_acuerdo_incomp">Fecha de Acuerdo de Incompetencia</label>
-                                        <input type="date" class="form-control" name="fecha_acuerdo_incomp" value="<?php echo $e_detalle['fecha_acuerdo_incomp']; ?>">
-                                    </div>
-                                    </div>
-                                    <?php if ($e_detalle['id_tipo_resolucion'] == 2) : ?>
-                                        <div class="col-md-4" id="incompetencia4">
-                                        <?php endif; ?>
-                                        <?php if ($e_detalle['id_tipo_resolucion'] != 2) : ?>
-                                            <div class="col-md-4" id="incompetencia4" style="display: none">
-                                            <?php endif; ?>
-                                            <div class="form-group">
-                                                <label for="a_quien_se_traslada">¿A quién se traslada?</label>
-                                                <textarea class="form-control" name="a_quien_se_traslada" id="a_quien_se_traslada" cols="40" rows="3"><?php echo $e_detalle['a_quien_se_traslada'] ?></textarea>
-                                            </div>
-                                            </div>
-                                            <?php if ($e_detalle['id_tipo_resolucion'] == 3) : ?>
-                                                <div class="col-md-4" id="sinmateria">
-                                                <?php endif; ?>
-                                                <?php if ($e_detalle['id_tipo_resolucion'] != 3) : ?>
-                                                    <div class="col-md-4" id="sinmateria" style="display: none">
-                                                    <?php endif; ?>
-                                                    <div class="form-group">
-                                                        <label for="descripcion_sin_materia">Descripción (Sin Materia)</label>
-                                                        <textarea class="form-control" name="descripcion_sin_materia" id="descripcion_sin_materia" cols="40" rows="3"><?php echo $e_detalle['descripcion_sin_materia'] ?></textarea>
-                                                    </div>
-                                                    </div>
-                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 3) : ?>
-                                                        <div class="col-md-4" id="sinmateria2">
-                                                        <?php endif; ?>
-                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 3) : ?>
-                                                            <div class="col-md-4" id="sinmateria2" style="display: none">
-                                                            <?php endif; ?>
-                                                            <div class="form-group">
-                                                                <label for="archivo_sin_materia">Archivo (Sin Materia)</label>
-                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_sin_materia" id="archivo_sin_materia">
-                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                    <?php echo remove_junk($e_detalle['archivo_sin_materia']); ?>
-                                                                </label>
-                                                            </div>
-                                                            </div>
-                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 4) : ?>
-                                                                <div class="col-md-4" id="anv">
-                                                                <?php endif; ?>
-                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 4) : ?>
-                                                                    <div class="col-md-4" id="anv" style="display: none">
-                                                                    <?php endif; ?>
-                                                                    <div class="form-group">
-                                                                        <label for="archivo_anv">Archivo (ANV)</label>
-                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_anv" id="archivo_anv">
-                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                            <?php echo remove_junk($e_detalle['archivo_anv']); ?>
-                                                                        </label>
-                                                                    </div>
-                                                                    </div>
-                                                                        <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-2" id="recomendacion">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-2" id="recomendacion" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="num_recomendacion">Núm. Recomendación</label>
-                                                                                    <input type="text" class="form-control" name="num_recomendacion" value="<?php echo $e_detalle['num_recomendacion']; ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-3" id="recomendacion2">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-3" id="recomendacion2" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="servidor_publico">Servidor Público</label>
-                                                                                    <input type="text" class="form-control" name="servidor_publico" value="<?php echo $e_detalle['servidor_publico']; ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-2" id="recomendacion3">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-2" id="recomendacion3" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="fecha_recomendacion">Fecha Recomendación</label>
-                                                                                    <input type="date" class="form-control" name="fecha_recomendacion" value="<?php echo $e_detalle['fecha_recomendacion']; ?>">
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-3" id="recomendacion4">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-3" id="recomendacion4" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="observaciones_recomendacion">Observaciones</label>
-                                                                                    <!-- <input type="textarea" class="form-control" name="observaciones_recomendacion" value="<?php echo $e_detalle['observaciones_recomendacion']; ?>"> -->
-                                                                                    <textarea class="form-control" name="observaciones_recomendacion" id="observaciones_recomendacion" cols="30" rows="5" value="<?php echo $e_detalle['observaciones_recomendacion']; ?>"><?php echo $e_detalle['observaciones_recomendacion']; ?></textarea>
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-4" id="recomendacion5">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-4" id="recomendacion5" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="adjunto_recomendacion">Adjunto Recomendación</label>
-                                                                                    <input type="file" accept="application/pdf" class="form-control" name="adjunto_recomendacion" id="adjunto_recomendacion">
-                                                                                                            <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                <?php echo remove_junk($e_detalle['adjunto_recomendacion']); ?>
-                                                                                                            </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                        <div class="col-md-4" id="recomendacion6">
-                                                                                <?php endif; ?>
-                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                            <div class="col-md-4" id="recomendacion6" style="display: none">
-                                                                                <?php endif; ?>
-                                                                                <div class="form-group">
-                                                                                    <label for="adjunto_rec_publico">Adjunto Recomendación Versión Pública</label>
-                                                                                    <input type="file" accept="application/pdf" class="form-control" name="adjunto_rec_publico" id="adjunto_rec_publico">
-                                                                                                            <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                <?php echo remove_junk($e_detalle['adjunto_rec_publico']); ?>
-                                                                                                            </label>
-                                                                                </div>
-                                                                            </div>
-                                                                            
-                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] == 6) : ?>
-                                                                                    <div class="col-md-4" id="desechamiento2">
-                                                                                            <?php endif; ?>
-                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 6) : ?>
-                                                                                            <div class="col-md-4" id="desechamiento2" style="display: none">
-                                                                                                    <?php endif; ?>
-                                                                                                <div class="form-group">
-                                                                                                    <label for="razon_desecha">Razón Desechamiento (Si la hay)</label>
-                                                                                                    <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40" rows="3"><?php echo $e_detalle['razon_desecha'] ?></textarea>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-2" style="display: none">
-                                                                                                <div class="form-group">
-                                                                                                    <label for="incompetencia">Incompetencia</label>
-                                                                                                    <select class="form-control" name="incompetencia" id="incompetencia">
-                                                                                                        <?php if ($e_detalle['incompetencia'] == 0) : ?>
-                                                                                                            <option value="0">No</option>
-                                                                                                        <?php endif; ?>
-                                                                                                        <?php if ($e_detalle['incompetencia'] == 1) : ?>
-                                                                                                            <option value="1">Sí</option>
-                                                                                                        <?php endif; ?>
-                                                                                                    </select>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                            <div class="col-md-2" style="display: none">
-                                                                                                <div class="form-group">
-                                                                                                    <label for="desechamiento">Desechamiento</label>
-                                                                                                    <select class="form-control" name="desechamiento" id="desechamiento">
-                                                                                                        <?php if ($e_detalle['desechamiento'] == 0) : ?>
-                                                                                                            <option value="0">No</option>
-                                                                                                        <?php endif; ?>
-                                                                                                        <?php if ($e_detalle['desechamiento'] == 1) : ?>
-                                                                                                            <option value="1">Sí</option>
-                                                                                                        <?php endif; ?>
-                                                                                                    </select>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
-                                                                                            <div class="col-md-2" id="desistimiento">
-                                                                                                    <?php endif; ?>
-                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
-                                                                                                <div class="col-md-2" id="desistimiento" style="display: none">
-                                                                                                    <?php endif; ?>
-                                                                                                    <div class="form-group">
-                                                                                                        <label for="fecha_desistimiento">Fecha de Desistimiento</label>
-                                                                                                        <input type="date" class="form-control" name="fecha_desistimiento" value="<?php echo $e_detalle['fecha_desistimiento']; ?>">
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
-                                                                                                <div class="col-md-3" id="desistimiento2">
-                                                                                                        <?php endif; ?>
-                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
-                                                                                                    <div class="col-md-3" id="desistimiento2" style="display: none">
-                                                                                                        <?php endif; ?>
-                                                                                                        <div class="form-group">
-                                                                                                            <label for="archivo_desistimiento">Archivo de Desistimiento</label>
-                                                                                                            <input type="file" accept="application/pdf" class="form-control" name="archivo_desistimiento" id="archivo_desistimiento">
-                                                                                                            <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                <?php echo remove_junk($e_detalle['archivo_desistimiento']); ?>
-                                                                                                            </label>
-                                                                                                        </div>
-                                                                                                    </div>
-                                                                                                </div>
-                                                                                                <div class="form-group clearfix">
-                                                                                                    <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-                                                                                                        Regresar
-                                                                                                    </a>
-                                                                                                    <button type="submit" name="convertir_queja" class="btn btn-primary" value="subir">Guardar</button>
-                                                                                                </div>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-            </form>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="adjunto">Archivo adjunto (si es necesario)</label>
+                            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="observaciones">Observaciones</label><br>
+                            <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="2"></textarea>
+                        </div>
+                    </div>                    
+                </div>
+                <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+                    Regresar
+                </a>
+                <button type="submit" name="convertir_queja" class="btn btn-primary" value="subir">Guardar</button>
         </div>
+        </form>
     </div>
+</div>
 </div>
 
 <?php include_once('layouts/footer.php'); ?>
