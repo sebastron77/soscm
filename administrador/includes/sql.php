@@ -857,7 +857,7 @@ function find_by_id_queja($id)
                       q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion, q.servidor_publico, q.fecha_recomendacion, 
                       q.observaciones_recomendacion, q.adjunto_recomendacion, q.adjunto_rec_publico, cq.email, cq.telefono, cq.id_cat_ocup, cq.id_cat_grupo_vuln, cq.id_cat_escolaridad,
                       cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad, oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,
-                      cn.descripcion as nacionalidad, cq.calle_quejoso, cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad
+                      cn.descripcion as nacionalidad, cq.calle_quejoso, cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio
                       FROM quejas_dates q
                       LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
@@ -875,6 +875,7 @@ function find_by_id_queja($id)
                       LEFT JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = cq.id_cat_grupo_vuln
                       LEFT JOIN cat_genero cg ON cg.id_cat_gen = cq.id_cat_gen
                       LEFT JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = cq.id_cat_nacionalidad
+                      LEFT JOIN folios fo ON fo.folio = q.folio_queja
                       WHERE q.id_queja_date='{$db->escape($id)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;

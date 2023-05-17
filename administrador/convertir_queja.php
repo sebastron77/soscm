@@ -55,14 +55,14 @@ if (isset($_POST['convertir_queja'])) {
         $cod_post = remove_junk($db->escape($_POST['cod_post']));
         $entidad = remove_junk($db->escape($_POST['entidad']));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
-        
+
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d');
 
         $nombre = $e_detalle['nombre_quejoso'];
         $paterno = $e_detalle['paterno_quejoso'];
         $materno = $e_detalle['materno_quejoso'];
-        $nombreC = $e_detalle['nombre_quejoso'] . ' ' . $paterno = $e_detalle['paterno_quejoso'] . ' ' .$materno = $e_detalle['materno_quejoso'];;
+        $nombreC = $e_detalle['nombre_quejoso'] . ' ' . $paterno = $e_detalle['paterno_quejoso'] . ' ' . $materno = $e_detalle['materno_quejoso'];;
         $email = $e_detalle['email'];
         $telefono = $e_detalle['telefono'];
         $id_cat_ocup = $e_detalle['id_cat_ocup'];
@@ -72,7 +72,7 @@ if (isset($_POST['convertir_queja'])) {
         $id_cat_gen = $e_detalle['id_cat_gen'];
         $nacionalidad = $e_detalle['id_cat_nacionalidad'];
         $med_pres = 5;
-        $calle_num = $e_detalle['dom_calle'].' #'.$e_detalle['dom_numero'];
+        $calle_num = $e_detalle['dom_calle'] . ' #' . $e_detalle['dom_numero'];
         $colonia = $e_detalle['dom_colonia'];
         $municipio = $e_detalle['localidad'];
         $autoridad = $e_detalle['id_cat_aut'];
@@ -80,36 +80,51 @@ if (isset($_POST['convertir_queja'])) {
         $folio_editar = $e_detalle['folio_queja'];
         $resultado = str_replace("/", "-", $folio_editar);
 
+        if ($solicitud == 1) {
+            $folio_editar;
+            $nuevo_folio = str_replace("Q", "O", $folio_editar);
+        }
+        if ($solicitud == 2) {
+            $folio_editar;
+            $nuevo_folio = str_replace("Q", "C", $folio_editar);
+        }
 
-         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
+
+        //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
-        if (count($id_ori_canal) == 0) {
-            $nuevo_id_ori_canal = 1;
-            $no_folio = sprintf('%04d', 1);
-        } else {
-            foreach ($id_ori_canal as $nuevo) {
-                $nuevo_id_ori_canal = (int) $nuevo['id_or_can'] + 1;
-                $no_folio = sprintf('%04d', (int) $nuevo['id_or_can'] + 1);
-            }
-        }
+        // if (count($id_ori_canal) == 0) {
+        //     $nuevo_id_ori_canal = 1;
+        //     $no_folio = sprintf('%04d', 1);
+        // } else {
+        //     foreach ($id_ori_canal as $nuevo) {
+        //         $nuevo_id_ori_canal = (int) $nuevo['id_or_can'] + 1;
+        //         $no_folio = sprintf('%04d', (int) $nuevo['id_or_can'] + 1);
+        //     }
+        // }
 
-        if (count($id_folio) == 0) {
-            $nuevo_id_folio = 1;
-            $no_folio1 = sprintf('%04d', 1);
-        } else {
-            foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int) $nuevo['contador'] + 1;
-                $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
-            }
-        }
+        // if (count($id_folio) == 0) {
+        //     $nuevo_id_folio = 1;
+        //     $no_folio1 = sprintf('%04d', 1);
+        // } else {
+        //     foreach ($id_folio as $nuevo) {
+        //         $nuevo_id_folio = (int) $nuevo['contador'] + 1;
+        //         $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
+        //     }
+        // }
 
         //Se crea el número de folio
-        $year = date("Y");
+        // $year = date("Y");
         // Se crea el folio orientacion
-        $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-O';
+        // $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-O';
 
-        $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-O';
-        $carpeta = 'uploads/orientacioncanalizacion/orientacion/' . $folio_carpeta;
+        // $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-O';
+        $folio_carpeta = str_replace("/", "-", $nuevo_folio);
+        if($solicitud == 1){
+            $carpeta = 'uploads/orientacioncanalizacion/orientacion/' . $folio_carpeta;
+        }
+        if($solicitud == 2){
+            $carpeta = 'uploads/orientacioncanalizacion/canalizacion/' . $folio_carpeta;
+        }
 
         if (!is_dir($carpeta)) {
             mkdir($carpeta, 0777, true);
@@ -122,40 +137,36 @@ if (isset($_POST['convertir_queja'])) {
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
 
+        $id_t_folios = $e_detalle['id_folio'];
+
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
             $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
                         nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
+            $query .= " '{$nuevo_folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
                         '{$entidad}','{$nacionalidad}','{$solicitud}','{$med_pres}','{$autoridad}','{$id_cat_grupo_vuln}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$fecha_actualizacion}'";
             $query .= ")";
 
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
+            $query2 = "UPDATE folios SET folio='{$nuevo_folio}' WHERE id_folio='{$db->escape($id_t_folios)}'";
+            $query3 = "DELETE FROM quejas_dates WHERE id_queja_date = '{$db->escape($id)}'";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
             $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
                         nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
+            $query .= " '{$folio_editar}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
                         '{$entidad}','{$nacionalidad}','{$solicitud}','{$med_pres}','{$autoridad}','{$id_cat_grupo_vuln}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$fecha_actualizacion}'";
             $query .= ")";
 
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
+            $query2 = "UPDATE folios SET folio='$nuevo_folio' WHERE id_folio='{$db->escape($id_t_folios)}'";
+            $query3 = "DELETE FROM quejas_dates WHERE id_queja_date='{$db->escape($id)}'";
         }
 
-        if ($db->query($query) && $db->query($query2)) {
+        if ($db->query($query) && $db->query($query2) && $db->query($query3)) {
             //sucess
             $session->msg('s', " La orientación ha sido agregada con éxito.");
-            insertAccion($user['id_user'], '"'.$user['username'].'" agregó orientación, Folio: '.$folio.'.', 1);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó orientación, Folio: ' . $folio . '.', 1);
             redirect('solicitudes_quejas.php', false);
         } else {
             //failed
@@ -309,7 +320,7 @@ if (isset($_POST['convertir_queja'])) {
                             <label for="entidad">Entidad</label>
                             <select class="form-control" name="entidad">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($entidades as $entidad): ?>
+                                <?php foreach ($entidades as $entidad) : ?>
                                     <option value="<?php echo $entidad['id_cat_ent_fed']; ?>"><?php echo ucwords($entidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -328,7 +339,7 @@ if (isset($_POST['convertir_queja'])) {
                             <label for="observaciones">Observaciones</label><br>
                             <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="2"></textarea>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
                 <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                     Regresar
