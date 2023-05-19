@@ -8,10 +8,6 @@ $all_ocupaciones = find_all_order('cat_ocupaciones', 'descripcion');
 $user = current_user();
 $nivel = $user['user_level'];
 
-// $user = current_user();
-//$id_usuario = $user['id'];
-
-// $user = current_user();
 $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
@@ -39,7 +35,7 @@ endif;
                     <span>Catálogo de ocupaciones <span>
                 </strong>
                 <?php if ($otro == 1 || $nivel == 1) : ?>
-                    <a href="add_comunidad.php" class="btn btn-info pull-right btn-md"> Agregar ocupaciones</a>
+                    <a href="add_ocupaciones.php" class="btn btn-info pull-right btn-md"> Agregar ocupación</a>
                 <?php endif ?>
             </div>
             <div class="panel-body">
@@ -70,25 +66,21 @@ endif;
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <?php if ($otro == 1 || $nivel == 1) : ?>
-                                                <a href="edit_area.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+                                                <a href="edit_ocupaciones.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a>
                                             <?php endif ?>
                                             <?php if (($nivel == 1) && ($a_ocupaciones['id_cat_ocup'] != 1)) : ?>
 
                                                 <?php if ($a_ocupaciones['estatus'] == 0) : ?>
-                                                    <a href="activate_area.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
+                                                    <a href="activate_ocupaciones.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>&a=0" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
                                                         <span class="glyphicon glyphicon-ok"></span>
                                                     </a>
                                                 <?php else : ?>
-                                                    <a href="inactivate_area.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
+                                                    <a href="activate_ocupaciones.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>&a=1" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
                                                         <i class="glyphicon glyphicon-ban-circle"></i>
                                                     </a>
                                                 <?php endif; ?>
-                                                <a href="delete_area.php?id=<?php echo (int)$a_ocupaciones['id_cat_ocup']; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar esta área? Los cargos de trabajo relacionados a esta se establecerán como *Sin área*.');">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a>
-
                                             <?php endif; ?>
                                         </div>
                                     </td>

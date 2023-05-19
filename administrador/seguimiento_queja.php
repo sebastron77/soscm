@@ -19,7 +19,7 @@ $cat_agraviados = find_all('cat_agraviados');
 $users = find_all('users');
 $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
-$cat_estatus_queja = find_all_estatus_queja();
+$cat_estatus_queja = find_all_estatus_procesal();
 $cat_municipios = find_all_cat_municipios();
 $cat_tipo_resolucion = find_all('cat_tipo_res');
 
@@ -264,7 +264,7 @@ if (isset($_POST['seguimiento_queja'])) {
                         <div class="form-group">
                             <label for="id_estatus_queja">Estatus de Queja</label>
                             <input type="text" class="form-control" name="id_user_asignado" value="<?php foreach ($cat_estatus_queja as $estatus) {
-                                                                                                        if ($estatus['id_cat_est_queja'] === $e_detalle['id_estatus_queja'])
+                                                                                                        if ($estatus['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
                                                                                                             echo ucwords($estatus['descripcion']);
                                                                                                     } ?>" readonly>
                         </div>
@@ -287,7 +287,7 @@ if (isset($_POST['seguimiento_queja'])) {
                         <title>arrow-right-circle</title>
                         <path d="M22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2A10,10 0 0,1 22,12M6,13H14L10.5,16.5L11.92,17.92L17.84,12L11.92,6.08L10.5,7.5L14,11H6V13Z" />
                     </svg>
-                    <span style="font-size: 20px; color: #7263F0">SEGUIMIENTO DE LA QUEJA</span>
+                    <span style="font-size: 20px; color: #7263F0">RESOLUCIÓN</span>
                 </strong>
                 <div class="row">
                     <div class="col-md-2">

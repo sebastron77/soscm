@@ -171,7 +171,7 @@ if (isset($_POST["export_data"])) {
                                 <?php echo remove_junk(ucwords($queja['nombre_quejoso'] . " " . $queja['paterno_quejoso'] . " " . $queja['materno_quejoso'])) ?>
                             </td>
                             <td>
-                                <?php echo remove_junk(ucwords($queja['estatus_queja'])) ?>
+                                <?php echo remove_junk(ucwords($queja['est_proc'])) ?>
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
@@ -188,6 +188,10 @@ if (isset($_POST["export_data"])) {
                                         <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-gre btn-md" title="Acuerdos" data-toggle="tooltip">
                                             <!-- <span class="glyphicon glyphicon-retweet"></span> -->
                                             <span class="glyphicon glyphicon-file"></span>
+                                        </a>&nbsp;
+                                        <a href="procesal_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv2 btn-md" title="Estado Procesal" data-toggle="tooltip">
+                                            <!-- <span class="glyphicon glyphicon-retweet"></span> -->
+                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
                                         </a>&nbsp;
                                         <?php if(($id_u <= 3) && ($queja['id_cat_med_pres'] == 5)):?>
                                             <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv btn-md" title="Convertir" data-toggle="tooltip">

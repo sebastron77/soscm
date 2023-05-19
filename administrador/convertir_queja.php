@@ -22,7 +22,7 @@ $cat_agraviados = find_all('cat_agraviados');
 $users = find_all('users');
 $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
-$cat_estatus_queja = find_all_estatus_queja();
+$cat_estatus_queja = find_all_estatus_procesal();
 $cat_municipios = find_all_cat_municipios();
 $cat_tipo_resolucion = find_all('cat_tipo_res');
 

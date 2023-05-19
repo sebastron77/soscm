@@ -5,36 +5,21 @@ require_once('includes/load.php');
 $user = current_user();
 $nivel_user = $user['user_level'];
 
-if ($nivel_user <= 2) {
+if ($nivel_user <= 2) :
     page_require_level(2);
-}
-if ($nivel_user == 5) {
-    redirect('home.php');
-}
-if ($nivel_user == 7) {
-    page_require_level(7);
-}
-if ($nivel_user == 21) {
-    page_require_level_exacto(21);
-}
-if ($nivel_user == 19) {
-    redirect('home.php');
-}
-if ($nivel_user > 2 && $nivel_user < 5) :
-    redirect('home.php');
 endif;
-if ($nivel_user > 5 && $nivel_user < 7) :
+if ($nivel_user == 7) :
+    page_require_level_exacto(7);
+endif;
+if ($nivel_user > 2 && $nivel_user < 7) :
     redirect('home.php');
 endif;
 if ($nivel_user > 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19 && $nivel_user < 21) :
-    redirect('home.php');
-endif;
 ?>
 <?php
-$e_detalle = find_by_id('gestiones_jurisdiccionales', (int) $_GET['id'], 'id_gestion');
+$e_detalle = find_by_id('gestiones_jurisdiccionales', (int) $_GET['id']);
 if (!$e_detalle) {
     $session->msg("d", "id de la gestión no encontrado.");
     redirect('gestiones.php');
@@ -49,9 +34,7 @@ if (isset($_POST['update'])) {
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
         date_default_timezone_set('America/Mexico_City');
 
-        $folio_editar = $e_detalle['folio'];
-        $resultado = str_replace("/", "-", $folio_editar);
-        $carpeta = 'uploads/gestiones/' . $e_detalle['folio'] . '/' . $resultado;
+        $carpeta = 'uploads/gestiones/' . $e_detalle['id'] . '/' . $resultado;
 
         $name = $_FILES['adjunto']['name'];
         $size = $_FILES['adjunto']['size'];
@@ -67,12 +50,12 @@ if (isset($_POST['update'])) {
         if($name != ''){
             $query = "UPDATE gestiones_jurisdiccionales SET ";
             $query .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', documento='{$name}', observaciones='{$observaciones}'";
-            $query .= " WHERE id_gestion='{$db->escape($e_detalle['id_gestion'])}'";
+            $query .= "WHERE id='{$db->escape($e_detalle['id'])}'";
         }
         if($name == ''){
             $query2 = "UPDATE gestiones_jurisdiccionales SET ";
             $query2 .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', observaciones='{$observaciones}'";
-            $query2 .= " WHERE id_gestion='{$db->escape($e_detalle['id_gestion'])}'";
+            $query2 .= "WHERE id='{$db->escape($e_detalle['id'])}'";
         }
         
         $result = $db->query($query);
@@ -81,7 +64,6 @@ if (isset($_POST['update'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', "Registro actualizado con éxito. ");
-            insertAccion($user['id_user'], '"'.$user['username'].'" editó registro en gestiones, Folio: '.$folio_editar.'.', 2);
             redirect('gestiones.php', false);
         } else {
             //failed
@@ -90,7 +72,7 @@ if (isset($_POST['update'])) {
         }
     } else {
         $session->msg("d", $errors);
-        redirect('edit_gestion.php?id=' . (int) $e_detalle['id_gestion'], false);
+        redirect('edit_gestion.php?id=' . (int) $e_detalle['id'], false);
     }
 }
 ?>
@@ -100,7 +82,7 @@ if (isset($_POST['update'])) {
         <h3>Editar Gestión</h3>
     </div>
     <?php echo display_msg($msg); ?>
-    <form method="post" action="edit_gestion.php?id=<?php echo (int) $e_detalle['id_gestion']; ?>" class="clearfix" enctype="multipart/form-data">
+    <form method="post" action="edit_gestion.php?id=<?php echo (int) $e_detalle['id']; ?>" class="clearfix" enctype="multipart/form-data">
         <div class="form-group">
             <label for="tipo_gestion" class="control-label">Tipo de Gestión Jurisdiccional</label>
             <select class="form-control" name="tipo_gestion" id="tipo_gestion">
@@ -126,7 +108,7 @@ if (isset($_POST['update'])) {
         <div class="form-group">
             <label for="adjunto">Documento</label>
             <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto"
-                value="uploads/quejas/<?php echo $e_detalle['folio'] . "/" . $e_detalle['adjunto']; ?>">
+                value="uploads/quejas/<?php echo $e_detalle['id'] . "/" . $e_detalle['adjunto']; ?>">
             <label style="font-size:12px; color:#E3054F;">Archivo Actual:
                 <?php echo remove_junk($e_detalle['documento']); ?>
             </label>

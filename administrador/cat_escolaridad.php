@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-$page_title = 'Lista de escolaridad Indígenas';
+$page_title = 'Lista de Escolaridades';
 require_once('includes/load.php');
 
 // page_require_level(2);
@@ -8,12 +8,8 @@ $all_escolaridad = find_all_order('cat_escolaridad', 'descripcion');
 $user = current_user();
 $nivel = $user['user_level'];
 
-// $user = current_user();
-//$id_usuario = $user['id'];
-
-// $user = current_user();
-$id_user = $user['id'];
-$busca_area = area_usuario($id_usuario);
+$id_user = $user['id_user'];
+$busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
@@ -36,10 +32,10 @@ endif;
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Catálogo de escolaridad <span>
+                    <span>Catálogo de Escolaridad <span>
                 </strong>
                 <?php if ($otro == 1 || $nivel == 1) : ?>
-                    <a href="add_comunidad.php" class="btn btn-info pull-right btn-md"> Agregar Escolaridad</a>
+                    <a href="add_escolaridad.php" class="btn btn-info pull-right btn-md"> Agregar Escolaridad</a>
                 <?php endif ?>
             </div>
             <div class="panel-body">
@@ -70,25 +66,21 @@ endif;
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <?php if ($otro == 1 || $nivel == 1) : ?>
-                                                <a href="edit_area.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
+                                                <a href="edit_escolaridad.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a>
                                             <?php endif ?>
                                             <?php if (($nivel == 1) && ($a_escolaridad['id_cat_escolaridad'] != 1)) : ?>
 
                                                 <?php if ($a_escolaridad['estatus'] == 0) : ?>
-                                                    <a href="activate_area.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
+                                                    <a href="activate_escolaridad.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>&a=0" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
                                                         <span class="glyphicon glyphicon-ok"></span>
                                                     </a>
                                                 <?php else : ?>
-                                                    <a href="inactivate_area.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
+                                                    <a href="activate_escolaridad.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>&a=1" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
                                                         <i class="glyphicon glyphicon-ban-circle"></i>
                                                     </a>
-                                                <?php endif; ?>
-                                                <a href="delete_area.php?id=<?php echo (int)$a_escolaridad['id_cat_escolaridad']; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar esta área? Los cargos de trabajo relacionados a esta se establecerán como *Sin área*.');">
-                                                    <i class="glyphicon glyphicon-trash"></i>
-                                                </a>
-
+                                                <?php endif; ?>                                               
                                             <?php endif; ?>
                                         </div>
                                     </td>

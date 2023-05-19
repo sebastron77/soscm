@@ -18,7 +18,7 @@ $cat_agraviados = find_all('cat_agraviados');
 $users = find_all('users');
 $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
-$cat_estatus_queja = find_all_estatus_queja();
+$cat_estatus_queja = find_all_estatus_procesal();
 $cat_municipios = find_all_cat_municipios();
 $cat_est_procesal = find_all('cat_est_procesal');
 $cat_tipo_resolucion = find_all('cat_tipo_res');
@@ -54,7 +54,7 @@ endif;
 if (isset($_POST['add_queja'])) {
 
     $req_fields = array(
-        'fecha_presentacion', 'id_cat_med_pres', 'id_cat_aut', 'id_user_asignado', 'id_area_asignada', 'id_estatus_queja', 'dom_calle',
+        'fecha_presentacion', 'id_cat_med_pres', 'id_cat_aut', 'id_user_asignado', 'id_area_asignada', 'dom_calle',
         'dom_numero', 'dom_colonia', 'descripcion_hechos'
     );
     validate_fields($req_fields);
@@ -72,7 +72,7 @@ if (isset($_POST['add_queja'])) {
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
-        $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
+        // $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
         $ent_fed = remove_junk($db->escape($_POST['ent_fed']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $localidad = remove_junk($db->escape($_POST['localidad']));
@@ -124,8 +124,8 @@ if (isset($_POST['add_queja'])) {
                     fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,ent_fed,id_cat_mun,localidad,
                     descripcion_hechos,estado_procesal,id_tipo_ambito) 
                     VALUES ('{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}',
-                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}','{$id_estatus_queja}','{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
-                    '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}', $estado_procesal, $id_tipo_ambito)";
+                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}',NULL,'{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
+                    '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}', '{$estado_procesal}', $id_tipo_ambito)";
 
         $query3 = "INSERT INTO folios (";
         $query3 .= "folio, contador";
@@ -143,7 +143,7 @@ if (isset($_POST['add_queja'])) {
         if ($db->query($query2)) {
             //sucess
             $session->msg('s', " La queja ha sido agregada con éxito.");
-            insertAccion($user['id_user'],'"'.$user['username'].'" agregó queja, Folio: '.$folio.'.',1);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó queja, Folio: ' . $folio . '.', 1);
             redirect('quejas.php', false);
         } else {
             //failed
@@ -179,9 +179,15 @@ include_once('layouts/header.php'); ?>
             </button>
         </div>
 
-
         <div class="panel-body">
             <form method="post" action="add_queja.php" enctype="multipart/form-data">
+                <h3 style="margin-top: -4%; font-weight:bold;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" width="25px" height="25px"  viewBox="0 0 24 24">
+                        <title>cog</title>
+                        <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
+                    </svg>
+                    Generales de la Queja
+                </h3>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -269,6 +275,21 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label for="estado_procesal">Estado Procesal</label>
+                            <select class="form-control" name="estado_procesal">
+                                <!-- <?php foreach ($cat_est_procesal as $est_pros) : ?>
+                                    <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>"><?php echo ucwords($est_pros['descripcion']); ?></option>
+                                <?php endforeach; ?> -->
+                                <?php foreach ($cat_est_procesal as $est_pros) : ?>
+                                    <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
+                                        <?php echo ucwords($est_pros['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <!-- <div class="col-md-3">
+                        <div class="form-group">
                             <label for="id_estatus_queja">Estatus de Queja</label>
                             <select class="form-control" name="id_estatus_queja">
                                 <option value="">Escoge una opción</option>
@@ -277,7 +298,13 @@ include_once('layouts/header.php'); ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
+                </div>
+                <div class="row">
+                <h3 style="margin-top: 1%; font-weight:bold;">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" height="25px" width="25px" viewBox="0 0 24 24"><title>earth</title><path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
+                    Datos donde ocurrieron los hechos
+                </h3>
                 </div>
                 <div class="row">
                     <div class="col-md-2">
@@ -332,29 +359,15 @@ include_once('layouts/header.php'); ?>
                             <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="estado_procesal">Estado Procesal</label>
-                            <select class="form-control" name="estado_procesal">
-                                <!-- <?php foreach ($cat_est_procesal as $est_pros): ?>
-                                    <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>"><?php echo ucwords($est_pros['descripcion']); ?></option>
-                                <?php endforeach; ?> -->
-                                <?php foreach ($cat_est_procesal as $est_pros): ?>
-                                    <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
-                                        echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
-                                        <?php echo ucwords($est_pros['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
+
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_ambito">Tipo Ámbito</label>
                             <select class="form-control" name="id_tipo_ambito">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($cat_tipo_ambito as $ambito): ?>
+                                <?php foreach ($cat_tipo_ambito as $ambito) : ?>
                                     <option <?php if ($ambito['id_cat_tipo_ambito'] === $e_detalle['id_tipo_ambito'])
-                                        echo 'selected="selected"'; ?> value="<?php echo $ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($ambito['descripcion']); ?></option>
+                                                echo 'selected="selected"'; ?> value="<?php echo $ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($ambito['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
