@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Seguimiento de Queja';
+$page_title = 'Estado Procesal de Queja';
 require_once('includes/load.php');
 ?>
 <?php
@@ -18,7 +18,16 @@ $cat_quejosos = find_all_quejosos();
 $users = find_all('users');
 $area = find_all_areas_quejas();
 $cat_municipios = find_all_cat_municipios();
+$cat_hecho_vuln = find_all_hecho_vuln();
+$cat_derecho_vuln = find_all_derecho_vuln();
+$cat_derecho_gral = find_all_derecho_gral();
 $cat_est_procesal = find_all('cat_est_procesal');
+$hecho_vulnrado = find_by_violentados('rel_queja_hechos', 'cat_hecho_vuln', $e_detalle['id_queja_date']);
+$rel_queja_hechos = $hecho_vulnrado['id_cat_hecho_vuln'];
+$derecho_vulnrado = find_by_violentados('rel_queja_der_vuln', 'cat_der_vuln', $e_detalle['id_queja_date']);
+$rel_queja_der_vuln = $derecho_vulnrado['id_cat_der_vuln'];
+$derecho_general = find_by_violentados('rel_queja_der_gral', 'cat_derecho_general', $e_detalle['id_queja_date']);
+$rel_queja_der_gral = $derecho_general['id_cat_derecho_general'];
 
 
 if ($nivel <= 2) {
@@ -50,48 +59,94 @@ if (isset($_POST['procesal_queja'])) {
         $sintesis_documento = remove_junk($db->escape($_POST['sintesis_documento']));
         $publico = remove_junk($db->escape($_POST['publico'] == 'on' ? 1 : 0));
 
+        $id_cat_hecho_vuln = remove_junk($db->escape($_POST['id_cat_hecho_vuln']));
+        $id_cat_derecho_general = remove_junk($db->escape($_POST['id_cat_derecho_general']));
+        $id_cat_der_vuln = remove_junk($db->escape($_POST['id_cat_derecho_vuln']));
 
         $folio_editar = $e_detalle['folio_queja'];
-        $resultado = str_replace("/", "-", $folio_editar);
-        $carpeta = 'uploads/quejas/' . $resultado . '/Acuerdos';
 
-        $name = $_FILES['acuerdo_adjunto']['name'];
-        $temp = $_FILES['acuerdo_adjunto']['tmp_name'];
-        $name_publico = $_FILES['acuerdo_adjunto_publico']['name'];
-        $temp2 = $_FILES['acuerdo_adjunto_publico']['tmp_name'];
-
-        if (is_dir($carpeta)) {
-            $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-            $move2 = move_uploaded_file($temp2, $carpeta . "/" . $name_publico);
+        $query = "DELETE FROM rel_queja_der_gral WHERE id_queja_date =" . $id;
+        if ($db->query($query)) {
+            echo "Registro eliminado con éxito.";
         } else {
-            mkdir($carpeta, 0777, true);
-            $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-            $move2 = move_uploaded_file($temp2, $carpeta . "/" . $name_publico);
+            echo "ERROR: No se pudo eliminar registro $consulta. ";
         }
 
-        $Procesal = getProcesal($estado_procesal);
-        foreach ($Procesal as $estado) :
-            $estadoProcesal = $estado['descripcion'];
-        endforeach;
+        $query = "DELETE FROM rel_queja_der_vuln WHERE id_queja_date =" . $id;
+        if ($db->query($query)) {
+            echo "Registro eliminado con éxito.";
+        } else {
+            echo "ERROR: No se pudo eliminar registro $consulta. ";
+        }
+
+        $query = " DELETE FROM rel_queja_hechos WHERE id_queja_date = " . $id;
+        if ($db->query($query)) {
+            echo "Registro eliminado con éxito.";
+        } else {
+            echo "ERROR: No se pudo eliminar registro $consulta. ";
+        }
 
 
-        $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,fecha_alta) 
+        $query = "INSERT INTO rel_queja_der_gral (id_queja_date, id_cat_derecho_general) VALUES($id,$id_cat_derecho_general);";
+        if ($db->query($query)) {
+            //echo "Registro ingresado con éxito.";
+        } else {
+        }
+
+        $query = "INSERT INTO rel_queja_der_vuln (id_queja_date, id_cat_der_vuln) VALUES($id,$id_cat_der_vuln);";
+        if ($db->query($query)) {
+        } else {
+        }
+
+        $query = "INSERT INTO rel_queja_hechos (id_queja_date, id_cat_hecho_vuln) VALUES($id,$id_cat_hecho_vuln);";
+        if ($db->query($query)) {
+        } else {
+        }
+
+        insertAccion($user['id_user'], '\"' . $user['username'] . '\" actualizó los Derechos Presuntamente Violentados del expediene ' . $folio_editar . '.', 2);
+
+        if ($fecha_acuerdo) {
+
+            $resultado = str_replace("/", "-", $folio_editar);
+            $carpeta = 'uploads/quejas/' . $resultado . '/Acuerdos';
+
+            $name = $_FILES['acuerdo_adjunto']['name'];
+            $temp = $_FILES['acuerdo_adjunto']['tmp_name'];
+            $name_publico = $_FILES['acuerdo_adjunto_publico']['name'];
+            $temp2 = $_FILES['acuerdo_adjunto_publico']['tmp_name'];
+
+            if (is_dir($carpeta)) {
+                $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+                $move2 = move_uploaded_file($temp2, $carpeta . "/" . $name_publico);
+            } else {
+                mkdir($carpeta, 0777, true);
+                $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+                $move2 = move_uploaded_file($temp2, $carpeta . "/" . $name_publico);
+            }
+
+            $Procesal = find_by_id('cat_est_procesal', (int) $e_detalle['estado_procesal'], 'id_cat_est_procesal');
+
+            $estadoProcesal = $Procesal['descripcion'];
+
+
+            $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,fecha_alta) 
 										  VALUES ({$id},'{$estadoProcesal}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},NOW());";
 
-        if ($db->query($query)) {
-            //sucess
-            $session->msg('s', " Los datos de los acuerdos se han sido agregado con éxito.");
-            $sql = "UPDATE quejas_dates SET estado_procesal='{$estado_procesal}', fecha_actualizacion=NOW() WHERE id_queja_date='{$db->escape($id)}'";
+            if ($db->query($query)) {
+                //sucess
+                $session->msg('s', " Los datos de los acuerdos se han sido agregado con éxito.");
+                $sql = "UPDATE quejas_dates SET estado_procesal='{$estado_procesal}', fecha_actualizacion=NOW() WHERE id_queja_date='{$db->escape($id)}'";
 
-            $result = $db->query($sql);
-            if ($result) {
-                $session->msg('s', "Información Actualizada ");
-                insertAccion($user['id_user'], '\"' . $user['username'] . '\" agregó el acuerdo \"' . $estadoProcesal . '\" al expediente ' . $folio_editar . '.', 1);
-                insertAccion($user['id_user'], '\"' . $user['username'] . '\" actualizó el Estado procesal a \"' . $estadoProcesal . '\" al expediente ' . $folio_editar . '.', 2);
-                redirect('quejas.php', false);
-            } else {
-                $session->msg('d', ' Lo siento no se actualizaron los datos.');
-                redirect('edit_queja.php?id=' . (int) $e_detalle['id'], false);
+                $result = $db->query($sql);
+                if ($result) {
+                    $session->msg('s', "Información Actualizada ");
+                    insertAccion($user['id_user'], '\"' . $user['username'] . '\" agregó el acuerdo \"' . $estadoProcesal . '\" al expediente ' . $folio_editar . '.', 1);
+                    insertAccion($user['id_user'], '\"' . $user['username'] . '\" actualizó el Estado procesal a \"' . $estadoProcesal . '\" al expediente ' . $folio_editar . '.', 2);
+                    redirect('quejas.php', false);
+                } else {
+                    $session->msg('d', ' Lo siento no se actualizaron los datos.');
+                    redirect('edit_queja.php?id=' . (int) $e_detalle['id'], false);
+                }
             }
         } else {
             //faile
@@ -160,28 +215,49 @@ if (isset($_POST['procesal_queja'])) {
                     <span style="font-size: 20px; color: #7263F0">Derechos Presuntamente Violentados</span>
                 </strong>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="estado_procesal">Hecho Violatorio:</label>
-
+                            <label for="hecho_violatorio">Hecho Violatorio:</label>
+                            <select class="form-control" name="id_cat_hecho_vuln" id="id_cat_hecho_vuln">
+                                <option value="">Seleccione el Hecho Violatorio</option>
+                                <?php foreach ($cat_hecho_vuln as $hecho_violatorio) : ?>
+                                    <option <?php if ($hecho_violatorio['id_cat_hecho_vuln'] === $rel_queja_hechos)
+                                                echo 'selected="selected"'; ?> value="<?php echo $hecho_violatorio['id_cat_hecho_vuln']; ?>">
+                                        <?php echo ucwords($hecho_violatorio['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="estado_procesal">Derecho general:</label>
 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="derecho_general">Derecho general:</label>
+                            <select class="form-control" name="id_cat_derecho_general" id="id_cat_derecho_general">
+                                <option value="">Seleccione el Derecho General</option>
+                                <?php foreach ($cat_derecho_gral as $derecho_gral) : ?>
+                                    <option <?php if ($derecho_gral['id_cat_derecho_general'] === $rel_queja_der_gral)
+                                                echo 'selected="selected"'; ?> value="<?php echo $derecho_gral['id_cat_derecho_general']; ?>">
+                                        <?php echo ucwords($derecho_gral['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="estado_procesal">Derecho violentado(cat_der_vuln):</label>
 
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="derecho_violentado">Derecho violentado:</label>
+                            <select class="form-control" name="id_cat_derecho_vuln" id="id_cat_derecho_vuln">
+                                <option value="">Seleccione el Derecho Violentado</option>
+                                <?php foreach ($cat_derecho_vuln as $derecho_vuln) : ?>
+                                    <option <?php if ($derecho_vuln['id_cat_der_vuln'] === $rel_queja_der_vuln)
+                                                echo 'selected="selected"'; ?> value="<?php echo $derecho_vuln['id_cat_der_vuln']; ?>">
+
+                                        <?php echo ucwords($derecho_vuln['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
+                    <br><br><br><br>
                 </div>
 
                 <hr style="height: 1px; background-color: #370494; opacity: 1;">
@@ -198,7 +274,8 @@ if (isset($_POST['procesal_queja'])) {
                             <label for="estado_procesal">Estado Procesal</label>
                             <select class="form-control" name="estado_procesal" id="estado_procesal">
                                 <?php foreach ($cat_est_procesal as $est_pros) : ?>
-                                    <option value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
+                                    <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
 
                                         <?php echo ucwords($est_pros['descripcion']); ?></option>
                                 <?php endforeach; ?>
@@ -208,13 +285,13 @@ if (isset($_POST['procesal_queja'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Fecha de Acuerdo</label>
-                            <input type="date" class="form-control" name="fecha_acuerdo" required>
+                            <input type="date" class="form-control" name="fecha_acuerdo">
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Documento de Acuerdo</label>
-                            <input id="acuerdo_adjunto" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto" required>
+                            <input id="acuerdo_adjunto" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto">
                         </div>
                     </div>
                     <div class="col-md-2">

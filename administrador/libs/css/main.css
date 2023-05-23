@@ -1,8 +1,8 @@
 .body2 {
   overflow-x: hidden;
   overflow-y: auto;
-  background-image: url("../../medios/1.jpg");
-  height: 100%;
+  background-image: url("../../medios/banner pagina_page-0002.jpg");
+  height: 110%;
   width: 100%;
   background-size: cover;
   position: absolute;
@@ -10,6 +10,24 @@
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.titleSis {
+  font-family: 'Jost', sans-serif;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  color: #5f8ce9;
+  font-size: 40px;
+  padding: 5px;
+  font-weight: bold;
+  /* text-shadow: #949393 0.1em 0.1em 0.2em; */
+  margin-top: -3%;
+  margin-left: -10%;
 }
 
 body {
@@ -61,17 +79,18 @@ a {
   padding: 35px 15px 20px 270px;
 }
 
-.login-page3{
+.login-page3 {
   width: 600px;
   height: 620px;
   margin: 7% auto;
   padding: 0 10px;
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border-radius: 15px;
   color: #3a3d44;
   box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
   margin-top: -5px;
-}.login-page3 .text-center{
+}
+.login-page3 .text-center {
   margin-bottom: 10px;
 }
 
@@ -184,7 +203,8 @@ dataTables_wrapper form-inline dt-bootstrap no-footer {
   font-family: "Montserrat", sans-serif;
 }
 header > .logo {
-  font-size: 14px;
+  font-family: 'Jost', sans-serif;
+  /* font-size: 70px; */
   color: rgb(255, 255, 255);
   text-align: center;
   font-weight: 300;
@@ -192,9 +212,9 @@ header > .logo {
   letter-spacing: 1px;
   display: inline-block;
   width: 260px;
-  height:100%;
+  height: 100%;
   background: #370494;
-  line-height:20px;
+  line-height: 20px;
   /* text-indent: 1px; */
 }
 .header-date {
@@ -268,7 +288,7 @@ header > .logo {
   top: 0;
   padding: 65px 0 0;
   height: 100%;
-  width:260px;
+  width: 260px;
   background: #ffffff;
   text-align: center;
   font-family: "Montserrat", sans-serif;
@@ -1067,8 +1087,8 @@ a.btn.btn-gre:hover,
 a.btn.btn-conv {
   font-size: 14px;
   color: rgb(255, 255, 255);
-  background: #7C36E6;
-  border-color: #7C36E6;
+  background: #7c36e6;
+  border-color: #7c36e6;
 }
 a.btn.btn-conv:hover,
 .btn-conv:focus,

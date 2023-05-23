@@ -124,7 +124,7 @@ if (isset($_POST['add_queja'])) {
                     fecha_creacion,id_user_asignado,id_area_asignada,fecha_vencimiento,id_estatus_queja,archivo,dom_calle,dom_numero,dom_colonia,ent_fed,id_cat_mun,localidad,
                     descripcion_hechos,estado_procesal,id_tipo_ambito) 
                     VALUES ('{$folio}','{$fecha_presentacion}','{$id_cat_med_pres}','{$id_cat_aut}','{$observaciones}','{$id_cat_quejoso}','{$id_cat_agraviado}','{$detalle}','{$creacion}',
-                    '{$id_user_asignado}','{$id_area_asignada}','{$fecha_vencimiento}',NULL,'{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
+                    '{$id_user_asignado}','{$id_area_asignada}',NULL,NULL,'{$name}','{$dom_calle}','{$dom_numero}','{$dom_colonia}','{$ent_fed}',
                     '{$id_cat_mun}','{$localidad}', '{$descripcion_hechos}', '{$estado_procesal}', $id_tipo_ambito)";
 
         $query3 = "INSERT INTO folios (";

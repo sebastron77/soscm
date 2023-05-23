@@ -3,6 +3,7 @@
 <html lang="es">
 
 <head>
+  <link rel="icon" href="medios/favicon16.ico" type="image/ico">
   <meta charset="UTF-8">
   <title>
     <?php
@@ -13,6 +14,7 @@
     else echo "SUIGCEDH";
     ?>
   </title>
+
   <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
@@ -20,6 +22,9 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@500&display=swap" rel="stylesheet">
 
   <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300&display=swap" rel="stylesheet"> -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
@@ -151,7 +156,9 @@
 <body style="background-color: #E3E3E3; color: white;">
   <?php if ($session->isUserLoggedIn(true)) : ?>
     <header id="header">
-      <div class="logo pull-left"><span>Sistema Único de Información y Gestión de la CEDH (SUIGCEDH)</span></div>
+      <div class="logo pull-left"><img border="0" src="medios/mor.png" width="50px" title="CEDH" alt="" style="margin-top: 2.5%; margin-left: -50%" />
+        <p style="margin-top: -13%; margin-left: 25%; font-size:23px; font-weight:bold;"> SUIGCEDH</p>
+      </div>
       <div class="header-content">
         <div class="header-date pull-left">
           <strong><?php //echo make_date_no_seg(); 

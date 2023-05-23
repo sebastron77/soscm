@@ -19,36 +19,67 @@ function find_all_order($table, $order)
     return find_by_sql("SELECT * FROM " . $db->escape($table) . " ORDER BY " . $db->escape($order));
   }
 }
+
+function find_all_hecho_vuln(){
+	$sql = "SELECT * FROM cat_hecho_vuln WHERE estatus=1 ORDER BY descripcion ASC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_all_derecho_vuln(){
+	$sql = "SELECT * FROM cat_der_vuln WHERE estatus=1 ORDER BY descripcion ASC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_all_derecho_gral(){
+	$sql = "SELECT * FROM cat_derecho_general WHERE estatus=1 ORDER BY descripcion ASC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
 function find_all_medio_pres()
 {
-  $sql = "SELECT * FROM cat_medio_pres ORDER BY descripcion ASC";
+  $sql = "SELECT * FROM cat_medio_pres WHERE estatus=1 ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 function find_all_aut_res()
 {
-  $sql = "SELECT * FROM cat_autoridades ORDER BY nombre_autoridad ASC";
+  $sql = "SELECT * FROM cat_autoridades ORDER BY nombre_autoridad  ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 function find_all_estatus_procesal()
 {
-  $sql = "SELECT * FROM cat_est_procesal ORDER BY descripcion ASC";
+  $sql = "SELECT * FROM cat_est_procesal WHERE estatus=1  ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 function find_all_cat_localidades()
 {
-  $sql = "SELECT * FROM cat_localidades ORDER BY descripcion ASC";
+  $sql = "SELECT * FROM cat_localidades WHERE estatus=1 ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 function find_all_cat_municipios()
 {
-  $sql = "SELECT * FROM cat_municipios ORDER BY descripcion ASC";
+  $sql = "SELECT * FROM cat_municipios WHERE estatus=1 ORDER BY descripcion  ASC";
   $result = find_by_sql($sql);
   return $result;
 }
+
+function find_by_violentados($tableA, $tableB, $id)
+{
+  global $db;
+  $id = (int)$id;
+    $sql = $db->query("SELECT id_{$db->escape($tableB)}, descripcion FROM {$db->escape($tableA)} LEFT JOIN {$db->escape($tableB)} USING(id_{$db->escape($tableB)}) WHERE id_queja_date='{$db->escape($id)}'");
+    if ($result = $db->fetch_assoc($sql))
+      return $result;
+    else
+      return null;
+}
+
 function find_all_quejas($id)
 {
   global $db;
@@ -857,7 +888,7 @@ function find_by_id_queja($id)
                       q.archivo_anv, q.fecha_desistimiento, q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion, q.servidor_publico, q.fecha_recomendacion, 
                       q.observaciones_recomendacion, q.adjunto_recomendacion, q.adjunto_rec_publico, cq.email, cq.telefono, cq.id_cat_ocup, cq.id_cat_grupo_vuln, cq.id_cat_escolaridad,
                       cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad, oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,
-                      cn.descripcion as nacionalidad, cq.calle_quejoso, cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, q.estado_procesal
+                      cn.descripcion as nacionalidad, cq.calle_quejoso, cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio
                       FROM quejas_dates q
                       LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
                       LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
@@ -4379,9 +4410,17 @@ function insertAccion($user_id, $accion, $id_accion)
   $result = $db->query($sql);
   return ($result && $db->affected_rows() === 1 ? true : false);
 }
-function getProcesal($id){
-global $db;
-$id = (int)$id;
-$sql = "SELECT descripcion FROM cat_est_procesal WHERE id_cat_est_procesal='{$db->escape($id)}';";
-return $db-> query($sql);
+
+function med_pres($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = $db->query("SELECT oc.medio_presentacion, mp.descripcion, COUNT(oc.id_or_can)
+            FROM orientacion_canalizacion oc 
+            LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.medio_presentacion
+            WHERE oc.tipo_solicitud =1 
+            GROUP BY oc.medio_presentacion;");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }

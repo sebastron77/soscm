@@ -28,55 +28,97 @@ if ($nivel == 7) {
     page_require_level_exacto(7);
 }
 
-$total_mujeres = count_by_id_mujer('orientacion_canalizacion', 1);
-$total_hombres = count_by_id_hombre('orientacion_canalizacion', 1);
-$total_lgbtiq = count_by_id_lgbt('orientacion_canalizacion', 1);
-$total_lgbt = count_by_id_lgbt2('orientacion_canalizacion', 1);
 
-$total_gv_lgbt = count_by_comLg('orientacion_canalizacion', 1);
-$total_gv_lgbt2 = count_by_comLg2('orientacion_canalizacion', 1);
-$total_der_mujer = count_by_derMuj('orientacion_canalizacion', 1);
-$total_nna = count_by_nna('orientacion_canalizacion', 1);
-$total_nna2 = count_by_nna2('orientacion_canalizacion', 1);
-$total_disc = count_by_disc('orientacion_canalizacion', 1);
-$total_mig = count_by_mig('orientacion_canalizacion', 1);
-$total_vih = count_by_vih('orientacion_canalizacion', 1);
-$total_gi = count_by_gi('orientacion_canalizacion', 1);
-$total_perio = count_by_perio('orientacion_canalizacion', 1);
-$total_ddh = count_by_ddh('orientacion_canalizacion', 1);
-$total_am = count_by_am('orientacion_canalizacion', 1);
-$total_int = count_by_int('orientacion_canalizacion', 1);
-$total_otros = count_by_otros('orientacion_canalizacion', 1);
-$total_na = count_by_na('orientacion_canalizacion', 1);
-
-$total_asesorv = count_by_asesorv('orientacion_canalizacion', 1);
-$total_asistentev = count_by_asistentev('orientacion_canalizacion', 1);
-$total_comp = count_by_comp('orientacion_canalizacion', 1);
-$total_escrito = count_by_escrito('orientacion_canalizacion', 1);
-$total_vt = count_by_vt('orientacion_canalizacion', 1);
-$total_ve = count_by_ve('orientacion_canalizacion', 1);
-$total_cndh = count_by_cndh('orientacion_canalizacion', 1);
-
-$total_sin_est = count_by_sin_est('orientacion_canalizacion', 1);
-$total_primaria = count_by_primaria('orientacion_canalizacion', 1);
-$total_secundaria = count_by_secundaria('orientacion_canalizacion', 1);
-$total_preparatoria = count_by_preparatoria('orientacion_canalizacion', 1);
-$total_licenciatura = count_by_licenciatura('orientacion_canalizacion', 1);
-$total_especialidad = count_by_especialidad('orientacion_canalizacion', 1);
-$total_maestria = count_by_maestria('orientacion_canalizacion', 1);
-$total_doctorado = count_by_doctorado('orientacion_canalizacion', 1);
-$total_posdoctorado = count_by_posdoctorado('orientacion_canalizacion', 1);
 
 ?>
 <?php include_once('layouts/header.php'); ?>
 
 <div class="row">
-    <div class="col-md-12">
-        <?php echo display_msg($msg); ?>
+    <div class="col-md-12" style="font-size: 40px; color: #3a3d44;">
+        <?php echo 'Estadísticas de Orientaciones'; ?>
     </div>
 </div>
 
-<div class="row">
+
+<div class="container-fluid">
+    <div class="full-box tile-container">
+        <a href="est_med_pres.php" class="tileA">
+            <div class="tileA-tittle">Medio Presentación</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    input_circle
+                </span>
+            </div>
+        </a>
+        <a href="est_niv_est.php" class="tileA">
+            <div class="tileA-tittle">Nivel de Estudios</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    school
+                </span>
+            </div>
+        </a>
+        <a href="est_gen.php" class="tileA">
+            <div class="tileA-tittle">Género</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    diversity_3
+                </span>
+            </div>
+        </a>
+        <a href="est_leng.php" class="tileA">
+            <div class="tileA-tittle">Lenguaje</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    translate
+                </span>
+            </div>
+        </a>
+        <a href="est_grup_vuln.php" class="tileA">
+            <div class="tileA-tittle">Grupo Vulnerable</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    groups_3
+                </span>
+            </div>
+        </a>
+        <a href="est_ent.php" class="tileA">
+            <div class="tileA-tittle">Entidad</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    location_on
+                </span>
+            </div>
+        </a>
+        <a href="est_mun.php" class="tileA">
+            <div class="tileA-tittle">Municipios</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    location_chip
+                </span>
+            </div>
+        </a>
+        <a href="est_ocup.php" class="tileA">
+            <div class="tileA-tittle">Ocupación</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    business_center
+                </span>
+            </div>
+        </a>
+        <a href="est_aut.php" class="tileA">
+            <div class="tileA-tittle">Autoridades</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    frame_person
+                </span>
+            </div>
+        </a>
+    </div>
+</div>
+
+
+<!-- <div class="row">
     <div class="col-md-6">
         <div class="panel panel-default">
             <div class="panel-heading clearfix">
@@ -303,38 +345,38 @@ $total_posdoctorado = count_by_posdoctorado('orientacion_canalizacion', 1);
                         </tr>
                         <tr>
                             <td>Secundaria</td>
-                            <td class="text-center"><?php echo $total_secundaria['total']?></td>
+                            <td class="text-center"><?php echo $total_secundaria['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Preparatoria</td>
-                            <td class="text-center"><?php echo $total_preparatoria['total']?></td>
+                            <td class="text-center"><?php echo $total_preparatoria['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Licenciatura</td>
-                            <td class="text-center"><?php echo $total_licenciatura['total']?></td>
+                            <td class="text-center"><?php echo $total_licenciatura['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Especialidad</td>
-                            <td class="text-center"><?php echo $total_especialidad['total']?></td>
+                            <td class="text-center"><?php echo $total_especialidad['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Maestría</td>
-                            <td class="text-center"><?php echo $total_maestria['total']?></td>
+                            <td class="text-center"><?php echo $total_maestria['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Doctorado</td>
-                            <td class="text-center"><?php echo $total_doctorado['total']?></td>
+                            <td class="text-center"><?php echo $total_doctorado['total'] ?></td>
                         </tr>
                         <tr>
                             <td>Posdoctorado</td>
-                            <td class="text-center"><?php echo $total_posdoctorado['total']?></td>
+                            <td class="text-center"><?php echo $total_posdoctorado['total'] ?></td>
                         </tr>
                         <tr>
                             <td style="text-align:right;"><b>Total</b></td>
                             <td>
                                 <?php echo $total_sin_est['total'] + $total_primaria['total'] + $total_secundaria['total'] + $total_preparatoria['total'] +
-                                 $total_licenciatura['total'] + $total_especialidad['total'] + $total_maestria['total'] +
-                                 $total_doctorado['total'] + $total_posdoctorado['total']?>
+                                    $total_licenciatura['total'] + $total_especialidad['total'] + $total_maestria['total'] +
+                                    $total_doctorado['total'] + $total_posdoctorado['total'] ?>
                             </td>
                         </tr>
                     </tbody>
@@ -408,9 +450,9 @@ $total_posdoctorado = count_by_posdoctorado('orientacion_canalizacion', 1);
             <button type="submit" name="submit" class="btn btn-primary">Generar gráfica</button>
         </div>
     </form>
-</div>
+</div> -->
 
-<script>
+<!-- <script>
     function abrir() {
         document.getElementById("vent").style.display = "block";
     }
@@ -434,6 +476,6 @@ $total_posdoctorado = count_by_posdoctorado('orientacion_canalizacion', 1);
     function cerrar3() {
         document.getElementById("vent3").style.display = "none"
     }
-</script>
+</script> -->
 
 <?php include_once('layouts/footer.php'); ?>
