@@ -42,7 +42,7 @@ if ($nivel == 7) {
 
 <div class="container-fluid">
     <div class="full-box tile-container">
-        <a href="est_med_pres.php" class="tileA">
+        <a href="est_med_pres.php?id=1" class="tileA">
             <div class="tileA-tittle">Medio Presentación</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -50,7 +50,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_niv_est.php" class="tileA">
+        <a href="est_niv_est.php?id=1" class="tileA">
             <div class="tileA-tittle">Nivel de Estudios</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -58,7 +58,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_gen.php" class="tileA">
+        <a href="est_gen.php?id=1" class="tileA">
             <div class="tileA-tittle">Género</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -66,7 +66,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_leng.php" class="tileA">
+        <a href="est_leng.php?id=1" class="tileA">
             <div class="tileA-tittle">Lenguaje</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">

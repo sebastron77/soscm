@@ -4414,13 +4414,42 @@ function insertAccion($user_id, $accion, $id_accion)
 function med_pres($tipo){
   global $db;
   $tipo = (int)$tipo;
-  $sql  = $db->query("SELECT oc.medio_presentacion, mp.descripcion, COUNT(oc.id_or_can)
-            FROM orientacion_canalizacion oc 
-            LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.medio_presentacion
-            WHERE oc.tipo_solicitud =1 
-            GROUP BY oc.medio_presentacion;");
-  if ($result = $db->fetch_assoc($sql))
-    return $result;
-  else
-    return null;
+  $sql  = "SELECT oc.medio_presentacion, mp.descripcion, COUNT(oc.id_or_can) as total, mp.color_estadistica";
+  $sql  .= " FROM orientacion_canalizacion oc ";
+  $sql  .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.medio_presentacion ";
+  $sql  .= " WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= " GROUP BY oc.medio_presentacion;";
+  return find_by_sql($sql);
+}
+
+function niv_est($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.nivel_estudios, es.descripcion, COUNT(oc.id_or_can) as total, es.color_estadistica2 ";
+  $sql  .= "FROM orientacion_canalizacion oc  ";
+  $sql  .= "LEFT JOIN cat_escolaridad es ON es.id_cat_escolaridad = oc.nivel_estudios ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.nivel_estudios;";
+  return find_by_sql($sql);
+}
+
+function genero($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.sexo, gen.descripcion, COUNT(oc.id_or_can) as total, gen.color_estadistica3 ";
+  $sql  .= "FROM orientacion_canalizacion oc  ";
+  $sql  .= "LEFT JOIN cat_genero gen ON gen.id_cat_gen = oc.sexo ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.sexo;";
+  return find_by_sql($sql);
+}
+
+function lengua($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT lengua, COUNT(id_or_can) as total ";
+  $sql  .= "FROM orientacion_canalizacion ";
+  $sql  .= "WHERE tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY lengua;";
+  return find_by_sql($sql);
 }

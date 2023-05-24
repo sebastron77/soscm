@@ -369,16 +369,20 @@ ul.submenu li a:before {
 }
 
 table td h6 {
+  font-family: "Montserrat", sans-serif;
   margin: 0 0 0.2em 0;
 }
 table tfoot tr td:first-child {
+  font-family: "Montserrat", sans-serif;
   border: 0;
 }
 table tfoot tr td:last-child {
+  font-family: "Montserrat", sans-serif;
   border-top: 1px solid #ccc;
 }
 table td h6,
 table tfoot tr td:last-child {
+  font-family: "Montserrat", sans-serif;
   color: rgba(0, 0, 0, 0.753);
   _font-size: 1.2em;
   font-weight: normal;
@@ -664,6 +668,7 @@ input[type="file"] {
 }
 
 td img.img-thumbnail {
+  font-family: "Montserrat", sans-serif;
   width: 125px;
   height: 125px;
   vertical-align: top;
@@ -701,10 +706,12 @@ img.img-size-2 {
 }
 
 .datatable tfoot {
+  font-family: "Montserrat", sans-serif;
   display: table-header-group;
 }
 
 .datatable tfoot .filter-column {
+  font-family: "Montserrat", sans-serif;
   width: 100% !important;
 }
 
@@ -932,9 +939,11 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 .table-striped tbody tr:nth-of-type(odd) {
-  background-color: #f2f2ff;
+  font-family: "Montserrat", sans-serif;
+  background-color: #d5d5ff;
 }
 .thead-purple {
+  font-family: "Montserrat", sans-serif;
   background-color: #7263f0;
   color: white;
 }
