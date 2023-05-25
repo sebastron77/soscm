@@ -74,7 +74,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_grup_vuln.php" class="tileA">
+        <a href="est_grupo_vuln.php?id=1" class="tileA">
             <div class="tileA-tittle">Grupo Vulnerable</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -82,7 +82,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_ent.php" class="tileA">
+        <a href="est_ent.php?id=1" class="tileA">
             <div class="tileA-tittle">Entidad</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -90,7 +90,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_mun.php" class="tileA">
+        <a href="est_mun.php?id=1" class="tileA">
             <div class="tileA-tittle">Municipios</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -98,7 +98,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_ocup.php" class="tileA">
+        <a href="est_ocup.php?id=1" class="tileA">
             <div class="tileA-tittle">Ocupación</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -106,7 +106,7 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="est_aut.php" class="tileA">
+        <a href="est_aut.php?id=1" class="tileA">
             <div class="tileA-tittle">Autoridades</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">

@@ -51,16 +51,20 @@ endif;
                             const myChart = new Chart(ctx, {
                                 type: 'bar',
                                 data: {
-                                    labels: [<?php foreach ($lenguas as $lengua) : ?> '<?php echo $lengua['descripcion']; ?>', <?php endforeach; ?>],
+                                    labels: [<?php foreach ($lenguas as $lengua) : ?> '<?php echo $lengua['lengua']; ?>', <?php endforeach; ?>],
                                     datasets: [{
                                         label: 'Orientaciones por Género',
                                         data: yValues,
                                         backgroundColor: [
-                                            <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica3']; ?>', <?php endforeach; ?>
+                                            '#024554',
+                                            '#53736A',
+                                            '#C2C0A6'
                                         ],
 
                                         borderColor: [
-                                            <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica3']; ?>', <?php endforeach; ?>
+                                            '#024554',
+                                            '#53736A',
+                                            '#C2C0A6'
                                         ],
                                         borderWidth: 2
                                     }]
@@ -78,13 +82,13 @@ endif;
                                     scales: {
                                         y: {
                                             ticks: {
-                                                color: '#379CE2',
+                                                color: '#3a3d44',
                                                 beginAtZero: true
                                             }
                                         },
                                         x: {
                                             ticks: {
-                                                color: '#379CE2',
+                                                color: '#3a3d44',
                                                 beginAtZero: true
                                             }
                                         }
@@ -99,7 +103,7 @@ endif;
                         <table class="table table-bordered table-striped">
                             <thead class="thead-purple">
                                 <tr style="height: 10px;">
-                                    <th class="text-center" style="width: 70%;">Género</th>
+                                    <th class="text-center" style="width: 70%;">Lenguaje</th>
                                     <th class="text-center" style="width: 30%;">Cantidad</th>
                                 </tr>
                             </thead>

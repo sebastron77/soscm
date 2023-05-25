@@ -4453,3 +4453,57 @@ function lengua($tipo){
   $sql  .= "GROUP BY lengua;";
   return find_by_sql($sql);
 }
+
+function grupos_vuln($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.grupo_vulnerable, gv.descripcion, COUNT(oc.id_or_can) as total, gv.color_estadistica4 ";
+  $sql  .= "FROM orientacion_canalizacion oc  ";
+  $sql  .= "LEFT JOIN cat_grupos_vuln gv ON gv.id_cat_grupo_vuln = oc.grupo_vulnerable ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.grupo_vulnerable;";
+  return find_by_sql($sql);
+}
+
+function entidad($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.entidad, ef.descripcion, COUNT(oc.id_or_can) as total, ef.color_estadistica5 ";
+  $sql  .= "FROM orientacion_canalizacion oc ";
+  $sql  .= "LEFT JOIN cat_entidad_fed ef ON ef.id_cat_ent_fed = oc.entidad ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.entidad;";
+  return find_by_sql($sql);
+}
+
+function municipio($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT municipio_localidad, COUNT(id_or_can) as total ";
+  $sql  .= "FROM orientacion_canalizacion ";
+  $sql  .= "WHERE tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY municipio_localidad;";
+  return find_by_sql($sql);
+}
+
+function ocupacion($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.ocupacion, co.descripcion, COUNT(oc.id_or_can) as total, co.color_estadistica6 ";
+  $sql  .= "FROM orientacion_canalizacion oc ";
+  $sql  .= "LEFT JOIN cat_ocupaciones co ON co.id_cat_ocup = oc.ocupacion ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.ocupacion;";
+  return find_by_sql($sql);
+}
+
+function autoridad($tipo){
+  global $db;
+  $tipo = (int)$tipo;
+  $sql  = "SELECT oc.institucion_canaliza, ca.nombre_autoridad as descripcion, COUNT(oc.id_or_can) as total ";
+  $sql  .= "FROM orientacion_canalizacion oc ";
+  $sql  .= "LEFT JOIN cat_autoridades ca ON ca.id_cat_aut = oc.institucion_canaliza ";
+  $sql  .= "WHERE oc.tipo_solicitud = '{$db->escape($tipo)}' ";
+  $sql  .= "GROUP BY oc.institucion_canaliza;";
+  return find_by_sql($sql);
+}

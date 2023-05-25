@@ -78,13 +78,13 @@ endif;
                   scales: {
                     y: {
                       ticks: {
-                        color: '#379CE2',
+                        color: '#3a3d44',
                         beginAtZero: true
                       }
                     },
                     x: {
                       ticks: {
-                        color: '#379CE2',
+                        color: '#3a3d44',
                         beginAtZero: true
                       }
                     }
