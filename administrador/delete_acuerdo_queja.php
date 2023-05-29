@@ -1,7 +1,12 @@
 <?php
   require_once('includes/load.php');
   
-   page_require_level(1);
+   if ($nivel == 1) {
+    page_require_level_exacto();
+}   
+if ($nivel == 5) {
+    page_require_level_exacto(5);
+}
 ?>
 <?php
   //Para que cuando se borre un área, los cargos que pertenecían a esta

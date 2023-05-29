@@ -8,7 +8,7 @@ $all_detalles = find_all_agraviados();
 $user = current_user();
 $nivel = $user['user_level'];
 
-$id_usuario = $user['id'];
+$id_usuario = $user['id_user'];
 $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
@@ -50,9 +50,7 @@ endif;
         <?php echo display_msg($msg); ?>
     </div>
 </div>
-<a href="solicitudes_quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-    Regresar
-</a><br><br>
+
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">

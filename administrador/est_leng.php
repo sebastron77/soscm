@@ -22,10 +22,16 @@ endif;
 ?>
 
 <?php include_once('layouts/header.php'); ?>
-
+<?php if((int)$_GET['id'] == 1): ?>
 <a href="tabla_estadistica_orientacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
     Regresar
 </a>
+<?php endif; ?>
+<?php if((int)$_GET['id'] == 2): ?>
+<a href="tabla_estadistica_canalizacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
+    Regresar
+</a>
+<?php endif; ?>
 <div class="panel-body">
     <center>
         <button id="btnCrearPdf" style="margin-top: -15px; background: #FE2C35; color: white; font-size: 12px;" class="btn btn-pdf btn-md">Guardar en PDF</button>
@@ -33,7 +39,12 @@ endif;
     <!-- Debemos de tener Canvas en la página -->
     <div id="prueba">
         <center>
-            <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Orientaciones (Por género)</h2>
+            <?php if((int)$_GET['id'] == 1): ?>
+            <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Orientaciones (Por Lengua)</h2>
+            <?php endif; ?>
+            <?php if((int)$_GET['id'] == 2): ?>
+            <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Canalizaciones (Por Lengua)</h2>
+            <?php endif; ?>
                 <div class="row" style="display: flex; justify-content: center; align-items: center;">
                     <!-- <div class="col-md-6" style="width: 40%; height: 20%;"> -->
                     <div style="width:40%; float:left;">
@@ -108,7 +119,7 @@ endif;
                                 </tr>
                             </thead>
                             <tbody style="background: white;">
-                                <?php foreach ($lenguas as $lengua) : ?>
+                                <?php $total=0;  foreach ($lenguas as $lengua) : ?>
                                     <tr>
                                         <td>
                                             <?php echo remove_junk(ucwords($lengua['lengua'])) ?>

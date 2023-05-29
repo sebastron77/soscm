@@ -6,8 +6,7 @@ require_once('includes/load.php');
 <?php
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 
 if ($nivel <= 2) {
     page_require_level(2);

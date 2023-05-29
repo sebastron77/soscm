@@ -40,7 +40,7 @@ if (isset($_GET['id'])) {
 	$generalesfolio .= "Fecha de Presentación: ".remove_junk(ucwords($queja_acuerdos['fecha_presentacion']))."\n";
 	$generalesfolio .= "Medio de Presentación: ".remove_junk(ucwords($queja_acuerdos['medio_pres']))."\n";
 	$generalesfolio .= "Autoridad Responsable: ".remove_junk(ucwords($queja_acuerdos['nombre_autoridad']))."\n";
-	$generalesfolio .= "Estatus de la queja: ".remove_junk(ucwords($queja_acuerdos['estatus_queja']))."\n";
+	$generalesfolio .= "Estado Procesal: ".remove_junk(ucwords($queja_acuerdos['estado_procesal']))."\n";
 						
 	$zip->addFromString("Generales_".$folio.".txt", $generalesfolio);
 	

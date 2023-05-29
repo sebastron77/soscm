@@ -211,7 +211,7 @@ if (isset($_POST['add_quejoso'])) {
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="add_quejoso_ON.php">
+            <form method="post" action="add_quejoso_On.php">
                 <h1>Agregar datos promovente</h1>
                 <div class="row" style="margin-top: 2%">
                     <div class="col-md-2">

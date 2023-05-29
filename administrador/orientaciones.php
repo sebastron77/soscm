@@ -74,7 +74,7 @@ if (isset($_POST["export_data"])) {
 
 ?>
 <?php include_once('layouts/header.php'); ?>
-<a href="solicitudes_quejas.php" class="btn btn-success">Regresar</a><br><br>
+
 <div class="row">
     <div class="col-md-12">
         <?php echo display_msg($msg); ?>
@@ -106,7 +106,6 @@ if (isset($_POST["export_data"])) {
                         <th width="15%">Folio</th>
                         <th width="10%">Fecha creación</th>
                         <th width="15%">Medio presentación</th>
-                        <th width="15%">Adjunto</th>
                         <th width="10%">Correo</th>
                         <th width="15%">Nombre Completo</th>
                         <th width="15%">Creador</th>
@@ -131,7 +130,7 @@ if (isset($_POST["export_data"])) {
                             <td>
                                 <?php echo remove_junk(ucwords($a_orientacion['medio_pres'])) ?>
                             </td>
-                            <td><a target="_blank" style="color: #0094FF;" href="uploads/orientacioncanalizacion/orientacion/<?php echo $resultado . '/' . $a_orientacion['adjunto']; ?>"><?php echo $a_orientacion['adjunto']; ?></a></td>
+                            
                             <td>
                                 <?php echo remove_junk(ucwords($a_orientacion['correo_electronico'])) ?>
                             </td>

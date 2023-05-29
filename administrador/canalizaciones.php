@@ -75,7 +75,7 @@ if (isset($_POST["export_data"])) {
 
 ?>
 <?php include_once('layouts/header.php'); ?>
-<a href="solicitudes_quejas.php" class="btn btn-success">Regresar</a><br><br>
+
 <div class="row">
     <div class="col-md-12">
         <?php echo display_msg($msg); ?>
@@ -107,7 +107,6 @@ if (isset($_POST["export_data"])) {
                         <th style="width: 10%;">Fecha creación</th>
                         <!-- <th style="width: 5%;">Tipo</th> -->
                         <th style="width: 5%;">Medio presentación</th>
-                        <th style="width: 1%;">Adjunto</th>
                         <th style="width: 4%;">Correo</th>
                         <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
                         <th style="width: 5%;">Nombre Completo</th>
@@ -128,7 +127,8 @@ if (isset($_POST["export_data"])) {
                             ?>
                             <td><?php echo remove_junk(ucwords($a_canalizacion['creacion'])) ?></td>
                             <td><?php echo remove_junk(ucwords($a_canalizacion['med'])) ?></td>
-                            <td><a target="_blank" style="color: #0094FF;" href="uploads/orientacioncanalizacion/canalizacion/<?php echo $resultado . '/' . $a_canalizacion['adjunto']; ?>"><?php echo $a_canalizacion['adjunto']; ?></a></td>
+                            
+							
                             <td><?php echo remove_junk(ucwords($a_canalizacion['correo_electronico'])) ?></td>
                             <td><?php echo remove_junk(ucwords(($a_canalizacion['nombre_completo']))) ?></td>
                             <td><?php echo remove_junk($a_canalizacion['nombre'] . " " . $a_canalizacion['apellidos']) ?></td>

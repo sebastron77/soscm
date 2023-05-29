@@ -2,7 +2,13 @@
 $page_title = 'Agregar quejoso';
 require_once('includes/load.php');
 
-page_require_level(1);
+
+if ($nivel == 1) {
+    page_require_level_exacto(1);
+}
+if ($nivel == 5) {
+    page_require_level_exacto(5);
+}
 
 $generos = find_all('cat_genero');
 $nacionalidades = find_all('cat_nacionalidades');
@@ -252,6 +258,7 @@ include_once('layouts/header.php'); ?>
                                 <option value="Leer">Leer</option>
                                 <option value="Escribir">Escribir</option>
                                 <option value="Ambos">Ambos</option>
+								<option value="Sin Dato">Sin Dato</option>
                             </select>
                         </div>
                     </div>

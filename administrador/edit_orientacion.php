@@ -134,7 +134,7 @@ if (isset($_POST['edit_orientacion'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="folio">Folio de Orientación</label>
-                            <input type="text" class="form-control" name="folio" value="<?php echo remove_junk($e_detalle['folio']); ?>">
+                            <input type="text" class="form-control" name="folio" value="<?php echo remove_junk($e_detalle['folio']); ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-2">

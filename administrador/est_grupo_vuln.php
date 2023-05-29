@@ -23,16 +23,28 @@ endif;
 
 <?php include_once('layouts/header.php'); ?>
 
+<?php if((int)$_GET['id'] == 1): ?>
 <a href="tabla_estadistica_orientacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
-  Regresar
+    Regresar
 </a>
+<?php endif; ?>
+<?php if((int)$_GET['id'] == 2): ?>
+<a href="tabla_estadistica_canalizacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
+    Regresar
+</a>
+<?php endif; ?>
 <!-- Debemos de tener Canvas en la página -->
 <div class="panel-body">
   <center>
     <button id="btnCrearPdf" style="margin-top: -15px; background: #FE2C35; color: white; font-size: 12px;" class="btn btn-pdf btn-md">Guardar en PDF</button>
     <div id="prueba">
       <center>
+      <?php if((int)$_GET['id'] == 1): ?>
         <h2 style="margin-top: 15px; color: #3a3d44;">Estadística de Orientaciones (Por grupo vulnerable)</h2>
+        <?php endif; ?>
+        <?php if((int)$_GET['id'] == 2): ?>
+        <h2 style="margin-top: 15px; color: #3a3d44;">Estadística de Canalizaciones (Por grupo vulnerable)</h2>
+        <?php endif; ?>
       </center>
       <div class=" row" style="display: flex; justify-content: center; align-items: center; margin-left:-70px;">
         <!-- <div class="col-md-6" style="width: 50%; height: 20%;"> -->
@@ -105,7 +117,7 @@ endif;
               </tr>
             </thead>
             <tbody style="background: white;">
-              <?php foreach ($grupos as $grupo) : ?>
+              <?php $total=0;  foreach ($grupos as $grupo) : ?>
                 <tr>
                   <td>
                     <?php echo remove_junk(ucwords($grupo['descripcion'])) ?>

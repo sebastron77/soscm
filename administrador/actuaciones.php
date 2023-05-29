@@ -23,7 +23,7 @@ endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7  && $nivel_user < 19) :
+if ($nivel_user > 7) :
     redirect('home.php');
 endif;
 
@@ -95,9 +95,9 @@ if (isset($_POST["export_data"])) {
             </div>
 
             <div class="panel-body">
-                <table class="datatable table table-dark table-bordered table-striped">
-                    <thead>
-                        <tr style="height: 10px;" class="table-info">
+                <table class="datatable table table-bordered table-striped">
+                    <thead class="thead-purple">
+                        <tr style="height: 10px;">
                             <th style="width: 10%;">Folio</th>
                             <th style="width: 10%;">Fecha de captura</th>
                             <th style="width: 5%;">Tipo de actuación</th>

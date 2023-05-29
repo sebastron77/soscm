@@ -23,9 +23,16 @@ endif;
 
 <?php include_once('layouts/header.php'); ?>
 
-<a href="tabla_estadistica_orientacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
-  Regresar
-</a>
+<?php if ((int)$_GET['id'] == 1) : ?>
+  <a href="tabla_estadistica_orientacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
+    Regresar
+  </a>
+<?php endif; ?>
+<?php if ((int)$_GET['id'] == 2) : ?>
+  <a href="tabla_estadistica_canalizacion.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar" style="margin-bottom: 15px; margin-top: -15px;">
+    Regresar
+  </a>
+<?php endif; ?>
 <div class="panel-body">
   <center>
     <button id="btnCrearPdf" style="margin-top: -15px; background: #FE2C35; color: white; font-size: 12px;" class="btn btn-pdf btn-md">Guardar en PDF</button>
@@ -33,98 +40,103 @@ endif;
   <!-- Debemos de tener Canvas en la página -->
   <div id="prueba">
     <center>
-      <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Orientaciones (Por género)</h2>
-        <div class="row" style="display: flex; justify-content: center; align-items: center;">
-          <!-- <div class="col-md-6" style="width: 40%; height: 20%;"> -->
-          <div style="width:40%; float:left;">
-            <canvas id="myChart"></canvas>
-            <!-- Incluímos Chart.js -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+      <?php if ((int)$_GET['id'] == 1) : ?>
+        <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Orientaciones (Por género)</h2>
+        <?php endif; ?>
+        <?php if ((int)$_GET['id'] == 2) : ?>
+          <h3 style="margin-top: 10px; color: #3a3d44;">Estadística de Canalizaciones (Por género)</h2>
+          <?php endif; ?>
+          <div class="row" style="display: flex; justify-content: center; align-items: center;">
+            <!-- <div class="col-md-6" style="width: 40%; height: 20%;"> -->
+            <div style="width:40%; float:left;">
+              <canvas id="myChart"></canvas>
+              <!-- Incluímos Chart.js -->
+              <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-            <!-- Añadimos el script a la página -->
+              <!-- Añadimos el script a la página -->
 
-            <script>
-              var yValues = [<?php foreach ($generos as $gen) : ?><?php echo $gen['total']; ?>, <?php endforeach; ?>];
-              Chart.defaults.font.family = "Montserrat";
-              Chart.defaults.font.size = 12;
-              const ctx = document.getElementById('myChart');
-              const myChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                  labels: [<?php foreach ($generos as $gen) : ?> '<?php echo $gen['descripcion']; ?>', <?php endforeach; ?>],
-                  datasets: [{
-                    label: 'Orientaciones por Género',
-                    data: yValues,
-                    backgroundColor: [
-                      <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica3']; ?>', <?php endforeach; ?>
-                    ],
+              <script>
+                var yValues = [<?php foreach ($generos as $gen) : ?><?php echo $gen['total']; ?>, <?php endforeach; ?>];
+                Chart.defaults.font.family = "Montserrat";
+                Chart.defaults.font.size = 12;
+                const ctx = document.getElementById('myChart');
+                const myChart = new Chart(ctx, {
+                  type: 'bar',
+                  data: {
+                    labels: [<?php foreach ($generos as $gen) : ?> '<?php echo $gen['descripcion']; ?>', <?php endforeach; ?>],
+                    datasets: [{
+                      label: 'Orientaciones por Género',
+                      data: yValues,
+                      backgroundColor: [
+                        <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica']; ?>', <?php endforeach; ?>
+                      ],
 
-                    borderColor: [
-                      <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica3']; ?>', <?php endforeach; ?>
-                    ],
-                    borderWidth: 2
-                  }]
-                },
-                options: {
-                  legend: {
-                    display: false
+                      borderColor: [
+                        <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica']; ?>', <?php endforeach; ?>
+                      ],
+                      borderWidth: 2
+                    }]
                   },
-                  // El salto entre cada valor de Y
-                  ticks: {
-                    min: 0,
-                    max: 6000,
-                    stepSize: 1
-                  },
-                  scales: {
-                    y: {
-                      ticks: {
-                        color: '#3a3d44',
-                        beginAtZero: true
-                      }
+                  options: {
+                    legend: {
+                      display: false
                     },
-                    x: {
-                      ticks: {
-                        color: '#3a3d44',
-                        beginAtZero: true
+                    // El salto entre cada valor de Y
+                    ticks: {
+                      min: 0,
+                      max: 6000,
+                      stepSize: 1
+                    },
+                    scales: {
+                      y: {
+                        ticks: {
+                          color: '#3a3d44',
+                          beginAtZero: true
+                        }
+                      },
+                      x: {
+                        ticks: {
+                          color: '#3a3d44',
+                          beginAtZero: true
+                        }
                       }
                     }
                   }
-                }
-              });
-            </script>
+                });
+              </script>
+            </div>
           </div>
-        </div>
-        <div class=" row" style="display: flex; justify-content: center; align-items: center;">
-          <div style="width:40%; float:right; margin-left: 50px;  margin-top: 40px">
-            <table class="table table-bordered table-striped">
-              <thead class="thead-purple">
-                <tr style="height: 10px;">
-                  <th class="text-center" style="width: 70%;">Género</th>
-                  <th class="text-center" style="width: 30%;">Cantidad</th>
-                </tr>
-              </thead>
-              <tbody style="background: white;">
-                <?php foreach ($generos as $gen) : ?>
+          <div class=" row" style="display: flex; justify-content: center; align-items: center;">
+            <div style="width:40%; float:right; margin-left: 50px;  margin-top: 40px">
+              <table class="table table-bordered table-striped">
+                <thead class="thead-purple">
+                  <tr style="height: 10px;">
+                    <th class="text-center" style="width: 70%;">Género</th>
+                    <th class="text-center" style="width: 30%;">Cantidad</th>
+                  </tr>
+                </thead>
+                <tbody style="background: white;">
+                  <?php $total=0;  foreach ($generos as $gen) : ?>
+                    <tr>
+                      <td>
+                        <?php echo remove_junk(ucwords($gen['descripcion'])) ?>
+                      </td>
+                      <td>
+                        <?php echo remove_junk(ucwords($gen['total'])) ?>
+                        <?php $total = $total + $gen['total']; ?>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
                   <tr>
+                    <td style="text-align:right;"><b>Total</b></td>
                     <td>
-                      <?php echo remove_junk(ucwords($gen['descripcion'])) ?>
-                    </td>
-                    <td>
-                      <?php echo remove_junk(ucwords($gen['total'])) ?>
-                      <?php $total = $total + $gen['total']; ?>
+                      <?php echo $total; ?>
                     </td>
                   </tr>
-                <?php endforeach; ?>
-                <tr>
-                  <td style="text-align:right;"><b>Total</b></td>
-                  <td>
-                    <?php echo $total; ?>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
   </div>
 </div>
 </div>

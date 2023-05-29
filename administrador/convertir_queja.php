@@ -119,10 +119,10 @@ if (isset($_POST['convertir_queja'])) {
 
         // $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-O';
         $folio_carpeta = str_replace("/", "-", $nuevo_folio);
-        if ($solicitud == 1) {
+        if($solicitud == 1){
             $carpeta = 'uploads/orientacioncanalizacion/orientacion/' . $folio_carpeta;
         }
-        if ($solicitud == 2) {
+        if($solicitud == 2){
             $carpeta = 'uploads/orientacioncanalizacion/canalizacion/' . $folio_carpeta;
         }
 
@@ -155,7 +155,7 @@ if (isset($_POST['convertir_queja'])) {
             $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
                         nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$nuevo_folio}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
+            $query .= " '{$folio_editar}','{$email}','{$nombreC}','{$id_cat_escolaridad}','{$id_cat_ocup}','{$edad}','{$telefono}','0','{$id_cat_gen}','{$calle_num}','{$colonia}','{$cod_post}','{$municipio}',
                         '{$entidad}','{$nacionalidad}','{$solicitud}','{$med_pres}','{$autoridad}','{$id_cat_grupo_vuln}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$fecha_actualizacion}'";
             $query .= ")";
 
@@ -165,15 +165,8 @@ if (isset($_POST['convertir_queja'])) {
 
         if ($db->query($query) && $db->query($query2) && $db->query($query3)) {
             //sucess
-            if ($solicitud == 1) {
-                $session->msg('s', " La orientación ha sido agregada con éxito.");
-                $tipo = "orientación";
-            }
-            if ($solicitud == 2) {
-                $session->msg('s', " La canalización ha sido agregada con éxito.");
-                $tipo = "canalización";
-            }
-            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó ' . $tipo . ', Folio: ' . $nuevo_folio . '.', 1);
+            $session->msg('s', " La orientación ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó orientación, Folio: ' . $folio . '.', 1);
             redirect('solicitudes_quejas.php', false);
         } else {
             //failed

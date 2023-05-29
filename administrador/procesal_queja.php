@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Estado Procesal de Queja';
 require_once('includes/load.php');
 ?>
@@ -23,7 +24,7 @@ $cat_derecho_vuln = find_all_derecho_vuln();
 $cat_derecho_gral = find_all_derecho_gral();
 $cat_est_procesal = find_all('cat_est_procesal');
 $hecho_vulnrado = find_by_violentados('rel_queja_hechos', 'cat_hecho_vuln', $e_detalle['id_queja_date']);
-$rel_queja_hechos = $hecho_vulnrado['id_cat_hecho_vuln'];
+$rel_queja_hechos = ($hecho_vulnrado['id_cat_hecho_vuln'] ? 0 : $hecho_vulnrado['id_cat_hecho_vuln']);
 $derecho_vulnrado = find_by_violentados('rel_queja_der_vuln', 'cat_der_vuln', $e_detalle['id_queja_date']);
 $rel_queja_der_vuln = $derecho_vulnrado['id_cat_der_vuln'];
 $derecho_general = find_by_violentados('rel_queja_der_gral', 'cat_derecho_general', $e_detalle['id_queja_date']);

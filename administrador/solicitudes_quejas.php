@@ -102,6 +102,14 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+        <a href="actuaciones.php" class="tile">
+            <div class="tile-tittle">Actuaciones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    receipt_long
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

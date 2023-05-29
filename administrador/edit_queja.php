@@ -20,6 +20,8 @@ $asigna_a = find_all_area_userQ();
 $area = find_all_areas_quejas();
 $cat_est_procesal = find_all_estatus_procesal();
 $cat_municipios = find_all_cat_municipios();
+$cat_entidad = find_all_cat_entidad();
+$cat_tipo_ambito = find_all('cat_tipo_ambito');
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -91,29 +93,20 @@ if (isset($_POST['edit_queja'])) {
         $id_cat_gen = $e_detalle['id_cat_gen'];
         $nacionalidad = $e_detalle['id_cat_nacionalidad'];
         $med_pres = 5;
-        // if ($user['id_user'] <= 3 && $e_detalle['id_cat_med_pres'] == 5) {
-            // $sql = "INSERT INTO orientacion_canalizacion (";
-            // $sql .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
-            //             nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
-            // $sql .= ") VALUES (";
-            // $sql .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
-            //             '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
-            // $sql .= ")";
-        // }
-        // if ($e_detalle['id_cat_med_pres'] >= 1) {
+       
             if ($name != '') {
                 $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
             }
             if ($name == '') {
                 $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion' WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
             }
-        // }
+        
 
         $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
@@ -154,16 +147,16 @@ if (isset($_POST['edit_queja'])) {
                     Generales de la Queja
                 </h3>
                 <div class="row">
-                    <div class="col-md-2">
+                    <div class="col-md-3">
                         <div class="form-group">
-                            <label for="fecha_presentacion">Fecha de presentación</label>
+                            <label for="fecha_presentacion">Fecha de presentación <span style="color:red;font-weight:bold">*</span></label>
                             <input type="datetime-local" class="form-control" name="fecha_presentacion" value="<?php echo remove_junk($e_detalle['fecha_presentacion']); ?>" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
-                            <label for="id_cat_med_pres">Medio Presetación</label>
-                            <select class="form-control" name="id_cat_med_pres">
+                            <label for="id_cat_med_pres">Medio Presetación <span style="color:red;font-weight:bold">*</span></label>
+                            <select class="form-control" name="id_cat_med_pres" required>
                                 <?php foreach ($cat_medios_pres as $medio_pres) : ?>
                                     <option <?php if ($medio_pres['id_cat_med_pres'] === $e_detalle['id_cat_med_pres'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $medio_pres['id_cat_med_pres']; ?>">
@@ -172,9 +165,9 @@ if (isset($_POST['edit_queja'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="id_cat_aut">Autoridad Responsable</label>
+                            <label for="id_cat_aut">Autoridad Responsable <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_cat_aut">
                                 <?php foreach ($cat_autoridades as $autoridad) : ?>
                                     <option <?php if ($autoridad['id_cat_aut'] === $e_detalle['id_cat_aut'])
@@ -185,7 +178,7 @@ if (isset($_POST['edit_queja'])) {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_quejoso">Quejoso</label>
+                            <label for="id_cat_quejoso">Quejoso <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_cat_quejoso">
                                 <?php foreach ($cat_quejosos as $quejoso) : ?>
                                     <option <?php if ($quejoso['id_cat_quejoso'] === $e_detalle['id_cat_quejoso'])
@@ -201,7 +194,7 @@ if (isset($_POST['edit_queja'])) {
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_agraviado">Agraviado</label>
+                            <label for="id_cat_agraviado">Agraviado <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_cat_agraviado">
                                 <?php foreach ($cat_agraviados as $agraviado) : ?>
                                     <option <?php if ($agraviado['id_cat_agrav'] === $e_detalle['id_cat_agraviado'])
@@ -214,20 +207,7 @@ if (isset($_POST['edit_queja'])) {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_user_asignado">Se asigna a</label>
-                            <select class="form-control" name="id_user_asignado">
-                                <?php foreach ($asigna_a as $asigna) : ?>
-                                    <option <?php if ($asigna['id_det_usuario'] === $e_detalle['id_user_asignado'])
-                                                echo 'selected="selected"'; ?> value="<?php echo $asigna['id_det_usuario']; ?>"><?php
-                                                                                                                                echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="id_area_asignada">Área a la que se asigna</label>
+                            <label for="id_area_asignada">Área a la que se asigna <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_area_asignada">
                                 <?php foreach ($area as $a) : ?>
                                     <option <?php if ($a['id_area'] === $e_detalle['id_area_asignada'])
@@ -240,11 +220,24 @@ if (isset($_POST['edit_queja'])) {
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_est_procesal">Estado Procesal</label>
+                            <label for="id_user_asignado">Se asigna a <span style="color:red;font-weight:bold">*</span></label>
+                            <select class="form-control" name="id_user_asignado">
+                                <?php foreach ($asigna_a as $asigna) : ?>
+                                    <option <?php if ($asigna['id_det_usuario'] === $e_detalle['id_user_asignado'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $asigna['id_det_usuario']; ?>"><?php
+                                                                                                                                echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="id_cat_est_procesal">Estado Procesal <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_cat_est_procesal">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($cat_est_procesal as $estatus) : ?>
-                                    <option <?php if ($estatus['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
+                                    <option <?php if ($estatus['id_cat_est_procesal'] === $e_detalle['id_cat_est_procesal'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $estatus['id_cat_est_procesal']; ?>"><?php
                                                                                                                                     echo ucwords($estatus['descripcion']) ?>
                                     </option>
@@ -260,7 +253,7 @@ if (isset($_POST['edit_queja'])) {
                 </h3>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="dom_calle">Calle</label>
                             <input type="text" class="form-control" name="dom_calle" placeholder="Calle" value="<?php echo $e_detalle['dom_calle'] ?>">
@@ -269,13 +262,25 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="dom_numero">Núm. ext/int</label>
-                            <input type="text" class="form-control" name="dom_numero" value="<?php echo $e_detalle['dom_numero'] ?>" required>
+                            <input type="text" class="form-control" name="dom_numero" value="<?php echo $e_detalle['dom_numero'] ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="dom_colonia">Colonia</label>
                             <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" value="<?php echo $e_detalle['dom_colonia'] ?>">
+                        </div>
+                    </div>
+					  <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="ent_fed">Entidad Federativa</label>
+                            <select class="form-control" name="ent_fed" >
+                                <option value="">Escoge una opción</option>
+                                 <?php foreach ($cat_entidad as $id_cat_ent_fed) : ?>
+                                            <option <?php if ($id_cat_ent_fed['descripcion'] === $e_detalle['ent_fed'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $id_cat_ent_fed['descripcion']; ?>"><?php echo ucwords($id_cat_ent_fed['descripcion']); ?></option>
+                                        <?php endforeach; ?>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -292,6 +297,14 @@ if (isset($_POST['edit_queja'])) {
                             </select>
                         </div>
                     </div>
+					<div class="col-md-2">
+                        <div class="form-group">
+                            <label for="localidad">Localidad</label>
+                            <input type="text" class="form-control" name="localidad" placeholder="Localidad" >
+                        </div>
+                    </div>
+			</div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
@@ -301,12 +314,24 @@ if (isset($_POST['edit_queja'])) {
                             </label>
                         </div>
                     </div>
+					<div class="col-md-2">
+                        <div class="form-group">
+                            <label for="id_tipo_ambito">Tipo Ámbito <span style="color:red;font-weight:bold">*</span></label>
+                            <select class="form-control" name="id_tipo_ambito" required>
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_tipo_ambito as $ambito) : ?>
+                                    <option <?php if ($ambito['id_cat_tipo_ambito'] === $e_detalle['id_tipo_ambito'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $ambito['id_cat_tipo_ambito']; ?>"><?php echo ucwords($ambito['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
-                            <label for="descripcion_hechos">Descripción de los hechos</label>
-                            <textarea class="form-control" name="descripcion_hechos" id="descripcion_hechos" cols="30" rows="5" value="<?php echo $e_detalle['descripcion_hechos'] ?>"><?php echo $e_detalle['descripcion_hechos'] ?></textarea>
+                            <label for="descripcion_hechos">Descripción de los hechos <span style="color:red;font-weight:bold">*</span></label>
+                            <textarea class="form-control" name="descripcion_hechos" id="descripcion_hechos" cols="30" rows="5" required value="<?php echo $e_detalle['descripcion_hechos'] ?>"><?php echo $e_detalle['descripcion_hechos'] ?></textarea>
                         </div>
                     </div>
                     <div class="col-md-6">

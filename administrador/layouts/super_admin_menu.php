@@ -79,6 +79,7 @@
       <li><a href="cat_tipo_resolucion.php">Tipo Resolución</a> </li>	  
       <li><a href="cat_edo_cumplimiento.php">Estado de Cumplimiento</a> </li>	  
       <li><a href="cat_edo_procesal.php">Estado Procesal</a> </li>
+      <li><a href="cat_edo_queja.php">Estado de la Queja</a> </li>
       <li><a href="cat_medio_presentacion.php">Medio de Presentación</a> </li>
       <li><a href="cat_tipo_ambito.php">Tipo de Ambito</a> </li>
     </ul>
@@ -100,13 +101,9 @@
       <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Estadísticas</span>
     </a>
     <ul style="margin-top:25px" class="nav submenu">
-      <li><a href="#">Medida Cautelar</a></li>
-      <li><a href="tabla_estadistica_orientacion.php">Orientaciones</a></li>
-      <li><a href="tabla_estadistica_canalizacion.php">Canalizaciones</a></li>
-      <li><a href="#">Gestiones</a></li>
-      <li><a href="#">Solicitud de información</a></li>
-      <li><a href="tabla_estadistica_capacitacion.php">Capacitaciones</a></li>
       <li><a href="tabla_estadistica_quejas.php">Quejas</a></li>
+      <li><a href="tabla_estadistica_orientacion.php">Orientaciones</a></li>
+      <li><a href="tabla_estadistica_canalizacion.php">Canalizaciones</a></li>      
     </ul>
   </li>
 </ul>

@@ -1,13 +1,12 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-$page_title = 'Estadísticas de Orientaciones';
+$page_title = 'Estadísticas de Canalizaciones';
 require_once('includes/load.php');
 ?>
 <?php
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -35,7 +34,7 @@ if ($nivel == 7) {
 
 <div class="row">
     <div class="col-md-12" style="font-size: 40px; color: #3a3d44;">
-        <?php echo 'Estadísticas de Orientaciones'; ?>
+        <?php echo 'Estadísticas de Canalizaciones'; ?>
     </div>
 </div>
 
