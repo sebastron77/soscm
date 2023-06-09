@@ -12,6 +12,7 @@ $user = current_user();
 $nivel = $user['user_level'];
 $id_user = $user['id'];
 $nivel_user = $user['user_level'];
+$area_user1 = muestra_area($id_u);
 
 // Identificamos a que área pertenece el usuario logueado
 $area_user = area_usuario2($id_user);
@@ -30,12 +31,12 @@ endif;
 if (($nivel_user <= 2) || ($nivel_user == 7)) {
     $all_actuaciones = find_all_actuaciones();
 } else {
-    $all_actuaciones = find_all_actuaciones_area($area);
+    $all_actuaciones = find_all_actuaciones_area($area_user1['id_area']);
 }
 
-$conexion = mysqli_connect ("localhost", "root", "");
+$conexion = mysqli_connect ("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion,"utf8");
-mysqli_select_db ($conexion, "probar_antes_server");
+mysqli_select_db ($conexion, "suigcedh");
 $sql = "SELECT * FROM actuaciones";
 $resultado = mysqli_query ($conexion, $sql) or die;
 $capacitaciones = array();
@@ -120,9 +121,9 @@ if (isset($_POST["export_data"])) {
                                 <td><?php echo remove_junk(ucwords($a_actuacion['catalogo'])) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_actuacion['descripcion'])) ?></td>
                                 <?php if($a_actuacion['autoridades'] == ''):?>
-                                    <td><?php echo remove_junk(ucwords($a_actuacion['nombre_autoridad'])) ?></td>
+                                    <td><?php echo remove_junk(ucwords($a_actuacion['federal'])) ?></td>
                                 <?php else:?>
-                                    <td><?php echo remove_junk(ucwords($a_actuacion['nombre_autoridad'])) ?></td>
+                                    <td><?php echo remove_junk(ucwords($a_actuacion['estatal'])) ?></td>
                                 <?php endif?>
                                 <td class="text-center"><?php echo remove_junk(ucwords($a_actuacion['peticion'])) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_actuacion['num_exp_origen'])) ?></td>
@@ -134,14 +135,9 @@ if (isset($_POST["export_data"])) {
                                 
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <a href="edit_actuacion.php?id=<?php echo (int)$a_actuacion['id']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
+                                            <a href="edit_actuacion.php?id=<?php echo (int)$a_actuacion['id_actuacion']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                                 <span class="glyphicon glyphicon-edit"></span>
                                             </a>
-                                            <?php if ($nivel == 1) : ?>
-                                                <!-- <a href="delete_orientacion.php?id=<?php echo (int)$a_actuacion['id']; ?>" class="btn btn-delete btn-md" title="Eliminar" data-toggle="tooltip" onclick="return confirm('¿Seguro(a) que deseas eliminar esta orientación?');">
-                                                <span class="glyphicon glyphicon-trash"></span>
-                                            </a> -->
-                                            <?php endif; ?>
                                         </div>
                                     </td>                                
                             </tr>

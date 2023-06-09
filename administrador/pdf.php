@@ -40,8 +40,8 @@ $results3      = find_hibrido_by_dates($start_date, $end_date);
         <h2 style="margin-top: 2%;">Estadísticas por modalidad del <?php if (isset($start_date)) {
                                                                       echo $start_date;
                                                                     } ?> a <?php if (isset($end_date)) {
-                                                                                      echo $end_date;
-                                                                                    } ?></h2>
+                                                                              echo $end_date;
+                                                                            } ?></h2>
 
 
 
@@ -90,7 +90,7 @@ $results3      = find_hibrido_by_dates($start_date, $end_date);
 
                 }
               });
-            </script>            
+            </script>
           </div>
 
 
@@ -158,12 +158,13 @@ $results3      = find_hibrido_by_dates($start_date, $end_date);
 $options = new Options();
 $options->set('isRemoteEnabled', TRUE);
 $dompdf = new DOMPDF($options);
+$dompdf->set_option('dpi', 1800);
 $dompdf->loadHtml(ob_get_clean());
 $dompdf->setPaper("letter");
 $dompdf->render();
 //$pdf->image();
 $pdf = $dompdf->output();
-$filename = "grafica.pdf";
+$filename = "archivo.pdf";
 file_put_contents($filename, $pdf);
 $dompdf->stream($filename);
 

@@ -37,20 +37,24 @@ if ($nivel_user == 7) {
 if ($nivel_user == 19) {
     page_require_level_exacto(19);
 }
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
+if ($nivel_user == 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19) :
+if ($nivel_user == 19) :
     redirect('home.php');
 endif;
 ?>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_queja'])) {
 
@@ -243,7 +247,7 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_area_asignada">Área a la que se asigna <span style="color:red;font-weight:bold">*</span></label>
-                            <select class="form-control" name="id_area_asignada" required>
+                            <select class="form-control" id="id_area_asignada" name="id_area_asignada" required>
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($area as $a) : ?>
                                     <option value="<?php echo $a['id_area']; ?>"><?php echo ucwords($a['nombre_area']); ?></option>
@@ -251,17 +255,28 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
+                    <?php $trabajadores = find_all_trabajadores_area($a['id_area']) ?>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_user_asignado">Se asigna a <span style="color:red;font-weight:bold">*</span></label>
-                            <select class="form-control" name="id_user_asignado" required>
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($asigna_a as $asigna) : ?>
-                                    <option value="<?php echo $asigna['id_det_usuario']; ?>"><?php echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="id_user_asignado">Se asigna a</label>
+                            <select class="form-control" id="id_user_asignado" name="id_user_asignado"></select>
                         </div>
                     </div>
+                    <script>
+                        $(function() {
+                            $("#id_area_asignada").on("change", function() {
+                                var variable = $(this).val();
+                                $("#selected").html(variable);
+                            })
+
+                        });
+                        $(function() {
+                            $("#id_user_asignado").on("change", function() {
+                                var variable2 = $(this).val();
+                                $("#selected2").html(variable2);
+                            })
+                        });
+                    </script>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="estado_procesal">Estado Procesal <span style="color:red;font-weight:bold">*</span></label>

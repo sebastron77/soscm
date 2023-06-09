@@ -40,11 +40,12 @@ $correspondencias = correspondencia_pdf($id_correspondencia);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 15px;
   }
+
   .footer {
-      position: absolute;
-      bottom: 0;
-      color: black;
-      font-size: 10px;
+    position: absolute;
+    bottom: 0;
+    color: black;
+    font-size: 10px;
   }
 </style>
 
@@ -86,63 +87,87 @@ $correspondencias = correspondencia_pdf($id_correspondencia);
         $mes = substr($fecha, 5, -3);
         $anio = substr($fecha, 0, 4);
 
-        if ($mes == '01') { $nom_mes = 'enero'; };
-        if ($mes == '02') { $nom_mes = 'febrero'; };
-        if ($mes == '03') { $nom_mes = 'marzo'; };
-        if ($mes == '04') { $nom_mes = 'abril'; };
-        if ($mes == '05') { $nom_mes = 'mayo'; };
-        if ($mes == '06') { $nom_mes = 'junio'; };
-        if ($mes == '07') { $nom_mes = 'julio'; };
-        if ($mes == '08') { $nom_mes = 'agosto'; };
-        if ($mes == '09') { $nom_mes = 'septiembre'; };
-        if ($mes == '10') { $nom_mes = 'octubre'; };
-        if ($mes == '11') { $nom_mes = 'noviembre'; };
-        if ($mes == '12') { $nom_mes = 'diciembre'; };
+        if ($mes == '01') {
+          $nom_mes = 'enero';
+        };
+        if ($mes == '02') {
+          $nom_mes = 'febrero';
+        };
+        if ($mes == '03') {
+          $nom_mes = 'marzo';
+        };
+        if ($mes == '04') {
+          $nom_mes = 'abril';
+        };
+        if ($mes == '05') {
+          $nom_mes = 'mayo';
+        };
+        if ($mes == '06') {
+          $nom_mes = 'junio';
+        };
+        if ($mes == '07') {
+          $nom_mes = 'julio';
+        };
+        if ($mes == '08') {
+          $nom_mes = 'agosto';
+        };
+        if ($mes == '09') {
+          $nom_mes = 'septiembre';
+        };
+        if ($mes == '10') {
+          $nom_mes = 'octubre';
+        };
+        if ($mes == '11') {
+          $nom_mes = 'noviembre';
+        };
+        if ($mes == '12') {
+          $nom_mes = 'diciembre';
+        };
       ?>
     </div>
-    <?php if(strlen($correspondencia['asunto']) > 60):?>
-    <div style="text-align: right; border-top: 5%">
-    <?php endif;?>
-    <?php if(strlen($correspondencia['asunto']) < 60):?>
-    <div style="text-align: right;">
-    <?php endif;?>
-      <p>Morelia, Michoacán a <?php echo $dia; ?> de <?php echo $nom_mes; ?> de <?php echo $anio; ?></p>
-    </div>
-    <div>
-      <?php $cargo = cargo_trabajador_pdf($correspondencia['se_turna_a_trabajador']) ?>
-      <?php $nombre = nombre_trabajador_pdf($correspondencia['se_turna_a_trabajador']) ?>
-      <div class="row">
-        <p style="text-align: left;"><b><?php echo strtoupper($nombre['nombre'] . " " . $nombre['apellidos']) ?></b></p>
+    <?php if (strlen($correspondencia['asunto']) > 60) : ?>
+      <div style="text-align: right; border-top: 5%">
+      <?php endif; ?>
+      <?php if (strlen($correspondencia['asunto']) < 60) : ?>
+        <div style="text-align: right;">
+        <?php endif; ?>
+        <p>Morelia, Michoacán a <?php echo $dia; ?> de <?php echo $nom_mes; ?> de <?php echo $anio; ?></p>
+        </div>
+        <div>
+          <?php $cargo = cargo_trabajador_pdf($correspondencia['se_turna_a_trabajador']) ?>
+          <?php $nombre = nombre_trabajador_pdf($correspondencia['se_turna_a_trabajador']) ?>
+          <div class="row">
+            <p style="text-align: left;"><b><?php echo strtoupper($nombre['nombre'] . " " . $nombre['apellidos']) ?></b></p>
+          </div>
+          <div class="row" style="margin-top: -15px;">
+            <p style="text-align: left;"><b><?php echo nl2br(strtoupper($cargo['nombre_cargo'])); ?></b></p>
+            <p style="text-align: left;"><b><?php echo "PRESENTE."; ?></b></p>
+          </div>
+        </div>
+        <div>
+          <p style="text-align: left; text-align: justify; line-height: 170%; white-space: pre-line;"><?php echo $correspondencia['cuerpo_oficio'] ?></p>
+        </div>
+        <div style="margin-top:20%;">
+          <p style="text-align: center;"><b>ATENTAMENTE</b></p>
+          <p style="text-align: center;"><b><?php echo $nombre_completo ?></b></p>
+          <p style="text-align: center;"><b><?php echo $cargo_quien_envia ?></b></p>
+        </div>
       </div>
-      <div class="row" style="margin-top: -15px;">        
-        <p style="text-align: left;"><b><?php echo nl2br(strtoupper($cargo['nombre_cargo'])); ?></b></p>
-        <p style="text-align: left;"><b><?php echo "PRESENTE."; ?></b></p>
-      </div>
-    </div>
-    <div>
-      <p style="text-align: left; text-align: justify; line-height: 170%; white-space: pre-line;"><?php echo $correspondencia['cuerpo_oficio']?></p>
-    </div>
-    <div style="margin-top:20%;">
-      <p style="text-align: center;"><b>ATENTAMENTE</b></p>
-      <p style="text-align: center;"><b><?php echo $nombre_completo ?></b></p>
-      <p style="text-align: center;"><b><?php echo $cargo_quien_envia ?></b></p>
-    </div>
-  </div>
-<?php endforeach; ?>
-<footer  style="width:100%; margin-left: 0px;"  >
+    <?php endforeach; ?>
+    <footer style="width:100%; margin-left: 0px;">
 
 
-<footer class="footer">
-  <div class="row">
-    <div class="col-md-6">
-      <img src="http://localhost/sistemageneral/administrador/footer.png" alt="" srcset="" style="margin-top: 24%;">
-      <p style="text-align: left;"><?php echo "C.c.p. " . $correspondencia['con_copia_para'] ?></p>
-    </div>
-    <div class="col-md-6">
-      <p style="text-align: right; margin-top: -10px; font-family: 'Questrial', sans-serif;">Fernando Montes de Oca #108. Chapultepec Nte.<br>CP. 58260. Morelia, Mich.<br>Tel. 443 1 13 35 00 Lada sin costo 800 640 31 88</p>
-    </div>
-  </div>
-</footer>
+      <footer class="footer">
+        <div class="row">
+          <div class="col-md-6">
+            <img src="http://localhost/sistemageneral/administrador/footer.png" alt="" srcset="" style="margin-top: 24%;">
+            <p style="text-align: left;"><?php echo "C.c.p. " . $correspondencia['con_copia_para'] ?></p>
+          </div>
+          <div class="col-md-6">
+            <p style="text-align: right; margin-top: -10px; font-family: 'Questrial', sans-serif;">Fernando Montes de Oca #108. Chapultepec Nte.<br>CP. 58260. Morelia, Mich.<br>Tel. 443 1 13 35 00 Lada sin costo 800 640 31 88</p>
+          </div>
+        </div>
+      </footer>
 </body>
 
 <?php
@@ -154,7 +179,7 @@ $dompdf->setPaper("letter");
 $dompdf->render();
 //$pdf->image();
 $pdf = $dompdf->output();
-$filename = "oficio.pdf";
+$filename = "archivo.pdf";
 file_put_contents($filename, $pdf);
 $dompdf->stream($filename);
 

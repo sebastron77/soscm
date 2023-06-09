@@ -17,7 +17,7 @@ if (!$e_actuacion) {
 $user = current_user();
 $nivel_user = $user['user_level'];
 
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -44,7 +44,7 @@ if (isset($_POST['edit_actuacion'])) {
     $req_fields = array('catalogo', 'peticion');
     validate_fields($req_fields);
     if (empty($errors)) {
-        $id = (int)$e_actuacion['id'];
+        $id = (int)$e_actuacion['id_actuacion'];
         $fecha_captura_acta = remove_junk($db->escape($_POST['fecha_captura_acta']));
         $catalogo   = remove_junk($db->escape($_POST['catalogo']));
         $descripcion   = remove_junk($db->escape($_POST['descripcion']));
@@ -73,10 +73,10 @@ if (isset($_POST['edit_actuacion'])) {
         }
 
         if ($name != '') {
-            $sql = "UPDATE actuaciones SET fecha_captura_acta='{$fecha_captura_acta}', catalogo='{$catalogo}', descripcion='{$descripcion}', autoridades='{$autoridades}', autoridades_federales='{$autoridades_federales}', num_exp_origen='{$num_exp_origen}', peticion='{$peticion}', adjunto='{$name}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE actuaciones SET fecha_captura_acta='{$fecha_captura_acta}', catalogo='{$catalogo}', descripcion='{$descripcion}', autoridades='{$autoridades}', autoridades_federales='{$autoridades_federales}', num_exp_origen='{$num_exp_origen}', peticion='{$peticion}', adjunto='{$name}' WHERE id_actuacion='{$db->escape($id)}'";
         }
         if ($name == '') {
-            $sql = "UPDATE actuaciones SET fecha_captura_acta='{$fecha_captura_acta}', catalogo='{$catalogo}', descripcion='{$descripcion}', autoridades='{$autoridades}', autoridades_federales='{$autoridades_federales}', num_exp_origen='{$num_exp_origen}', peticion='{$peticion}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE actuaciones SET fecha_captura_acta='{$fecha_captura_acta}', catalogo='{$catalogo}', descripcion='{$descripcion}', autoridades='{$autoridades}', autoridades_federales='{$autoridades_federales}', num_exp_origen='{$num_exp_origen}', peticion='{$peticion}' WHERE id_actuacion='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
@@ -137,9 +137,9 @@ if (isset($_POST['edit_actuacion'])) {
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="edit_actuacion.php?id=<?php echo (int)$e_actuacion['id']; ?>" enctype="multipart/form-data">
+            <form method="post" action="edit_actuacion.php?id=<?php echo (int)$e_actuacion['id_actuacion']; ?>" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <div id="flotante" style=" background-color: #EBEBEB; display:none; border-radius: 8px;">
                                 <div id="close" align="right" style="margin-bottom: -15px;">
@@ -147,16 +147,16 @@ if (isset($_POST['edit_actuacion'])) {
                                         <path fill="red" d="M13.46,12L19,17.54V19H17.54L12,13.46L6.46,19H5V17.54L10.54,12L5,6.46V5H6.46L12,10.54L17.54,5H19V6.46L13.46,12Z" />
                                     </svg>
                                 </div>
-                                Fecha en que fué capturada la actuación.
+                                Fecha de captura de actuación.
                             </div>
-                            <label for="fecha_captura_acta">Fecha de captura de actuación</label>
+                            <label for="fecha_captura_acta">Captura de actuación</label>
                             <svg onclick="javascript:mostrar();" style="width:20px;height:20px" viewBox="0 0 24 24">
                                 <path fill="currentColor" d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
                             </svg><br>
                             <input type="date" class="form-control" name="fecha_captura_acta" value="<?php echo remove_junk($e_actuacion['fecha_captura_acta']); ?>">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="catalogo">Tipo de actuación</label>
                             <select class="form-control" name="catalogo">
@@ -166,7 +166,7 @@ if (isset($_POST['edit_actuacion'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div id="flotante2" style=" background-color: #EBEBEB; display:none; border-radius: 8px;">
                                 <div id="close2" align="right" style="margin-bottom: -15px;">
@@ -181,16 +181,16 @@ if (isset($_POST['edit_actuacion'])) {
                                 <path fill="currentColor" d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
                             </svg><br>
                             <select class="form-control" name="autoridades">
-                                <?php if ($e_actuacion['autoridades'] == '') : ?>
+                                
                                     <option value="">Escoge una opcion</option>
-                                <?php endif; ?>
+                                
                                 <?php foreach ($estatales as $estatal) : ?>
-                                    <option <?php if ($e_actuacion['autoridades'] === $estatal['id']) echo 'selected="selected"'; ?> value="<?php echo $estatal['id']; ?>"><?php echo ucwords($estatal['nombre_autoridad']); ?></option>
+                                    <option <?php if ($e_actuacion['autoridades'] === $estatal['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $estatal['id_cat_aut']; ?>"><?php echo ucwords($estatal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <div id="flotante3" style=" background-color: #EBEBEB; display:none; border-radius: 8px;">
                                 <div id="close3" align="right" style="margin-bottom: -15px;">
@@ -205,11 +205,11 @@ if (isset($_POST['edit_actuacion'])) {
                                 <path fill="currentColor" d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
                             </svg><br>
                             <select class="form-control" name="autoridades_federales">
-                                <?php if ($e_actuacion['autoridades_federales'] == '') : ?>
+                                
                                     <option value="">Escoge una opcion</option>
-                                <?php endif; ?>
+                                
                                 <?php foreach ($federales as $federal) : ?>
-                                    <option <?php if ($e_actuacion['autoridades_federales'] === $federal['id']) echo 'selected="selected"'; ?> value="<?php echo $federal['id']; ?>"><?php echo ucwords($federal['nombre_autoridad']); ?></option>
+                                    <option <?php if ($e_actuacion['autoridades_federales'] === $federal['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $federal['id_cat_aut']; ?>"><?php echo ucwords($federal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

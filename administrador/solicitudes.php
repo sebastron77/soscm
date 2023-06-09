@@ -18,11 +18,14 @@ if ($nivel == 5) {
 if ($nivel == 7) {
     page_require_level_exacto(7);
 }
-if ($nivel == 19) {
-    page_require_level_exacto(19);
-}
-if ($nivel > 21) {
+// if ($nivel == 19) {
+//     page_require_level_exacto(19);
+// }
+if ($nivel == 21) {
     page_require_level_exacto(21);
+}
+if ($nivel == 50) {
+    page_require_level_exacto(50);
 }
 
 if ($nivel > 2 && $nivel < 5) :
@@ -103,7 +106,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 			</a>
 		<?php endif ?>
 
-		<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21)) : ?>
+		<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21) || ($otro == 50)) : ?>
 			<a href="solicitudes_quejas.php" class="tileA">
 				<div class="tileA-tittle">Quejas y Seguimiento</div>
 				<div class="tileA-icon">

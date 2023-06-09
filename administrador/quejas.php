@@ -13,10 +13,14 @@ $id_u = $user['id_user'];
 $area_user = muestra_area($id_u);
 $notificacion = notificacion();
 
-if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 21)) {
+if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 21) || ($nivel_user == 50)) {
     $quejas_libro = find_all_quejas_admin();
 } else {
-    $quejas_libro = find_all_quejas($area_user['id_area']);
+    if ($area_user['id_det_usuario'] == 89) {
+        $quejas_libro = find_all_quejas_lc();
+    } else {
+        $quejas_libro = find_all_quejas($area_user['id_area'], $area_user['id_det_usuario']);
+    }
 }
 
 if ($nivel_user <= 2) {
@@ -28,11 +32,14 @@ if ($nivel_user == 5) {
 if ($nivel_user == 7) {
     page_require_level_exacto(7);
 }
-if ($nivel_user == 19) {
-    page_require_level_exacto(19);
-}
-if ($nivel_user > 21) {
+// if ($nivel_user == 19) {
+//     page_require_level_exacto(19);
+// }
+if ($nivel_user == 21) {
     page_require_level_exacto(21);
+}
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
 }
 
 if ($nivel_user > 2 && $nivel_user < 5) :
@@ -114,21 +121,24 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Quejas</span>
                 </strong>
-				<!-- <div> -->
 
+                <!-- <div> -->
                 <!-- </div> -->
-                <a href="quejas_publicas.php" class="btn btn-primary position-relative" style="float: right; margin-top: -1px; margin-right: 5px; margin-left: 10px;">
-                    Quejas en Línea
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        <?php echo $notificacion['total']; ?>
-                        <span class="visually-hidden">unread messages</span>
-                    </span>
-                </a>
-                <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                <a href="seach_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Búsqueda General</a>
+                <?php if (($nivel == 1) || ($id_u == 3)) : ?>
+                    <a href="quejas_publicas.php" class="btn btn-primary position-relative" style="float: right; margin-top: 0px; margin-right: 5px; margin-left: 10px;">
+                        Quejas en Línea
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            <?php echo $notificacion['total']; ?>
+                            <span class="visually-hidden">unread messages</span>
+                        </span>
+                    </a>
+                <?php endif; ?>
+                <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                     <a href="add_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Queja</a>
                 <?php endif; ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
+                    <button style="float: right; margin-top: -22px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
             </div>
         </div>
@@ -141,12 +151,12 @@ if (isset($_POST["export_data"])) {
                         <th width="1%">Fecha presentación</th>
                         <th width="10%">Medio presentación</th>
                         <th width="10%">Área Asignada</th>
-						<th width="10%">Asignado a</th>
+                        <th width="10%">Asignado a</th>
                         <th width="10%">Autoridad responsable</th>
                         <th width="5%">Quejoso</th>
                         <th width="5%">Estado Procesal</th>
                         <th width="1%">Tipo Resolución</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 21) || ($nivel == 50)) : ?>
                             <th width="5%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>
@@ -162,27 +172,27 @@ if (isset($_POST["export_data"])) {
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
                             <td>
-                                <?php echo date_format(date_create(remove_junk(ucwords($queja['fecha_presentacion']))),"d-m-Y"); ?>
+                                <?php echo date_format(date_create(remove_junk(ucwords($queja['fecha_presentacion']))), "d-m-Y"); ?>
                             </td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['medio_pres'])) ?>
-                            </td> 
-							<td>
+                            </td>
+                            <td>
                                 <?php echo remove_junk(ucwords($queja['nombre_area'])) ?>
                             </td>
-							<td>
+                            <td>
                                 <?php echo remove_junk(ucwords($queja['user_asignado'])) ?>
                             </td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['nombre_autoridad'])) ?>
-                            </td>                           
+                            </td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['nombre_quejoso'] . " " . $queja['paterno_quejoso'] . " " . $queja['materno_quejoso'])) ?>
                             </td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['est_proc'])) ?>
                             </td>
-							<td>
+                            <td>
                                 <?php echo remove_junk(ucwords($queja['id_tipo_resolucion'])) ?>
                             </td>
                             <td class="text-center">
@@ -190,7 +200,7 @@ if (isset($_POST["export_data"])) {
                                     <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                         <i class="glyphicon glyphicon-eye-open"></i>
                                     </a>&nbsp;
-                                    <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                                    <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                                         <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>&nbsp;
@@ -205,11 +215,11 @@ if (isset($_POST["export_data"])) {
                                         <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-secondary btn-md" title="Resolución" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-arrow-right"></span>
                                         </a>&nbsp;
-                                        <?php if(($id_u <= 3) && ($queja['id_cat_med_pres'] == 5)):?>
+                                        <?php if ((($id_u <= 2) || ($id_u == 3)) && $queja['id_cat_med_pres'] == 5) : ?>
                                             <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv btn-md" title="Convertir" data-toggle="tooltip">
                                                 <span class="glyphicon glyphicon-retweet"></span>
                                             </a>
-                                        <?php endif; ?>    
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 </div>
                             </td>

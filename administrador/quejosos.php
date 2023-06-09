@@ -60,7 +60,10 @@ endif;
                     <span>Lista de Promoventes</span>
                 </strong>
                 <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 5): ?>
-                    <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar promovente</a>
+                    <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar promovente/agraviado</a>
+                <?php endif ?>
+                <?php if ($otro == 1 || $nivel_user == 1): ?>
+                    <a href="add_promovente_solo.php" class="btn btn-info pull-right" style="margin-right: 5px;">Agregar promovente</a>
                 <?php endif ?>
             </div>
 

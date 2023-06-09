@@ -22,8 +22,11 @@ if ($nivel == 7) {
 if ($nivel == 19) {
     page_require_level_exacto(19);
 }
-if ($nivel > 21) {
+if ($nivel == 21) {
     page_require_level_exacto(21);
+}
+if ($nivel == 50) {
+    page_require_level_exacto(50);
 }
 
 if ($nivel > 2 && $nivel < 5) :
@@ -89,7 +92,7 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Orientaciones</span>
                 </strong>
-                <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                     <a href="add_orientacion.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar
                         orientación</a>
                 <?php endif; ?>
@@ -105,12 +108,12 @@ if (isset($_POST["export_data"])) {
                     <tr>
                         <th width="15%">Folio</th>
                         <th width="10%">Fecha creación</th>
-                        <th width="15%">Medio presentación</th>
-                        <th width="10%">Correo</th>
-                        <th width="15%">Nombre Completo</th>
-                        <th width="15%">Creador</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21)) : ?>
-                            <th width="20%;" class="text-center">Acciones</th>
+                        <th width="10%">Medio presentación</th>
+                        <th width="1%">Correo</th>
+                        <th width="25%">Nombre Completo</th>
+                        <th width="45%">Creador</th>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21) || ($nivel == 50)) : ?>
+                            <th width="10%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>
                 </thead>
@@ -130,7 +133,7 @@ if (isset($_POST["export_data"])) {
                             <td>
                                 <?php echo remove_junk(ucwords($a_orientacion['medio_pres'])) ?>
                             </td>
-                            
+
                             <td>
                                 <?php echo remove_junk(ucwords($a_orientacion['correo_electronico'])) ?>
                             </td>
@@ -146,7 +149,7 @@ if (isset($_POST["export_data"])) {
                                     <a href="ver_info_ori.php?id=<?php echo (int) $a_orientacion['idor']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                         <i class="glyphicon glyphicon-eye-open"></i>
                                     </a>
-                                    <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                                    <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                                         <a href="edit_orientacion.php?id=<?php echo (int) $a_orientacion['idor']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>

@@ -20,20 +20,23 @@ function find_all_order($table, $order)
   }
 }
 
-function find_all_hecho_vuln(){
-	$sql = "SELECT * FROM cat_hecho_vuln WHERE estatus=1 ORDER BY descripcion ASC";
+function find_all_hecho_vuln()
+{
+  $sql = "SELECT * FROM cat_hecho_vuln WHERE estatus=1 ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 
-function find_all_derecho_vuln(){
-	$sql = "SELECT * FROM cat_der_vuln WHERE estatus=1 ORDER BY descripcion ASC";
+function find_all_derecho_vuln()
+{
+  $sql = "SELECT * FROM cat_der_vuln WHERE estatus=1 ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
 
-function find_all_derecho_gral(){
-	$sql = "SELECT * FROM cat_derecho_general WHERE estatus=1 ORDER BY descripcion ASC";
+function find_all_derecho_gral()
+{
+  $sql = "SELECT * FROM cat_derecho_general WHERE estatus=1 ORDER BY descripcion ASC";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -74,22 +77,37 @@ function find_all_cat_entidad()
   $result = find_by_sql($sql);
   return $result;
 }
-
-function find_by_violentados($tableA, $tableB,$id)
+function find_by_violentados($tableA, $tableB, $id)
 {
   global $db;
   $id = (int)$id;
-    $sql = $db->query("SELECT id_{$db->escape($tableB)} ,IFNULL(descripcion,'')as descripcion FROM {$db->escape($tableA)} LEFT JOIN {$db->escape($tableB)} USING(id_{$db->escape($tableB)}) WHERE id_queja_date='{$db->escape($id)}'");
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-    else
-      return null;
+  $sql = $db->query("SELECT id_{$db->escape($tableB)} ,IFNULL(descripcion,'')as descripcion FROM {$db->escape($tableA)} LEFT JOIN {$db->escape($tableB)} USING(id_{$db->escape($tableB)}) WHERE id_queja_date='{$db->escape($id)}'");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }
 
-function find_all_quejas($id)
+function find_all_quejas($id, $user)
 {
   global $db;
   $id = (int)$id;
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado, du.id_det_usuario, ";
+  $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql .= " FROM quejas_dates q";
+  $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
+  $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
+  $sql .= " LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
+  $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
+  $sql .= " LEFT JOIN `area` ar ON q.`id_area_asignada` = ar.id_area  ";
+  $sql .= " LEFT JOIN `cat_est_procesal` ep ON q.`estado_procesal` = `ep`.id_cat_est_procesal";
+  $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
+  $sql .= " WHERE q.id_area_asignada = '{$db->escape($id)}' AND du.id_det_usuario = '{$db->escape($user)}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_all_quejas_lc()
+{
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado, ";
   $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
@@ -100,11 +118,10 @@ function find_all_quejas($id)
   $sql .= " LEFT JOIN `area` ar ON q.`id_area_asignada` = ar.id_area  ";
   $sql .= " LEFT JOIN `cat_est_procesal` ep ON q.`estado_procesal` = `ep`.id_cat_est_procesal";
   $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
-  $sql .= " WHERE q.id_area_asignada = '{$db->escape($id)}'";
+  $sql .= " WHERE q.id_area_asignada = 23";
   $result = find_by_sql($sql);
   return $result;
 }
-
 function find_all_quejas_admin()
 {
   // global $db;
@@ -121,28 +138,9 @@ function find_all_quejas_admin()
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_quejasR()
-{
-  $sql = "SELECT q.id_queja_date_p, q.folio_queja_p, q.fecha_creacion, q.nombre, q.paterno, q.materno, cg.descripcion as genero, q.edad, ce.descripcion as escolaridad,
-          co.descripcion as ocupacion, cgv.descripcion as grupo_vuln, cn.descripcion as nacionalidad, au.nombre_autoridad, q.correo, q.telefono, q.calle_queja, q.numero_queja, q.colonia_queja,
-          q.descripcion_hechos, q.entidad, cm.descripcion as municipio, q.localidad, q.archivo,  ep.descripcion as est_proc
-          FROM quejas_dates_public q
-          -- LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
-          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.autoridad_responsable
-          INNER JOIN cat_genero cg ON cg.id_cat_gen = q.genero
-          INNER JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = q.cat_nacionalidad
-          INNER JOIN cat_municipios cm ON cm.id_cat_mun = q.municipio
-          INNER JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = q.cat_escolaridad
-          INNER JOIN cat_ocupaciones co ON co.id_cat_ocup = q.cat_ocupacion
-          INNER JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = q.grupo_vulnerable;
-          INNER JOIN cat_est_procesal ep ON ep.id_cat_est_procesal = q.estado_procesal";
-  $result = find_by_sql($sql);
-  return $result;
-}
 
 function find_all_quejas_publicas()
 {
-  // global $db;
   $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,";
   $sql .= "cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc";
   $sql .= " FROM quejas_dates q";
@@ -226,7 +224,6 @@ function find_by_id_user($table, $id, $nombre_id)
       return null;
   }
 }
-
 /*---------------------------------------------------------------------------------*/
 /* Funcion para encontrar el cargo de un detalle de usuario (trabajador) por su ID */
 /*---------------------------------------------------------------------------------*/
@@ -809,7 +806,10 @@ function find_all_actuaciones()
 {
   global $db;
   $results = array();
-  $sql = "SELECT a.*, r.nombre_autoridad FROM actuaciones as a LEFT JOIN cat_autoridades as r ON a.autoridades = r.id_cat_aut OR a.autoridades_federales = r.id_cat_aut;";
+  $sql = "SELECT a.*, r.nombre_autoridad as estatal, ra.nombre_autoridad as federal 
+  FROM actuaciones as a 
+  LEFT JOIN cat_autoridades as r ON (a.autoridades = r.id_cat_aut)
+  LEFT JOIN cat_autoridades as ra ON (a.autoridades_federales = ra.id_cat_aut)";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -867,7 +867,12 @@ function find_all_trabajadores_area($area)
 {
   global $db;
   $results = array();
-  $sql = "SELECT d.id,d.nombre, d.apellidos, a.nombre_area FROM detalles_usuario as d LEFT JOIN cargos as c ON c.id = d.id_cargo LEFT JOIN area as a ON a.id = c.id_area WHERE a.nombre_area = '{$area}' ORDER BY d.nombre ASC";
+  $sql = "SELECT d.id_det_usuario,d.nombre, d.apellidos, a.nombre_area 
+  FROM detalles_usuario as d 
+  LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo 
+  LEFT JOIN area as a ON a.id_area = c.id_area 
+  WHERE a.id_area = '{$area}' 
+  ORDER BY d.nombre ASC";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -906,97 +911,42 @@ function find_by_id_queja($id)
 {
   global $db;
   $id = (int)$id;
-  $sql = $db->query("SELECT 
-						q.id_queja_date, 
-						q.id_cat_med_pres, 
-						q.id_cat_aut, 
-						q.id_cat_quejoso, 
-						q.id_cat_agraviado, 
-						q.id_user_creador, 
-						q.id_user_asignado, 
-						q.id_area_asignada,
-                      q.id_estatus_queja, 
-					  q.id_tipo_resolucion, 
-					  q.id_tipo_ambito,
-					  q.folio_queja, 
-					  q.fecha_presentacion, 
-					  mp.descripcion as medio_pres, 
-					  au.nombre_autoridad,
-                      q.fecha_avocamiento, 
-					  q.id_cat_mun, 
-					  q.incompetencia, 
-					  q.causa_incomp, 
-					  q.fecha_acuerdo_incomp, 
-					  q.desechamiento, 
-					  q.razon_desecha, 
-					  q.forma_conclusion,
-                      q.fecha_conclusion, 
-					  q.estado_procesal, 
-					  IFNULL(q.observaciones,'') as observaciones, 
-					  q.a_quien_se_traslada, 
-					  cq.nombre as nombre_quejoso, 
-					  cq.paterno as paterno_quejoso,
-                      cq.materno as materno_quejoso, 
-					  ca.nombre as nombre_agraviado, 
-					  ca.paterno as paterno_agraviado, 
-					  ca.materno as materno_agraviado, 
-					  q.fecha_creacion, 
-                      q.fecha_actualizacion, 
-					  eq.descripcion as estatus_queja, 
-					  q.archivo, 
-					  q.dom_calle, 
-					  q.dom_numero, 
-					  q.dom_colonia, 
-					  q.descripcion_hechos, 
-					  tr.descripcion as tipo_resolucion, 
-                      re.id_rel_recom, 
-					  q.fecha_termino, 
-					  ta.descripcion as tipo_ambito, 
-					  u.username, 
-					  a.nombre_area, 
-					  q.fecha_vencimiento,
-					  q.descripcion_sin_materia, 
-					  q.archivo_sin_materia,
-					  q.archivo_sin_materia,
-                      q.archivo_anv, 
-					  q.fecha_desistimiento, 
-					  q.archivo_desistimiento, 
-					  q.id_cat_quejoso, 
-					  q.num_recomendacion, 
-					  q.servidor_publico, 
-					  q.fecha_recomendacion, 
-                      q.observaciones_recomendacion, 
-					  q.adjunto_recomendacion, 
-					  q.adjunto_rec_publico, 
-					  cq.email, 
-					  cq.telefono, 
-					  cq.id_cat_ocup, 
-					  cq.id_cat_grupo_vuln, 
-					  cq.id_cat_escolaridad,
-                      cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad, oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,
-                      cn.descripcion as nacionalidad, cq.calle_quejoso, cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, 
-					  CONCAT(du.nombre,' ',du.apellidos) as user_asignado, q.ent_fed,etp.descripcion as estado_procesal,etp.id_cat_est_procesal 
-                      FROM quejas_dates q
-                      LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
-                      LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
-                      LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
-                      LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
-                      LEFT JOIN users u ON u.id_user = q.id_user_asignado
-                      LEFT JOIN area a ON a.id_area = q.id_area_asignada
-                      LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
-                      LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
-                      LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
-                      LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
-                      LEFT JOIN rel_recomendacion re ON re.id_rel_recom = q.num_recomendacion
-                      LEFT JOIN cat_ocupaciones oc ON oc.id_cat_ocup = cq.id_cat_ocup
-                      LEFT JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = cq.id_cat_escolaridad
-                      LEFT JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = cq.id_cat_grupo_vuln
-                      LEFT JOIN cat_genero cg ON cg.id_cat_gen = cq.id_cat_gen
-                      LEFT JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = cq.id_cat_nacionalidad
-                      LEFT JOIN cat_est_procesal etp ON q.estado_procesal = etp.id_cat_est_procesal
-					  LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario
-                      LEFT JOIN folios fo ON fo.folio = q.folio_queja
-                      WHERE q.id_queja_date='{$db->escape($id)}' LIMIT 1");
+  $sql = $db->query("SELECT	q.id_queja_date, q.id_cat_med_pres, q.id_cat_aut, q.id_cat_quejoso, q.id_cat_agraviado, q.id_user_creador, q.id_user_asignado, q.id_area_asignada,q.id_estatus_queja, 
+          q.id_tipo_resolucion, q.id_tipo_ambito,q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, 
+          q.id_cat_mun, q.incompetencia, q.causa_incomp, q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.descripcion_acumulacion, q.archivo_acumulacion,
+          IFNULL(q.observaciones,'') as observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, 
+          ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, q.fecha_actualizacion, eq.descripcion as estatus_queja, 
+          q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito,
+          u.username, a.nombre_area, q.fecha_vencimiento,q.descripcion_sin_materia, q.archivo_sin_materia,q.archivo_sin_materia, q.archivo_anv, q.fecha_desistimiento, 
+          q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion, q.servidor_publico, q.fecha_recomendacion, q.observaciones_recomendacion, q.adjunto_recomendacion, 
+          q.adjunto_rec_publico, cq.email, cq.telefono, cq.id_cat_ocup, cq.id_cat_grupo_vuln, cq.id_cat_escolaridad, cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad, 
+          oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,cn.descripcion as nacionalidad, cq.calle_quejoso, 
+          cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, CONCAT(du.nombre,' ',du.apellidos) as user_asignado, q.num_anv, q.fecha_anv, 
+          q.observaciones_anv, q.archivo_anv, q.anv_publico, q.ent_fed,etp.descripcion as estado_procesal,etp.id_cat_est_procesal, CONCAT(du2.nombre,' ',du2.apellidos) as user_creador,
+          q.descripcion_falta_interes, q.archivo_falta_interes, q.descripcion_cm, q.archivo_cm, q.descripcion_improcedencia, q.archivo_improcedencia
+          FROM quejas_dates q
+          LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
+          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
+          LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
+          LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
+          LEFT JOIN users u ON u.id_user = q.id_user_asignado
+          LEFT JOIN area a ON a.id_area = q.id_area_asignada
+          LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
+          LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
+          LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
+          LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
+          LEFT JOIN rel_recomendacion re ON re.id_rel_recom = q.num_recomendacion
+          LEFT JOIN cat_ocupaciones oc ON oc.id_cat_ocup = cq.id_cat_ocup
+          LEFT JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = cq.id_cat_escolaridad
+          LEFT JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = cq.id_cat_grupo_vuln
+          LEFT JOIN cat_genero cg ON cg.id_cat_gen = cq.id_cat_gen
+          LEFT JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = cq.id_cat_nacionalidad
+          LEFT JOIN cat_est_procesal etp ON q.estado_procesal = etp.id_cat_est_procesal
+          LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario 
+          LEFT JOIN `users` u2 ON q.`id_user_creador` =  u2.id_user 
+          LEFT JOIN `detalles_usuario` du2 ON u2.`id_detalle_user` =  du2.id_det_usuario 
+          LEFT JOIN folios fo ON fo.folio = q.folio_queja
+          WHERE q.id_queja_date='{$db->escape($id)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else
@@ -1036,8 +986,8 @@ function find_by_id_orientacion($id)
                       o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero,o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
-                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,
-                      o.medio_presentacion
+                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,o.medio_presentacion, o.id_cat_mun,
+                      mp.descripcion as municipio
                       FROM orientacion_canalizacion as o 
                       LEFT JOIN users as u ON u.id_user = o.id_creador 
                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
@@ -1047,7 +997,7 @@ function find_by_id_orientacion($id)
                       LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = o.institucion_canaliza
                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
-                      -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
+                      LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
   WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=1 LIMIT 1");
@@ -1067,7 +1017,8 @@ function find_by_id_canalizacion($id)
                       o.telefono,o.extension,o.ocupacion,gen.descripcion as gen,o.calle_numero, o.colonia,o.codigo_postal,o.municipio_localidad,o.lengua,
                       ent.descripcion as ent,nac.descripcion as nac,o.tipo_solicitud,med.descripcion as med,o.observaciones,o.adjunto, o.creacion,o.id_creador,
                       u.id_user,u.id_detalle_user,d.nombre,d.apellidos,gvuln.descripcion as grupo, aut.nombre_autoridad as aut, o.nivel_estudios as est,
-                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,o.medio_presentacion
+                      o.grupo_vulnerable,o.entidad,o.sexo,o.nacionalidad,o.medio_presentacion,o.institucion_canaliza,o.medio_presentacion, o.id_cat_mun,
+                      mp.descripcion as municipio
                       FROM orientacion_canalizacion as o 
                       LEFT JOIN users as u ON u.id_user = o.id_creador 
                       LEFT JOIN cat_escolaridad as cesc ON cesc.id_cat_escolaridad = o.nivel_estudios
@@ -1078,7 +1029,7 @@ function find_by_id_canalizacion($id)
                       LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = o.entidad 
                       LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad 
                       LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion
-                      -- LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
+                      LEFT JOIN cat_municipios mp ON mp.id_cat_mun = o.id_cat_mun
                       LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
                       WHERE id_or_can='{$db->escape($id)}' AND tipo_solicitud=2 LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
@@ -1182,7 +1133,7 @@ function last_id_folios()
 function last_id_folios_general()
 {
   global $db;
-  $sql = "SELECT * FROM folios_general ORDER BY id DESC LIMIT 1";
+  $sql = "SELECT * FROM folios ORDER BY id_folio DESC LIMIT 1";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -1320,7 +1271,8 @@ function find_all_areas_quejas()
 }
 function find_all_area_userQ()
 {
-  $sql = "SELECT u.user_level, d.id_det_usuario, d.nombre, d.apellidos FROM users as u INNER JOIN detalles_usuario as d ON u.id_detalle_user = d.id_det_usuario WHERE u.user_level = 5 ORDER BY d.nombre;";
+  $sql = "SELECT u.user_level, d.id_det_usuario, d.nombre, d.apellidos FROM users as u INNER JOIN detalles_usuario as d ON u.id_detalle_user = d.id_det_usuario WHERE u.user_level = 5 OR
+  u.user_level = 50 ORDER BY d.nombre;";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -4453,7 +4405,7 @@ function muestra_area($id)
 {
   global $db;
   $id = (int)$id;
-  $sql  = $db->query("SELECT d.nombre, d.apellidos, c.nombre_cargo, a.id_area, a.nombre_area
+  $sql  = $db->query("SELECT d.nombre, d.apellidos, c.nombre_cargo, a.id_area, a.nombre_area, d.id_det_usuario
             FROM users as u
             LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user
             LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo
@@ -4519,7 +4471,7 @@ function med_pres_estQ()
   global $db;
   $sql  = "SELECT oc.id_cat_med_pres, mp.descripcion, COUNT(oc.id_queja_date) as total, mp.color_estadistica";
   $sql  .= " FROM quejas_dates oc ";
-  $sql  .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.id_cat_med_pres ";  
+  $sql  .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = oc.id_cat_med_pres ";
   $sql  .= " GROUP BY oc.id_cat_med_pres;";
   return find_by_sql($sql);
 }
@@ -4636,4 +4588,91 @@ function notificacion()
   $sql    = "SELECT COUNT('notificacion') AS total FROM quejas_dates WHERE notificacion = 1";
   $result = $db->query($sql);
   return ($db->fetch_assoc($result));
+}
+
+/*--------------------------------------------------------------*/
+/* Funcion encontrar autoridades estatales
+/*--------------------------------------------------------------*/
+function find_autoridad_estatal()
+{
+  global $db;
+  $sql  = "SELECT * FROM cat_autoridades WHERE tipo_autoridad = 1 ORDER BY nombre_autoridad";
+  return $db->query($sql);
+}
+
+/*--------------------------------------------------------------*/
+/* Funcion encontrar autoridades federales
+/*--------------------------------------------------------------*/
+function find_autoridad_federal()
+{
+  global $db;
+  $sql  = "SELECT * FROM cat_autoridades WHERE tipo_autoridad = 2 ORDER BY nombre_autoridad";
+  return $db->query($sql);
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una actuación por id */
+/*----------------------------------------------*/
+function find_by_id_actuacion($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT * FROM actuaciones WHERE id_actuacion='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+   sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_actualiciones()
+{
+  global $db;
+  $sql = "SELECT * FROM actuaciones ORDER BY id_actuacion DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_queja_folio($folio)
+{
+  global $db;
+  $sql = $db->query("SELECT	q.id_queja_date, q.id_cat_med_pres, q.id_cat_aut, q.id_cat_quejoso, q.id_cat_agraviado, q.id_user_creador, q.id_user_asignado, q.id_area_asignada,q.id_estatus_queja, 
+          q.id_tipo_resolucion, q.id_tipo_ambito,q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, 
+          q.id_cat_mun, q.incompetencia, q.causa_incomp, q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, 
+          IFNULL(q.observaciones,'') as observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, 
+          ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, q.fecha_actualizacion, eq.descripcion as estatus_queja, 
+          q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito,
+          u.username, a.nombre_area, q.fecha_vencimiento,q.descripcion_sin_materia, q.archivo_sin_materia,q.archivo_sin_materia, q.archivo_anv, q.fecha_desistimiento, 
+          q.archivo_desistimiento, q.id_cat_quejoso, q.num_recomendacion, q.servidor_publico, q.fecha_recomendacion, q.observaciones_recomendacion, q.adjunto_recomendacion, 
+          q.adjunto_rec_publico, cq.email, cq.telefono, cq.id_cat_ocup, cq.id_cat_grupo_vuln, cq.id_cat_escolaridad, cq.edad, cq.id_cat_gen, cq.id_cat_nacionalidad, 
+          oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,cn.descripcion as nacionalidad, cq.calle_quejoso, 
+          cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, CONCAT(du.nombre,' ',du.apellidos) as user_asignado, q.num_anv, q.fecha_anv, 
+          q.observaciones_anv, q.archivo_anv, q.anv_publico, q.ent_fed,etp.descripcion as estado_procesal,etp.id_cat_est_procesal 
+          FROM quejas_dates q
+          LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
+          LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
+          LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
+          LEFT JOIN cat_agraviados ca ON ca.id_cat_agrav = q.id_cat_agraviado
+          LEFT JOIN users u ON u.id_user = q.id_user_asignado
+          LEFT JOIN area a ON a.id_area = q.id_area_asignada
+          LEFT JOIN cat_estatus_queja eq ON eq.id_cat_est_queja = q.id_estatus_queja
+          LEFT JOIN cat_tipo_res tr ON tr.id_cat_tipo_res = q.id_tipo_resolucion
+          LEFT JOIN cat_tipo_ambito ta ON ta.id_cat_tipo_ambito = q.id_tipo_ambito
+          LEFT JOIN cat_municipios cm ON cm.id_cat_mun = q.id_cat_mun
+          LEFT JOIN rel_recomendacion re ON re.id_rel_recom = q.num_recomendacion
+          LEFT JOIN cat_ocupaciones oc ON oc.id_cat_ocup = cq.id_cat_ocup
+          LEFT JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = cq.id_cat_escolaridad
+          LEFT JOIN cat_grupos_vuln cgv ON cgv.id_cat_grupo_vuln = cq.id_cat_grupo_vuln
+          LEFT JOIN cat_genero cg ON cg.id_cat_gen = cq.id_cat_gen
+          LEFT JOIN cat_nacionalidades cn ON cn.id_cat_nacionalidad = cq.id_cat_nacionalidad
+          LEFT JOIN cat_est_procesal etp ON q.estado_procesal = etp.id_cat_est_procesal
+          LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario
+          LEFT JOIN folios fo ON fo.folio = q.folio_queja
+          WHERE q.folio_queja LIKE '{$db->escape($folio)}'");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }

@@ -3,9 +3,10 @@ $page_title = 'Agregar Actuación';
 require_once('includes/load.php');
 $id_folio = last_id_folios();
 // $queja = find_by_id_quejas((int)$_GET['id']);
+$id_queja = last_id_actualiciones();
 $user = current_user();
 $nivel_user = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $areas = find_all('area');
 $area_user = area_usuario2($id_user);
 $estatales = find_autoridad_estatal();
@@ -21,13 +22,22 @@ if ($nivel_user == 5) {
 if ($nivel_user == 7) {
     page_require_level_exacto(7);
 }
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+if ($nivel_user == 19) {
+    page_require_level_exacto(19);
+}
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
+if ($nivel_user == 7) :
+    redirect('home.php');
+endif;
+if ($nivel_user ==19) :
     redirect('home.php');
 endif;
 ?>
@@ -49,18 +59,27 @@ if (isset($_POST['add_actuacion'])) {
         date_default_timezone_set('America/Mexico_City');
         $fecha_creacion_sistema = date('Y-m-d');
 
+        if (count($id_queja) == 0) {
+            $nuevo_id_queja = 1;
+            $no_folio = sprintf('%04d', 1);
+        } else {
+            foreach ($id_queja as $nuevo) {
+                $nuevo_id_queja = (int) $nuevo['contador'] + 1;
+                $no_folio = sprintf('%04d', (int) $nuevo['contador'] + 1);
+            }
+        }
+
         if (count($id_folio) == 0) {
             $nuevo_id_folio = 1;
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int)$nuevo['id'] + 1;
-                $no_folio1 = sprintf('%04d', (int)$nuevo['id'] + 1);
+                $nuevo_id_folio = (int) $nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
             }
         }
-        // Se crea el número de folio
+
         $year = date("Y");
-        // Se crea el folio de convenio
         $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-ACT';
 
         $folio_carpeta = 'CEDH-' . $no_folio1 . '-' . $year . '-ACT';
@@ -105,6 +124,7 @@ if (isset($_POST['add_actuacion'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " La actuación ha sido agregada con éxito.");
+			insertAccion($user['id_user'], '"'.$user['username'].'" agregó actuacion, Folio: '.$folio.'.', 1);
             redirect('actuaciones.php', false);
         } else {
             //failed
@@ -219,7 +239,7 @@ include_once('layouts/header.php'); ?>
                                 <option value="">Escoge una opción</option>
                                 <option value="Otra">Otra</option>
                                 <?php foreach ($estatales as $estatal) : ?>
-                                    <option value="<?php echo $estatal['id']; ?>"><?php echo ucwords($estatal['nombre_autoridad']); ?></option>
+                                    <option value="<?php echo $estatal['id_cat_aut']; ?>"><?php echo ucwords($estatal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -242,7 +262,7 @@ include_once('layouts/header.php'); ?>
                                 <option value="">Escoge una opción</option>
                                 <option value="Otra">Otra</option>
                                 <?php foreach ($federales as $federal) : ?>
-                                    <option value="<?php echo $federal['id']; ?>"><?php echo ucwords($federal['nombre_autoridad']); ?></option>
+                                    <option value="<?php echo $federal['id_cat_aut']; ?>"><?php echo ucwords($federal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

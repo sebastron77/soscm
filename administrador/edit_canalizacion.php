@@ -63,6 +63,7 @@ if (isset($_POST['edit_canalizacion'])) {
         $colonia   = remove_junk($db->escape($_POST['colonia']));
         $cpostal   = remove_junk($db->escape($_POST['cpostal']));
         $localidad = remove_junk($db->escape($_POST['municipio_localidad']));
+        $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $entidad   = remove_junk($db->escape($_POST['entidad']));
         $nacionalidad   = remove_junk($db->escape($_POST['nacionalidad']));
         $medio   = remove_junk($db->escape($_POST['medio']));
@@ -91,11 +92,11 @@ if (isset($_POST['edit_canalizacion'])) {
 
         if ($name != '') {
             $sql = "UPDATE folios SET folio='{$folio_canalizacion}' WHERE folio='{$db->escape($la_canalizacion)}'";
-            $sql2 = "UPDATE orientacion_canalizacion SET folio='{$folio_canalizacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', institucion_canaliza='{$institucion_canaliza}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', observaciones='{$observaciones}', adjunto='{$name}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
+            $sql2 = "UPDATE orientacion_canalizacion SET folio='{$folio_canalizacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', id_cat_mun='{$id_cat_mun}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', institucion_canaliza='{$institucion_canaliza}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', observaciones='{$observaciones}', adjunto='{$name}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
         }
         if ($name == '') {
             $sql3 = "UPDATE folios SET folio='{$folio_canalizacion}' WHERE folio='{$db->escape($la_canalizacion)}'";
-            $sql4 = "UPDATE orientacion_canalizacion SET folio='{$folio_canalizacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', institucion_canaliza='{$institucion_canaliza}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', observaciones='{$observaciones}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
+            $sql4 = "UPDATE orientacion_canalizacion SET folio='{$folio_canalizacion}', correo_electronico='{$correo}', nombre_completo='{$nombre}', nivel_estudios='{$nestudios}', ocupacion='{$ocupacion}', edad='{$edad}', telefono='{$tel}', extension='{$ext}', sexo='{$sexo}', calle_numero='{$calle}', colonia='{$colonia}',codigo_postal='{$cpostal}', id_cat_mun='{$id_cat_mun}', municipio_localidad='{$localidad}', entidad='{$entidad}', nacionalidad='{$nacionalidad}', medio_presentacion='{$medio}', institucion_canaliza='{$institucion_canaliza}', grupo_vulnerable='{$grupo_vulnerable}', lengua='{$lengua}', observaciones='{$observaciones}', creacion='{$creacion}' WHERE id_or_can='{$db->escape($id)}'";
         }
 
         $result = $db->query($sql);
@@ -251,7 +252,7 @@ if (isset($_POST['edit_canalizacion'])) {
                             </select>
                         </div>
                     </div>
-                    <!-- <div class="col-md-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="municipio">Municipio</label>
                             <select class="form-control" name="id_cat_mun">
@@ -264,7 +265,7 @@ if (isset($_POST['edit_canalizacion'])) {
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="municipio_localidad">Localidad</label>

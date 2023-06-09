@@ -28,12 +28,15 @@ if ($nivel_user == 5) {
     page_require_level_exacto(5);
 }
 if ($nivel_user == 7) {
-    redirect('home.php');
+    page_require_level_exacto(7);
 }
-if ($nivel_user > 2 && $nivel_user < 5):
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user > 5):
+if ($nivel_user == 5) :
     redirect('home.php');
 endif;
 ?>
@@ -56,7 +59,7 @@ if (isset($_POST['add_orientacion'])) {
         $colonia = remove_junk($db->escape($_POST['colonia']));
         $cpostal = remove_junk($db->escape($_POST['cpostal']));
         //$municipio = remove_junk($db->escape($_POST['municipio']));
-		$id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $localidad = remove_junk($db->escape($_POST['localidad']));
         $entidad = remove_junk($db->escape($_POST['entidad']));
         $nacionalidad = remove_junk($db->escape($_POST['nacionalidad']));
@@ -67,7 +70,7 @@ if (isset($_POST['add_orientacion'])) {
         $adjunto = remove_junk($db->escape($_POST['adjunto']));
         $institucion_canaliza = remove_junk($db->escape($_POST['institucion_canaliza']));
         date_default_timezone_set('America/Mexico_City');
-        $creacion = date('Y-m-d');       
+        $creacion = date('Y-m-d');
 
         //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
@@ -112,11 +115,9 @@ if (isset($_POST['add_orientacion'])) {
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
-                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,id_cat_mun,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
-                        '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','$localidad','{$id_cat_mun}','{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -126,11 +127,9 @@ if (isset($_POST['add_orientacion'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO orientacion_canalizacion (";
-            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,entidad,
-                        nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
+            $query .= "folio,correo_electronico,nombre_completo,nivel_estudios,ocupacion,edad,telefono,extension,sexo,calle_numero,colonia,codigo_postal,municipio_localidad,id_cat_mun,entidad,nacionalidad,tipo_solicitud,medio_presentacion,institucion_canaliza,grupo_vulnerable,lengua,observaciones,adjunto,id_creador,creacion";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','{$id_cat_mun}',
-                        '{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
+            $query .= " '{$folio}','{$correo}','{$nombre}','{$nestudios}','{$ocupacion}','{$edad}','{$tel}','{$ext}','{$sexo}','{$calle}','{$colonia}','{$cpostal}','$localidad','   {$id_cat_mun}','{$entidad}','{$nacionalidad}','1','{$medio}','{$institucion_canaliza}','{$grupo_vulnerable}','{$lengua}','{$observaciones}','{$name}','{$detalle}','{$creacion}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -143,7 +142,7 @@ if (isset($_POST['add_orientacion'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " La orientación ha sido agregada con éxito.");
-            insertAccion($user['id_user'], '"'.$user['username'].'" agregó orientación, Folio: '.$folio.'.', 1);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó orientación, Folio: ' . $folio . '.', 1);
             redirect('orientaciones.php', false);
         } else {
             //failed
@@ -173,15 +172,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="correo">Correo Electrónico</label>
-                            <input type="text" class="form-control" name="correo" placeholder="ejemplo@correo.com"
-                                required>
+                            <input type="text" class="form-control" name="correo" placeholder="ejemplo@correo.com" required>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="nombre">Nombre Completo</label>
-                            <input type="text" class="form-control" name="nombre" placeholder="Nombre Completo"
-                                required>
+                            <input type="text" class="form-control" name="nombre" placeholder="Nombre Completo" required>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -189,7 +186,7 @@ include_once('layouts/header.php'); ?>
                             <label for="nestudios">Nivel de Estudios</label>
                             <select class="form-control" name="nestudios">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($niv_estudios as $estudios): ?>
+                                <?php foreach ($niv_estudios as $estudios) : ?>
                                     <option value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -200,7 +197,7 @@ include_once('layouts/header.php'); ?>
                             <label for="ocupacion">Ocupacion</label>
                             <select class="form-control" name="ocupacion">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($ocupaciones as $ocupacion): ?>
+                                <?php foreach ($ocupaciones as $ocupacion) : ?>
                                     <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -211,15 +208,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="edad">Edad</label>
-                            <input type="number" min="1" max="120" class="form-control" name="edad" placeholder="Edad"
-                                required>
+                            <input type="number" min="1" max="120" class="form-control" name="edad" placeholder="Edad" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="tel">Teléfono</label>
-                            <input type="text" class="form-control" maxlength="10" name="tel" placeholder="Teléfono"
-                                required>
+                            <input type="text" class="form-control" maxlength="10" name="tel" placeholder="Teléfono" required>
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -239,7 +234,7 @@ include_once('layouts/header.php'); ?>
                             <label for="grupo_vulnerable">Grupo Vulnerable</label>
                             <select class="form-control" name="grupo_vulnerable">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($grupos_vuln as $grupo_vuln): ?>
+                                <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                                     <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -252,7 +247,7 @@ include_once('layouts/header.php'); ?>
                             <label for="sexo">Género</label>
                             <select class="form-control" name="sexo">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($generos as $genero): ?>
+                                <?php foreach ($generos as $genero) : ?>
                                     <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -273,14 +268,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="cpostal">Código Postal</label>
-                            <input type="text" class="form-control" maxlength="5" name="cpostal"
-                                placeholder="Código Postal" required>
+                            <input type="text" class="form-control" maxlength="5" name="cpostal" placeholder="Código Postal" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-					<div class="form-group">
+                        <div class="form-group">
                             <label for="id_cat_mun">Municipio</label>
                             <select class="form-control" name="id_cat_mun">
                                 <option value="">Escoge una opción</option>
@@ -289,12 +283,11 @@ include_once('layouts/header.php'); ?>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-						</div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="municipio">Localidad</label>
-                            <input type="text" class="form-control" name="localidad" placeholder="Localidad"
-                                required>
+                            <input type="text" class="form-control" name="localidad" placeholder="Localidad" required>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -302,7 +295,7 @@ include_once('layouts/header.php'); ?>
                             <label for="entidad">Entidad</label>
                             <select class="form-control" name="entidad">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($entidades as $entidad): ?>
+                                <?php foreach ($entidades as $entidad) : ?>
                                     <option value="<?php echo $entidad['id_cat_ent_fed']; ?>"><?php echo ucwords($entidad['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -313,7 +306,7 @@ include_once('layouts/header.php'); ?>
                             <label for="nacionalidad">Nacionalidad</label>
                             <select class="form-control" name="nacionalidad">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($nacionalidad as $nacion): ?>
+                                <?php foreach ($nacionalidad as $nacion) : ?>
                                     <option value="<?php echo $nacion['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacion['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -326,7 +319,7 @@ include_once('layouts/header.php'); ?>
                             <label for="medio">Medio de presentación</label>
                             <select class="form-control" name="medio">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($medios_pres as $medio): ?>
+                                <?php foreach ($medios_pres as $medio) : ?>
                                     <option value="<?php echo $medio['id_cat_med_pres']; ?>"><?php echo ucwords($medio['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -337,7 +330,7 @@ include_once('layouts/header.php'); ?>
                             <label for="institucion_canaliza">Autoridad señalada como responsable</label>
                             <select class="form-control" name="institucion_canaliza">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($autoridades as $autoridad): ?>
+                                <?php foreach ($autoridades as $autoridad) : ?>
                                     <option value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
                             </select>
@@ -346,15 +339,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="adjunto">Archivo adjunto (si es necesario)</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="adjunto"
-                                id="adjunto">
+                            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label><br>
-                            <textarea name="observaciones" class="form-control" id="observaciones" cols="50"
-                                rows="2"></textarea>
+                            <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="2"></textarea>
                         </div>
                     </div>
                 </div>
@@ -362,8 +353,7 @@ include_once('layouts/header.php'); ?>
                     <a href="orientaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
                     </a>
-                    <button type="submit" name="add_orientacion" class="btn btn-primary"
-                        onclick="return confirm('Tu orientación será guardada, verifica el folio generado para asignarlo de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
+                    <button type="submit" name="add_orientacion" class="btn btn-primary" onclick="return confirm('Tu orientación será guardada, verifica el folio generado para asignarlo de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
                 </div>
             </form>
         </div>

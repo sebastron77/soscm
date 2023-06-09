@@ -54,11 +54,17 @@ endif;
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
-            <div class="panel-heading clearfix">
+        <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Agraviados</span>
                 </strong>
+                <?php if ($otro == 1 || $nivel_user == 1 || $nivel_user == 5): ?>
+                    <a href="add_quejoso.php" class="btn btn-info pull-right">Agregar promovente/agraviado</a>
+                <?php endif ?>
+                <?php if ($otro == 1 || $nivel_user == 1): ?>
+                    <a href="add_agraviado_solo.php" class="btn btn-info pull-right" style="margin-right: 5px;">Agregar agraviado</a>
+                <?php endif ?>
             </div>
 
             <div class="panel-body">

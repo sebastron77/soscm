@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         html2pdf()
             .set({
                 margin: 0.5,
-                filename: 'estadistica.pdf',
+                filename: 'archivo.pdf',
                 image: {
                     type: 'png',
                     quality: 1.98

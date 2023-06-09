@@ -83,6 +83,23 @@
     });
 
     $(document).ready(function() {
+      $("#id_area_asignada").change(function() {
+        // $('#cbx_localidad').find('option').remove().end().append(
+        //    '<option value="whatever"></option>').val('whatever');
+
+        $("#id_area_asignada option:selected").each(function() {
+          id_area = $(this).val();
+          $.post("buscarQ.php", {
+            id_area: id_area
+          }, function(data) {
+            $("#id_user_asignado").html(data);
+          })
+        })
+
+      })
+    });
+
+    $(document).ready(function() {
       $("#area_supervisor").change(function() {
         $("#area_supervisor option:selected").each(function() {
           nombre_area = $(this).val();
@@ -217,7 +234,7 @@
         <!-- Área médica y psicológica -->
         <?php include_once('area_medica.php'); ?>
 
-      <?php elseif ($user['user_level'] === '5' || $user['user_level'] === '19' || $user['user_level'] === '20') : ?>
+      <?php elseif ($user['user_level'] === '5' || $user['user_level'] === '19' || $user['user_level'] === '20' || $user['user_level'] === '50') : ?>
         <!-- Orientación y quejas -->
         <?php include_once('quejas_menu.php'); ?>
 

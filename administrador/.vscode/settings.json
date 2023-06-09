@@ -14,5 +14,17 @@
     "workbench.colorCustomizations": {
     },
     "workbench.editor.decorations.colors": true,
-    "workbench.statusBar.visible": true
+    "workbench.statusBar.visible": true,
+    "cSpell.words": [
+        "acumulacion",
+        "CEDH",
+        "descripcion",
+        "desechamiento",
+        "institucion",
+        "ocupacion",
+        "razon",
+        "recomendacion",
+        "resolucion",
+        "SUIGCEDH"
+    ]
 }

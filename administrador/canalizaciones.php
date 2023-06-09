@@ -23,8 +23,11 @@ if ($nivel == 7) {
 if ($nivel == 19) {
     page_require_level_exacto(19);
 }
-if ($nivel > 21) {
+if ($nivel == 21) {
     page_require_level_exacto(21);
+}
+if ($nivel == 50) {
+    page_require_level_exacto(50);
 }
 
 if ($nivel > 2 && $nivel < 5) :
@@ -90,7 +93,7 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Canalizaciones</span>
                 </strong>
-                <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                     <a href="add_canalizacion.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar canalización</a>
                 <?php endif; ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
@@ -112,7 +115,7 @@ if (isset($_POST["export_data"])) {
                         <th style="width: 5%;">Nombre Completo</th>
                         <!-- <th style="width: 5%;">Ocupación</th> -->
                         <th style="width: 3%;">Creador</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21) || ($nivel == 50)) : ?>
                             <th style="width: 10%;" class="text-center">Acciones</th>
                         <?php endif ?>
                     </tr>
@@ -137,7 +140,7 @@ if (isset($_POST["export_data"])) {
                                     <a href="ver_info_canal.php?id=<?php echo (int)$a_canalizacion['idcan']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
                                         <i class="glyphicon glyphicon-eye-open"></i>
                                     </a>
-                                    <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                                    <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                                         <a href="edit_canalizacion.php?id=<?php echo (int)$a_canalizacion['idcan']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
                                             <span class="glyphicon glyphicon-edit"></span>
                                         </a>

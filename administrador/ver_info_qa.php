@@ -42,8 +42,11 @@ if ($nivel == 7) {
 if ($nivel == 19) {
     page_require_level_exacto(19);
 }
-if ($nivel > 21) {
+if ($nivel == 21) {
     page_require_level_exacto(21);
+}
+if ($nivel == 50) {
+    page_require_level_exacto(50);
 }
 
 if ($nivel > 2 && $nivel < 5) :
