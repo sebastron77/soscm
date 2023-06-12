@@ -65,7 +65,15 @@ if ($nivel == 7) {
                 </span>
             </div>
         </a>
-        <a href="estQ_estado_procesal.php" class="tileA">
+        <a href="estQ_derecho_vulnerado.php" class="tileA">
+            <div class="tileA-tittle">Derecho Vulnerado</div>
+            <div class="tileA-icon">
+                <span class="material-symbols-rounded" style="font-size: 95px;">
+                    translate
+                </span>
+            </div>
+        </a>
+        <!-- <a href="estQ_estado_procesal.php" class="tileA">
             <div class="tileA-tittle">Estado Procesal</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">
@@ -96,8 +104,8 @@ if ($nivel == 7) {
                     location_chip
                 </span>
             </div>
-        </a>
-       
+        </a> -->
+
     </div>
 </div>
 

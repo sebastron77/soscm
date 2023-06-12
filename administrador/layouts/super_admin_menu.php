@@ -84,14 +84,7 @@
       <li><a href="cat_tipo_ambito.php">Tipo de Ambito</a> </li>
     </ul>
   </li>
-  <!-- <li style="margin-top: 5px;">
-    <a href="folios.php" style="left: 18px; top:2px">
-      <svg style="width:22px;height:22px" viewBox="0 0 24 24">
-        <path fill="currentColor" d="M4,4H20A2,2 0 0,1 22,6V18A2,2 0 0,1 20,20H4A2,2 0 0,1 2,18V6A2,2 0 0,1 4,4M4,6V18H11V6H4M20,18V6H18.76C19,6.54 18.95,7.07 18.95,7.13C18.88,7.8 18.41,8.5 18.24,8.75L15.91,11.3L19.23,11.28L19.24,12.5L14.04,12.47L14,11.47C14,11.47 17.05,8.24 17.2,7.95C17.34,7.67 17.91,6 16.5,6C15.27,6.05 15.41,7.3 15.41,7.3L13.87,7.31C13.87,7.31 13.88,6.65 14.25,6H13V18H15.58L15.57,17.14L16.54,17.13C16.54,17.13 17.45,16.97 17.46,16.08C17.5,15.08 16.65,15.08 16.5,15.08C16.37,15.08 15.43,15.13 15.43,15.95H13.91C13.91,15.95 13.95,13.89 16.5,13.89C19.1,13.89 18.96,15.91 18.96,15.91C18.96,15.91 19,17.16 17.85,17.63L18.37,18H20M8.92,16H7.42V10.2L5.62,10.76V9.53L8.76,8.41H8.92V16Z" />
-      </svg>
-      <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Números de Folio Usados</span>
-    </a>
-  </li> -->
+  
   <li style="margin-top: 18px;">
     <a href="#" class="submenu-toggle" style="left: 18px; top:20px">
       <svg style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-graph-down" viewBox="0 0 16 16">
@@ -104,6 +97,19 @@
       <li><a href="tabla_estadistica_quejas.php">Quejas</a></li>
       <li><a href="tabla_estadistica_orientacion.php">Orientaciones</a></li>
       <li><a href="tabla_estadistica_canalizacion.php">Canalizaciones</a></li>      
+    </ul>
+  </li>
+  
+  <li style="margin-top: 18px;">
+    <a href="#" class="submenu-toggle" style="left: 18px; top:20px">
+      <svg style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-pulse" viewBox="0 0 16 16">
+  <path fill-rule="evenodd" d="M10 1.5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h3a.5.5 0 0 0 .5-.5v-1Zm-5 0A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5v1A1.5 1.5 0 0 1 9.5 4h-3A1.5 1.5 0 0 1 5 2.5v-1Zm-2 0h1v1H3a1 1 0 0 0-1 1V14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V3.5a1 1 0 0 0-1-1h-1v-1h1a2 2 0 0 1 2 2V14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V3.5a2 2 0 0 1 2-2Zm6.979 3.856a.5.5 0 0 0-.968.04L7.92 10.49l-.94-3.135a.5.5 0 0 0-.895-.133L4.232 10H3.5a.5.5 0 0 0 0 1h1a.5.5 0 0 0 .416-.223l1.41-2.115 1.195 3.982a.5.5 0 0 0 .968-.04L9.58 7.51l.94 3.135A.5.5 0 0 0 11 11h1.5a.5.5 0 0 0 0-1h-1.128L9.979 5.356Z"/>
+</svg>
+      <!-- <svg style="width:22px;height:22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>chart-bar</title><path d="M22,21H2V3H4V19H6V10H10V19H12V6H16V19H18V14H22V21Z" /></svg>  -->
+      <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Reporteador</span>
+    </a>
+    <ul style="margin-top:25px" class="nav submenu">
+      <li><a href="reporteador_general.php">General</a></li>   
     </ul>
   </li>
 </ul>

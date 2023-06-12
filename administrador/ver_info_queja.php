@@ -382,13 +382,13 @@ if ($nivel == 7) {
                     <table style="color:#3a3d44; margin-top: -10px">
                         <tr>
                             <?php if ($e_detalle['id_tipo_resolucion'] == 1) : ?>
-                                <td style="width: 1%;">
+                                <td style="width: 10%;">
                                     <span style="font-weight: bold;">Tipo de Resolución: </span>
                                     <?php echo 'En trámite' ?>
                                 </td>
                             <?php endif; ?>
                             <?php if ($e_detalle['id_tipo_resolucion'] != 1) : ?>
-                                <td style="width: 1%;">
+                                <td style="width: 10%;">
                                     <span style="font-weight: bold;">Tipo de Resolución: </span>
                                     <?php echo $e_detalle['tipo_resolucion'] ?>
                                 </td>
@@ -409,19 +409,127 @@ if ($nivel == 7) {
                             <?php endif; ?>
                             <?php if ($e_detalle['id_tipo_resolucion'] == 3) : ?>
                                 <td style="width: 1%;">
-                                    <span style="font-weight: bold;">Causa de incompetencia: </span>
-                                    <?php echo $e_detalle['causa_incomp'] ?>
+                                    <span style="font-weight: bold;">Descripción (Sin Materia): </span>
+                                    <?php echo $e_detalle['descripcion_sin_materia'] ?>
                                 </td>
                                 <td style="width: 1%;">
-                                    <span style="font-weight: bold;">Fecha de Acuerdo de Incompetencia: </span>
-                                    <?php echo $e_detalle['fecha_acuerdo_incomp'] ?>
-                                </td>
-                                <td style="width: 1%;">
-                                    <span style="font-weight: bold;">¿A quién se traslada?: </span>
-                                    <?php echo $e_detalle['a_quien_se_traslada'] ?>
+                                    <span style="font-weight: bold;">Archivo (Sin Materia): </span>
+                                    <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Sin_Materia/' . $e_detalle['archivo_sin_materia']; ?>"><?php echo $e_detalle['archivo_sin_materia']; ?></a>
                                 </td>
                             <?php endif; ?>
+                            <?php if ($e_detalle['id_tipo_resolucion'] == 4) : ?>
+                                <td style="width: 15%;">
+                                    <span style="font-weight: bold;">Núm ANV: </span>
+                                    <?php echo $e_detalle['num_anv'] ?>
+                                </td>
+                                <td style="width: 15%;">
+                                    <span style="font-weight: bold;">Fecha ANV: </span>
+                                    <?php echo $e_detalle['fecha_anv'] ?>
+                                </td>
+                                <td style="width: 15%;">
+                                    <span style="font-weight: bold;">Observaciones ANV: </span>
+                                    <?php echo $e_detalle['observaciones_anv'] ?>
+                                </td>
                         </tr>
+                        <tr>
+                            <td style="width: 15%;">
+                                <span style="font-weight: bold;">Archivo (ANV): </span>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/ANV/' . $e_detalle['archivo_anv']; ?>"><?php echo $e_detalle['archivo_anv']; ?></a>
+                            </td>
+                            <td style="width: 15%;">
+                                <span style="font-weight: bold;">Archivo (ANV) público: </span>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/ANV/' . $e_detalle['anv_publico']; ?>"><?php echo $e_detalle['anv_publico']; ?></a>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 6) : ?>
+                        <td style="width: 30%;">
+                            <span style="font-weight: bold;">Razón de desechamiento: </span>
+                            <?php echo $e_detalle['razon_desecha'] ?>
+                        </td>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 7) : ?>
+                        <td style="width: 20%;">
+                            <span style="font-weight: bold;">Descripción (Falta de Interés): </span>
+                            <?php echo $e_detalle['descripcion_falta_interes'] ?>
+                        </td>
+                        <td style="width: 10%;">
+                            <span style="font-weight: bold;">Archivo (Falta de Interés): </span>
+                            <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Falta de interes/' . $e_detalle['archivo_falta_interes']; ?>"><?php echo $e_detalle['archivo_falta_interes']; ?></a>
+                        </td>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 8) : ?>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Descripción (Acumulación): </span>
+                            <?php echo $e_detalle['descripcion_acumulacion'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Archivo (Acumulación): </span>
+                            <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Acumulacion/' . $e_detalle['archivo_acumulacion']; ?>"><?php echo $e_detalle['archivo_acumulacion']; ?></a>
+                        </td>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 9) : ?>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Descripción (Conciliación/Mediación): </span>
+                            <?php echo $e_detalle['descripcion_cm'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Archivo (Acumulación): </span>
+                            <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Conciliacion_Mediacion/' . $e_detalle['archivo_cm']; ?>"><?php echo $e_detalle['archivo_cm']; ?></a>
+                        </td>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Fecha de Desistimiento: </span>
+                            <?php echo $e_detalle['fecha_desistimiento'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Archivo (Desistimiento): </span>
+                            <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Desistimiento/' . $e_detalle['archivo_desistimiento']; ?>"><?php echo $e_detalle['archivo_desistimiento']; ?></a>
+                        </td>
+                    <?php endif; ?>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 11) : ?>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Descripción(Improcedencia): </span>
+                            <?php echo $e_detalle['descripcion_improcedencia'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Archivo (Improcedencia): </span>
+                            <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Improcedencia/' . $e_detalle['archivo_improcedencia']; ?>"><?php echo $e_detalle['archivo_improcedencia']; ?></a>
+                        </td>
+                    <?php endif; ?>
+                    </tr>
+                    <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Núm Recomendación: </span>
+                            <?php echo $e_detalle['num_recomendacion'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Núm Recomendación: </span>
+                            <?php echo $e_detalle['servidor_publico'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Fecha Recomendación: </span>
+                            <?php echo $e_detalle['fecha_recomendacion'] ?>
+                        </td>
+                        <td style="width: 15%;">
+                            <span style="font-weight: bold;">Observaciones Recomendación: </span>
+                            <?php echo $e_detalle['observaciones_recomendacion'] ?>
+                        </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 15%;">
+                                <span style="font-weight: bold;">Recomendación: </span>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Recomendacion/' . $e_detalle['adjunto_recomendacion']; ?>"><?php echo $e_detalle['adjunto_recomendacion']; ?></a>
+                            </td>
+                            <td style="width: 15%;">
+                                <span style="font-weight: bold;">Recomendación pública: </span>
+                                <a target="_blank" style="color:#0094FF" href="uploads/quejas/<?php echo $resultado . '/Recomendacion/' . $e_detalle['adjunto_rec_publico']; ?>"><?php echo $e_detalle['adjunto_rec_publico']; ?></a>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+
+                    </tr>
                     </table>
                 </div>
             </div>
@@ -439,13 +547,25 @@ if ($nivel == 7) {
                 </div>
                 <div class="panel-heading" style="text-align: right;border-bottom: 0px;">
 
-                    <a href="download_zip.php?id=<?php echo $id; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Descargar ZIP" onclick="return confirm('¿Seguro que deseas descargar el expediente completo de la queja? ');">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-zip" viewBox="0 0 16 16">
-                            <path d="M6.5 7.5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v.938l.4 1.599a1 1 0 0 1-.416 1.074l-.93.62a1 1 0 0 1-1.109 0l-.93-.62a1 1 0 0 1-.415-1.074l.4-1.599V7.5zm2 0h-1v.938a1 1 0 0 1-.03.243l-.4 1.598.93.62.93-.62-.4-1.598a1 1 0 0 1-.03-.243V7.5z" />
-                            <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm5.5-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9v1H8v1h1v1H8v1h1v1H7.5V5h-1V4h1V3h-1V2h1V1z" />
-                        </svg>
-                        <?php insertAccion($user['id_user'], '"' . $user['username'] . '" descargó acuerdos de queja, Folio: ' . $folio_editar . '.', 6); ?>
-                    </a>
+
+                    <div class="panel-heading" style="text-align: right;border-bottom: 0px;">
+
+                        <a href="download_caratula.php?id=<?php echo $id; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Generar Caratula Expediente" onclick="return confirm('¿Seguro que deseas descargar la caratula del Expediente? ');">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-word" viewBox="0 0 16 16">
+                                <path d="M5.485 6.879a.5.5 0 1 0-.97.242l1.5 6a.5.5 0 0 0 .967.01L8 9.402l1.018 3.73a.5.5 0 0 0 .967-.01l1.5-6a.5.5 0 0 0-.97-.242l-1.036 4.144-.997-3.655a.5.5 0 0 0-.964 0l-.997 3.655L5.485 6.88z" />
+                                <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
+                            </svg>
+
+                        </a>
+                        <a href="download_zip.php?id=<?php echo $id; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Descargar ZIP" onclick="return confirm('¿Seguro que deseas descargar el expedientede completo la queja? ');">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-zip" viewBox="0 0 16 16">
+                                <path d="M6.5 7.5a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v.938l.4 1.599a1 1 0 0 1-.416 1.074l-.93.62a1 1 0 0 1-1.109 0l-.93-.62a1 1 0 0 1-.415-1.074l.4-1.599V7.5zm2 0h-1v.938a1 1 0 0 1-.03.243l-.4 1.598.93.62.93-.62-.4-1.598a1 1 0 0 1-.03-.243V7.5z" />
+                                <path d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2zm5.5-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H9v1H8v1h1v1H8v1h1v1H7.5V5h-1V4h1V3h-1V2h1V1z" />
+                            </svg>
+
+                        </a>
+
+                    </div>
 
                 </div>
                 <table class="table">

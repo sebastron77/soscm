@@ -19,7 +19,7 @@ if ($nivel_user > 7) :
 endif;
 ?>
 <?php
-$e_detalle = find_by_id('gestiones_jurisdiccionales', (int) $_GET['id']);
+$e_detalle = find_by_id('gestiones_jurisdiccionales', (int) $_GET['id'],'id_gestion');
 if (!$e_detalle) {
     $session->msg("d", "id de la gestión no encontrado.");
     redirect('gestiones.php');
@@ -53,15 +53,15 @@ if (isset($_POST['update'])) {
             $query .= "WHERE id='{$db->escape($e_detalle['id'])}'";
         }
         if($name == ''){
-            $query2 = "UPDATE gestiones_jurisdiccionales SET ";
-            $query2 .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', observaciones='{$observaciones}'";
-            $query2 .= "WHERE id='{$db->escape($e_detalle['id'])}'";
+            $query = "UPDATE gestiones_jurisdiccionales SET ";
+            $query .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', observaciones='{$observaciones}'";
+            $query.= "WHERE id='{$db->escape($e_detalle['id'])}'";
         }
         
         $result = $db->query($query);
-        $result2 = $db->query($query2);
+        //$result2 = $db->query($query2);
 
-        if ($result && $db->affected_rows() === 1) {
+        if ($result && $db->affected_rows() === 1 ) {
             //sucess
             $session->msg('s', "Registro actualizado con éxito. ");
             redirect('gestiones.php', false);

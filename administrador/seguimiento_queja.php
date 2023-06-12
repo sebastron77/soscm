@@ -164,7 +164,7 @@ if (isset($_POST['seguimiento_queja'])) {
         }
         //-------------------------------------------------------------Recomendacion-------------------------------------------------------------
         if (($num_recomendacion != '') && ($id_tipo_resolucion == 5)) {
-            $carpetaRec = 'uploads/quejas/' . $resultado . '/ANV';
+            $carpetaRec = 'uploads/quejas/' . $resultado . '/Recomendacion';
 
             $nameRec = $_FILES['adjunto_recomendacion']['name'];
             $sizeRec = $_FILES['adjunto_recomendacion']['size'];

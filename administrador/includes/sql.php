@@ -4625,7 +4625,7 @@ function find_by_id_actuacion($id)
 }
 /*------------------------------------------------------------------*/
 /* Funcion para encontrar el ultimo id de folios para despues
-   sumarle uno y que el nuevo registro tome ese valor */
+  sumarle uno y que el nuevo registro tome ese valor*/
 /*------------------------------------------------------------------*/
 function last_id_actualiciones()
 {
@@ -4675,4 +4675,38 @@ function find_queja_folio($folio)
     return $result;
   else
     return null;
+}
+
+function find_derechoV($id_queja)
+{
+  global $db;
+  $sql = $db->query("SELECT b.`descripcion`  FROM rel_queja_der_vuln a  LEFT JOIN cat_der_vuln b ON a.`id_cat_der_vuln`= b.`id_cat_der_vuln` 	WHERE a.`id_queja_date`={$db->escape($id_queja)}");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+
+function autoridadQ()
+{
+  // global $db;
+  // $tipo = (int)$tipo;
+  $sql  = "SELECT ca.`nombre_autoridad`, COUNT(a.`id_queja_date`) as total 
+FROM `quejas_dates` a 
+LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` 
+GROUP BY ca.`id_cat_aut`;";
+  return find_by_sql($sql);
+}
+function derechoVulneradoQ()
+{
+  // global $db;
+  // $tipo = (int)$tipo;
+  $sql  = "SELECT IFNULL(ca.`descripcion`,'Sin Derecho Vulnerado') as descripcion, COUNT(a.`id_queja_date`) as total 
+FROM `quejas_dates` a
+LEFT JOIN `rel_queja_der_vuln` b ON a.`id_queja_date`=b.`id_queja_date` 
+LEFT JOIN `cat_der_vuln` ca ON b.`id_cat_der_vuln` = ca.`id_cat_der_vuln`
+GROUP BY ca.`id_cat_der_vuln`
+ORDER BY descripcion ;";
+  return find_by_sql($sql);
 }

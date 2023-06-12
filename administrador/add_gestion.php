@@ -53,7 +53,7 @@ if (isset($_POST['add_gestion'])) {
                 $no_folio1 = sprintf('%04d', (int)$nuevo['contador'] + 1);
             }
         }
-    
+
         $year = date("Y");
         $folio = 'CEDH/' . $no_folio1 . '/' . $year . '-GESTJ';
 
@@ -71,7 +71,7 @@ if (isset($_POST['add_gestion'])) {
 
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
 
-        $dbh = new PDO('mysql:host=localhost;dbname=libroquejas2', 'root', '');
+        $dbh = new PDO('mysql:host=localhost;dbname=suigcedh', 'suigcedh', '9DvkVuZ915H!');
 
         $query = "INSERT INTO gestiones_jurisdiccionales (";
         $query .= "folio,tipo_gestion, descripcion, documento, observaciones, fecha_subida";
@@ -99,14 +99,14 @@ if (isset($_POST['add_gestion'])) {
         // (int)$id = $_GET['a'];
         if ($db->query($query) && $db->query($query2)) {
             //sucess
-            if($tipo_gestion == 'Acciones de Inconstitucionalidad'){ 
-                insertAccion($user['id_user'], '"'.$user['username'].'" agregó Acción Inconst., Folio: '.$folio.'.', 1);
-            } elseif($tipo_gestion == 'Controversias Constitucionales'){
-                insertAccion($user['id_user'], '"'.$user['username'].'" agregó Controversia Const., Folio: '.$folio.'.', 1);
-            } elseif($tipo_gestion == 'Amicus Curiae'){
-                insertAccion($user['id_user'], '"'.$user['username'].'" agregó Amicus Curiae, Folio: '.$folio.'.', 1);
+            if ($tipo_gestion == 'Acciones de Inconstitucionalidad') {
+                insertAccion($user['id_user'], '"' . $user['username'] . '" agregó Acción Inconst., Folio: ' . $folio . '.', 1);
+            } elseif ($tipo_gestion == 'Controversias Constitucionales') {
+                insertAccion($user['id_user'], '"' . $user['username'] . '" agregó Controversia Const., Folio: ' . $folio . '.', 1);
+            } elseif ($tipo_gestion == 'Amicus Curiae') {
+                insertAccion($user['id_user'], '"' . $user['username'] . '" agregó Amicus Curiae, Folio: ' . $folio . '.', 1);
             }
-            $session->msg('s', "Registro creado con éxito");            
+            $session->msg('s', "Registro creado con éxito");
             redirect('gestiones.php', false);
         } else {
             //failed
@@ -129,10 +129,18 @@ if (isset($_POST['add_gestion'])) {
         <div class="form-group">
             <label for="tipo_gestion" class="control-label">Tipo de Gestión Jurisdiccional</label>
             <select class="form-control" name="tipo_gestion" id="tipo_gestion">
-                <?php if((int)$_GET['a'] == 1){ echo '<option selected="true" value="Acciones de Inconstitucionalidad">Acciones de Inconstitucionalidad</option>';}?>
-                <?php if((int)$_GET['a'] == 2){ echo '<option selected="true" value="Controversias Constitucionales">Controversias Constitucionales</option>';}?>
-                <?php if((int)$_GET['a'] == 3){ echo '<option selected="true" value="Amicus Curiae">Amicus Curiae</option>';}?>
-                <?php if((int)$_GET['a'] == 4){ echo '<option value="">Escoge una opción</option><option value="Acciones de Inconstitucionalidad">Acciones de Inconstitucionalidad</option><option value="Controversias Constitucionales">Controversias Constitucionales</option><option value="Amicus Curiae">Amicus Curiae</option>';}?>
+                <?php if ((int)$_GET['a'] == 1) {
+                    echo '<option selected="true" value="Acciones de Inconstitucionalidad">Acciones de Inconstitucionalidad</option>';
+                } ?>
+                <?php if ((int)$_GET['a'] == 2) {
+                    echo '<option selected="true" value="Controversias Constitucionales">Controversias Constitucionales</option>';
+                } ?>
+                <?php if ((int)$_GET['a'] == 3) {
+                    echo '<option selected="true" value="Amicus Curiae">Amicus Curiae</option>';
+                } ?>
+                <?php if ((int)$_GET['a'] == 4) {
+                    echo '<option value="">Escoge una opción</option><option value="Acciones de Inconstitucionalidad">Acciones de Inconstitucionalidad</option><option value="Controversias Constitucionales">Controversias Constitucionales</option><option value="Amicus Curiae">Amicus Curiae</option>';
+                } ?>
             </select>
         </div>
         <div class="form-group">
@@ -145,7 +153,7 @@ if (isset($_POST['add_gestion'])) {
         </div>
         <div class="form-group">
             <label for="observaciones">Observaciones</label>
-            <textarea class="form-control" name="observaciones" cols="10" rows="5"></textarea>
+            <textarea class="form-control" name="observaciones" cols="10" rows="5"></textarea>|
         </div>
         <div class="form-group clearfix">
             <a href="gestiones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
