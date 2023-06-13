@@ -122,6 +122,30 @@ if (isset($_POST['add_queja'])) {
         $temp = $_FILES['adjunto']['tmp_name'];
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
 
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                    $carpetai = 'uploads/quejas/' . $folio_carpeta . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
+            }
+        }
+
+
         $dbh = new PDO('mysql:host=localhost; dbname=suigcedh', 'suigcedh', '9DvkVuZ915H!');
         $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
@@ -366,6 +390,10 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="imagen">Añadir imagen(es): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
@@ -388,6 +416,14 @@ include_once('layouts/header.php'); ?>
                     <button style="background: #300285; border-color:#300285;" type="submit" name="add_queja" class="btn btn-primary" onclick="return confirm('La queja será guardada. Verifica el folio generado por el sistema para que lo asignes de manera correcta a su expediente. Da clic en Aceptar para continuar.');">Guardar</button>
                 </div>
             </form>
+            <!-- <?php if (isset($_FILES['imagen']) && $validar == true) { ?>
+                <?php $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+                for ($i = 0; $i < $cantidad; $i++) { ?>
+                    <h1><?php echo $_FILES["imagen"]["name"][$i] ?></h1>
+                    <img src="<?php echo $_FILES["imagen"]["name"][$i] ?>" width="100">
+            <?php }
+            } ?> -->
         </div>
     </div>
 </div>

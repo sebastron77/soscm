@@ -7,7 +7,6 @@ require_once('includes/load.php');
 
 $user = current_user();
 $nivel = $user['user_level'];
-// $id_user = $user['id'];
 $nivel_user = $user['user_level'];
 $id_u = $user['id_user'];
 $area_user = muestra_area($id_u);
@@ -32,9 +31,6 @@ if ($nivel_user == 5) {
 if ($nivel_user == 7) {
     page_require_level_exacto(7);
 }
-// if ($nivel_user == 19) {
-//     page_require_level_exacto(19);
-// }
 if ($nivel_user == 21) {
     page_require_level_exacto(21);
 }
@@ -122,8 +118,6 @@ if (isset($_POST["export_data"])) {
                     <span>Lista de Quejas</span>
                 </strong>
 
-                <!-- <div> -->
-                <!-- </div> -->
                 <a href="seach_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Búsqueda General</a>
                 <?php if (($nivel == 1) || ($id_u == 3)) : ?>
                     <a href="quejas_publicas.php" class="btn btn-primary position-relative" style="float: right; margin-top: 0px; margin-right: 5px; margin-left: 10px;">
@@ -197,27 +191,31 @@ if (isset($_POST["export_data"])) {
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
-                                        <i class="glyphicon glyphicon-eye-open"></i>
+                                    <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Ver información">
+                                        <!-- <i class="glyphicon glyphicon-eye-open" style="color: #1f4c88; font-size: 25px;"></i> -->
+                                        <img src="medios/ver_info.png" style="width: 31px; height: 30.5px; border-radius: 15%; margin-right: -2px;">
                                     </a>&nbsp;
                                     <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
-                                        <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
-                                            <span class="glyphicon glyphicon-edit"></span>
+                                        <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Editar">
+                                            <!-- <span class="glyphicon glyphicon-edit" style="color: black; font-size: 25px;"></span> -->
+                                            <img src="medios/editar2.png" style="width: 31px; height: 30.5px; border-radius: 15%; margin-right: -2px;">                                            
                                         </a>&nbsp;
-                                        <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-gre btn-md" title="Acuerdos" data-toggle="tooltip">
-                                            <!-- <span class="glyphicon glyphicon-retweet"></span> -->
-                                            <span class="glyphicon glyphicon-file"></span>
+                                        <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Acuerdos">
+                                            <!-- <span style="color: #14b823; font-size: 25px;" href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="glyphicon glyphicon-file"></span> -->
+                                            <img src="medios/acuerdos2.png" style="width: 31px; height: 30.5px; margin-right: -2px;">
                                         </a>&nbsp;
-                                        <a href="procesal_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv2 btn-md" title="Estado Procesal" data-toggle="tooltip">
-                                            <!-- <span class="glyphicon glyphicon-retweet"></span> -->
-                                            <span class="glyphicon glyphicon-exclamation-sign"></span>
+                                        <a href="procesal_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Estado Procesal">
+                                            <!-- <span  style="color: #e275c7; font-size: 25px;" class="glyphicon glyphicon-exclamation-sign"></span> -->
+                                            <img src="medios/estado_procesal2.png" style="width: 31px; height: 30.5px; margin-right: -2px;">
                                         </a>&nbsp;
-                                        <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-secondary btn-md" title="Resolución" data-toggle="tooltip">
-                                            <span class="glyphicon glyphicon-arrow-right"></span>
+                                        <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Resolución">
+                                            <!-- <span  style="color: #ff6a5b; font-size: 25px;" class="glyphicon glyphicon-arrow-right"></span> -->
+                                            <img src="medios/resolucion2.png" style="width: 31px; height: 30.5px; border-radius: 15%; ">
                                         </a>&nbsp;
                                         <?php if ((($id_u <= 2) || ($id_u == 3)) && $queja['id_cat_med_pres'] == 5) : ?>
-                                            <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="btn btn-conv btn-md" title="Convertir" data-toggle="tooltip">
-                                                <span class="glyphicon glyphicon-retweet"></span>
+                                            <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Convertir">
+                                                <!-- <span class="glyphicon glyphicon-retweet"></span> -->
+                                                <img src="medios/linea.png" alt="" srcset="">
                                             </a>
                                         <?php endif; ?>
                                     <?php endif; ?>

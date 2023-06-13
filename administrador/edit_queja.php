@@ -5,7 +5,6 @@ require_once('includes/load.php');
 <?php
 $e_detalle = find_by_id_queja((int) $_GET['id']);
 if (!$e_detalle) {
-    // $session->msg("d", "ID de queja no encontrado.");
     redirect('quejas.php');
 }
 $user = current_user();
@@ -93,20 +92,50 @@ if (isset($_POST['edit_queja'])) {
         $id_cat_gen = $e_detalle['id_cat_gen'];
         $nacionalidad = $e_detalle['id_cat_nacionalidad'];
         $med_pres = 5;
-       
-            if ($name != '') {
-                $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
+
+        if ($name != '') {
+            $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
                     id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
-            }
-            if ($name == '') {
-                $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
+        }
+        if ($name == '') {
+            $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
                     id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
+        }
+
+        // $carpeta = 'uploads/quejas/' . $folio2 . '/imagenes';
+
+        // if (!is_dir($carpeta)) {
+        //     mkdir($carpeta, 0777, true);
+        // }
+
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                    $folio1 = $e_detalle['folio_queja'];
+                    $folio2 = str_replace("/", "-", $folio1);
+                    $carpetai = 'uploads/quejas/' . $folio2 . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
             }
-        
+        }
 
         $sql2 = "UPDATE rel_queja_aut SET id_cat_aut='{$id_cat_aut}' WHERE id_queja_date='{$db->escape($id)}'";
         $result = $db->query($sql);
@@ -133,14 +162,14 @@ if (isset($_POST['edit_queja'])) {
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
                 <span>Editar queja
-                    <?php echo $e_detalle['folio_queja']?>
+                    <?php echo $e_detalle['folio_queja'] ?>
                 </span>
             </strong>
         </div>
         <div class="panel-body">
             <form method="post" action="edit_queja.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" enctype="multipart/form-data">
-            <h3 style="font-weight:bold;">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" width="25px" height="25px"  viewBox="0 0 24 24">
+                <h3 style="font-weight:bold;">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" width="25px" height="25px" viewBox="0 0 24 24">
                         <title>cog</title>
                         <path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z" />
                     </svg>
@@ -239,7 +268,7 @@ if (isset($_POST['edit_queja'])) {
                                 <?php foreach ($cat_est_procesal as $estatus) : ?>
                                     <option <?php if ($estatus['id_cat_est_procesal'] === $e_detalle['id_cat_est_procesal'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $estatus['id_cat_est_procesal']; ?>"><?php
-                                                                                                                                    echo ucwords($estatus['descripcion']) ?>
+                                                                                                                                        echo ucwords($estatus['descripcion']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -247,10 +276,13 @@ if (isset($_POST['edit_queja'])) {
                     </div>
                 </div>
                 <div class="row">
-                <h3 style="margin-top: 1%; font-weight:bold;">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" height="25px" width="25px" viewBox="0 0 24 24"><title>earth</title><path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" /></svg>
-                    Datos donde ocurrieron los hechos
-                </h3>
+                    <h3 style="margin-top: 1%; font-weight:bold;">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="#3a3d44" height="25px" width="25px" viewBox="0 0 24 24">
+                            <title>earth</title>
+                            <path d="M17.9,17.39C17.64,16.59 16.89,16 16,16H15V13A1,1 0 0,0 14,12H8V10H10A1,1 0 0,0 11,9V7H13A2,2 0 0,0 15,5V4.59C17.93,5.77 20,8.64 20,12C20,14.08 19.2,15.97 17.9,17.39M11,19.93C7.05,19.44 4,16.08 4,12C4,11.38 4.08,10.78 4.21,10.21L9,15V16A2,2 0 0,0 11,18M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z" />
+                        </svg>
+                        Datos donde ocurrieron los hechos
+                    </h3>
                 </div>
                 <div class="row">
                     <div class="col-md-2">
@@ -262,7 +294,7 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-1">
                         <div class="form-group">
                             <label for="dom_numero">Núm. ext/int</label>
-                            <input type="text" class="form-control" name="dom_numero" value="<?php echo $e_detalle['dom_numero'] ?>" >
+                            <input type="text" class="form-control" name="dom_numero" value="<?php echo $e_detalle['dom_numero'] ?>">
                         </div>
                     </div>
                     <div class="col-md-2">
@@ -271,15 +303,15 @@ if (isset($_POST['edit_queja'])) {
                             <input type="text" class="form-control" name="dom_colonia" placeholder="Colonia" value="<?php echo $e_detalle['dom_colonia'] ?>">
                         </div>
                     </div>
-					  <div class="col-md-3">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="ent_fed">Entidad Federativa</label>
-                            <select class="form-control" name="ent_fed" >
+                            <select class="form-control" name="ent_fed">
                                 <option value="">Escoge una opción</option>
-                                 <?php foreach ($cat_entidad as $id_cat_ent_fed) : ?>
-                                            <option <?php if ($id_cat_ent_fed['descripcion'] === $e_detalle['ent_fed'])
+                                <?php foreach ($cat_entidad as $id_cat_ent_fed) : ?>
+                                    <option <?php if ($id_cat_ent_fed['descripcion'] === $e_detalle['ent_fed'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $id_cat_ent_fed['descripcion']; ?>"><?php echo ucwords($id_cat_ent_fed['descripcion']); ?></option>
-                                        <?php endforeach; ?>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
@@ -297,13 +329,13 @@ if (isset($_POST['edit_queja'])) {
                             </select>
                         </div>
                     </div>
-					<div class="col-md-2">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="localidad">Localidad</label>
-                            <input type="text" class="form-control" name="localidad" placeholder="Localidad" >
+                            <input type="text" class="form-control" name="localidad" placeholder="Localidad">
                         </div>
                     </div>
-			</div>
+                </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -314,7 +346,7 @@ if (isset($_POST['edit_queja'])) {
                             </label>
                         </div>
                     </div>
-					<div class="col-md-2">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_ambito">Tipo Ámbito <span style="color:red;font-weight:bold">*</span></label>
                             <select class="form-control" name="id_tipo_ambito" required>
@@ -325,6 +357,10 @@ if (isset($_POST['edit_queja'])) {
                                 <?php endforeach; ?>
                             </select>
                         </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="imagen">Añadir imagen(es): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
                     </div>
                 </div>
                 <div class="row">

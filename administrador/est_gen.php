@@ -68,11 +68,10 @@ endif;
                       label: 'Orientaciones por Género',
                       data: yValues,
                       backgroundColor: [
-                        <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica']; ?>', <?php endforeach; ?>
+                        '#3E5161', '#C5E2FB', '#90BBE0', '#5A87AD', '#6F90AD', '#6C6E58', '#3E423A', '#417378', '#A4CFBE', '#F4F7D9', '#AC89A6', '#51AFC2', '#427085'
                       ],
-
                       borderColor: [
-                        <?php foreach ($generos as $gen) : ?> '<?php echo $gen['color_estadistica']; ?>', <?php endforeach; ?>
+                        '#27333D', '#8BA0B3', '#627F99', '#3E5E78', '#405363', '#494A3B', '#22241F', '#2B4C4F', '#6F8C80', '#A9AB96', '#7D6479', '#397A87', '#2D4B59'
                       ],
                       borderWidth: 2
                     }]
@@ -116,7 +115,8 @@ endif;
                   </tr>
                 </thead>
                 <tbody style="background: white;">
-                  <?php $total=0;  foreach ($generos as $gen) : ?>
+                  <?php $total = 0;
+                  foreach ($generos as $gen) : ?>
                     <tr>
                       <td>
                         <?php echo remove_junk(ucwords($gen['descripcion'])) ?>

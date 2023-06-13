@@ -92,16 +92,15 @@ function find_all_quejas($id, $user)
 {
   global $db;
   $id = (int)$id;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado, du.id_det_usuario, ";
-  $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
   $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
   $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
   $sql .= " LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
   $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
-  $sql .= " LEFT JOIN `area` ar ON q.`id_area_asignada` = ar.id_area  ";
-  $sql .= " LEFT JOIN `cat_est_procesal` ep ON q.`estado_procesal` = `ep`.id_cat_est_procesal";
-  $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
+  $sql .= " LEFT JOIN area ar ON q.id_area_asignada = ar.id_area  ";
+  $sql .= " LEFT JOIN cat_est_procesal ep ON q.estado_procesal = ep.id_cat_est_procesal";
+  $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
   $sql .= " WHERE q.id_area_asignada = '{$db->escape($id)}' AND du.id_det_usuario = '{$db->escape($user)}'";
   $result = find_by_sql($sql);
   return $result;
@@ -125,8 +124,7 @@ function find_all_quejas_lc()
 function find_all_quejas_admin()
 {
   // global $db;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado,";
-  $sql .= "cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion, ar.nombre_area,CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion, ar.nombre_area,CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
   $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
   $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
@@ -135,6 +133,7 @@ function find_all_quejas_admin()
   $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
   $sql .= " LEFT JOIN `area` ar ON q.`id_area_asignada` = ar.id_area  ";
   $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
+  $sql .= " ORDER BY q.id_queja_date DESC";
   $result = find_by_sql($sql);
   return $result;
 }

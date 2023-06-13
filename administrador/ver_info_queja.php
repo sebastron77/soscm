@@ -330,6 +330,14 @@ if ($nivel == 7) {
                                         <?php echo remove_junk($e_detalle['user_creador']) ?><br><br>
                                     </span>
                                 </td>
+                                
+                                <td>
+                                    <div class="form-group clearfix">
+                                        <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
+                                            Descargar Imágenes
+                                        </a>
+                                    </div>
+                                </td>
                             </tr>
                             <table class="page_break">
                                 <tr>
