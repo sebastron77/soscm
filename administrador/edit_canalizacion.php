@@ -104,7 +104,32 @@ if (isset($_POST['edit_canalizacion'])) {
         $result3 = $db->query($sql3);
         $result4 = $db->query($sql4);
 
-        if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1)) {
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                    $folio1 = $e_detalle['folio_queja'];
+                    $folio2 = str_replace("/", "-", $folio1);
+                    $carpetai = 'uploads/orientacioncanalizacion/canalizacion/' . $resultado . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
+            }
+        }
+
+        if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1) || ($validar = true)) {
             $session->msg('s', "Información Actualizada");
             insertAccion($user['id_user'], '"' . $user['username'] . '" editó canalización, Folio: ' . $folio_canalizacion . '.', 2);
             redirect('canalizaciones.php', false);
@@ -292,9 +317,6 @@ if (isset($_POST['edit_canalizacion'])) {
                             </select>
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="medio">Medio de presentación</label>
@@ -305,13 +327,19 @@ if (isset($_POST['edit_canalizacion'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="adjunto">Acta de Canalización</label>
                             <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto" value="uploads/orientacioncanalizacion/<?php echo $e_detalle['adjunto']; ?>">
                             <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_detalle['adjunto']); ?></label>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <label for="imagen">Añadir imagen(es): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
+                    </div>
+                </div>
+                <div class="row" style="margin-top: -25px;">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label><br>

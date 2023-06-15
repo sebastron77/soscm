@@ -8,6 +8,7 @@ $e_detalle = find_by_id_canalizacion((int)$_GET['id']);
 //$all_detalles = find_all_detalles_busqueda($_POST['consulta']);
 $user = current_user();
 $nivel = $user['user_level'];
+$tipo = $_GET['t'];
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -52,12 +53,12 @@ if ($nivel == 7) {
                     <thead class="thead-purple">
                         <trstyle="height: 10px;">
                             <th style="width: 1%;" class="text-center">Folio</th>
-                            <th style="width: 3%;" class="text-center">Fecha de Creación</th>
+                            <th style="width: 1%;" class="text-center">Fecha de Creación</th>
                             <th style="width: 3%;" class="text-center">Medio de presentación</th>
                             <th style="width: 7%;" class="text-center">Correo</th>
                             <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
                             <th style="width: 5%;" class="text-center">Nombre Completo</th>
-                            <th style="width: 3%;" class="text-center">Nivel de Estudios</th>
+                            <th style="width: 2%;" class="text-center">Nivel de Estudios</th>
                             <th style="width: 5%;" class="text-center">Ocupación</th>
                             </tr>
                     </thead>
@@ -80,13 +81,13 @@ if ($nivel == 7) {
                         <tr>
                             <th style="width: 1%;" class="text-center">Edad</th>
                             <th style="width: 1%;" class="text-center">Telefono</th>
-                            <th style="width: 1%;" class="text-center">Extensión</th>
+                            <th style="width: 1%;" class="text-center">Ext.</th>
                             <th style="width: 1%;" class="text-center">Género</th>
                             <th style="width: 3%;" class="text-center">Grupo Vulnerable</th>
                             <th style="width: 2%;" class="text-center">Lengua</th>
                             <th style="width: 5%;" class="text-center">Calle-Num.</th>
                             <th style="width: 5%;" class="text-center">Colonia</th>
-                            <th style="width: 2%;" class="text-center">Código Postal</th>
+                            <th style="width: 1%;" class="text-center">Código Postal</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,13 +107,12 @@ if ($nivel == 7) {
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr>
-                            <th style="width: 5%;" class="text-center">Institución que se canaliza</th>
-                            <th style="width: 2%;" class="text-center">Municipio</th>
-                            <th style="width: 2%;" class="text-center">Localidad</th>
+                            <th style="width: 7%;" class="text-center">Institución que se canaliza</th>
+                            <th style="width: 5%;" class="text-center">Municipio</th>
+                            <th style="width: 5%;" class="text-center">Localidad</th>
                             <th style="width: 2%;" class="text-center">Entidad</th>
                             <th style="width: 1%;" class="text-center">Nacionalidad</th>
-                            <th style="width: 5%;" class="text-center">Observaciones</th>
-                            <th style="width: 3%;" class="text-center">Acta de Canalización</th>
+                            <th style="width: 15%;" class="text-center">Observaciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -127,8 +127,46 @@ if ($nivel == 7) {
                             $folio_editar = $e_detalle['folio'];
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
+                        <tr>
+                            <th style="width: 3%;" class="text-center">Acta de Canalización</th>
+                            <th style="width: 3%;" class="text-center">Imágenes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <?php
+                            $folio_editar = $e_detalle['folio'];
+                            $resultado = str_replace("/", "-", $folio_editar);
+                            ?>
                             <td class="text-center"><a target="_blank" style="color: #0094FF;" href="uploads/orientacioncanalizacion/canalizacion/<?php echo $resultado . '/' . $e_detalle['adjunto']; ?>"><?php echo $e_detalle['adjunto']; ?></a></td>
-
+                            <?php
+                            //Si es un directorio
+                            $folio_editarO = $e_detalle['folio'];
+                            $resultadoO = str_replace("/", "-", $folio_editarO);
+                            $directorio = 'uploads/orientacioncanalizacion/canalizacion/' . $resultadoO . '/imagenes';
+                            if (is_dir($directorio)) {
+                                //Escaneamos el directorio
+                                $carpeta = @scandir($directorio);
+                                //Miramos si existen archivos
+                                if (count($carpeta) > 0) {
+                            ?>
+                                    <td class="text-center">
+                                        <div class="form-group clearfix">
+                                            <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['idcan']; ?>&t=c" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
+                                                Descargar Imágenes
+                                            </a>
+                                        </div>
+                                    </td>
+                            <?php }
+                            } else {
+                                echo '<td class="text-center">No hay imágenes</td>';
+                            }
+                            ?>
                         </tr>
                     </tbody>
                 </table>

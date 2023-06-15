@@ -128,7 +128,7 @@ if (isset($_POST['add_queja'])) {
 
             for ($i = 0; $i < $cantidad; $i++) {
                 //Comprobamos si el fichero es una imagen
-                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg' || $_FILES['imagen']['type'][$i] == 'image/tiff') {
                     $carpetai = 'uploads/quejas/' . $folio_carpeta . '/imagenes';
                     if (!is_dir($carpetai)) {
                         mkdir($carpetai, 0777, true);
@@ -252,7 +252,7 @@ include_once('layouts/header.php'); ?>
                             <div class="input_container">
                                 <input class="form-control" autocomplete="off" type="text" id="id_cat_quejoso" onkeyup="autocompletar()" required>
                                 <input type="hidden" id="quejoso" name="quejoso">
-                                <ul id="lista_id"></ul>
+                                <ul id="lista_id" style="position: absolute; z-index: 100; background: white;"></ul>
                             </div>
                         </div>
                     </div>
@@ -264,7 +264,7 @@ include_once('layouts/header.php'); ?>
                             <div class="input_container2">
                                 <input class="form-control" autocomplete="off" type="text" id="id_cat_agrav" onkeyup="autocompletar2()" required>
                                 <input type="hidden" id="agraviado" name="agraviado">
-                                <ul id="lista_id2"></ul>
+                                <ul id="lista_id2" style="position: absolute; z-index: 100; background: white;"></ul>
                             </div>
                         </div>
                     </div>

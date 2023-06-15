@@ -845,10 +845,10 @@ span.red {
 
 div.alert.alert-success {
   font-size: 20px;
-  background: #7163f050;
-  /* border-color: #176939; */
+  background: #7163f08e;
+  border-color: #453b9b;
   color: white;
-  border: 0px;
+  border-width: 1;
   /* text-shadow: 0 0 0.6em #370494, 0 0 0.5em #370494; */
 }
 div.alert.alert-warning {

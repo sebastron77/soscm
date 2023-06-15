@@ -330,14 +330,31 @@ if ($nivel == 7) {
                                         <?php echo remove_junk($e_detalle['user_creador']) ?><br><br>
                                     </span>
                                 </td>
+                                <?php
+                                //Si es un directorio
+                                $folio_editarQ = $e_detalle['folio_queja'];
+                                $resultadoQ = str_replace("/", "-", $folio_editarQ);
+                                $directorio = 'uploads/quejas/' . $resultadoQ . '/imagenes';
+                                if (is_dir($directorio)) {
+                                    //Escaneamos el directorio
+                                    $carpeta = @scandir($directorio);
+                                    //Miramos si existen archivos
+                                    if (count($carpeta) > 0) {
+                                        echo 'El directorio tiene archivos';
+                                        ?>
                                 
                                 <td>
                                     <div class="form-group clearfix">
-                                        <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
+                                        <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>&t=q" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
                                             Descargar Imágenes
                                         </a>
                                     </div>
                                 </td>
+                                <?php }
+                                    } else {
+                                        echo 'El directorio no existe.';
+                                    }
+                                ?>
                             </tr>
                             <table class="page_break">
                                 <tr>

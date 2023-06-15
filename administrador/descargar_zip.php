@@ -8,23 +8,58 @@ $user = current_user();
 $detalle = $user['id_user'];
 $username = get_current_user();
 $id = (int) $_GET['id'];
-$e_detalle = find_by_id_queja($id);
-$folio_editar = $e_detalle['folio_queja'];
-$resultado = str_replace("/", "-", $folio_editar);
+$tipo = $_GET['t'];
+
+$e_detalleQ = find_by_id_queja($id);
+$folio_editarQ = $e_detalleQ['folio_queja'];
+$resultadoQ = str_replace("/", "-", $folio_editarQ);
+
+$e_detalleO = find_by_id_orientacion($id);
+$folio_editarO = $e_detalleO['folio'];
+$resultadoO = str_replace("/", "-", $folio_editarO);
+
+$e_detalleC = find_by_id_canalizacion($id);
+$folio_editarC = $e_detalleC['folio'];
+$resultadoC = str_replace("/", "-", $folio_editarC);
 
 //! Ruta que se guardará en el ZIP
-$dirPath = 'uploads/quejas/' . $resultado . '/imagenes';
+if ($tipo == 'q') {
+    $dirPath = 'uploads/quejas/' . $resultadoQ . '/imagenes';
 
-//! Ruta donde se guardará el ZIP
-$zipPath = '/Users/' . $username . '/Downloads/' . $resultado . ' - Imagenes.zip';
+    //! Ruta donde se guardará el ZIP
+    $zipPath = '/Users/' . $username . '/Downloads/' . $resultadoQ . ' - Imagenes.zip';
+}
+if ($tipo == 'o') {
+    $dirPath = 'uploads/orientacioncanalizacion/orientacion/' . $resultadoO . '/imagenes';
 
-// Create zip archivec:\Users\Sebastian\Downloads
+    //! Ruta donde se guardará el ZIP
+    $zipPath = '/Users/' . $username . '/Downloads/' . $resultadoO . ' - Imagenes.zip';
+}
+if ($tipo == 'c') {
+    $dirPath = 'uploads/orientacioncanalizacion/canalizacion/' . $resultadoC . '/imagenes';
+
+    //! Ruta donde se guardará el ZIP
+    $zipPath = '/Users/' . $username . '/Downloads/' . $resultadoC . ' - Imagenes.zip';
+}
+
+// Create zip archive
 $zip = $zipper->zipDir($dirPath, $zipPath);
 
 if ($zip) {
     // echo 'Carpeta comprimida creada con éxito.';
     $session->msg('s', "*** Archivo comprimido con éxito. Revisa la carpeta de Descargas en tu computadora. ***");
-    insertAccion($user['id_user'], '"' . $user['username'] . '" descargó imágenes de queja, Folio: ' . $folio_editar . '.', 1);
+    if ($tipo == 'q') {
+        insertAccion($user['id_user'], '"' . $user['username'] . '" descargó imágenes de Queja, Folio: ' . $folio_editarQ . '.', 1);
+        redirect('quejas.php', false);
+    }
+    if ($tipo == 'o') {
+        insertAccion($user['id_user'], '"' . $user['username'] . '" descargó imágenes de Orientación, Folio: ' . $folio_editarO . '.', 1);
+        redirect('orientaciones.php', false);
+    }
+    if ($tipo == 'c') {
+        insertAccion($user['id_user'], '"' . $user['username'] . '" descargó imágenes de Canalización, Folio: ' . $folio_editarC . '.', 1);
+        redirect('canalizaciones.php', false);
+    }
     redirect('quejas.php', false);
 } else {
     echo 'Error al crear comprimido.';

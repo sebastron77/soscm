@@ -89,7 +89,7 @@ if (isset($_POST['edit_orientacion'])) {
         } else {
             mkdir($carpeta, 0777, true);
             $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
-        }
+        }        
 
         if ($name != '') {
             $sql = "UPDATE folios SET folio='{$folio_orientacion}' WHERE folio='{$db->escape($la_orientacion)}'";
@@ -105,7 +105,32 @@ if (isset($_POST['edit_orientacion'])) {
         $result3 = $db->query($sql3);
         $result4 = $db->query($sql4);
 
-        if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1)) {
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                    $folio1 = $e_detalle['folio_queja'];
+                    $folio2 = str_replace("/", "-", $folio1);
+                    $carpetai = 'uploads/orientacioncanalizacion/orientacion/' . $resultado . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
+            }
+        }
+
+        if (($result && $db->affected_rows() === 1) || ($result2 && $db->affected_rows() === 1) || ($result3 && $db->affected_rows() === 1) || ($result4 && $db->affected_rows() === 1) || ($validar = true)) {
             $session->msg('s', "Información Actualizada ");
             insertAccion($user['id_user'], '"' . $user['username'] . '" editó orientación, Folio: ' . $folio_orientacion . '.', 2);
             redirect('orientaciones.php', false);
@@ -312,14 +337,17 @@ if (isset($_POST['edit_orientacion'])) {
                         </div>
                     </div>
                     <div class="col-md-3">
+                        <label for="imagen">Añadir imagen(es): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label><br>
                             <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="2" value="<?php echo remove_junk($e_detalle['observaciones']); ?>"><?php echo remove_junk($e_detalle['observaciones']); ?></textarea>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-
                 </div>
                 <div class="form-group clearfix">
                     <a href="orientaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">

@@ -7,7 +7,7 @@ function conexion() {
 
 $pdo = conexion();
 $keyword = '%'.$_POST['palabra'].'%';
-$sql = "SELECT id_cat_quejoso, nombre, paterno, materno FROM cat_quejosos WHERE nombre LIKE (:keyword) ORDER BY nombre ASC LIMIT 0, 7";
+$sql = "SELECT id_cat_quejoso, nombre, paterno, materno FROM cat_quejosos WHERE nombre LIKE (:keyword) ORDER BY nombre ASC LIMIT 0, 20";
 $query = $pdo->prepare($sql);
 $query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
 $query->execute();
@@ -19,5 +19,5 @@ foreach ($lista as $milista) {
 	$id = $milista['id_cat_quejoso'];
 	//str_replace coloca en el input el valor elegido
 	//nombre2 muestra los valores de la lista
-    echo '<li style="list-style: none" value="'.$id.'" onclick="set_item('.$id.',\''.str_replace("'", "\'", $milista['nombre'])." ".$milista['paterno']." ".$milista['materno'].'\')">'.$nombre.'</li>';
+    echo '<li style="list-style: none;" value="'.$id.'" onclick="set_item('.$id.',\''.str_replace("'", "\'", $milista['nombre'])." ".$milista['paterno']." ".$milista['materno'].'\')">'.$nombre.'</li>';
 }

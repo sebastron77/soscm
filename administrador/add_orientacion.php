@@ -36,9 +36,6 @@ if ($nivel_user == 50) {
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
-if ($nivel_user == 5) :
-    redirect('home.php');
-endif;
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_orientacion'])) {
@@ -112,6 +109,29 @@ if (isset($_POST['add_orientacion'])) {
         $temp = $_FILES['adjunto']['tmp_name'];
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg' || $_FILES['imagen']['type'][$i] == 'image/tiff') {
+                    $carpetai = 'uploads/orientacioncanalizacion/orientacion/' . $folio_carpeta . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
+            }
+        }
 
         if ($move && $name != '') {
             $query = "INSERT INTO orientacion_canalizacion (";
@@ -343,12 +363,18 @@ include_once('layouts/header.php'); ?>
                         </div>
                     </div>
                     <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="observaciones">Observaciones</label><br>
-                            <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="2"></textarea>
-                        </div>
+                        <label for="imagen">Añadir imagen(es) (si es necesario): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
                     </div>
                 </div>
+                <div class="row">                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="observaciones">Observaciones</label><br>
+                            <textarea name="observaciones" class="form-control" id="observaciones" cols="50" rows="4"></textarea>
+                        </div>
+                    </div>
+                </div><br><br>
                 <div class="form-group clearfix">
                     <a href="orientaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar

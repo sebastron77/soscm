@@ -62,7 +62,7 @@ endif;
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
                             <th style="width: 1%;" class="text-center">Folio</th>
-                            <th style="width: 3%;" class="text-center">Fecha de Creación</th>
+                            <th style="width: 1%;" class="text-center">Fecha de Creación</th>
                             <th style="width: 3%;" class="text-center">Medio de presentación</th>
                             <th style="width: 7%;" class="text-center">Correo</th>
                             <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
@@ -89,10 +89,10 @@ endif;
                         <tr>
                             <th style="width: 1%;" class="text-center">Edad</th>
                             <th style="width: 1%;" class="text-center">Telefono</th>
-                            <th style="width: 1%;" class="text-center">Extensión</th>
+                            <th style="width: 1%;" class="text-center">Ext.</th>
                             <th style="width: 1%;" class="text-center">Género</th>
                             <th style="width: 3%;" class="text-center">Grupo Vulnerable</th>
-                            <th style="width: 2%;" class="text-center">Lengua</th>
+                            <th style="width: 1%;" class="text-center">Lengua</th>
                             <th style="width: 5%;" class="text-center">Autoridad señalada como responsable</th>
                             <th style="width: 5%;" class="text-center">Calle-Num.</th>
                         </tr>
@@ -121,7 +121,6 @@ endif;
                             <th style="width: 2%;" class="text-center">Entidad</th>
                             <th style="width: 1%;" class="text-center">Nacionalidad</th>
                             <th style="width: 5%;" class="text-center">Observaciones</th>
-                            <th style="width: 5%;" class="text-center">Adjunto</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -137,7 +136,46 @@ endif;
                             $folio_editar = $e_detalle['folio'];
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
-                            <td class="text-center"><a target="_blank" style="color:#0094FF" href="uploads/orientacioncanalizacion/orientacion/<?php echo $resultado . '/' . $e_detalle['adjunto']; ?>"><?php echo $e_detalle['adjunto']; ?></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
+                        <tr>
+                            <th style="width: 3%;" class="text-center">Archivo</th>
+                            <th style="width: 3%;" class="text-center">Imágenes</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <?php
+                            $folio_editar = $e_detalle['folio'];
+                            $resultado = str_replace("/", "-", $folio_editar);
+                            ?>
+                            <td class="text-center"><a target="_blank" style="color: #0094FF;" href="uploads/orientacioncanalizacion/orientacion/<?php echo $resultado . '/' . $e_detalle['adjunto']; ?>"><?php echo $e_detalle['adjunto']; ?></a></td>
+                            <?php
+                            //Si es un directorio
+                            $folio_editarO = $e_detalle['folio'];
+                            $resultadoO = str_replace("/", "-", $folio_editarO);
+                            $directorio = 'uploads/orientacioncanalizacion/orientacion/' . $resultadoO . '/imagenes';
+                            if (is_dir($directorio)) {
+                                //Escaneamos el directorio
+                                $carpeta = @scandir($directorio);
+                                //Miramos si existen archivos
+                                if (count($carpeta) > 0) {
+                            ?>
+                                    <td class="text-center">
+                                        <div class="form-group clearfix">
+                                            <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['idcan']; ?>&t=o" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
+                                                Descargar Imágenes
+                                            </a>
+                                        </div>
+                                    </td>
+                            <?php }
+                            } else {
+                                echo '<td class="text-center">No hay imágenes</td>';
+                            }
+                            ?>
                         </tr>
                     </tbody>
                 </table>
