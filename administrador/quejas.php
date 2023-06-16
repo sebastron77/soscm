@@ -15,7 +15,7 @@ $notificacion = notificacion();
 if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 21) || ($nivel_user == 50)) {
     $quejas_libro = find_all_quejas_admin();
 } else {
-    if ($area_user['id_det_usuario'] == 89) {
+    if ($area_user['id_det_usuario'] == 92) {
         $quejas_libro = find_all_quejas_lc();
     } else {
         $quejas_libro = find_all_quejas($area_user['id_area'], $area_user['id_det_usuario']);

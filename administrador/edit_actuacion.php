@@ -79,7 +79,33 @@ if (isset($_POST['edit_actuacion'])) {
             $sql = "UPDATE actuaciones SET fecha_captura_acta='{$fecha_captura_acta}', catalogo='{$catalogo}', descripcion='{$descripcion}', autoridades='{$autoridades}', autoridades_federales='{$autoridades_federales}', num_exp_origen='{$num_exp_origen}', peticion='{$peticion}' WHERE id_actuacion='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
-        if ($result && $db->affected_rows() === 1) {
+
+        if (isset($_FILES['imagen'])) {
+
+            $cantidad = count($_FILES["imagen"]["tmp_name"]);
+
+            for ($i = 0; $i < $cantidad; $i++) {
+                //Comprobamos si el fichero es una imagen
+                if ($_FILES['imagen']['type'][$i] == 'image/png' || $_FILES['imagen']['type'][$i] == 'image/jpeg') {
+                    $folio1 = $e_detalle['folio_queja'];
+                    $folio2 = str_replace("/", "-", $folio1);
+                    $carpetai = 'uploads/actuaciones/' . $resultado . '/imagenes';
+                    if (!is_dir($carpetai)) {
+                        mkdir($carpetai, 0777, true);
+                    }
+                    //Subimos el fichero al servidor
+                    $namei = $_FILES['imagen']['name'];
+                    $sizei = $_FILES['imagen']['size'];
+                    $typei = $_FILES['imagen']['type'];
+                    $tempi = $_FILES['imagen']['tmp_name'];
+                    $movei = move_uploaded_file($_FILES["imagen"]["tmp_name"][$i],  $carpetai . "/" . $_FILES["imagen"]["name"][$i]);
+                    // move_uploaded_file();
+                    $validar = true;
+                } else $validar = false;
+            }
+        }
+
+        if (($result && $db->affected_rows() === 1) || ($validar = true)) {
             $session->msg('s', "Información Actualizada ");
             redirect('actuaciones.php', false);
         } else {
@@ -181,9 +207,9 @@ if (isset($_POST['edit_actuacion'])) {
                                 <path fill="currentColor" d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
                             </svg><br>
                             <select class="form-control" name="autoridades">
-                                
-                                    <option value="">Escoge una opcion</option>
-                                
+
+                                <option value="">Escoge una opcion</option>
+
                                 <?php foreach ($estatales as $estatal) : ?>
                                     <option <?php if ($e_actuacion['autoridades'] === $estatal['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $estatal['id_cat_aut']; ?>"><?php echo ucwords($estatal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
@@ -205,9 +231,9 @@ if (isset($_POST['edit_actuacion'])) {
                                 <path fill="currentColor" d="M15.07,11.25L14.17,12.17C13.45,12.89 13,13.5 13,15H11V14.5C11,13.39 11.45,12.39 12.17,11.67L13.41,10.41C13.78,10.05 14,9.55 14,9C14,7.89 13.1,7 12,7A2,2 0 0,0 10,9H8A4,4 0 0,1 12,5A4,4 0 0,1 16,9C16,9.88 15.64,10.67 15.07,11.25M13,19H11V17H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12C22,6.47 17.5,2 12,2Z" />
                             </svg><br>
                             <select class="form-control" name="autoridades_federales">
-                                
-                                    <option value="">Escoge una opcion</option>
-                                
+
+                                <option value="">Escoge una opcion</option>
+
                                 <?php foreach ($federales as $federal) : ?>
                                     <option <?php if ($e_actuacion['autoridades_federales'] === $federal['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $federal['id_cat_aut']; ?>"><?php echo ucwords($federal['nombre_autoridad']); ?></option>
                                 <?php endforeach; ?>
@@ -226,13 +252,13 @@ if (isset($_POST['edit_actuacion'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="num_exp_origen">Numero de expediente de origen</label>
+                            <label for="num_exp_origen">Numero expediente origen</label>
                             <input type="text" accept="application/pdf" class="form-control" value="<?php echo remove_junk($e_actuacion['num_exp_origen']); ?>" name="num_exp_origen" id="num_exp_origen">
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-3">
                         <div class="form-group">
                             <label for="descripcion">Descripción</label><br>
                             <textarea name="descripcion" class="form-control" value="<?php echo remove_junk(($e_actuacion['descripcion'])); ?>" id="descripcion" cols="50" rows="2"><?php echo remove_junk(($e_actuacion['descripcion'])); ?></textarea>
@@ -244,6 +270,10 @@ if (isset($_POST['edit_actuacion'])) {
                             <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto" value="uploads/actuaciones/<?php echo $e_actuacion['adjunto']; ?>">
                             <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_actuacion['adjunto']); ?><?php ?></label>
                         </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label for="imagen">Añadir imagen(es): </label>
+                        <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
                     </div>
                 </div>
 
