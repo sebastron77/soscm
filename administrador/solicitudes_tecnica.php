@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Presidencia';
+$page_title = 'Secretaría Técnica';
 require_once('includes/load.php');
 ?>
 <?php
@@ -57,56 +57,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-        <a href="add_gestion.php?a=1" class="tileO">
-            <div class="tileO-tittle">Acciones Incost.</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    gavel
-                </span>
-            </div>
-        </a>
-        <a href="consejo.php" class="tileO">
-            <div class="tileO-tittle">Actas sesión de consejo</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    receipt_long
-                </span>
-
-            </div>
-        </a>
-        <a href="eventos_pres.php" class="tileO">
-            <div class="tileO-tittle">Actividades</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    arrow_circle_right
-                </span>
-            </div>
-        </a>
-        <a href="add_gestion.php?a=3" class="tileO">
-            <div class="tileO-tittle">Amicus Curiae</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    groups
-                </span>
-            </div>
-        </a>
-        <a href="#" class="tileO">
-            <div class="tileO-tittle">Ámparo</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    balance
-                </span>
-            </div>
-        </a>
-        <a href="add_gestion.php?a=2" class="tileO">
-            <div class="tileO-tittle">Controversia Const.</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    account_balance
-                </span>
-            </div>
-        </a>
-        <a href="#" class="tileO">
+       
+        <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -120,14 +72,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
-        <a href="#" class="tileO">
-            <div class="tileO-tittle">Opinión Consultiva</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    psychology_alt
-                </span>
-            </div>
-        </a>
+       
         <a href="#" class="tileO">
             <div class="tileO-tittle">Oficios</div>
             <div class="tileO-icon">
@@ -136,14 +81,52 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="recomendaciones_generales.php" class="tileO">
-            <div class="tileO-tittle">Recomendaciones</div>
+
+		<a href="informes_areas.php" class="tileO">
+            <div class="tileO-tittle">Informe de Actividades</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
-                    breaking_news_alt_1
+                    add_chart
                 </span>
             </div>
         </a>
+       
+		<a href="informes.php" class="tileO">
+            <div class="tileO-tittle">Informe Trimestral/Anual</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    inbox_customize
+                </span>
+            </div>
+        </a>
+       
+		<a href="poa.php" class="tileO">
+            <div class="tileO-tittle">Programa Operativo Anual</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    settings
+                </span>
+            </div>
+        </a>
+       
+		<a href="capacitaciones.php" class="tileO">
+            <div class="tileO-tittle">Capacitaciones</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    supervisor_account
+                </span>
+            </div>
+        </a>
+       
+		<a href="agendas.php" class="tileO">
+            <div class="tileO-tittle">Agenda de Proyectos</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    collections_bookmark
+                </span>
+            </div>
+        </a>
+       
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

@@ -34,7 +34,7 @@ if (isset($_POST['update'])) {
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
         date_default_timezone_set('America/Mexico_City');
 
-        $carpeta = 'uploads/gestiones/' . $e_detalle['id'] . '/' . $resultado;
+        $carpeta = 'uploads/gestiones/' . $e_detalle['id_gestion'] . '/' . $resultado;
 
         $name = $_FILES['adjunto']['name'];
         $size = $_FILES['adjunto']['size'];
@@ -50,12 +50,12 @@ if (isset($_POST['update'])) {
         if($name != ''){
             $query = "UPDATE gestiones_jurisdiccionales SET ";
             $query .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', documento='{$name}', observaciones='{$observaciones}'";
-            $query .= "WHERE id='{$db->escape($e_detalle['id'])}'";
+            $query .= "WHERE id_gestion='{$db->escape($e_detalle['id_gestion'])}'";
         }
         if($name == ''){
             $query = "UPDATE gestiones_jurisdiccionales SET ";
             $query .= "tipo_gestion='{$tipo_gestion}', descripcion='{$descripcion}', observaciones='{$observaciones}'";
-            $query.= "WHERE id='{$db->escape($e_detalle['id'])}'";
+            $query.= "WHERE id_gestion='{$db->escape($e_detalle['id_gestion'])}'";
         }
         
         $result = $db->query($query);
@@ -72,7 +72,7 @@ if (isset($_POST['update'])) {
         }
     } else {
         $session->msg("d", $errors);
-        redirect('edit_gestion.php?id=' . (int) $e_detalle['id'], false);
+        redirect('edit_gestion.php?id=' . (int) $e_detalle['id_gestion'], false);
     }
 }
 ?>
@@ -82,7 +82,7 @@ if (isset($_POST['update'])) {
         <h3>Editar Gestión</h3>
     </div>
     <?php echo display_msg($msg); ?>
-    <form method="post" action="edit_gestion.php?id=<?php echo (int) $e_detalle['id']; ?>" class="clearfix" enctype="multipart/form-data">
+    <form method="post" action="edit_gestion.php?id=<?php echo (int) $e_detalle['id_gestion']; ?>" class="clearfix" enctype="multipart/form-data">
         <div class="form-group">
             <label for="tipo_gestion" class="control-label">Tipo de Gestión Jurisdiccional</label>
             <select class="form-control" name="tipo_gestion" id="tipo_gestion">

@@ -13,12 +13,15 @@ $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-if ($nivel_user > 2 && $nivel_user < 7):
+
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+
+if ($nivel_user > 2 && $nivel_user < 50):
     redirect('home.php');
 endif;
-if ($nivel_user > 7):
-    redirect('home.php');
-endif;
+
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -34,7 +37,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Catálogo de Autoridades</span>
                 </strong>
-                <?php if ($otro == 1) : ?>
+                <?php if ($otro == 1 || $id_user == 46) : ?>
                     <a href="add_autoridad.php" class="btn btn-info pull-right btn-md"> Agregar autoridad</a>
                 <?php endif ?>
             </div>
@@ -45,7 +48,7 @@ endif;
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 50%;">Nombre de la autoridad</th>
                             <th class="text-center" style="width: 30%;">Tipo de autoridad</th>
-                            <?php if ($otro == 1) : ?>
+                            <?php if ($otro == 1 || $id_user == 46) : ?>
                                 <th class="text-center" style="width: 10%;">Acciones</th>
                             <?php endif ?>
                         </tr>
@@ -58,7 +61,7 @@ endif;
                                 <td class="text-center">
                                     <?php echo remove_junk(ucwords($a_autoridad['tipo'])) ?>
                                 </td>
-                                <?php if ($otro == 1) : ?>
+                                <?php if ($otro == 1 || $id_user == 46) : ?>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="edit_autoridad.php?id=<?php echo (int)$a_autoridad['id_cat_aut']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">

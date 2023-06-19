@@ -34,7 +34,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Catálogo de Estado de Cumplimiento <span>
                 </strong>
-                <?php if ($otro == 1 || $nivel == 1) : ?>
+                <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                     <a href="add_edo_cumplimiento.php" class="btn btn-info pull-right btn-md"> Agregar Estado de Cumplimiento</a>
                 <?php endif ?>
             </div>

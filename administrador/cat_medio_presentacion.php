@@ -12,11 +12,11 @@ $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 
-if ($nivel_user > 2 && $nivel_user < 7):
-    redirect('home.php');
-endif;
-if ($nivel_user > 7):
+if ($nivel_user > 2 && $nivel_user < 50):
     redirect('home.php');
 endif;
 ?>
@@ -34,7 +34,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Catálogo de Medios de Presentación <span>
                 </strong>
-                <?php if ($otro == 1 || $nivel == 1) : ?>
+                <?php if ($otro == 1 || $nivel == 1 ) : ?>
                     <a href="add_med_presentacion.php" class="btn btn-info pull-right btn-md"> Agregar Medio de Presentación</a>
                 <?php endif ?>
             </div>

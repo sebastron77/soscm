@@ -106,7 +106,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="#" class="tileO">
+        <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -128,7 +128,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="#" class="tileO">
+        <a href="correspondencia.php" class="tileO">
             <div class="tileO-tittle">Oficios</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

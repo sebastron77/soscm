@@ -2,7 +2,15 @@
 $page_title = 'Editar Tipo Resolución';
 require_once('includes/load.php');
 $user = current_user();
-page_require_level(1);
+$nivel_user = $user['user_level'];
+
+if ($nivel_user == 1) {
+    page_require_level_exacto(1);
+}
+
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 ?>
 <?php
 $a_catalogo = find_by_id('cat_tipo_res', (int)$_GET['id'], 'id_cat_tipo_res');

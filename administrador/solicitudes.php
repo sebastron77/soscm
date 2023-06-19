@@ -63,59 +63,117 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
 	<div class="full-box tile-container">
-		<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : ?>
-			<a href="solicitudes_presidencia.php" class="tileA">
-				<div class="tileA-tittle">Consejo</div>
-				<div class="tileA-icon">
-					<span class="material-symbols-rounded" style="font-size: 95px;">
-						groups_2
-					</span>
-				</div>
-			</a>
-		<?php endif ?>
-		<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : ?>
-			<a href="solicitudes_presidencia.php" class="tileA">
-				<div class="tileA-tittle">Presidencia</div>
-				<div class="tileA-icon">
-					<span class="material-symbols-rounded" style="font-size: 95px;">
-						person
-					</span>
-				</div>
-			</a>
-		<?php endif ?>
+		
+		<div class="organigrama">
+			<ul>
+				<li>
+				  <a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : echo "solicitudes_presidencia.php"; endif?>" class="tileA">
+					  <div class="tileA-tittle">Presidencia</div>
+					  <div class="tileA-icon">
+						<span class="material-symbols-rounded" style="font-size: 95px;">
+							person
+						</span>
+						</div>
+				  </a>
+					<ul>
+						<li>
+							<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : echo "solicitudes_consejo.php"; endif?>" class="tileA">
+								<div class="tileA-tittle">Consejo</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										groups_2
+									</span>
+								</div>
+							</a>						  						          
+						</li>
+						
+						<li>
+							<a href="<?php if (($otro == 7) || ($otro <= 2) || ($otro == 21)) : echo "solicitudes_ejecutiva.php"; endif?>" class="tileA">
+								<div class="tileA-tittle">Secretaría Ejecutiva</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										next_week
+									</span>
+								</div>
+							</a>				  						          
+						</li>
+						
+						<li>
+							<a href="<?php if (($otro == 7) || ($otro <= 2) || ($otro == 21)) : echo "solicitudes_tecnica.php"; endif?>" class="tileA">
+								<div class="tileA-tittle">Secretaría Técnica</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										account_box
+									</span>
+								</div>
+							</a>
+							<ul>
+								<li>
+									<a href="<?php if (($otro <= 2) || ($otro == 12)) : echo "#"; endif?>" class="tileA">
+										<div class="tileA-tittle">Desaparecidos</div>
+										<div class="tileA-icon">
+											<span class="material-symbols-rounded" style="font-size: 95px;">
+												person_search
+											</span>
+										</div>
+									</a>
+								</li>
+								
+								<li>
+									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 11)) : echo "solicitudes_transparencia.php"; endif ?>" class="tileA">
+										<div class="tileA-tittle">Transparencia</div>				
+										<div class="tileA-icon">
+											<span class="material-symbols-rounded" style="font-size: 95px;">
+												travel_explore
+											</span>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</li>
+					  
+						
+						<li>
+							<a href="<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21) || ($otro == 50)) : echo "solicitudes_quejas.php"; endif?>" class="tileA">
+								<div class="tileA-tittle">Quejas y Seguimiento</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										book
+									</span>
+								</div>
+							</a>				  						          
+						</li>
+						
+						<li>
+							<a href="#" class="tileA">
+								<div class="tileA-tittle" style="font-size: 13px;">Mecanismos y Agendas</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										calendar_view_month
+									</span>
+								</div>
+							</a>				  						          
+						</li>
+						
+						
+						<li>
+						
+							<a href="<?php if ( ($otro <= 2)) : echo"solicitudes_gestion.php"; endif?>" class="tileA">
+								<div class="tileA-tittle">Unidad de Gestión</div>				
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 95px;">
+										rebase_edit
+									</span>
+								</div>
+							</a>	  						          
+						</li>
+					  
+						
+					</ul>
+				</li>
+			</ul>
+		</div>
 
-		<?php if (($otro == 7) || ($otro <= 2) || ($otro == 21)) : ?>
-			<a href="solicitudes_tecnica.php" class="tileA">
-				<div class="tileA-tittle">Secretaría Técnica</div>
-				<div class="tileA-icon">
-					<span class="material-symbols-rounded" style="font-size: 95px;">
-						account_box
-					</span>
-				</div>
-			</a>
-		<?php endif ?>
-
-		<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : ?>
-			<a href="#" class="tileA">
-				<div class="tileA-tittle">Mecanismos y Agendas</div>
-				<div class="tileA-icon">
-					<span class="material-symbols-rounded" style="font-size: 95px;">
-						calendar_view_month
-					</span>
-				</div>
-			</a>
-		<?php endif ?>
-
-		<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21) || ($otro == 50)) : ?>
-			<a href="solicitudes_quejas.php" class="tileA">
-				<div class="tileA-tittle">Quejas y Seguimiento</div>
-				<div class="tileA-icon">
-					<span class="material-symbols-rounded" style="font-size: 95px;">
-						book
-					</span>
-				</div>
-			</a>
-		<?php endif ?>
 	</div>
 </div>
 <br>

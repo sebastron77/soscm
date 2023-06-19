@@ -30,6 +30,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 $c_orientacion = count_by_id_orientacion('orientacion_canalizacion', 'id_or_can');
 $c_canalizacion = count_by_id_canalizacion('orientacion_canalizacion', 'id_or_can');
 $c_quejas = count_by_id('quejas_dates', 'id_queja_date');
+$c_actuaciones = count_by_id('actuaciones', 'id_actuacion');
+$c_convenios = count_by_id('convenios', 'id_convenio');
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -94,6 +96,28 @@ $c_quejas = count_by_id('quejas_dates', 'id_queja_date');
 				<p><?php echo $c_canalizacion['total']; ?> Registradas</p>
 			</div>
 		</a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="actuaciones.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Actuaciones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    receipt_long
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_actuaciones['total']; ?> Registradas</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="convenios.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Convenios</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    description
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_convenios['total']; ?> Registrados</p>
+            </div>
+        </a>
 
 	</div>
 </div>

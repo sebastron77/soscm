@@ -6,21 +6,17 @@ require_once('includes/load.php');
 // page_require_level(2);
 $all_derechos = find_all_order('cat_der_vuln', 'descripcion');
 $user = current_user();
-$nivel = $user['user_level'];
 
-// $user = current_user();
-//$id_usuario = $user['id'];
-
-// $user = current_user();
-$id_user = $user['id'];
-$busca_area = area_usuario($id_usuario);
+$id_user = $user['id_user'];
+$busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-if ($nivel_user > 2 && $nivel_user < 7):
-    redirect('home.php');
-endif;
-if ($nivel_user > 7):
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+
+if ($nivel_user > 2 && $nivel_user < 50):
     redirect('home.php');
 endif;
 ?>
@@ -38,7 +34,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Catálogo de derechos vulnerados<span>
                 </strong>
-                <?php if ($otro == 1 || $nivel == 1) : ?>
+                <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                     <a href="add_derechos.php" class="btn btn-info pull-right btn-md"> Agregar Derecho Vulnerado</a>
                 <?php endif ?>
             </div>
@@ -49,7 +45,7 @@ endif;
                             <th class="text-center" style="width: 5%;">#</th>
                             <th style="width: 40%;">Nombre del Derecho Vulnerado</th>
                             <th class="text-center" style="width: 20%;">Estatus</th>
-                            <?php if ($otro == 1 || $nivel == 1) : ?>
+                            <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                 <th class="text-center" style="width: 15%;">Acciones</th>
                             <?php endif ?>
                         </tr>
@@ -66,10 +62,10 @@ endif;
                                         <span class="label label-danger"><?php echo "Inactiva"; ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <?php if ($otro == 1 || $nivel == 1) : ?>
+                                <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <?php if ($otro == 1 || $nivel == 1) : ?>
+                                            <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                                 <a href="edit_derechos.php?id=<?php echo (int)$a_derechos['id_cat_der_vuln']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a>

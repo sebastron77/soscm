@@ -4686,26 +4686,159 @@ function find_derechoV($id_queja)
     return null;
 }
 
-
 function autoridadQ()
 {
-  // global $db;
-  // $tipo = (int)$tipo;
   $sql  = "SELECT ca.`nombre_autoridad`, COUNT(a.`id_queja_date`) as total 
-FROM `quejas_dates` a 
-LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` 
-GROUP BY ca.`id_cat_aut`;";
+  FROM `quejas_dates` a 
+  LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` 
+  GROUP BY ca.`id_cat_aut`;";
   return find_by_sql($sql);
 }
 function derechoVulneradoQ()
 {
-  // global $db;
-  // $tipo = (int)$tipo;
   $sql  = "SELECT IFNULL(ca.`descripcion`,'Sin Derecho Vulnerado') as descripcion, COUNT(a.`id_queja_date`) as total 
-FROM `quejas_dates` a
-LEFT JOIN `rel_queja_der_vuln` b ON a.`id_queja_date`=b.`id_queja_date` 
-LEFT JOIN `cat_der_vuln` ca ON b.`id_cat_der_vuln` = ca.`id_cat_der_vuln`
-GROUP BY ca.`id_cat_der_vuln`
-ORDER BY descripcion ;";
+  FROM `quejas_dates` a
+  LEFT JOIN `rel_queja_der_vuln` b ON a.`id_queja_date`=b.`id_queja_date` 
+  LEFT JOIN `cat_der_vuln` ca ON b.`id_cat_der_vuln` = ca.`id_cat_der_vuln`
+  GROUP BY ca.`id_cat_der_vuln`
+  ORDER BY descripcion ;";
   return find_by_sql($sql);
+}
+/*--------------------------------------------*/
+/* Funcion que encuentra todos los  convenios */
+/*--------------------------------------------*/
+function find_all_convenios()
+{
+  $sql = "SELECT * FROM convenios";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+   sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_convenio()
+{
+  $sql = "SELECT * FROM convenios ORDER BY id_convenio DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+   sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_info_areas()
+{
+  $sql = "SELECT * FROM informe_actividades_areas ORDER BY id_info_act_areas DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*--------------------------------------------*/
+/* Funcion que encuentra la descripcion de un di */
+/*--------------------------------------------*/
+function find_descripcion_id($table, $id, $nombre_id)
+{
+  global $db;
+  if (tableExists($table)) {
+    $sql = ("SELECT descripcion FROM {$db->escape($table)} WHERE {$db->escape($nombre_id)}='{$db->escape($id)}'");
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  }
+}
+/*--------------------------------------------------*/
+/* Funcion que encuentra todas la correspondencias */
+/*--------------------------------------------------*/
+function find_all_correspondenciaAdmin()
+{
+  $sql = "SELECT a.*,b.`nombre_area` FROM correspondencia a LEFT JOIN `area` b ON a.`id_area_turnada`=b.`id_area`";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*-------------------------------------------------------------*/
+/* Funcion que encuentra todas la correspondencias de un área */
+/*-------------------------------------------------------------*/
+function find_all_correspondencia($area)
+{
+  $sql = "SELECT a.*,b.`nombre_area` FROM correspondencia a LEFT JOIN `area` b ON a.`id_area_turnada`=b.`id_area` WHERE id_area_turnada='{$area}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+  sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_correspondencia()
+{
+  $sql = "SELECT * FROM correspondencia ORDER BY id_correspondencia DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------------------------------------------*/
+/* Funcion que encuentra una correspondencia por id, que ayudara al momento de editar */
+/*----------------------------------------------------------------------------------*/
+function find_by_id_correspondencia($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT * FROM correspondencia WHERE id_correspondencia='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+/*----------------------------------------------------------------------------------*/
+/* Funcion que busca folio */
+/*----------------------------------------------------------------------------------*/
+function find_expediente($folio)
+{
+  global $db;
+  $sql = 'SELECT folio, SUBSTRING(folio FROM 16 FOR 4) as tipo FROM folios WHERE folio LIKE "%' . $db->escape($folio) . '%" ORDER BY SUBSTRING(folio FROM 16 FOR 4) ';
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+   sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_consejo()
+{
+  global $db;
+  $sql = "SELECT * FROM consejo ORDER BY id_acta_consejo DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*--------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias */
+/*--------------------------------------------------*/
+function find_all_informes_areasAdmin()
+{
+  $sql = "SELECT * FROM informe_actividades_areas";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*-------------------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias de un área */
+/*-------------------------------------------------------------*/
+function find_all_informes_areas($area)
+{
+  $sql = "SELECT * FROM informe_actividades_areas WHERE area_creacion='{$area}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios de acuerdos para 
+   despues sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_folios_actividades_areas()
+{
+  $sql = "SELECT * FROM folios ORDER BY id_folio DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
 }

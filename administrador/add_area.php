@@ -2,7 +2,17 @@
 $page_title = 'Agregar área';
 require_once('includes/load.php');
 $areas = find_all('area');
-page_require_level(1);
+
+$user = current_user();
+$nivel_user = $user['user_level'];
+
+if ($nivel_user == 1) {
+    page_require_level_exacto(1);
+}
+
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 ?>
 <?php
 if (isset($_POST['add'])) {
@@ -78,7 +88,7 @@ if (isset($_POST['add'])) {
             <label for="estatus">Área Padre</label>
             <select class="form-control" name="estatus">
                 <?php foreach ($areas as $area) : ?>
-                    <option value="<?php echo $area['id']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+                    <option value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
                 <?php endforeach ?>
             </select>
         </div>

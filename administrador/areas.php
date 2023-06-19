@@ -17,12 +17,14 @@ $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 //@$level = find_user_level('users', (int)$_GET['id']);
 
-if ($nivel_user > 2 && $nivel_user < 7):
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+
+if ($nivel_user > 2 && $nivel_user < 50):
     redirect('home.php');
 endif;
-if ($nivel_user > 7):
-    redirect('home.php');
-endif;
+
 ?>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
@@ -38,7 +40,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Áreas de trabajo de la CEDH</span>
                 </strong>
-                <?php if ($otro == 1 || $nivel == 1) : ?>
+                <?php if ($otro == 1 || $nivel == 1 || $id_user == 46 ) : ?>
                     <a href="add_area.php" class="btn btn-info pull-right btn-md"> Agregar área</a>
                 <?php endif ?>
             </div>
@@ -50,7 +52,7 @@ endif;
                             <th style="width: 40%;">Nombre del área</th>
                             <th class="text-center" style="width: 15%;">Abreviación del área</th>
                             <th class="text-center" style="width: 20%;">Estatus del área</th>
-                            <?php if ($otro == 1 || $nivel == 1) : ?>
+                            <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                 <th class="text-center" style="width: 15%;">Acciones</th>
                             <?php endif ?>
                         </tr>
@@ -68,10 +70,10 @@ endif;
                                         <span class="label label-danger"><?php echo "Inactiva"; ?></span>
                                     <?php endif; ?>
                                 </td>
-                                <?php if ($otro == 1 || $nivel == 1) : ?>
+                                <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                     <td class="text-center">
                                         <div class="btn-group">
-                                            <?php if ($otro == 1 || $nivel == 1) : ?>
+                                            <?php if ($otro == 1 || $nivel == 1 || $id_user == 46) : ?>
                                                 <a href="edit_area.php?id=<?php echo (int)$a_area['id_area']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">
                                                     <i class="glyphicon glyphicon-pencil"></i>
                                                 </a>

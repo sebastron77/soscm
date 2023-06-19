@@ -2,7 +2,16 @@
 $page_title = 'Agregar autoridad';
 require_once('includes/load.php');
 
-page_require_level(1);
+$user = current_user();
+$nivel_user = $user['user_level'];
+
+if ($nivel_user == 1) {
+    page_require_level_exacto(1);
+}
+
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 ?>
 <?php
 
