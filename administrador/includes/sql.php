@@ -864,13 +864,11 @@ function find_tipo_ficha($id)
 /*---------------------------------------------------------*/
 function find_all_trabajadores_area($area)
 {
-  global $db;
-  $results = array();
   $sql = "SELECT d.id_det_usuario,d.nombre, d.apellidos, a.nombre_area 
   FROM detalles_usuario as d 
   LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo 
   LEFT JOIN area as a ON a.id_area = c.id_area 
-  WHERE a.id_area = '{$area}' 
+  WHERE a.nombre_area = '{$area}' 
   ORDER BY d.nombre ASC";
   $result = find_by_sql($sql);
   return $result;
@@ -1089,8 +1087,14 @@ function find_by_id_cat_agraviado($id)
 /*------------------------------------------------------------------*/
 function last_id_oricanal()
 {
-  global $db;
   $sql = "SELECT * FROM orientacion_canalizacion ORDER BY id_or_can DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function last_id_poa()
+{
+  $sql = "SELECT * FROM poa ORDER BY id_poa DESC LIMIT 1";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -1184,8 +1188,12 @@ function area_usuario2($id_usuario)
   global $db;
   $id_usuario = (int)$id_usuario;
 
-  $sql = $db->query("SELECT a.nombre_area FROM area g LEFT JOIN users u ON u.user_level = g.id_area LEFT JOIN detalles_usuario d ON u.id_detalle_user = d.id_det_usuario
-                      LEFT JOIN cargos c ON c.id_cargos = d.id_cargo LEFT JOIN area a ON a.id_area = c.id_area WHERE u.id_user = '{$db->escape($id_usuario)}' LIMIT 1");
+  $sql = $db->query("SELECT a.nombre_area
+                      FROM detalles_usuario d
+                      LEFT JOIN users u ON u.id_detalle_user = d.id_det_usuario
+                      LEFT JOIN cargos c ON c.id_cargos = d.id_cargo
+                      LEFT JOIN area a ON a.id_area = c.id_area
+                      WHERE u.id_user = '{$db->escape($id_usuario)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else
@@ -4841,4 +4849,150 @@ function last_id_folios_actividades_areas()
   $sql = "SELECT * FROM folios ORDER BY id_folio DESC LIMIT 1";
   $result = find_by_sql($sql);
   return $result;
+}
+
+/*--------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias */
+/*--------------------------------------------------*/
+function find_all_informeAdmin()
+{
+  $sql = "SELECT * FROM informes";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*-------------------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias de un área */
+/*-------------------------------------------------------------*/
+function find_all_informe($area)
+{
+  $sql = "SELECT * FROM informes WHERE area_creacion='{$area}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra todas las orientaciones */
+/*----------------------------------------------*/
+function find_all_capacitaciones()
+{
+  global $db;
+  $results = array();
+  $sql = "SELECT * FROM capacitaciones ORDER BY fecha";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra todas las orientaciones */
+/*----------------------------------------------*/
+function find_all_capacitaciones_area($area)
+{
+  global $db;
+  $results = array();
+  $sql = "SELECT * FROM capacitaciones WHERE area_creacion = '{$area}' ORDER BY fecha";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una capacitación por id */
+/*----------------------------------------------*/
+function find_by_id_capacitacion($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT * FROM capacitaciones WHERE id_capacitacion='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+function find_all_agendas()
+{
+  $sql = "SELECT a.id_agendas,a.fecha,a.actividad,a.responsable,a.supervisor,a.fecha_limite,a.fecha_entrega,a.entregables,a.observaciones,
+  b.id_agenda,MAX(b.porcentaje) as porcentaje_avance,d.nombre as nombre_responsable,d.apellidos as apellido_responsable,dd.nombre as nombre_supervisor,dd.apellidos as apellido_supervisor
+  FROM agendas a
+  LEFT JOIN avance_agendas b ON a.id_agendas = b.id_agenda
+  LEFT JOIN detalles_usuario d ON d.id_det_usuario = a.responsable
+  LEFT JOIN detalles_usuario dd ON dd.id_det_usuario = a.supervisor
+  GROUP BY b.id_agenda";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_all_agendas_area($area)
+{
+  $sql = "SELECT a.id_agendas,a.fecha,a.actividad,a.responsable,a.supervisor,a.fecha_limite,a.fecha_entrega,a.entregables,a.observaciones,b.id_agenda,MAX(b.porcentaje) as porcentaje_avance
+  FROM agendas a
+  LEFT JOIN avance_agendas b ON a.id_agendas = b.id_agenda
+  WHERE a.area_creacion = '{$area}' GROUP BY b.id_agenda";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*--------------------------------------------------------------*/
+/* Funcion para sacar realacion area-usuario
+/*--------------------------------------------------------------*/
+function find_area_usuario()
+{
+  global $db;
+  $sql  = "SELECT d.nombre, d.apellidos, a.nombre_area ";
+  $sql .= "FROM detalles_usuario d ";
+  $sql .= "LEFT JOIN cargos c ON d.id_cargo = c.id_cargos ";
+  $sql .= "LEFT JOIN area a ON a.id_area = c.id_area ";
+  $sql .= "ORDER BY d.nombre";
+  return $db->query($sql);
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una agenda por id */
+/*----------------------------------------------*/
+function find_by_id_descripcion_porcentaje($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = "SELECT id_agenda, porcentaje, descripcion_avance, fecha_hora_creacion FROM avance_agendas WHERE id_agenda='{$db->escape($id)}' ORDER BY id_agenda";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una agenda por id */
+/*----------------------------------------------*/
+function find_by_id_descripcion_porcentaje_area($id, $area)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = "SELECT id_agenda, porcentaje, descripcion_avance, fecha_hora_creacion FROM avance_agendas WHERE id_agenda='{$db->escape($id)}' AND area_creacion='{$db->escape($area)}' ORDER BY id_agenda";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una agenda por id */
+/*----------------------------------------------*/
+function find_by_id_agenda($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT * FROM agendas WHERE id_agendas='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra una agenda por id */
+/*----------------------------------------------*/
+function find_by_id_agenda_porcentaje($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT porcentaje, descripcion_avance FROM avance_agendas WHERE id_agenda='{$db->escape($id)}' ORDER BY porcentaje DESC LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
 }

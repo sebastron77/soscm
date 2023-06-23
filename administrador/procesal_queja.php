@@ -88,18 +88,18 @@ if (isset($_POST['procesal_queja'])) {
         }
 
 
-        $query = "INSERT INTO rel_queja_der_gral (id_queja_date, id_cat_derecho_general) VALUES($id,$id_cat_derecho_general);";
+        $query = "INSERT INTO rel_queja_der_gral (id_queja_date, id_cat_derecho_general) VALUES($id, $id_cat_derecho_general);";
         if ($db->query($query)) {
             //echo "Registro ingresado con éxito.";
         } else {
         }
 
-        $query = "INSERT INTO rel_queja_der_vuln (id_queja_date, id_cat_der_vuln) VALUES($id,$id_cat_der_vuln);";
+        $query = "INSERT INTO rel_queja_der_vuln (id_queja_date, id_cat_der_vuln) VALUES($id, $id_cat_der_vuln);";
         if ($db->query($query)) {
         } else {
         }
 
-        $query = "INSERT INTO rel_queja_hechos (id_queja_date, id_cat_hecho_vuln) VALUES($id,$id_cat_hecho_vuln);";
+        $query = "INSERT INTO rel_queja_hechos (id_queja_date, id_cat_hecho_vuln) VALUES($id, $id_cat_hecho_vuln);";
         if ($db->query($query)) {
         } else {
         }

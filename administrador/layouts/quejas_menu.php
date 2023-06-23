@@ -71,7 +71,7 @@ $id_user = $user['id_user'];
       <li><a href="tabla_estadistica_canalizacion.php">Canalizaciones</a></li>
     </ul>
 
-    <?php if ($id_user == 46) : ?>
+    <?php if ($id_user == 46 || $id_user == 3) : ?>
   <li style="margin-top: 18px;">
     <a href="#" class="submenu-toggle" style="left: 18px; top:20px">
       <svg style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard-pulse" viewBox="0 0 16 16">

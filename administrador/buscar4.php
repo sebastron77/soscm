@@ -9,7 +9,7 @@
 
 	foreach($queryM as $rowM)
 	{
-		$html .= "<option value='".$rowM['id']."'>".$rowM['nombre_area']."</option>";
+		$html .= "<option value='".$rowM['id_area']."'>".$rowM['nombre_area']."</option>";
 	}
 
 	echo $html;

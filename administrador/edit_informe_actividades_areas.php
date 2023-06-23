@@ -5,7 +5,7 @@ $user = current_user();
 $detalle = $user['id_user'];
 $e_informe = find_by_id('informe_actividades_areas', (int)$_GET['id'], 'id_info_act_areas');
 $id_folio = last_id_folios_actividades_areas();
-// page_require_level(2);
+// page_require_level(2);.
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['edit_informe_actividades_areas'])) {
