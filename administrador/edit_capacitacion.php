@@ -61,6 +61,7 @@ if (isset($_POST['edit_capacitacion'])) {
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             $session->msg('s', "Información Actualizada ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó capacitación, Folio: ' . $folio . '.', 2);
             redirect('capacitaciones.php', false);
         } else {
             $session->msg('d', ' Lo siento no se actualizaron los datos.');

@@ -113,6 +113,7 @@ if (isset($_POST['edit_poa'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', " El POA ha sido editado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó POA, Folio: ' . $e_poa['folio'] . '.', 2);
             redirect('poa.php', false);
         } else {
             //failed

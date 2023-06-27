@@ -59,7 +59,7 @@ if (isset($_POST['edit_evento'])) {
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             $session->msg('s', "Información Actualizada ");
-            insertAccion($user['id_user'], '"' . $user['username'] . '" editó queja, Folio: ' . $folio_editar . '.', 2);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó evento, Folio: ' . $folio_editar . '.', 2);
             redirect('eventos.php', false);
         } else {
             $session->msg('d', ' Lo siento no se actualizaron los datos.');

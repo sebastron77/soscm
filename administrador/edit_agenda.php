@@ -62,6 +62,7 @@ if (isset($_POST['add_agenda'])) {
         if (($result && $db->affected_rows() === 1) || ($db->query($query2))) {
             //sucess
             $session->msg('s', " El proyecto ha sido editado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó agenda, el día: ' . $fecha_creacion_sistema . '.', 2);
             redirect('agendas.php', false);
         } else {
             //failed

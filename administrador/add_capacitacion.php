@@ -96,6 +96,7 @@ if (isset($_POST['add_capacitacion'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " La capacitación ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó capacitación, Folio: ' . $folio . '.', 1);
             redirect('capacitaciones.php', false);
         } else {
             //failed

@@ -63,7 +63,7 @@ if (isset($_POST['edit_informe'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', " El informe ha sido editado con éxito.");
-            insertAccion($user['id_user'], '"' . $user['username'] . '" editó informe de área, Folio: ' . $e_informe['folio'] . '.', 1);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó informe de área, Folio: ' . $e_informe['folio'] . '.', 2);
             redirect('informes.php', false);
         } else {
             //failed

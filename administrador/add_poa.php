@@ -112,6 +112,7 @@ if (isset($_POST['add_poa'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " El POA ha sido agregado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó POA, Folio: ' . $folio . '.', 1);
             redirect('poa.php', false);
         } else {
             //failed

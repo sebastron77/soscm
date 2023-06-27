@@ -64,6 +64,7 @@ if (isset($_POST['update'])) {
         if ($result && $db->affected_rows() === 1 ) {
             //sucess
             $session->msg('s', "Registro actualizado con éxito. ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó gestión jurisdiccional, Folio: ' . $e_detalle['folio'] . '.', 2);
             redirect('gestiones.php', false);
         } else {
             //failed

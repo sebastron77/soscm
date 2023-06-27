@@ -59,6 +59,7 @@ if (isset($_POST['add_agenda'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " El proyecto ha sido agregado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó agenda, el día: ' . $fecha_creacion_sistema . '.', 1);
             redirect('agendas.php', false);
         } else {
             //failed
