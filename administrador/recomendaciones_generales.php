@@ -4,7 +4,7 @@ require_once('includes/load.php');
 ?>
 <?php
 
-$all_recomendaciones = find_all('recomendaciones');
+$all_recomendaciones = find_all('recomendaciones_generales');
 //$all_detalles = find_all_detalles_busqueda($_POST['consulta']);
 $user = current_user();
 $nivel = $user['user_level'];

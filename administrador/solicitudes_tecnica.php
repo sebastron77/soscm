@@ -57,7 +57,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-       
+
         <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
@@ -72,7 +72,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
-       
+
         <a href="#" class="tileO">
             <div class="tileO-tittle">Oficios</div>
             <div class="tileO-icon">
@@ -82,7 +82,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             </div>
         </a>
 
-		<a href="informes_areas.php" class="tileO">
+        <a href="informes_areas.php" class="tileO">
             <div class="tileO-tittle">Informe de Actividades</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -90,8 +90,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-       
-		<a href="informes.php" class="tileO">
+
+        <a href="informes.php" class="tileO">
             <div class="tileO-tittle">Informe Trimestral/Anual</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -99,8 +99,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-       
-		<a href="poa.php" class="tileO">
+
+        <a href="poa.php" class="tileO">
             <div class="tileO-tittle">Programa Operativo Anual</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -108,8 +108,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-       
-		<a href="capacitaciones.php" class="tileO">
+
+        <a href="capacitaciones.php" class="tileO">
             <div class="tileO-tittle">Capacitaciones</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -117,8 +117,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-       
-		<a href="agendas.php" class="tileO">
+
+        <a href="agendas.php" class="tileO">
             <div class="tileO-tittle">Agenda de Proyectos</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -126,7 +126,15 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-       
+        
+        <a href="eventos.php" class="tile">
+            <div class="tile-tittle">Eventos</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event_available
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

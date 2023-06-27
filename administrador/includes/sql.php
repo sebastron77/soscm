@@ -386,7 +386,7 @@ function activate_by_id_user($table, $id, $campo_estatus)
   }
 }
 /*--------------------------------------------------------------*/
-/* Funcion para activar usuario en funcion del cargo inactivado */
+/* Funcion para activar usuario en función del cargo inactivado */
 /*--------------------------------------------------------------*/
 function activate_cargo_user($table, $id, $campo_estatus)
 {
@@ -868,7 +868,7 @@ function find_all_trabajadores_area($area)
   FROM detalles_usuario as d 
   LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo 
   LEFT JOIN area as a ON a.id_area = c.id_area 
-  WHERE a.nombre_area = '{$area}' 
+  WHERE a.id_area = '{$area}' 
   ORDER BY d.nombre ASC";
   $result = find_by_sql($sql);
   return $result;
@@ -4995,4 +4995,34 @@ function find_by_id_agenda_porcentaje($id)
     return $result;
   else
     return null;
+}
+
+/*-------------------------------------------------*/
+/* Funcion que encuentra todas las recomendaciones */
+/*-------------------------------------------------*/
+function find_all_recomendaciones()
+{
+  $sql = "SELECT * FROM recomendaciones";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*-------------------------------------------------*/
+/* Funcion que encuentra todas las recomendaciones */
+/*-------------------------------------------------*/
+function find_all_recomendaciones_generales()
+{
+  $sql = "SELECT * FROM recomendaciones_generales";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Ver todas las quejas que han sido agregadas al libro electrónico */
+/*------------------------------------------------------------------*/
+function find_all_eventos()
+{
+  $sql = "SELECT * FROM eventos";
+  $result = find_by_sql($sql);
+  return $result;
 }

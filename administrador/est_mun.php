@@ -21,7 +21,7 @@ if ($nivel_user == 50) {
 }
 
 if ($nivel_user > 7 && $nivel_user < 50) :
-  redirect('home.php');
+    redirect('home.php');
 endif;
 ?>
 
@@ -68,7 +68,7 @@ endif;
                         const gVulnerableB = new Chart(ctx3, {
                             type: 'bar',
                             data: {
-                                labels: [<?php foreach ($municipios as $municipio) : ?> '<?php echo $municipio['municipio_localidad']; ?>', <?php endforeach; ?>],
+                                labels: [<?php foreach ($municipios as $municipio) : ?> '<?php echo $municipio['id_cat_mun']; ?>', <?php endforeach; ?>],
                                 datasets: [{
                                     label: 'Orientaciones por Municipio',
                                     data: yValues,
@@ -121,10 +121,11 @@ endif;
                             </tr>
                         </thead>
                         <tbody style="background: white;">
-                            <?php $total=0;  foreach ($municipios as $municipio) : ?>
+                            <?php $total = 0;
+                            foreach ($municipios as $municipio) : ?>
                                 <tr>
                                     <td>
-                                        <?php echo remove_junk(ucwords($municipio['municipio_localidad'])) ?>
+                                        <?php echo remove_junk(ucwords($municipio['id_cat_mun'])) ?>
                                     </td>
                                     <td>
                                         <?php echo remove_junk(ucwords($municipio['total'])) ?>

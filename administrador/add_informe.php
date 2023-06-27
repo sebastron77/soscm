@@ -89,6 +89,7 @@ if (isset($_POST['add_informe'])) {
         if ($db->query($query) && $db->query($query2)) {
             //sucess
             $session->msg('s', " El informe ha sido agregada con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó informe an/trim, Folio: ' . $folio . '.', 1);
             redirect('informes.php', false);
         } else {
             //failed

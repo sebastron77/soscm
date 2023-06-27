@@ -87,6 +87,7 @@ if (isset($_POST['add_informe_areas'])) {
         if ($db->query($query) && $db->query($query2)) {
             //success
             $session->msg('s', " El informe de actividades ha sido agregado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó informe de área, Folio: ' . $folio . '.', 1);
             redirect('informes_areas.php', false);
         } else {
             //failed

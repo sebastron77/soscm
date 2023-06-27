@@ -80,12 +80,6 @@ if (isset($_POST['procesal_queja'])) {
             echo "ERROR: No se pudo eliminar registro $consulta. ";
         }
 
-        $query = " DELETE FROM rel_queja_hechos WHERE id_queja_date = " . $id;
-        if ($db->query($query)) {
-            echo "Registro eliminado con éxito.";
-        } else {
-            echo "ERROR: No se pudo eliminar registro $consulta. ";
-        }
 
 
         $query = "INSERT INTO rel_queja_der_gral (id_queja_date, id_cat_derecho_general) VALUES($id, $id_cat_derecho_general);";
@@ -93,16 +87,12 @@ if (isset($_POST['procesal_queja'])) {
             //echo "Registro ingresado con éxito.";
         } else {
         }
-
         $query = "INSERT INTO rel_queja_der_vuln (id_queja_date, id_cat_der_vuln) VALUES($id, $id_cat_der_vuln);";
         if ($db->query($query)) {
         } else {
         }
 
-        $query = "INSERT INTO rel_queja_hechos (id_queja_date, id_cat_hecho_vuln) VALUES($id, $id_cat_hecho_vuln);";
-        if ($db->query($query)) {
-        } else {
-        }
+echo $query;
 
         insertAccion($user['id_user'], '\"' . $user['username'] . '\" actualizó los Derechos Presuntamente Violentados del expediene ' . $folio_editar . '.', 2);
 
@@ -216,24 +206,12 @@ if (isset($_POST['procesal_queja'])) {
                     <span style="font-size: 20px; color: #7263F0">Derechos Presuntamente Violentados</span>
                 </strong>
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="hecho_violatorio">Hecho Violatorio:</label>
-                            <select class="form-control" name="id_cat_hecho_vuln" id="id_cat_hecho_vuln">
-                                <option value="">Seleccione el Hecho Violatorio</option>
-                                <?php foreach ($cat_hecho_vuln as $hecho_violatorio) : ?>
-                                    <option <?php if ($hecho_violatorio['id_cat_hecho_vuln'] === $rel_queja_hechos)
-                                                echo 'selected="selected"'; ?> value="<?php echo $hecho_violatorio['id_cat_hecho_vuln']; ?>">
-                                        <?php echo ucwords($hecho_violatorio['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
+                   
 
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="derecho_general">Derecho general:</label>
-                            <select class="form-control" name="id_cat_derecho_general" id="id_cat_derecho_general">
+                            <select class="form-control" name="id_cat_derecho_general" id="id_cat_derecho_general" required>
                                 <option value="">Seleccione el Derecho General</option>
                                 <?php foreach ($cat_derecho_gral as $derecho_gral) : ?>
                                     <option <?php if ($derecho_gral['id_cat_derecho_general'] === $rel_queja_der_gral)
@@ -247,7 +225,7 @@ if (isset($_POST['procesal_queja'])) {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="derecho_violentado">Derecho violentado:</label>
-                            <select class="form-control" name="id_cat_derecho_vuln" id="id_cat_derecho_vuln">
+                            <select class="form-control" name="id_cat_derecho_vuln" id="id_cat_derecho_vuln" required>
                                 <option value="">Seleccione el Derecho Violentado</option>
                                 <?php foreach ($cat_derecho_vuln as $derecho_vuln) : ?>
                                     <option <?php if ($derecho_vuln['id_cat_der_vuln'] === $rel_queja_der_vuln)
@@ -273,7 +251,8 @@ if (isset($_POST['procesal_queja'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="estado_procesal">Estado Procesal</label>
-                            <select class="form-control" name="estado_procesal" id="estado_procesal">
+                            <select class="form-control" name="estado_procesal" id="estado_procesal" required>
+							<option value="">Seleccione el Estado Procesal</option>
                                 <?php foreach ($cat_est_procesal as $est_pros) : ?>
                                     <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
@@ -286,25 +265,25 @@ if (isset($_POST['procesal_queja'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Fecha de Acuerdo</label>
-                            <input type="date" class="form-control" name="fecha_acuerdo">
+                            <input type="date" class="form-control" name="fecha_acuerdo" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Documento de Acuerdo</label>
-                            <input id="acuerdo_adjunto" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto">
+                            <input id="acuerdo_adjunto" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Documento de Acuerdo en Versión Pública</label>
-                            <input id="acuerdo_adjunto_publico" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto_publico">
+                            <input id="acuerdo_adjunto_publico" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto_publico" required>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="sintesis_documento">Síntesis del documento</label>
-                            <textarea class="form-control" name="sintesis_documento" id="sintesis_documento" cols="10" rows="3"></textarea>
+                            <textarea class="form-control" name="sintesis_documento" id="sintesis_documento" cols="10" rows="3" required></textarea>
                         </div>
                     </div>
                     <div class="col-md-2">

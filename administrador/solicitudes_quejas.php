@@ -10,7 +10,6 @@ $busca_area = area_usuario($id_user);
 $otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
-
 if ($nivel_user <= 2) {
     page_require_level(2);
 }
@@ -26,9 +25,6 @@ if ($nivel_user == 21) {
 if ($nivel_user == 50) {
     page_require_level_exacto(50);
 }
-// if ($nivel_user == 19) {
-//     redirect('home.php');
-// }
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
@@ -44,7 +40,6 @@ endif;
 ?>
 
 <?php
-// $c_categoria     = count_by_id('categorias');
 $c_user = count_by_id('users', 'id_user');
 $c_trabajadores = count_by_id('detalles_usuario', 'id_det_usuario');
 $c_areas = count_by_id('area', 'id_area');
@@ -55,7 +50,6 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <a href="solicitudes.php" class="btn btn-info">Regresar a Áreas</a><br><br>
 <h1 style="color:#3A3D44">Procesos de Orientación Legal, Quejas y Seguimiento</h1>
-
 
 <div class="row">
     <div class="col-md-12">
@@ -110,6 +104,22 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     receipt_long
+                </span>
+            </div>
+        </a>
+        <a href="recomendaciones_antes.php" class="tile">
+            <div class="tile-tittle">Recom. antes de 2023</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    auto_stories
+                </span>
+            </div>
+        </a>
+        <a href="eventos.php" class="tile">
+            <div class="tile-tittle">Eventos</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event_available
                 </span>
             </div>
         </a>

@@ -66,6 +66,7 @@ if (isset($_POST['edit_informe_actividades_areas'])) {
         if ($result && $db->affected_rows() === 1) {
             //sucess
             $session->msg('s', " El informe de actividades ha sido editado con éxito.");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" agregó informe, Folio: ' . $folio . '.', 1);
             redirect('informes_areas.php', false);
         } else {
             //failed
