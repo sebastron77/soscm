@@ -8,10 +8,8 @@ $all_gestiones = find_all('gestiones_jurisdiccionales');
 $user = current_user();
 $nivel = $user['user_level'];
 
-$id_usuario = $user['id'];
-$id_user = $user['id'];
+$id_usuario = $user['id_user'];
 $busca_area = area_usuario($id_usuario);
-$otro = $busca_area['nivel_grupo'];
 $nivel_user = $user['user_level'];
 
 if ($nivel_user <= 2) {
@@ -56,7 +54,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Gestiones Jurisdiccionales</span>
                 </strong>
-                <?php if ($otro <= 2) : ?>
+                <?php if (($nivel_user <= 2)  ) : ?>
                     <a href="add_gestion.php?a=4" class="btn btn-info pull-right btn-md"> Agregar gestión</a>
                 <?php endif ?>
             </div>
@@ -69,7 +67,7 @@ endif;
                             <th class="text-center" style="width: 30%;">Descripción</th>
                             <th class="text-center" style="width: 5%;">Archivo</th>
                             <th class="text-center" style="width: 30%;">Observaciones</th>
-                            <?php if ($otro <= 2) : ?>
+                            <?php if (($nivel_user <= 2)  ) : ?>
                                 <th class="text-center" style="width: 5%;">Acciones</th>
                             <?php endif ?>
                         </tr>
@@ -86,9 +84,7 @@ endif;
                                     $folio_editar = $a_gestion['folio'];
                                     $resultado = str_replace("/", "-", $folio_editar);
                                 ?>
-                                <!-- <td class="text-center">
-                                    <a target="_blank" style="color: #0094FF;" href="uploads/gestiones/<?php echo $resultado . '/' . $a_gestion['documento']; ?>"><?php echo $a_gestion['documento']; ?></a>
-                                </td> -->
+
                                 <td style="text-align: center;">
                                 <a target="_blank" style="color: #0094FF;" href="uploads/gestiones/<?php echo $resultado . '/' . $a_gestion['documento']; ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
@@ -100,7 +96,7 @@ endif;
                                 <td class="text-center">
                                     <?php echo remove_junk(ucwords($a_gestion['observaciones'])) ?>
                                 </td>
-                                <?php if ($otro <= 2) : ?>
+                                <?php if (($nivel_user <= 2)  ) : ?>
                                     <td class="text-center">
                                         <div class="btn-group">
                                             <a href="edit_gestion.php?id=<?php echo (int)$a_gestion['id_gestion']; ?>" class="btn btn-md btn-warning" data-toggle="tooltip" title="Editar">

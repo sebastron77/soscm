@@ -70,11 +70,7 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Informes de Actividades <?php echo $area ?></span>
                 </strong>
-                <?php //if ($nivel_user <= 2) : 
-                ?>
                 <a href="add_informe_areas.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar informe</a>
-                <?php //endif; 
-                ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
@@ -91,11 +87,7 @@ if (isset($_POST["export_data"])) {
                         <th class="text-center" style="width: 7%;">Fecha de Informe</th>
                         <th class="text-center" style="width: 7%;">Fecha de Entrega</th>
                         <th class="text-center" style="width: 5%;">Informe</th>
-                        <?php //if ($nivel_user <= 2) : 
-                        ?>
                         <th style="width: 1%;" class="text-center">Acciones</th>
-                        <?php //endif; 
-                        ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -107,7 +99,6 @@ if (isset($_POST["export_data"])) {
                         <tr>
                             <td><?php echo remove_junk(ucwords($a_informe['folio'])) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords($a_informe['no_informe'])) ?></td>
-                            <!-- <td><a target="_blank" style="color: #3D94FF;" href="uploads/informesareas/<?php echo $resultado . '/' . $a_informe['oficio_entrega']; ?>"><?php echo $a_informe['oficio_entrega']; ?></a></td> -->
 
                             <td style="text-align: center;">
                                 <a target="_blank" style="color: #0094FF;" href="uploads/informesareas/<?php echo $resultado . '/' . $a_informe['oficio_entrega']; ?>">
@@ -119,7 +110,6 @@ if (isset($_POST["export_data"])) {
                             </td>
                             <td class="text-center"><?php echo remove_junk(ucwords($a_informe['fecha_informe'])) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords(($a_informe['fecha_entrega']))) ?></td>
-                            <!-- <td><a target="_blank" style="color: #3D94FF;" href="uploads/informesareas/<?php echo $resultado . '/' . $a_informe['informe_adjunto']; ?>"><?php echo $a_informe['informe_adjunto']; ?></a></td> -->
                             <td style="text-align: center;">
                                 <a target="_blank" style="color: #0094FF;" href="uploads/informesareas/<?php echo $resultado . '/' . $a_informe['informe_adjunto']; ?>">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">

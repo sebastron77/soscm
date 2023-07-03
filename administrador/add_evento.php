@@ -7,7 +7,7 @@ $nivel = $user['user_level'];
 $id_user = $user['id_user'];
 
 $area_user = area_usuario2($id_user);
-$area = $area_user['nombre_area'];
+$area = $area_user['id_area'];
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 

@@ -83,7 +83,22 @@ $c_user = count_by_id('users', 'id_user');
                 </span>
             </div>
         </a>
-       
+        <a href="eventos.php" class="tile">
+            <div class="tile-tittle">Eventos</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event_available
+                </span>
+            </div>
+        </a>
+        <a href="informes_areas.php" class="tile">
+            <div class="tile-tittle">Informe Actividades</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    task_alt
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

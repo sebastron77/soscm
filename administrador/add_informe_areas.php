@@ -72,9 +72,9 @@ if (isset($_POST['add_informe_areas'])) {
 
         if ($move && $name != '' && $name2 != '') {
             $query = "INSERT INTO informe_actividades_areas (";
-            $query .= "folio, no_informe, oficio_entrega, fecha_informe, fecha_entrega, informe_adjunto, area_creacion";
+            $query .= "folio, no_informe, oficio_entrega, fecha_informe, fecha_entrega, informe_adjunto, area_creacion, user_creador";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$no_informe}','{$name}','{$fecha_informe}','{$fecha_entrega}','{$name2}', '{$area_creacion}'";
+            $query .= " '{$folio}','{$no_informe}','{$name}','{$fecha_informe}','{$fecha_entrega}','{$name2}', '{$area_creacion}', '{$id_user}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";

@@ -128,7 +128,7 @@ if (isset($_POST['add_gestion'])) {
     <form method="post" action="add_gestion.php" class="clearfix" enctype="multipart/form-data">
         <div class="form-group">
             <label for="tipo_gestion" class="control-label">Tipo de Gestión Jurisdiccional</label>
-            <select class="form-control" name="tipo_gestion" id="tipo_gestion">
+            <select class="form-control" name="tipo_gestion" id="tipo_gestion" required>
                 <?php if((int)$_GET['a'] == 1){ echo '<option selected="true" value="Acciones de Inconstitucionalidad">Acciones de Inconstitucionalidad</option>';}?>
                 <?php if((int)$_GET['a'] == 2){ echo '<option selected="true" value="Controversias Constitucionales">Controversias Constitucionales</option>';}?>
                 <?php if((int)$_GET['a'] == 3){ echo '<option selected="true" value="Amicus Curiae">Amicus Curiae</option>';}?>
@@ -137,11 +137,11 @@ if (isset($_POST['add_gestion'])) {
         </div>
         <div class="form-group">
             <label for="descripcion">Descripción</label>
-            <textarea class="form-control" name="descripcion" cols="10" rows="5"></textarea>
+            <textarea class="form-control" name="descripcion" cols="10" rows="5" required></textarea>
         </div>
         <div class="form-group">
             <label for="adjunto">Documento</label>
-            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
+            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto" required>
         </div>
         <div class="form-group">
             <label for="observaciones">Observaciones</label>

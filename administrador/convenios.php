@@ -55,7 +55,7 @@ endif;
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Convenios</span>
                 </strong>
-                <?php if (($nivel_user <= 2) || ($nivel_user == 3) || ($nivel_user == 7)) : ?>
+                <?php if (($nivel_user <= 2) || ($nivel_user == 3) ) : ?>
                     <a href="add_convenio.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar convenio</a>
                 <?php endif; ?>
 
@@ -104,9 +104,11 @@ endif;
                                         <a href="ver_info_conv.php?id=<?php echo (int)$a_convenio['id_convenio']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información completa">
                                             <i class="glyphicon glyphicon-eye-open"></i>
                                         </a>
-                                        <a href="edit_convenio.php?id=<?php echo (int)$a_convenio['id_convenio']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
-                                            <span class="glyphicon glyphicon-edit"></span>
-                                        </a>
+										<?php if (($nivel_user < 7) ) : ?>
+											<a href="edit_convenio.php?id=<?php echo (int)$a_convenio['id_convenio']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
+												<span class="glyphicon glyphicon-edit"></span>
+											</a>
+										<?php endif; ?>
                                     </div>
                                 </td>
                             <?php endif; ?>

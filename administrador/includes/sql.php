@@ -1188,7 +1188,7 @@ function area_usuario2($id_usuario)
   global $db;
   $id_usuario = (int)$id_usuario;
 
-  $sql = $db->query("SELECT a.nombre_area
+  $sql = $db->query("SELECT a.nombre_area, a.id_area
                       FROM detalles_usuario d
                       LEFT JOIN users u ON u.id_detalle_user = d.id_det_usuario
                       LEFT JOIN cargos c ON c.id_cargos = d.id_cargo
@@ -5022,7 +5022,26 @@ function find_all_recomendaciones_generales()
 /*------------------------------------------------------------------*/
 function find_all_eventos()
 {
-  $sql = "SELECT * FROM eventos";
+  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area";
   $result = find_by_sql($sql);
   return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Obtiene Datos generales del usuario*/
+/*------------------------------------------------------------------*/
+function find_gralesUser($user)
+{
+	global $db;
+  $query = "SELECT id_user, id_detalle_user	, nombre, apellidos, sexo, id_cargo, nombre_cargo, d.id_area, nombre_area    
+FROM  users b  
+LEFT JOIN detalles_usuario c ON b.id_detalle_user= c.id_det_usuario  
+LEFT JOIN cargos d ON d.id_cargos= c.id_cargo
+LEFT JOIN area e ON e.id_area= d.id_area
+WHERE b.id_user= ".$user;
+
+$sql = $db->query($query);
+    if ($result = $db->fetch_assoc($sql))
+      return $result;
+  
 }

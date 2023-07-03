@@ -28,9 +28,6 @@ if ($nivel_user == 21) {
 if ($nivel_user == 50) {
     page_require_level_exacto(50);
 }
-// if ($nivel_user == 19) {
-//     redirect('home.php');
-// }
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
@@ -72,6 +69,14 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">				
 					patient_list
+                </span>
+            </div>
+        </a>
+        <a href="informes_areas.php" class="tile">
+            <div class="tile-tittle">Informe Actividades</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    task_alt
                 </span>
             </div>
         </a>

@@ -54,18 +54,15 @@ $c_user = count_by_id('users', 'id_user');
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-               
-		 
         <a href="consejo.php" class="tileO">
             <div class="tileO-tittle">Actas sesión de consejo</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     receipt_long
                 </span>
-
             </div>
         </a>
-		
+
         <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
@@ -80,7 +77,22 @@ $c_user = count_by_id('users', 'id_user');
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
-       
+        <a href="eventos.php" class="tile">
+            <div class="tile-tittle">Eventos</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event_available
+                </span>
+            </div>
+        </a>
+        <a href="informes_areas.php" class="tile">
+            <div class="tile-tittle">Informe Actividades</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    task_alt
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>
