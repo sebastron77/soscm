@@ -2,31 +2,15 @@
 $page_title = 'Editar Correspondencia';
 require_once('includes/load.php');
 $user = current_user();
-$detalle = $user['id'];
+$detalle = $user['id_user'];
 $e_correspondencia = find_by_id_env_correspondencia((int)$_GET['id']);
 $id_folio = last_id_folios();
 // page_require_level(2);
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 $areas = find_all('area');
-// if ($nivel_user <= 2) {
-//     page_require_level(2);
-// }
-// if ($nivel_user == 7) {
-//     page_require_level_exacto(7);
-// }
-// if ($nivel_user == 8) {
-//     page_require_level_exacto(8);
-// }
-
-// if ($nivel_user > 2 && $nivel_user < 7):
-//     redirect('home.php');
-// endif;
-// if ($nivel_user > 8):
-//     redirect('home.php');
-// endif;
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['edit_env_correspondencia'])) {
@@ -35,7 +19,7 @@ if (isset($_POST['edit_env_correspondencia'])) {
     validate_fields($req_fields);
 
     if (empty($errors)) {
-        $id = (int)$e_correspondencia['id'];
+        $id = (int)$e_correspondencia['id_env_corresp'];
         $fecha_emision   = remove_junk($db->escape($_POST['fecha_emision']));
         $asunto   = remove_junk(($db->escape($_POST['asunto'])));
         $medio_envio   = remove_junk(($db->escape($_POST['medio_envio'])));
@@ -47,7 +31,7 @@ if (isset($_POST['edit_env_correspondencia'])) {
 
         $folio_editar = $e_correspondencia['folio'];
         $resultado = str_replace("/", "-", $folio_editar);
-        $carpeta = 'uploads/correspondencia/' . $resultado;
+        $carpeta = 'uploads/correspondencia_interna/' . $resultado;
 
         $name = $_FILES['oficio_enviado']['name'];
         $size = $_FILES['oficio_enviado']['size'];
@@ -61,10 +45,10 @@ if (isset($_POST['edit_env_correspondencia'])) {
             $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
         }
         if ($name != '') {
-            $sql = "UPDATE envio_correspondencia SET fecha_emision='{$fecha_emision}',asunto='{$asunto}',medio_envio='{$medio_envio}',se_turna_a_area='{$se_turna_a_area}',fecha_en_que_se_turna='{$fecha_en_que_se_turna}',fecha_espera_respuesta='{$fecha_espera_respuesta}',tipo_tramite='{$tipo_tramite}',oficio_enviado='{$name}',observaciones='{$observaciones}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE envio_correspondencia SET fecha_emision='{$fecha_emision}',asunto='{$asunto}',medio_envio='{$medio_envio}',se_turna_a_area='{$se_turna_a_area}',fecha_en_que_se_turna='{$fecha_en_que_se_turna}',fecha_espera_respuesta='{$fecha_espera_respuesta}',tipo_tramite='{$tipo_tramite}',oficio_enviado='{$name}',observaciones='{$observaciones}' WHERE id_env_corresp='{$db->escape($id)}'";
         }
         if ($name == '') {
-            $sql = "UPDATE envio_correspondencia SET fecha_emision='{$fecha_emision}',asunto='{$asunto}',medio_envio='{$medio_envio}',se_turna_a_area='{$se_turna_a_area}',fecha_en_que_se_turna='{$fecha_en_que_se_turna}',fecha_espera_respuesta='{$fecha_espera_respuesta}',tipo_tramite='{$tipo_tramite}',observaciones='{$observaciones}' WHERE id='{$db->escape($id)}'";
+            $sql = "UPDATE envio_correspondencia SET fecha_emision='{$fecha_emision}',asunto='{$asunto}',medio_envio='{$medio_envio}',se_turna_a_area='{$se_turna_a_area}',fecha_en_que_se_turna='{$fecha_en_que_se_turna}',fecha_espera_respuesta='{$fecha_espera_respuesta}',tipo_tramite='{$tipo_tramite}',observaciones='{$observaciones}' WHERE id_env_corresp='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
@@ -74,11 +58,11 @@ if (isset($_POST['edit_env_correspondencia'])) {
         } else {
             //failed
             $session->msg('d', ' No se pudo editar la correspondencia.');
-            redirect('edit_env_correspondencia.php?id=' . (int)$e_correspondencia['id'], false);
+            redirect('edit_env_correspondencia.php?id=' . (int)$e_correspondencia['id_env_corresp'], false);
         }
     } else {
         $session->msg("d", $errors);
-        redirect('edit_env_correspondencia.php?id=' . (int)$e_correspondencia['id'], false);
+        redirect('edit_env_correspondencia.php?id=' . (int)$e_correspondencia['id_env_corresp'], false);
     }
 }
 ?>
@@ -90,11 +74,11 @@ include_once('layouts/header.php'); ?>
         <div class="panel-heading">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
-                <span>Editar correspondencia</span>
+                <span>Editar correspondencia <?php echo $e_correspondencia['folio']?></span>
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="edit_env_correspondencia.php?id=<?php echo (int)$e_correspondencia['id']; ?>" enctype="multipart/form-data">
+            <form method="post" action="edit_env_correspondencia.php?id=<?php echo (int)$e_correspondencia['id_env_corresp']; ?>" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
@@ -126,7 +110,7 @@ include_once('layouts/header.php'); ?>
                             <label for="se_turna_a_area">Se turna a Área</label>
                             <select class="form-control" name="se_turna_a_area">
                                 <?php foreach ($areas as $area) : ?>
-                                    <option <?php if ($area['nombre_area'] === $e_correspondencia['se_turna_a_area']) echo 'selected="selected"'; ?> value="<?php echo $area['nombre_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+                                    <option <?php if ($area['id_area'] === $e_correspondencia['se_turna_a_area']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -158,13 +142,13 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="oficio_enviado">Oficio enviado</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="oficio_enviado" value="<?php echo remove_junk($e_correspondencia['oficio_enviado']); ?>" id="oficio_enviado">
+                            <input type="file" accept="application/pdf" class="form-control" name="oficio_enviado" value="uploads/envio_correspondencia/<?php echo $e_correspondencia['oficio_enviado']; ?>" id="oficio_enviado">
                             <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_correspondencia['oficio_enviado']); ?><?php ?></label>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label>
                             <textarea class="form-control" value="<?php echo remove_junk($e_correspondencia['observaciones']); ?>" name="observaciones" id="observaciones" cols="10" rows="5"><?php echo remove_junk($e_correspondencia['observaciones']); ?></textarea>

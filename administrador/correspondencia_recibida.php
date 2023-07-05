@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-$page_title = 'Correspondencia enviada';
+$page_title = 'Correspondencia recibida';
 require_once('includes/load.php');
 ?>
 <?php
@@ -14,9 +14,9 @@ $area_user = area_usuario2($id_user);
 $area = $area_user['id_area'];
 
 if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 8)) {
-    $all_correspondencia = find_all_env_correspondenciaAdmin();
+    $all_correspondencia = find_all_env_correspondenciaAdmin2();
 } else {
-    $all_correspondencia = find_all_env_correspondencia($area);
+    $all_correspondencia = find_all_env_correspondencia2($area);
 }
 
 $conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
@@ -26,7 +26,7 @@ mysqli_select_db($conexion, "suigcedh");
 if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 8)) {
     $sql = "SELECT * FROM envio_correspondencia";
 } else {
-    $sql = "SELECT * FROM envio_correspondencia WHERE area_creacion='{$area}'";
+    $sql = "SELECT * FROM envio_correspondencia WHERE se_turna_a_area='{$area}'";
 }
 $resultado = mysqli_query($conexion, $sql) or die;
 $correspondencias = array();
@@ -58,6 +58,8 @@ if (isset($_POST["export_data"])) {
     exit;
 }
 
+// page_require_level(15);
+
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -75,11 +77,10 @@ if (isset($_POST["export_data"])) {
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Correspondencia Interna Enviada</span>
+                    <span>Correspondencia Interna Recibida</span>
                 </strong>
 
                 <a href="add_env_correspondencia.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Correspondencia</a>
-                <a href="add_env_correspondencia.php" style="margin-left: 10px;" class="btn btn-info pull-right">Ver Correspondencia Recibida</a>
 
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
@@ -90,14 +91,15 @@ if (isset($_POST["export_data"])) {
                 <table class="datatable table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr style="height: 10px;">
-                            <th class="text-center" style="width: 1%;">Estatus</th>
+                            <th class="text-center" style="width: 1%;">Semáforo</th>
                             <th class="text-center" style="width: 3%;">Folio</th>
                             <th class="text-center" style="width: 3%;">Fecha en que se turna</th>
                             <th class="text-center" style="width: 3%;">Fecha espera respuesta</th>
                             <th class="text-center" style="width: 7%;">Asunto</th>
                             <th class="text-center" style="width: 4%;">Medio de Envío</th>
-                            <th class="text-center" style="width: 5%;">Turnado a</th>
+                            <th class="text-center" style="width: 5%;">Área a la que se turna</th>
                             <th class="text-center" style="width: 1%;" class="text-center">Acciones</th>
+
                         </tr>
                     </thead>
                     <tbody>

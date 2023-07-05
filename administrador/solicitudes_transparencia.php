@@ -101,6 +101,22 @@ endif;
                 </span>
             </div>
         </a>
+        <a href="env_correspondencia.php" class="tile">
+            <div class="tile-tittle">Corresp. Int. Enviada</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    edit_document
+                </span>
+            </div>
+        </a>
+        <a href="correspondencia_recibida.php" class="tile">
+            <div class="tile-tittle">Corresp. Int. Recibida</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    file_open
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

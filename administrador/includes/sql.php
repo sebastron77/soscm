@@ -5032,16 +5032,139 @@ function find_all_eventos()
 /*------------------------------------------------------------------*/
 function find_gralesUser($user)
 {
-	global $db;
+  global $db;
   $query = "SELECT id_user, id_detalle_user	, nombre, apellidos, sexo, id_cargo, nombre_cargo, d.id_area, nombre_area    
 FROM  users b  
 LEFT JOIN detalles_usuario c ON b.id_detalle_user= c.id_det_usuario  
 LEFT JOIN cargos d ON d.id_cargos= c.id_cargo
 LEFT JOIN area e ON e.id_area= d.id_area
-WHERE b.id_user= ".$user;
+WHERE b.id_user= " . $user;
 
-$sql = $db->query($query);
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-  
+  $sql = $db->query($query);
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+}
+
+/*--------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias */
+/*--------------------------------------------------*/
+function find_all_env_correspondenciaAdmin()
+{
+  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+          FROM envio_correspondencia c
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*-------------------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias de un área */
+/*-------------------------------------------------------------*/
+function find_all_env_correspondencia($area)
+{
+  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+          FROM envio_correspondencia c
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area WHERE area_creacion='{$area}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*----------------------------------------------------------------------------------*/
+/* Funcion que encuentra una correspondencia por id, que ayudara al momento de editar */
+/*----------------------------------------------------------------------------------*/
+function find_by_id_env_correspondencia($id)
+{
+  global $db;
+  $id = (int)$id;
+  $sql = $db->query("SELECT c.id_env_corresp, c.folio, c.fecha_emision, c.tipo_tramite, c.oficio_enviado, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, 
+                            c.asunto, c.medio_envio, a.nombre_area, c.observaciones, c.accion_realizada, c.fecha, c.oficio_respuesta, c.quien_realizo, 
+                            c.area_creacion, c.fecha_creacion, c.user_creador, c.se_turna_a_area, d.nombre, d.apellidos, atu.nombre_area as nomat
+                    FROM envio_correspondencia c
+                    LEFT JOIN area a ON c.se_turna_a_area = a.id_area 
+                    LEFT JOIN detalles_usuario d  ON c.quien_realizo = d.id_det_usuario
+                    LEFT JOIN area atu ON c.area_creacion = atu.id_area
+                    WHERE id_env_corresp='{$db->escape($id)}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+/*--------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias */
+/*--------------------------------------------------*/
+function find_all_env_correspondenciaAdmin2()
+{
+  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+          FROM envio_correspondencia c
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area";
+  $result = find_by_sql($sql);
+  return $result;
+}
+/*-------------------------------------------------------------*/
+/* Funcion que encuentra todas las correspondencias de un área */
+/*-------------------------------------------------------------*/
+function find_all_env_correspondencia2($area)
+{
+  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+          FROM envio_correspondencia c
+          LEFT JOIN area a ON c.se_turna_a_area = a.id_area WHERE se_turna_a_area='{$area}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Ver losoficios de colaboracion de un folio*/
+/*------------------------------------------------------------------*/
+function find_oficios_colaboracion($id,$tipo)
+{
+  $sql = "SELECT * FROM rel_colaboracion_oficios WHERE id_colaboraciones= ".$id." AND tipo_documento='".$tipo."'";
+
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Ver las quejas por area */
+/*------------------------------------------------------------------*/
+function find_quejas_area($area)
+{
+  $sql = "SELECT id_queja_date as id, folio_queja as folio FROM quejas_dates WHERE id_area_asignada= ".$area;
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Ver las orientaciones/canalizaciones por area */
+/*------------------------------------------------------------------*/
+function find_orican_area($area,$tipo)
+{
+  $sql = "SELECT id_or_can as id, folio 
+FROM orientacion_canalizacion a 
+LEFT JOIN users b ON  a.id_creador=b.id_user 
+LEFT JOIN detalles_usuario c ON b.id_detalle_user= c.id_det_usuario  
+LEFT JOIN cargos d ON d.id_cargos= c.id_cargo
+WHERE d.id_area= ".$area.
+"  AND tipo_solicitud= ".$tipo;
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar y agrupar los valores de dialectos 
+	en orientaciones y canalizaciones 								*/
+/*------------------------------------------------------------------*/
+function find_dialectos($tipo)
+{
+  $sql = "SELECT DISTINCT lengua FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY lengua  ORDER BY lengua";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar y agrupar los valores de localidades 
+	en orientaciones y canalizaciones 								*/
+/*------------------------------------------------------------------*/
+function find_localidadesOC($tipo)
+{
+  $sql = "SELECT DISTINCT municipio_localidad FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY municipio_localidad  ORDER BY municipio_localidad";
+  $result = find_by_sql($sql);
+  return $result;
 }
