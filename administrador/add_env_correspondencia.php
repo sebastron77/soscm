@@ -1,3 +1,7 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
 <?php header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Correspondencia Interna';
 require_once('includes/load.php');
@@ -130,6 +134,7 @@ if (isset($_POST['add_env_correspondencia'])) {
     }
 }
 ?>
+
 <?php header('Content-type: text/html; charset=utf-8');
 include_once('layouts/header.php'); ?>
 <?php echo display_msg($msg); ?>
@@ -139,14 +144,23 @@ include_once('layouts/header.php'); ?>
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
                 <span>Agregar correspondencia interna</span>
+
             </strong>
         </div>
+        <script>
+            // When the user clicks on div, open the popup
+            // function myFunction() {
+            //     var popup = document.getElementById("myPopup");
+            //     popup.classList.toggle("show");
+            // }
+        </script>
         <div class="panel-body">
             <form method="post" action="add_env_correspondencia.php" enctype="multipart/form-data">
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="fecha_emision">Fecha de Emisión de Oficio</label>
+                            <label for="fecha_emision">Fecha de Emisión de Oficio                                
+                            </label>
                             <input type="date" class="form-control" name="fecha_emision" required>
                         </div>
                     </div>

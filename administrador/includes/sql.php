@@ -910,7 +910,8 @@ function find_by_id_queja($id)
   $id = (int)$id;
   $sql = $db->query("SELECT	q.id_queja_date, q.id_cat_med_pres, q.id_cat_aut, q.id_cat_quejoso, q.id_cat_agraviado, q.id_user_creador, q.id_user_asignado, q.id_area_asignada,q.id_estatus_queja, 
           q.id_tipo_resolucion, q.id_tipo_ambito,q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, 
-          q.id_cat_mun, q.incompetencia, q.causa_incomp, q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, q.estado_procesal, q.descripcion_acumulacion, q.archivo_acumulacion,
+          q.id_cat_mun, q.incompetencia, q.causa_incomp, q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, 
+          q.estado_procesal as est_pro, q.descripcion_acumulacion, q.archivo_acumulacion,
           IFNULL(q.observaciones,'') as observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, 
           ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, q.fecha_actualizacion, eq.descripcion as estatus_queja, 
           q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito,

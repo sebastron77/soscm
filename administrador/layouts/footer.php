@@ -43,6 +43,10 @@
      <script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
 
      <script language="javascript">
+       function myFunction() {
+         var popup = document.getElementById("myPopup");
+         popup.classList.toggle("show");
+       }
        $(document).ready(function() {
          $("#se_turna_a_area").change(function() {
            //$('#cbx_localidad').find('option').remove().end().append(

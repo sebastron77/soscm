@@ -10,9 +10,9 @@ require_once('includes/load.php');
 // page_require_level(200);
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
-$area_user1 = muestra_area($id_u);
+$area_user1 = muestra_area($id_user);
 
 // Identificamos a que área pertenece el usuario logueado
 $area_user = area_usuario2($id_user);
@@ -24,11 +24,11 @@ endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
-    redirect('home.php');
-endif;
+if ($nivel == 7) {
+	page_require_level_exacto(7);
+}
 
-if (($nivel_user <= 2) || ($nivel_user == 7)) {
+if (($nivel_user <= 2) || ($nivel_user == 5) || ($nivel_user == 7) || ($nivel_user == 50)) {
     $all_actuaciones = find_all_actuaciones();
 } else {
     $all_actuaciones = find_all_actuaciones_area($area_user1['id_area']);
@@ -88,9 +88,11 @@ if (isset($_POST["export_data"])) {
                 </strong>
                 <?php //if (($nivel <= 2) || ($nivel == 4) || ($nivel == 6) || ($nivel == 7)) : 
                 ?>
+				<?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                 <a href="add_actuacion.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar actuación</a>
                 <?php //endif; 
                 ?>
+                <?php endif; ?>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
@@ -111,9 +113,9 @@ if (isset($_POST["export_data"])) {
                         <th style="width: 5%;">Adjunto</th>
                         <th style="width: 1%;">Imágenes</th>
                         <!-- <th style="width: 3%;">Constancia</th> -->
-
+<?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                         <th style="width: 1%;" class="text-center">Acción</th>
-
+<?php endif; ?>
                     </tr>
                 </thead>
                 <tbody>
@@ -122,7 +124,7 @@ if (isset($_POST["export_data"])) {
                             <td><?php echo remove_junk(ucwords($a_actuacion['folio_actuacion'])) ?></td>
                             <td><?php echo remove_junk(ucwords($a_actuacion['fecha_captura_acta'])) ?></td>
                             <td><?php echo remove_junk(ucwords($a_actuacion['catalogo'])) ?></td>
-                            <td><?php echo remove_junk(ucwords($a_actuacion['descripcion'])) ?></td>
+                            <td><?php echo substr(remove_junk(ucwords($a_actuacion['descripcion'])),1,100) ?></td>
                             <?php if ($a_actuacion['autoridades'] == '') : ?>
                                 <td><?php echo remove_junk(ucwords($a_actuacion['federal'])) ?></td>
                             <?php else : ?>
@@ -155,6 +157,7 @@ if (isset($_POST["export_data"])) {
                                 echo '<td class="text-center">No hay imágenes</td>';
                             }
                             ?>
+<?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <a href="edit_actuacion.php?id=<?php echo (int)$a_actuacion['id_actuacion']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">
@@ -162,6 +165,7 @@ if (isset($_POST["export_data"])) {
                                     </a>
                                 </div>
                             </td>
+								<?php endif; ?>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

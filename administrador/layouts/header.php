@@ -48,6 +48,27 @@
 
 
   <script language="javascript">
+    function myFunction() {
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+    }
+    function myFunction2() {
+      var popup2 = document.getElementById("myPopup2");
+      popup2.classList.toggle("show");
+    }
+    function myFunction3() {
+      var popup3 = document.getElementById("myPopup3");
+      popup3.classList.toggle("show");
+    }
+    function myFunction4() {
+      var popup4 = document.getElementById("myPopup4");
+      popup4.classList.toggle("show");
+    }
+    function myFunction5() {
+      var popup5 = document.getElementById("myPopup5");
+      popup5.classList.toggle("show");
+    }
+
     $(document).ready(function() {
       $("#se_turna_a_area").change(function() {
         //$('#cbx_localidad').find('option').remove().end().append(
@@ -61,7 +82,6 @@
             $("#se_turna_a_trabajador").html(data);
           })
         })
-
       })
     });
 

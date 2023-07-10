@@ -32,6 +32,11 @@ $c_canalizacion = count_by_id_canalizacion('orientacion_canalizacion', 'id_or_ca
 $c_quejas = count_by_id('quejas_dates', 'id_queja_date');
 $c_actuaciones = count_by_id('actuaciones', 'id_actuacion');
 $c_convenios = count_by_id('convenios', 'id_convenio');
+$c_consejo = count_by_id('consejo', 'id_acta_consejo');
+$c_actividades = count_by_id('eventos_presidencia', 'id_eventos_presidencia');
+$c_colaboraciones = count_by_id('colaboraciones', 'id_colaboraciones');
+$c_informe = count_by_id('informe_actividades_areas', 'id_info_act_areas');
+$c_eventos = count_by_id('eventos', 'id_evento');
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -116,6 +121,61 @@ $c_convenios = count_by_id('convenios', 'id_convenio');
                 </span>
 				<i class="fas fa-user-tie"></i>
 				<p><?php echo $c_convenios['total']; ?> Registrados</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="convenios.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Actas de consejo</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    groups_2
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_consejo['total']; ?> Registrados</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="eventos_pres.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Actividades Pres.</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_actividades['total']; ?> Registrados</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="colaboraciones_ud.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Colaboraciones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    handshake
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_colaboraciones['total']; ?> Registrados</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="informes_areas.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Informe Actividades</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    task_alt
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_informe['total']; ?> Registrados</p>
+            </div>
+        </a>
+
+		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="eventos.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Eventos Áreas</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    event_available
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_eventos['total']; ?> Registrados</p>
             </div>
         </a>
 

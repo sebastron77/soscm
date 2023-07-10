@@ -1,31 +1,16 @@
 <ul>
-    <li style="margin-bottom: 7px;">
-        <a href="#" class="submenu-toggle">
-            <i class="glyphicon glyphicon-file"></i>
-            <span>Solicitudes</span>
-        </a>
-        <ul class="nav submenu">
-            <li><a href="solicitudes.php">Ver solicitudes</a> </li>
-            <!-- <li><a href="#">Seguimiento de Solicitudes</a> </li> -->
-        </ul>
-    </li>
-    <li>
-    <a href="#" class="submenu-toggle" style="left: 18px; top: 2px;">
-      <svg style="width:20px; height:20px;" viewBox="0 0 22 22">
-        <path fill="currentColor" d="M20,17A2,2 0 0,0 22,15V4A2,2 0 0,0 20,2H9.46C9.81,2.61 10,3.3 10,4H20V15H11V17M15,7V9H9V22H7V16H5V22H3V14H1.5V9A2,2 0 0,1 3.5,7H15M8,4A2,2 0 0,1 6,6A2,2 0 0,1 4,4A2,2 0 0,1 6,2A2,2 0 0,1 8,4Z" />
+  
+  <li style="margin-bottom: 18px;">
+    <a href="solicitudes.php" class="submenu-toggle" style="left: 18px; top:20px">
+      <svg style="width:22px;height:22px" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-diagram-3" viewBox="0 0 16 16">
+        <path fill-rule="evenodd" d="M6 3.5A1.5 1.5 0 0 1 7.5 2h1A1.5 1.5 0 0 1 10 3.5v1A1.5 1.5 0 0 1 8.5 6v1H14a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0V8h-5v.5a.5.5 0 0 1-1 0v-1A.5.5 0 0 1 2 7h5.5V6A1.5 1.5 0 0 1 6 4.5v-1zM8.5 5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1zM0 11.5A1.5 1.5 0 0 1 1.5 10h1A1.5 1.5 0 0 1 4 11.5v1A1.5 1.5 0 0 1 2.5 14h-1A1.5 1.5 0 0 1 0 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5A1.5 1.5 0 0 1 7.5 10h1a1.5 1.5 0 0 1 1.5 1.5v1A1.5 1.5 0 0 1 8.5 14h-1A1.5 1.5 0 0 1 6 12.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1zm4.5.5a1.5 1.5 0 0 1 1.5-1.5h1a1.5 1.5 0 0 1 1.5 1.5v1a1.5 1.5 0 0 1-1.5 1.5h-1a1.5 1.5 0 0 1-1.5-1.5v-1zm1.5-.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5h-1z" />
       </svg>
-      <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Capacitaciones</span>
+      <!--      <svg style="width:22px;height:22px" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><title>note</title><path d="M14,10V4.5L19.5,10M5,3C3.89,3 3,3.89 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V9L15,3H5Z" /></svg>  -->
+      <span style="position: absolute; top: 50%; left: 50%; margin:-11px 0 0 -85px;">Procesos por Área</span>
     </a>
-    <ul class="nav submenu">
-      <li><a href="#">MOOC's</a> </li>
-      <li><a target="_blank" href="https://virtual.cedhmichoacan.org/">Aula Virtual</a> </li>
-      <li><a href="#">Registro de Constancias</a> </li>
-    </ul>
+    
   </li>
-  <!-- <li>
-    <a href="folios.php">
-      <i class="glyphicon glyphicon-home"></i>
-      <span>Números de Folio Usados</span>
-    </a>
-  </li> -->
+ 
+
+  
 </ul>

@@ -373,8 +373,11 @@ if (isset($_POST['add_quejoso'])) {
                     </div>
                 </div>
 
-                <p class="text-left" style="font-weight: bold; font-size: 17px; margin-top:40px;">¿Quien presenta la queja
-                    es el "agraviado/a"?</p>
+                <p class="text-left" style="font-weight: bold; font-size: 17px; margin-top:40px;">¿Quien presenta la queja es el "agraviado/a"?</p>
+                <div style="margin-left: 110px;" class="popup caja" onclick="myFunction()">
+                    <p style="font-size: 13px;">?</p>
+                    <span class="popuptext" id="myPopup" style="font-size: 15px;">Si el quejoso es a su vez el agraviado, apague el botón. Si son diferentes, enciéndalo</span>
+                </div>
                 <label class="switch" style="float:left;">
                     <div class="row">
                         <input type="checkbox" id="c1" name="c1" onclick="showMe('div1', this)" checked>

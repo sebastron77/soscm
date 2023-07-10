@@ -5,7 +5,7 @@ require_once('includes/load.php');
 ?>
 <?php
 $e_detalle = find_by_id_queja((int) $_GET['id']);
-// echo $e_detalle['id_queja_date'];
+
 if (!$e_detalle) {
     $session->msg("d", "ID de queja no encontrado.");
     redirect('quejas.php');
@@ -92,7 +92,7 @@ if (isset($_POST['procesal_queja'])) {
         } else {
         }
 
-echo $query;
+        echo $query;
 
         insertAccion($user['id_user'], '\"' . $user['username'] . '\" actualizó los Derechos Presuntamente Violentados del expediene ' . $folio_editar . '.', 2);
 
@@ -121,7 +121,7 @@ echo $query;
 
 
             $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,fecha_alta) 
-										  VALUES ({$id},'{$estadoProcesal}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},NOW());";
+            VALUES ({$id},'{$estadoProcesal}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},NOW());";
 
             if ($db->query($query)) {
                 //sucess
@@ -206,11 +206,11 @@ echo $query;
                     <span style="font-size: 20px; color: #7263F0">Derechos Presuntamente Violentados</span>
                 </strong>
                 <div class="row">
-                   
+
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="derecho_general">Derecho general:</label>
+                            <label for="derecho_general">Derecho general <span style="color:red; font-weight:bold;">*</span></label>
                             <select class="form-control" name="id_cat_derecho_general" id="id_cat_derecho_general" required>
                                 <option value="">Seleccione el Derecho General</option>
                                 <?php foreach ($cat_derecho_gral as $derecho_gral) : ?>
@@ -224,7 +224,7 @@ echo $query;
 
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="derecho_violentado">Derecho violentado:</label>
+                            <label for="derecho_violentado">Derecho violentado <span style="color:red; font-weight:bold;">*</span></label>
                             <select class="form-control" name="id_cat_derecho_vuln" id="id_cat_derecho_vuln" required>
                                 <option value="">Seleccione el Derecho Violentado</option>
                                 <?php foreach ($cat_derecho_vuln as $derecho_vuln) : ?>
@@ -252,11 +252,10 @@ echo $query;
                         <div class="form-group">
                             <label for="estado_procesal">Estado Procesal</label>
                             <select class="form-control" name="estado_procesal" id="estado_procesal" required>
-							<option value="">Seleccione el Estado Procesal</option>
+                                <option value="">Seleccione el Estado Procesal</option>
                                 <?php foreach ($cat_est_procesal as $est_pros) : ?>
-                                    <option <?php if ($est_pros['id_cat_est_procesal'] === $e_detalle['estado_procesal'])
+                                    <option <?php if ($est_pros['id_cat_est_procesal'] == $e_detalle['est_pro'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $est_pros['id_cat_est_procesal']; ?>">
-
                                         <?php echo ucwords($est_pros['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>

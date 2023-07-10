@@ -79,7 +79,7 @@ if (isset($_POST["export_data"])) {
                 </strong>
 
                 <a href="add_env_correspondencia.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Correspondencia</a>
-                <a href="add_env_correspondencia.php" style="margin-left: 10px;" class="btn btn-info pull-right">Ver Correspondencia Recibida</a>
+                <a href="correspondencia_recibida.php" style="margin-left: 10px;" class="btn btn-info pull-right">Ver Correspondencia Recibida</a>
 
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>

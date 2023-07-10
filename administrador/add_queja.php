@@ -248,7 +248,12 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_quejoso">Quejoso <span style="color:red;font-weight:bold">*</span></label>
+                            <label for="id_cat_quejoso">Quejoso <span style="color:red;font-weight:bold">*</span>
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction()">
+                                    <p style="font-size: 13px;">?</p>
+                                    <span class="popuptext" id="myPopup">Ingresa nombre de quejoso y selecciónalo de la lista desplegada. Si no se encuentra registrado, deberás agregarlo en el botón "Agregar Quejoso".</span>
+                                </div>
+                            </label>
                             <div class="input_container">
                                 <input class="form-control" autocomplete="off" type="text" id="id_cat_quejoso" onkeyup="autocompletar()" required>
                                 <input type="hidden" id="quejoso" name="quejoso">
@@ -260,7 +265,12 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="id_cat_agrav">Agraviado <span style="color:red;font-weight:bold">*</span></label>
+                            <label for="id_cat_agrav">Agraviado <span style="color:red;font-weight:bold">*
+                                    <div style="margin-left: 10px;" class="popup caja" onclick="myFunction2()">
+                                        <p style="font-size: 13px;">?</p>
+                                        <span class="popuptext" id="myPopup2">Ingresa nombre de agraviado y selecciónalo de la lista desplegada. Si no se encuentra registrado, deberás agregarlo en el botón "Agregar Quejoso".</span>
+                                    </div>
+                                </span></label>
                             <div class="input_container2">
                                 <input class="form-control" autocomplete="off" type="text" id="id_cat_agrav" onkeyup="autocompletar2()" required>
                                 <input type="hidden" id="agraviado" name="agraviado">
@@ -332,7 +342,11 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-1">
                         <div class="form-group">
-                            <label for="dom_numero">Núm. ext/int</label>
+                            <label for="dom_numero">Núm.</label>
+                            <div style="margin-left: 10px;" class="popup caja" onclick="myFunction3()">
+                                <p style="font-size: 13px;">?</p>
+                                <span class="popuptext" id="myPopup3">Ingresa únicamente el NÚMERO de domicilio donde ocurrieron los hechos. Si hay más datos, ingresalos en el apartado de "Notas Internas".</span>
+                            </div>
                             <input type="text" class="form-control" name="dom_numero" required>
                         </div>
                     </div>
@@ -419,11 +433,11 @@ include_once('layouts/header.php'); ?>
             <!-- <?php if (isset($_FILES['imagen']) && $validar == true) { ?>
                 <?php $cantidad = count($_FILES["imagen"]["tmp_name"]);
 
-                for ($i = 0; $i < $cantidad; $i++) { ?>
+                        for ($i = 0; $i < $cantidad; $i++) { ?>
                     <h1><?php echo $_FILES["imagen"]["name"][$i] ?></h1>
                     <img src="<?php echo $_FILES["imagen"]["name"][$i] ?>" width="100">
             <?php }
-            } ?> -->
+                    } ?> -->
         </div>
     </div>
 </div>

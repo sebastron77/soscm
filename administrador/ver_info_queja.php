@@ -28,7 +28,7 @@ if ($nivel == 6) {
     redirect('home.php');
 }
 if ($nivel == 7) {
-    redirect('home.php');
+    page_require_level(7);
 }
 ?>
 
@@ -246,15 +246,7 @@ if ($nivel == 7) {
                                 <td style="width: 2%;">
                                     <span class="text-center">
                                         <span style="font-weight: bold;">Estado procesal: </span>
-                                        <?php if ($e_detalle['estado_procesal'] == "") {
-                                            echo "N/A";
-                                        } else {
-                                            foreach ($cat_est_procesal as $est_pros) {
-                                                if ($e_detalle['estado_procesal'] == $est_pros['id_cat_est_procesal']) {
-                                                    echo remove_junk(ucwords($est_pros['descripcion']));
-                                                }
-                                            }
-                                        } ?><br><br>
+                                        <?php echo $e_detalle['estado_procesal']; ?><br><br>
                                     </span>
                                 </td>
                                 <td style="width: 4%;">
@@ -341,19 +333,18 @@ if ($nivel == 7) {
                                     //Miramos si existen archivos
                                     if (count($carpeta) > 0) {
                                         echo 'El directorio tiene archivos';
-                                        ?>
-                                
-                                <td>
-                                    <div class="form-group clearfix">
-                                        <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>&t=q" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
-                                            Descargar Imágenes
-                                        </a>
-                                    </div>
-                                </td>
+                                ?>
+                                        <td>
+                                            <div class="form-group clearfix">
+                                                <a href="descargar_zip.php?id=<?php echo (int) $e_detalle['id_queja_date']; ?>&t=q" class="btn btn-md btn-success" data-toggle="tooltip" title="Descargar Imágenes">
+                                                    Descargar Imágenes
+                                                </a>
+                                            </div>
+                                        </td>
                                 <?php }
-                                    } else {
-                                        echo 'El directorio no existe.';
-                                    }
+                                } else {
+                                    echo '';
+                                }
                                 ?>
                             </tr>
                             <table class="page_break">
@@ -589,6 +580,7 @@ if ($nivel == 7) {
                             </svg>
 
                         </a>
+
 
                     </div>
 

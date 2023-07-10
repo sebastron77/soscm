@@ -18,6 +18,9 @@ if ($nivel == 5) {
 if ($nivel == 7) {
 	page_require_level_exacto(7);
 }
+if ($nivel == 12) {
+	page_require_level_exacto(12);
+}
 if ($nivel == 21) {
 	page_require_level_exacto(21);
 }
@@ -31,10 +34,10 @@ endif;
 if ($nivel > 5 && $nivel < 7) :
 	redirect('home.php');
 endif;
-if ($nivel > 7 && $nivel < 19) :
+if ($nivel > 7 && $nivel < 12) :
 	redirect('home.php');
 endif;
-if ($nivel > 19 && $nivel < 21) :
+if ($nivel > 12 && $nivel < 21) :
 	redirect('home.php');
 endif;
 
@@ -67,7 +70,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 								endif ?>" class="tileA">
 						<div class="tileA-tittle">Presidencia</div>
 						<div class="tileA-icon">
-							<span class="material-symbols-rounded" style="font-size: 95px;">
+							<span class="material-symbols-rounded" style="font-size: 85px;">
 								person
 							</span>
 						</div>
@@ -78,7 +81,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Consejo</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										groups_2
 									</span>
 								</div>
@@ -90,7 +93,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Secretaría Ejecutiva</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										next_week
 									</span>
 								</div>
@@ -102,18 +105,18 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Secretaría Técnica</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										account_box
 									</span>
 								</div>
 							</a>
 							<ul>
 								<li>
-									<a href="<?php if (($otro <= 2) || ($otro == 12)) : echo "#";
+									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 12)) : echo "solicitudes_desaparecidos.php";
 												endif ?>" class="tileA">
 										<div class="tileA-tittle">Desaparecidos</div>
 										<div class="tileA-icon">
-											<span class="material-symbols-rounded" style="font-size: 95px;">
+											<span class="material-symbols-rounded" style="font-size: 85px;">
 												person_search
 											</span>
 										</div>
@@ -121,12 +124,36 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 								</li>
 
 								<li>
-									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 11)) : echo "solicitudes_transparencia.php";
+									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 10)) : echo "solicitudes_transparencia.php";
 												endif ?>" class="tileA">
 										<div class="tileA-tittle">Transparencia</div>
 										<div class="tileA-icon">
-											<span class="material-symbols-rounded" style="font-size: 95px;">
+											<span class="material-symbols-rounded" style="font-size: 85px;">
 												travel_explore
+											</span>
+										</div>
+									</a>
+								</li>
+								
+								<li>
+									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 11)) : echo "solicitudes_archivo.php";
+												endif ?>" class="tileA">
+										<div class="tileA-tittle">Archivo</div>
+										<div class="tileA-icon">
+											<span class="material-symbols-rounded" style="font-size: 85px;">
+												inventory_2
+											</span>
+										</div>
+									</a>
+								</li>
+								
+								<li>
+									<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 9)) : echo "solicitudes_servicios_tecnicos.php";
+												endif ?>" class="tileA">
+										<div class="tileA-icon">
+										<div class="tileA-tittle">Servicios Técnicos</div>
+											<span class="material-symbols-rounded" style="font-size: 85px;">
+												procedure
 											</span>
 										</div>
 									</a>
@@ -140,7 +167,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Quejas y Seguimiento</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										book
 									</span>
 								</div>
@@ -148,10 +175,12 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 						</li>
 
 						<li>
-							<a href="solicitudes_agendas.php" class="tileA">
+						
+							<a href="<?php if (($otro <= 2) || ($otro == 17) ) : echo "solicitudes_agendas.php";
+												endif ?>" class="tileA">
 								<div class="tileA-tittle" style="font-size: 13px;">Mecanismos y Agendas</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										calendar_view_month
 									</span>
 								</div>
@@ -165,7 +194,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Unidad de Gestión</div>
 								<div class="tileA-icon">
-									<span class="material-symbols-rounded" style="font-size: 95px;">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
 										rebase_edit
 									</span>
 								</div>

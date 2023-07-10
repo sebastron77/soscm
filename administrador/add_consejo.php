@@ -5,6 +5,7 @@ $user = current_user();
 $detalle = $user['id_user'];
 $id_folio = last_id_folios();
 $nivel_user = $user['user_level'];
+$id_consejo = last_id_consejo();
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -48,18 +49,25 @@ if (isset($_POST['add_consejo'])) {
         $hora   = remove_junk($db->escape($_POST['hora']));
         $lugar   = remove_junk(upper_case($db->escape($_POST['lugar'])));
         $num_asistentes   = remove_junk(upper_case($db->escape($_POST['num_asistentes'])));
-        // $orden_dia   = remove_junk($db->escape($_POST['orden_dia']));
-        // $acta_acuerdos   = remove_junk($db->escape($_POST['acta_acuerdos']));
 
-        //Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
+		//Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
+        if (count($id_consejo) == 0) {
+            $nuevo_id_consejo = 1;
+            $no_folio = sprintf('%04d', 1);
+        } else {
+            foreach ($id_consejo as $nuevo) {
+                $nuevo_id_consejo = (int) $nuevo['id_acta_consejo'] + 1;
+                $no_folio = sprintf('%04d', (int) $nuevo['id_acta_consejo'] + 1);
+            }
+        }
 
         if (count($id_folio) == 0) {
             $nuevo_id_folio = 1;
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int)$nuevo['contador'] + 1;
+                $nuevo_id_folio = (int) $nuevo['contador'] + 1;
                 $no_folio1 = sprintf('%04d', (int) $nuevo['contador'] + 1);
             }
         }
@@ -90,18 +98,23 @@ if (isset($_POST['add_consejo'])) {
 
         $move2 =  move_uploaded_file($temp2, $carpeta . "/" . $name2);
 
-        if ($move && $name != '' && $name2 != '') {
-            $query = "INSERT INTO consejo (";
-            $query .= "folio,num_sesion,tipo_sesion,fecha_sesion,hora,lugar,num_asistentes,orden_dia,acta_acuerdos";
-            $query .= ") VALUES (";
-            $query .= " '{$folio}','{$num_sesion}','{$tipo_sesion}','{$fecha_sesion}','{$hora}','{$lugar}','{$num_asistentes}','{$name}','{$name2}'";
-            $query .= ")";
+		$query = "INSERT INTO consejo (";
+		$query .= "folio,num_sesion,tipo_sesion,fecha_sesion,hora,lugar,num_asistentes id_user_creador,fecha_creacion";
+		if($name!= ''){ $query .= ",orden_dia ";}
+		if($name2!= ''){ $query .= ",acta_acuerdos ";}
+		$query .= ") VALUES (";
+		$query .= " '{$folio}','{$num_sesion}','{$tipo_sesion}','{$fecha_sesion}','{$hora}','{$lugar}','{$num_asistentes}',{$detalle},NOW() ";
+		if($name!= ''){ $query .= ",'{$name}' ";}
+		if($name2!= ''){ $query .= ",'{$name2}' ";}
+		$query .= ")";
 
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
+		$query2 = "INSERT INTO folios (";
+		$query2 .= "folio, contador";
+		$query2 .= ") VALUES (";
+		$query2 .= " '{$folio}','{$no_folio1}'";
+		$query2 .= ")";
+
+        if ($move && $name != '' && $name2 != '') {
         }
 
         if ($db->query($query) && $db->query($query2)) {
@@ -115,7 +128,7 @@ if (isset($_POST['add_consejo'])) {
             redirect('add_consejo.php', false);
         }
     } else {
-        $session->msg("d", $errors);
+        $session->msg("d", ' No se pudo agregar el registros.'.$errors);
         redirect('add_consejo.php', false);
     }
 }
@@ -137,6 +150,7 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="num_sesion"># de Sesión</label>
+                            
                             <input type="text" class="form-control" name="num_sesion" required>
                         </div>
                     </div>

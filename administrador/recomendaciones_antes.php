@@ -19,14 +19,14 @@ if ($nivel_user == 5) {
 if ($nivel_user == 7) {
     page_require_level_exacto(7);
 }
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
 
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 7) :
     redirect('home.php');
 endif;
 
@@ -80,7 +80,9 @@ if (isset($_POST["export_data"])) {
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Recomendaciones anteriores a 2023</span>
+					<?php if (($nivel == 1) || ($nivel == 50)) : ?>
                     <a href="add_recomendacion.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Recomendación</a>
+                        <?php endif; ?>
                 </strong>
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -22px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn 

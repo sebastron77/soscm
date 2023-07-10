@@ -3,11 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Solicitudes - Agendas y Mecanismos';
 require_once('includes/load.php');
 $user = current_user();
-$id_usuario = $user['id'];
-
-$user = current_user();
-$nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 
 if (($nivel_user > 2 && $nivel_user < 7)) :
@@ -49,22 +45,6 @@ endif;
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     task_alt
-                </span>
-            </div>
-        </a>
-        <a href="env_correspondencia.php" class="tile">
-            <div class="tile-tittle">Corresp. Int. Enviada</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    edit_document
-                </span>
-            </div>
-        </a>
-        <a href="correspondencia_recibida.php" class="tile">
-            <div class="tile-tittle">Corresp. Int. Recibida</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    file_open
                 </span>
             </div>
         </a>

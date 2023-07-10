@@ -70,11 +70,16 @@ if (isset($_POST['add_informe_areas'])) {
 
         $move2 =  move_uploaded_file($temp2, $carpeta . "/" . $name2);
 
-        if ($move && $name != '' && $name2 != '') {
             $query = "INSERT INTO informe_actividades_areas (";
-            $query .= "folio, no_informe, oficio_entrega, fecha_informe, fecha_entrega, informe_adjunto, area_creacion, user_creador";
+            $query .= "folio, no_informe, fecha_informe, fecha_entrega, informe_adjunto, area_creacion";
+			if($name){
+				$query .= ",oficio_entrega ";				
+			}
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$no_informe}','{$name}','{$fecha_informe}','{$fecha_entrega}','{$name2}', '{$area_creacion}', '{$id_user}'";
+            $query .= " '{$folio}','{$no_informe}','{$fecha_informe}','{$fecha_entrega}','{$name2}', '{$area_creacion}'";
+			if($name){
+				$query .= ",'{$name}' ";				
+			}
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -82,6 +87,7 @@ if (isset($_POST['add_informe_areas'])) {
             $query2 .= ") VALUES (";
             $query2 .= " '{$folio}','{$no_folio1}'";
             $query2 .= ")";
+        if ($move && $name != '' && $name2 != '') {
         }
 
         if ($db->query($query) && $db->query($query2)) {
@@ -142,8 +148,8 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="informe adjunto">Adjuntar informe</label>
-                            <input type="file" accept="application/pdf" class="form-control" name="informe adjunto" id="informe adjunto">
+                            <label for="informe_adjunto">Adjuntar informe</label>
+                            <input type="file" accept="application/pdf" class="form-control" name="informe_adjunto" id="informe_adjunto" required>
                         </div>
                     </div>
                 </div>

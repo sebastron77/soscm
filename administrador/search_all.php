@@ -29,7 +29,7 @@ if (isset($_POST['add'])) {
 		$CargaConfig = array();
 		$i=0;
 		foreach ($folios as $estudios) : 
-			echo $estudios['folio'];
+			//echo $estudios['folio'];
 			if($estudios['tipo']==='C'){
 				$sql= 'SELECT "Canalización" as tipo, folio, b.descripcion as medio_presentacion, creacion FROM orientacion_canalizacion a LEFT JOIN cat_medio_pres b ON b.id_cat_med_pres= a.medio_presentacion  WHERE folio="'.$estudios['folio'].'"';
 			}else if($estudios['tipo']==='O'){
@@ -40,7 +40,23 @@ if (isset($_POST['add'])) {
 				$sql= 'SELECT "Actuación" as tipo, folio_actuacion as folio, "-" as medio_presentacion, fecha_creacion_sistema as creacion FROM `actuaciones` WHERE folio_actuacion="'.$estudios['folio'].'"';				
 			}else if($estudios['tipo']==='CONV'){
 				$sql= 'SELECT "Convenio" as tipo, folio_solicitud as folio, "-" as medio_presentacion, fecha_creacion as creacion FROM `convenios` WHERE folio_solicitud="'.$estudios['folio'].'"';				
-			}			
+			}else if($estudios['tipo']==='CONS'){
+				$sql= 'SELECT "Acta Consejo" as tipo, folio, "-" as medio_presentacion, fecha_sesion as creacion FROM `consejo` WHERE folio="'.$estudios['folio'].'"';				
+			}else if($estudios['tipo']==='COL'){
+				$sql= 'SELECT "Colaboracion UD" as tipo, folio, "-" as medio_presentacion, fecha_creacion as creacion FROM colaboraciones WHERE folio="'.$estudios['folio'].'"';				
+			}else if($estudios['tipo']==='COR'){
+				$sql= 'SELECT "Correspondencia" as tipo, folio, "-" as medio_presentacion, fecha_creacion as creacion FROM correspondencia WHERE folio="'.$estudios['folio'].'"';				
+			}else if($estudios['tipo']==='EVEN'){
+				$sql= 'SELECT "Eventos de Áreas" as tipo, folio, "-" as medio_presentacion, fecha_creacion as creacion FROM eventos WHERE folio="'.$estudios['folio'].'"';				
+			}else if($estudios['tipo']==='EVENP'){
+				$sql= 'SELECT "Evento Presidencia" as tipo, folio, "-" as medio_presentacion, fecha_creacion as creacion FROM eventos_presidencia WHERE folio="'.$estudios['folio'].'"';				
+			}else if($estudios['tipo']==='GESTJ'){
+				$sql= 'SELECT "Gestión Jurisdiccional" as tipo, folio, "-" as medio_presentacion, fecha_subida as creacion FROM gestiones_jurisdiccionales WHERE folio="'.$estudios['folio'].'"';				
+			}elseif($estudios['tipo']==='INF'){
+				$sql= 'SELECT "Informe Áreas" as tipo, folio, "-" as medio_presentacion, fecha_creacion as creacion FROM informe_actividades_areas WHERE folio="'.$estudios['folio'].'"';				
+			}else{
+				
+			}				
 		  $result = $db->query($sql);
 		  while($row = $result->fetch_assoc()){
 			  $CargaConfig[$i]['tipo']=$row["tipo"];
