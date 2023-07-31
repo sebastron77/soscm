@@ -1,3 +1,5 @@
+<script type="text/javascript" src="libs/js/quejoso.js"></script>
+<script type="text/javascript" src="libs/js/agraviado.js"></script>
 <?php
 $page_title = 'Editar Queja';
 require_once('includes/load.php');
@@ -59,6 +61,7 @@ if (isset($_POST['edit_queja'])) {
         $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
+        $revision_presidencia = remove_junk($db->escape($_POST['revision_presidencia']));
         // $transferir = remove_junk($db->escape($_POST['transferir']));
         $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
         date_default_timezone_set('America/Mexico_City');
@@ -97,13 +100,13 @@ if (isset($_POST['edit_queja'])) {
             $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0, revision_presidencia='$revision_presidencia' WHERE id_queja_date='{$db->escape($id)}'";
         }
         if ($name == '') {
             $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0 WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0, revision_presidencia='$revision_presidencia' WHERE id_queja_date='{$db->escape($id)}'";
         }
 
         // $carpeta = 'uploads/quejas/' . $folio2 . '/imagenes';
@@ -155,6 +158,7 @@ if (isset($_POST['edit_queja'])) {
     }
 }
 ?>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <?php include_once('layouts/header.php'); ?>
 <div class="row">
     <div class="panel panel-default">
@@ -237,29 +241,44 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_area_asignada">Área a la que se asigna <span style="color:red;font-weight:bold">*</span></label>
-                            <select class="form-control" name="id_area_asignada">
+                            <select class="form-control" id="id_area_asignada" name="id_area_asignada">
                                 <?php foreach ($area as $a) : ?>
-                                    <option <?php if ($a['id_area'] === $e_detalle['id_area_asignada'])
-                                                echo 'selected="selected"'; ?> value="<?php echo $a['id_area']; ?>"><?php
-                                                                                                                    echo ucwords($a['nombre_area']) ?>
+                                    <option <?php if ($a['id_area'] === $e_detalle['id_area_asignada']) echo 'selected="selected"'; ?> 
+                                                    value="<?php echo $a['id_area']; ?>"><?php echo ucwords($a['nombre_area']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
+                    <?php $asigna_a = find_all_trabajadores_area($e_detalle['id_area_asignada']) ?>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_user_asignado">Se asigna a <span style="color:red;font-weight:bold">*</span></label>
-                            <select class="form-control" name="id_user_asignado">
+                            <select class="form-control" id="id_user_asignado" name="id_user_asignado">
                                 <?php foreach ($asigna_a as $asigna) : ?>
                                     <option <?php if ($asigna['id_det_usuario'] === $e_detalle['id_user_asignado'])
-                                                echo 'selected="selected"'; ?> value="<?php echo $asigna['id_det_usuario']; ?>"><?php
-                                                                                                                                echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
+                                                echo 'selected="selected"'; ?> value="<?php echo $asigna['id_det_usuario']; ?>">
+                                                <?php echo ucwords($asigna['nombre'] . " " . $asigna['apellidos']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
+                    <script>
+                        $(function() {
+                            $("#id_area_asignada").on("change", function() {
+                                var variable = $(this).val();
+                                $("#selected").html(variable);
+                            })
+
+                        });
+                        $(function() {
+                            $("#id_user_asignado").on("change", function() {
+                                var variable2 = $(this).val();
+                                $("#selected2").html(variable2);
+                            })
+                        });
+                    </script>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="id_cat_est_procesal">Estado Procesal <span style="color:red;font-weight:bold">*</span></label>
@@ -361,6 +380,14 @@ if (isset($_POST['edit_queja'])) {
                     <div class="col-md-3">
                         <label for="imagen">Añadir imagen(es): </label>
                         <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
+                    </div>
+                    <div class="col-md-3">
+                        <label for="revision_presidencia">Enviar a análisis: </label>
+                        <select class="form-control" name="revision_presidencia">
+                            <option value="">Escoge una opción</option>
+                            <option <?php if ($e_detalle['revision_presidencia'] === '1') echo 'selected="selected"'; ?> value="1">Sí</option>
+                            <option <?php if ($e_detalle['revision_presidencia'] === '0') echo 'selected="selected"'; ?> value="0">No</option>
+                        </select>
                     </div>
                 </div>
                 <div class="row">

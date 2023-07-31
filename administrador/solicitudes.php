@@ -8,7 +8,7 @@ $id_usuario = $user['id_user'];
 $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['nivel_grupo'];
 $nivel = $user['user_level'];
-
+/*
 if ($nivel <= 2) {
 	page_require_level(2);
 }
@@ -40,7 +40,7 @@ endif;
 if ($nivel > 12 && $nivel < 21) :
 	redirect('home.php');
 endif;
-
+*/
 ?>
 
 <?php
@@ -77,7 +77,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 					</a>
 					<ul>
 						<li>
-							<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 21)) : echo "solicitudes_consejo.php";
+							<a href="<?php if (($otro <= 3) || ($otro == 7) || ($otro == 21)) : echo "solicitudes_consejo.php";
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Consejo</div>
 								<div class="tileA-icon">
@@ -89,7 +89,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 						</li>
 
 						<li>
-							<a href="<?php if (($otro == 7) || ($otro <= 2) || ($otro == 21)) : echo "solicitudes_ejecutiva.php";
+							<a href="<?php if (($otro == 7) || ($otro <= 2) || ($otro == 3)) : echo "solicitudes_ejecutiva.php";
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Secretaría Ejecutiva</div>
 								<div class="tileA-icon">
@@ -153,7 +153,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										<div class="tileA-icon">
 										<div class="tileA-tittle">Servicios Técnicos</div>
 											<span class="material-symbols-rounded" style="font-size: 85px;">
-												procedure
+												health_and_safety
 											</span>
 										</div>
 									</a>

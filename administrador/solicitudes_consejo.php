@@ -10,6 +10,9 @@ $nivel_user = $user['user_level'];
 if ($nivel_user <= 2) {
     page_require_level(2);
 }
+if ($nivel_user == 3) {
+    page_require_level_exacto(3);
+}
 if ($nivel_user == 5) {
     redirect('home.php');
 }
@@ -22,7 +25,7 @@ if ($nivel_user == 21) {
 if ($nivel_user == 19) {
     redirect('home.php');
 }
-if ($nivel_user > 2 && $nivel_user < 5) :
+if ($nivel_user > 3 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
@@ -77,22 +80,7 @@ $c_user = count_by_id('users', 'id_user');
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
-        <a href="eventos.php" class="tile">
-            <div class="tile-tittle">Eventos</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    event_available
-                </span>
-            </div>
-        </a>
-        <a href="informes_areas.php" class="tile">
-            <div class="tile-tittle">Informe Actividades</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    task_alt
-                </span>
-            </div>
-        </a>
+        
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

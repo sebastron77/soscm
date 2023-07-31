@@ -81,7 +81,7 @@ a {
 
 .login-page3 {
   width: 600px;
-  height: 620px;
+  height: 100%;
   margin: 7% auto;
   padding: 0 10px;
   background-color: #ffffff;
@@ -1203,7 +1203,7 @@ a:active {
 }
 
 .organigrama ul {
-	padding-top: 20px;
+	padding-top: 10px;
   position: relative;
 }
 
@@ -1270,7 +1270,6 @@ a:active {
 	padding: 1em 0.75em;
 	text-decoration: none;
 	color: #333;  
-	font-family: arial, verdana, tahoma;
 	font-size: 0.85em;
 	display: inline-block;
 	border-radius: 5px;
@@ -1280,6 +1279,8 @@ a:active {
   -moz-transition: all 500ms;
   transition: all 500ms;
 }
+
+
 
 .organigrama > ul > li > a {
   font-size: 1em;

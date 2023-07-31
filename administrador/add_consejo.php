@@ -10,6 +10,9 @@ $id_consejo = last_id_consejo();
 if ($nivel_user <= 2) {
     page_require_level(2);
 }
+if ($nivel_user == 3) {
+    page_require_level_exacto(3);
+}
 if ($nivel_user == 5) {
     redirect('home.php');
 }
@@ -22,7 +25,7 @@ if ($nivel_user == 21) {
 if ($nivel_user == 19) {
     redirect('home.php');
 }
-if ($nivel_user > 2 && $nivel_user < 5) :
+if ($nivel_user > 3 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
@@ -150,7 +153,6 @@ include_once('layouts/header.php'); ?>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="num_sesion"># de Sesión</label>
-                            
                             <input type="text" class="form-control" name="num_sesion" required>
                         </div>
                     </div>

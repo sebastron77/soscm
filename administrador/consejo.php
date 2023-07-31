@@ -9,11 +9,14 @@ $all_consejo = find_all_consejo();
 
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 
 if ($nivel_user <= 2) {
     page_require_level(2);
+}
+if ($nivel_user == 2) {
+    page_require_level_exacto(3);
 }
 if ($nivel_user == 5) {
     redirect('home.php');
@@ -27,7 +30,7 @@ if ($nivel_user == 21) {
 if ($nivel_user == 19) {
     redirect('home.php');
 }
-if ($nivel_user > 2 && $nivel_user < 5) :
+if ($nivel_user > 3 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
@@ -74,9 +77,6 @@ if (isset($_POST["export_data"])) {
     exit;
 }
 
-// page_require_level(2);
-
-// page_require_area(4);
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -96,10 +96,10 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Consejo</span>
                 </strong>
+				<?php if (($nivel_user <= 2) || ($nivel_user == 3) ) : ?>
                 <a href="add_consejo.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Consejo</a>
-                <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
-                    <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
-                </form>
+				<?php endif; ?>
+                
             </div>
         </div>
 

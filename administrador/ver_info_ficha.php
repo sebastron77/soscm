@@ -3,10 +3,15 @@ error_reporting(E_ALL ^ E_NOTICE);
 require_once('includes/load.php');
 ?>
 <?php
-$a_ficha = find_by_id('fichas', (int)$_GET['id']);
+// $a_ficha = find_by_id_ficha((int)$_GET['id']);
 $tipo_ficha = find_tipo_ficha((int)$_GET['id']);
 $user = current_user();
 $nivel = $user['user_level'];
+if ($tipo_ficha['tipo_ficha'] == 1) {
+    $a_ficha = find_by_id_ficha((int)$_GET['id'], 1);
+} else{
+    $a_ficha = find_by_id_ficha((int)$_GET['id'], 2);
+}
 
 if ($tipo_ficha['tipo_ficha'] == 1) :
     $page_title = 'Ficha Técnica - Área Médica';
@@ -60,13 +65,13 @@ if ($nivel == 7) {
             <div class="panel-body">
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
-                        <tr style="height: 10px;" class="table-info">
+                        <tr style="height: 10px;">
                             <th class="text-center" style="width: 1%;">Folio</th>
-                            <th class="text-center" style="width: 4%;">Función</th>
-                            <th class="text-center" style="width: 3%;">No. Queja</th>
+                            <th class="text-center" style="width: 3%;">Función</th>
+                            <th class="text-center" style="width: 1%;">No. Queja</th>
                             <th class="text-center" style="width: 4%;">Visitaduría</th>
-                            <th class="text-center" style="width: 7%;">Área Solicitante</th>
-                            <th class="text-center" style="width: 5%;">Ocupación</th>
+                            <th class="text-center" style="width: 5%;">Área Solicitante</th>
+                            <th class="text-center" style="width: 7%;">Ocupación</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,8 +87,8 @@ if ($nivel == 7) {
                 </table>
                 <table class="table table-bordered table-striped">
                     <thead class="thead-purple">
-                        <tr style="height: 10px;" class="table-info">
-                            <th class="text-center" style="width: 3%;">Escolaridad</th>
+                        <tr style="height: 10px;">
+                            <th class="text-center" style="width: 1%;">Escolaridad</th>
                             <th class="text-center" style="width: 10%;">Presuntos Hechos Violatorios</th>
                             <th class="text-center" style="width: 7%;">Autoridad Responsable</th>
                             <th class="text-center" style="width: 7%;">Nombre de Usuario</th>
@@ -102,24 +107,24 @@ if ($nivel == 7) {
 
                     </tbody>
                 </table>
-                <table class="table table-dark table-bordered table-striped">
-                    <thead>
-                        <tr style="height: 10px;" class="table-info">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-purple">
+                        <tr style="height: 10px;">
                             <th class="text-center" style="width: 4%;">Grupo Vulnerable</th>
-                            <th class="text-center" style="width: 2%">Fecha de Intervención</th>
+                            <th class="text-center" style="width: 1%">Fecha de Intervención</th>
                             <?php if ($a_ficha['protocolo_estambul'] != '') : ?>
                                 <th class="text-center" style="width: 2%">Protocolo de Estambul</th>
                             <?php endif; ?>
                             <th class="text-center" style="width: 2%;">Resultado</th>
                             <th class="text-center" style="width: 2%;">Documento Emitido</th>
                             <th class="text-center" style="width: 7%;">Nombre del especialista que emitió</th>
-                            <th class="text-center" style="width: 7%;">Clave del documento</th>
+                            <th class="text-center" style="width: 3%;">Clave del documento</th>
                             <th class="text-center" style="width: 5%;">Documento emitido</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td><?php echo remove_junk(ucwords(($a_ficha['grupo_vulnerable']))) ?></td>
+                            <td><?php echo remove_junk(ucwords(($a_ficha['grupo']))) ?></td>
                             <td class="text-center"><?php echo remove_junk(ucwords(($a_ficha['fecha_intervencion']))) ?></td>
                             <?php if ($a_ficha['protocolo_estambul'] != '') : ?>
                                 <td class="text-center"><?php echo remove_junk(ucwords(($a_ficha['protocolo_estambul']))) ?></td>
@@ -127,16 +132,20 @@ if ($nivel == 7) {
                             <td class="text-center"><?php echo remove_junk(ucwords(($a_ficha['resultado']))) ?></td>
                             <td><?php echo remove_junk(ucwords(($a_ficha['documento_emitido']))) ?></td>
                             <td><?php echo remove_junk(ucwords(($a_ficha['nombre_especialista']))) ?></td>
-                            <td><?php echo remove_junk(ucwords(($a_ficha['clave_documento']))) ?></td>
+                            <td class="text-center"><?php echo remove_junk(ucwords(($a_ficha['clave_documento']))) ?></td>
                             <?php
                             $folio_editar = $a_ficha['folio'];
                             $resultado = str_replace("/", "-", $folio_editar);
                             ?>
-                            <td><a target="_blank" style="color: #23296B;" href="uploads/fichastecnicas/<?php echo $resultado . '/' . $a_ficha['ficha_adjunto']; ?>"><?php echo $a_ficha['ficha_adjunto']; ?></a></td>
+                            <?php if ($tipo_ficha['tipo_ficha'] == 1) : ?>
+                            <td><a target="_blank" style="color: #23296B;" href="uploads/fichastecnicas/medica/<?php echo $resultado . '/' . $a_ficha['ficha_adjunto']; ?>"><?php echo $a_ficha['ficha_adjunto']; ?></a></td>
+                            <?php else : ?>
+                            <td><a target="_blank" style="color: #23296B;" href="uploads/fichastecnicas/psic/<?php echo $resultado . '/' . $a_ficha['ficha_adjunto']; ?>"><?php echo $a_ficha['ficha_adjunto']; ?></a></td>
+                            <?php endif; ?>
                         </tr>
                     </tbody>
                 </table>
-                
+
                 <?php if ($tipo_ficha['tipo_ficha'] == 1) : ?>
                     <a href="fichas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar

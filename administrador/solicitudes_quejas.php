@@ -147,6 +147,14 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+        <a href="competencia.php" class="tile">
+            <div class="tile-tittle">Competencia</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    find_in_page
+                </span>
+            </div>
+        </a>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>
