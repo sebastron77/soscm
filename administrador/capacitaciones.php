@@ -9,7 +9,7 @@ $nivel = $user['user_level'];
 $id_user = $user['id'];
 $nivel_user = $user['user_level'];
 $area_user = area_usuario2($id_user);
-$area = $area_user['nombre_area'];
+$area = $area_user['id_area'];
 
 if (($nivel_user <= 2) || ($nivel_user == 7)) {
     $all_capacitaciones = find_all_capacitaciones();

@@ -936,7 +936,8 @@ function find_by_id_queja($id)
           oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,cn.descripcion as nacionalidad, cq.calle_quejoso, 
           cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, CONCAT(du.nombre,' ',du.apellidos) as user_asignado, q.num_anv, q.fecha_anv, 
           q.observaciones_anv, q.archivo_anv, q.anv_publico, q.ent_fed,etp.descripcion as estado_procesal,etp.id_cat_est_procesal, CONCAT(du2.nombre,' ',du2.apellidos) as user_creador,
-          q.descripcion_falta_interes, q.archivo_falta_interes, q.descripcion_cm, q.archivo_cm, q.descripcion_improcedencia, q.archivo_improcedencia
+          q.descripcion_falta_interes, q.archivo_falta_interes, q.descripcion_cm, q.archivo_cm, q.descripcion_improcedencia, q.archivo_improcedencia,
+          q.sintesis_rec, q.traduccion, q.lectura_facil
           FROM quejas_dates q
           LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
           LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut

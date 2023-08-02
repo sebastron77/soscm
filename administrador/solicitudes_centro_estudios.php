@@ -3,7 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Solicitudes - Centro de Estudios';
 require_once('includes/load.php');
 $user = current_user();
-$id_usuario = $user['id'];
+$id_usuario = $user['id_user'];
 
 // $user = current_user();
 // $id_user = $user['id'];
@@ -12,7 +12,7 @@ $id_usuario = $user['id'];
 
 $user = current_user();
 $nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 
 // if ($nivel_user <= 2) {
@@ -36,13 +36,6 @@ endif;
 
 ?>
 
-<?php
-$c_categoria     = count_by_id('categorias');
-$c_user          = count_by_id('users');
-$c_trabajadores          = count_by_id('detalles_usuario');
-$c_areas          = count_by_id('area');
-$c_cargos          = count_by_id('cargos');
-?>
 
 <?php include_once('layouts/header.php'); ?>
 
