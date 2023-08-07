@@ -5250,7 +5250,7 @@ function find_by_id_ficha($id_ficha, $tipo)
     return null;
 }
 
-function find_by_id_ficha2($id_ficha,$tipo)
+function find_by_id_ficha2($id_ficha, $tipo)
 {
   global $db;
   $sql = $db->query("SELECT f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, 
@@ -5276,7 +5276,7 @@ function find_by_id_ficha2($id_ficha,$tipo)
 
 function find_documentos_gestion($id)
 {
-    return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
+  return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
 }
 
 /*---------------------------------------------------------------------*/
@@ -5326,7 +5326,7 @@ function find_all_jornadas()
   $result = find_by_sql($sql);
   return $result;
 }
-  /*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 /* Funcion que encuentra una jornada por id, que ayudara al momento de editar */
 /*----------------------------------------------------------------------------*/
 function find_by_id_jornadas($id)
@@ -5338,4 +5338,86 @@ function find_by_id_jornadas($id)
     return $result;
   else
     return null;
+}
+/************************************************************************************************************************************************************************************************/
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id de folios para despues
+   sumarle uno y que el nuevo registro tome ese valor */
+/*------------------------------------------------------------------*/
+function last_id_entregable()
+{
+  $sql = "SELECT * FROM entregables ORDER BY id_entregables DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra todos los entregables */
+/*----------------------------------------------*/
+function find_all_entregables()
+{
+  $sql = "SELECT  id_entregables,  folio,  tipo_estregable,  id_cat_ejes_estrategicos,  id_cat_agendas,  a.descripcion,  liga_acceso,  no_isbn,  b.descripcion  as nombre_eje,  c.descripcion as nombre_agenda
+  FROM entregables a
+  LEFT JOIN `cat_ejes_estrategicos` b USING(id_cat_ejes_estrategicos)
+  LEFT JOIN `cat_agendas` c USING(id_cat_agendas)";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------*/
+/* Funcion para encontrar el ultimo id la tabla */
+/*------------------------------------------------------------------*/
+function last_id_table($table, $nombre_id)
+{
+  $sql = "SELECT * FROM {$table} ORDER BY {$nombre_id} DESC LIMIT 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para contar los ID de algun campo para saber su cantidad total */
+/*------------------------------------------------------------------------*/
+function count_by_mediacion()
+{
+  global $db;
+  $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates q WHERE  q.id_area_asignada = '48'";
+  $result = $db->query($sql);
+  return ($db->fetch_assoc($result));
+}
+
+/*----------------------------------------------*/
+/* Funcion que encuentra los grupos vulnerables de una capacitacion */
+/*----------------------------------------------*/
+function find_all_grupos($capacitacion)
+{
+  $sql = "SELECT 	id_rel_capacitacion_grupos,   id_capacitacion,  id_cat_grupo_vuln,  descripcion,  no_asistentes 
+		FROM  rel_capacitacion_grupos a LEFT JOIN cat_grupos_vuln USING(id_cat_grupo_vuln)  
+		WHERE id_capacitacion =" . $capacitacion;
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para contar los ID de quejas para saber su cantidad total */
+/*------------------------------------------------------------------------*/
+function count_by_id_quejas($table, $nombre_id, $year)
+{
+  global $db;
+  if (tableExists($table)) {
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE  folio_queja LIKE '%/{$year}-%' ";
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  }
+}
+/*------------------------------------------------------------------------*/
+/* Funcion para contar los ID de algun campo para saber su cantidad total */
+/*------------------------------------------------------------------------*/
+function count_by_competencias()
+{
+  global $db;
+  
+    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  
 }

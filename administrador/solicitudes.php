@@ -153,7 +153,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 										<div class="tileA-icon">
 										<div class="tileA-tittle">Servicios Técnicos</div>
 											<span class="material-symbols-rounded" style="font-size: 85px;">
-												health_and_safety
+												procedure
 											</span>
 										</div>
 									</a>
@@ -163,7 +163,19 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 
 						<li>
-							<a href="<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21) || ($otro == 50)) : echo "solicitudes_quejas.php";
+							<a href="<?php if ( ($otro <= 2) || ($otro == 6) || ($otro == 7)) : echo "solicitudes_centro_estudios.php";endif ?>" class="tileA">
+								<div class="tileA-tittle">Centro Estudios</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
+										local_library
+									</span>
+								</div>
+							</a>
+						</li>
+						
+						<li>
+							
+<a href="<?php if (($otro == 5) || ($otro <= 2) || ($otro == 7) || ($otro == 19) || ($otro == 20) || ($otro == 21) || ($otro == 50)):							echo "solicitudes_quejas.php";
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Quejas y Seguimiento</div>
 								<div class="tileA-icon">
@@ -187,15 +199,26 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 							</a>
 						</li>
 
-
+<!--
 						<li>
-
 							<a href="<?php if (($otro <= 2)) : echo "solicitudes_gestion.php";
 										endif ?>" class="tileA">
 								<div class="tileA-tittle">Unidad de Gestión</div>
 								<div class="tileA-icon">
 									<span class="material-symbols-rounded" style="font-size: 85px;">
 										rebase_edit
+									</span>
+								</div>
+							</a>
+						</li>
+-->
+
+						<li>
+							<a href="<?php if (($otro <= 2) || ($otro == 7) || ($otro == 15)) : echo "solicitudes_comunicacion_social.php";endif ?>" class="tileA">
+								<div class="tileA-tittle">Comunicación Social</div>
+								<div class="tileA-icon">
+									<span class="material-symbols-rounded" style="font-size: 85px;">
+										contact_mail
 									</span>
 								</div>
 							</a>

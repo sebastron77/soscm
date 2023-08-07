@@ -2,9 +2,6 @@
 $page_title = 'Editar Recomendación';
 require_once('includes/load.php');
 
-// page_require_level(4);
-?>
-<?php
 $e_recomendacion = find_by_id('recomendaciones', (int)$_GET['id'], 'id_recomendacion');
 if (!$e_recomendacion) {
     $session->msg("d", "id de recomendación no encontrado.");
@@ -53,21 +50,48 @@ if (isset($_POST['edit_recomendacion'])) {
         $type = $_FILES['recomendacion_adjunto']['type'];
         $temp = $_FILES['recomendacion_adjunto']['tmp_name'];
 
+        $nameRecSint = $_FILES['sintesis_rec']['name'];
+        $sizeRecSint = $_FILES['sintesis_rec']['size'];
+        $typeRecSint = $_FILES['sintesis_rec']['type'];
+        $tempRecSint = $_FILES['sintesis_rec']['tmp_name'];
+
+        $nameRecTrad = $_FILES['traduccion']['name'];
+        $sizeRecTrad = $_FILES['traduccion']['size'];
+        $typeRecTrad = $_FILES['traduccion']['type'];
+        $tempRecTrad = $_FILES['traduccion']['tmp_name'];
+
+        $nameRecLF = $_FILES['lectura_facil']['name'];
+        $sizeRecLF = $_FILES['lectura_facil']['size'];
+        $typeRecLF = $_FILES['lectura_facil']['type'];
+        $tempRecLF = $_FILES['lectura_facil']['tmp_name'];
+
         $verifica = substr($e_recomendacion['folio_recomendacion'], 0, 4);
         //Verificamos que exista la carpeta y si sí, guardamos el pdf
         if ($verifica == 'CEDH') {
             if (is_dir($carpeta)) {
                 $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             } else {
                 mkdir($carpeta, 0777, true);
                 $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             }
         } elseif ($verifica != 'CEDH') {
             if (is_dir($carpeta2)) {
                 $move =  move_uploaded_file($temp, $carpeta2 . "/" . $name);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             } else {
                 mkdir($carpeta2, 0777, true);
                 $move =  move_uploaded_file($temp, $carpeta2 . "/" . $name);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             }
         }
 
@@ -76,39 +100,54 @@ if (isset($_POST['edit_recomendacion'])) {
         $type = $_FILES['recomendacion_adjunto_publico']['type'];
         $temp = $_FILES['recomendacion_adjunto_publico']['tmp_name'];
 
-        $verifica = substr($e_recomendacion['folio_recomendacion'], 0, 4);
+        $verifica = substr($e_recomendacion['folio_recomendacion'], 0, 4);        
 
         //Verificamos que exista la carpeta y si sí, guardamos el pdf
         if ($verifica == 'CEDH') {
             if (is_dir($carpeta)) {
                 $move =  move_uploaded_file($temp, $carpeta . "/" . $name2);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             } else {
                 mkdir($carpeta, 0777, true);
                 $move =  move_uploaded_file($temp, $carpeta . "/" . $name2);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             }
         } elseif ($verifica != 'CEDH') {
             if (is_dir($carpeta2)) {
                 $move =  move_uploaded_file($temp, $carpeta2 . "/" . $name2);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             } else {
                 mkdir($carpeta2, 0777, true);
                 $move =  move_uploaded_file($temp, $carpeta2 . "/" . $name2);
+                $move2 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+                $move3 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+                $move4 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
             }
         }
 
         if ($name != '' && $name2 != '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', recomendacion_adjunto_publico='{$name2}' WHERE id_recomendacion='{$db->escape($id)}'";
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', recomendacion_adjunto_publico='{$name2}', sintesis_rec='$nameRecSint', traduccion='$nameRecTrad', lectura_facil='$nameRecLF' 
+            WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name != '' && $name2 == '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}' WHERE id_recomendacion='{$db->escape($id)}'";
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name == '' && $name2 != '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto_publico='{$name2}' WHERE id_recomendacion='{$db->escape($id)}'";
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto_publico='{$name2}', 
+            sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name == '' && $name2 == '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}' WHERE id_recomendacion='{$db->escape($id)}'";
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', 
+            sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
@@ -181,6 +220,35 @@ if (isset($_POST['edit_recomendacion'])) {
                             </span>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="sintesis_rec">Síntesis</label>
+                                <input id="sintesis_rec" type="file" accept="application/pdf" class="form-control" name="sintesis_rec">
+                                <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_recomendacion['sintesis_rec']); ?><?php ?></label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="traduccion">Traducción</label>
+                                <input id="traduccion" type="file" accept="application/pdf" class="form-control" name="traduccion">
+                                <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_recomendacion['traduccion']); ?><?php ?></label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="lectura_facil">Lectura Fácil</label>
+                                <input id="lectura_facil" type="file" accept="application/pdf" class="form-control" name="lectura_facil">
+                                <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_recomendacion['lectura_facil']); ?><?php ?></label>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label>
@@ -189,7 +257,7 @@ if (isset($_POST['edit_recomendacion'])) {
                     </div>
                 </div>
                 <div class="form-group clearfix">
-                    <a href="recomendaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+                    <a href="recomendaciones_antes.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
                     </a>
                     <button type="submit" name="edit_recomendacion" class="btn btn-primary" value="subir">Guardar</button>

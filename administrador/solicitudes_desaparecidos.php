@@ -54,7 +54,7 @@ endif;
         </a>
 
 	   
-        <a href="informes_areas.php" class="tileO">
+        <a href="informes_areas.php?a=12" class="tileO">
             <div class="tileO-tittle">Informe de Actividades</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

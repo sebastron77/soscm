@@ -63,17 +63,36 @@ if (isset($_POST['add_recomendacion'])) {
 
         $move2 =  move_uploaded_file($temp2, $carpeta . "/" . $name2);
 
+        $nameRecSint = $_FILES['sintesis_rec']['name'];
+        $sizeRecSint = $_FILES['sintesis_rec']['size'];
+        $typeRecSint = $_FILES['sintesis_rec']['type'];
+        $tempRecSint = $_FILES['sintesis_rec']['tmp_name'];
+
+        $nameRecTrad = $_FILES['traduccion']['name'];
+        $sizeRecTrad = $_FILES['traduccion']['size'];
+        $typeRecTrad = $_FILES['traduccion']['type'];
+        $tempRecTrad = $_FILES['traduccion']['tmp_name'];
+
+        $nameRecLF = $_FILES['lectura_facil']['name'];
+        $sizeRecLF = $_FILES['lectura_facil']['size'];
+        $typeRecLF = $_FILES['lectura_facil']['type'];
+        $tempRecLF = $_FILES['lectura_facil']['tmp_name'];
+
+        $move3 =  move_uploaded_file($tempRecSint, $carpeta . "/" . $nameRecSint);
+        $move4 =  move_uploaded_file($tempRecTrad, $carpeta . "/" . $nameRecTrad);
+        $move5 =  move_uploaded_file($tempRecLF, $carpeta . "/" . $nameRecLF);
+
         if ($move && $name != '') {
             $query = "INSERT INTO recomendaciones (";
-            $query .= "numero_recomendacion,folio_queja,servidor_publico,fecha_recomendacion,observaciones,recomendacion_adjunto,recomendacion_adjunto_publico";
+            $query .= "numero_recomendacion,folio_queja,servidor_publico,fecha_recomendacion,observaciones,recomendacion_adjunto,recomendacion_adjunto_publico,sintesis_rec,traduccion,lectura_facil";
             $query .= ") VALUES (";
-            $query .= " '{$numero_recomendacion}','{$folio_queja}','{$servidor_publico}','{$fecha_acuerdo}','{$observaciones}','{$name}','{$name2}'";
+            $query .= " '{$numero_recomendacion}','{$folio_queja}','{$servidor_publico}','{$fecha_acuerdo}','{$observaciones}','{$name}','{$name2}','{$nameRecSint}','{$nameRecTrad}','{$nameRecLF}'";
             $query .= ")";
         } else {
             $query = "INSERT INTO recomendaciones (";
-            $query .= "numero_recomendacion,folio_queja,servidor_publico,fecha_recomendacion,observaciones";
+            $query .= "numero_recomendacion,folio_queja,servidor_publico,fecha_recomendacion,observaciones,sintesis_rec,traduccion,lectura_facil";
             $query .= ") VALUES (";
-            $query .= " '{$numero_recomendacion}','{$folio_queja}','{$servidor_publico}','{$fecha_acuerdo}','{$observaciones}'";
+            $query .= " '{$numero_recomendacion}','{$folio_queja}','{$servidor_publico}','{$fecha_acuerdo}','{$observaciones}','{$nameRecSint}','{$nameRecTrad}','{$nameRecLF}'";
             $query .= ")";
         }
         if ($db->query($query)) {
@@ -148,12 +167,36 @@ include_once('layouts/header.php'); ?>
                             </span>
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="sintesis_rec">Adjuntar Síntesis</label>
+                                <input id="sintesis_rec" type="file" accept="application/pdf" class="form-control" name="sintesis_rec">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="traduccion">Adjuntar Traducción</label>
+                                <input id="traduccion" type="file" accept="application/pdf" class="form-control" name="traduccion">
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span>
+                                <label for="lectura_facil">Adjuntar Lectura Fácil</label>
+                                <input id="lectura_facil" type="file" accept="application/pdf" class="form-control" name="lectura_facil">
+                            </span>
+                        </div>
+                    </div>
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label>
                             <textarea class="form-control" name="observaciones" id="observaciones" cols="10" rows="3"></textarea>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
 
                 <div class="form-group clearfix">

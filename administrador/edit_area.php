@@ -2,7 +2,7 @@
 $page_title = 'Editar Área';
 require_once('includes/load.php');
 
-i$user = current_user();
+$user = current_user();
 $nivel_user = $user['user_level'];
 
 if ($nivel_user == 1) {

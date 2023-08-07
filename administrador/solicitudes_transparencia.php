@@ -86,7 +86,7 @@ endif;
                 </span>
             </div>
         </a>
-        <a href="informes_areas.php" class="tile">
+        <a href="informes_areas.php?a=13" class="tile">
             <div class="tile-tittle">Informe Actividades</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -96,5 +96,4 @@ endif;
         </a>
     </div>
 </div>
-<?php include_once('layouts/footer.php'); ?>
 <?php include_once('layouts/footer.php'); ?>

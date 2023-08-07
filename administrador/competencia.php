@@ -115,6 +115,7 @@ if (isset($_POST["export_data"])) {
             <table class="datatable table table-bordered table-striped">
                 <thead class="thead-purple">
                     <tr>
+                        <th style="width: 1%;">#</th>
                         <th width="1%">Folio</th>
                         <th width="1%">Fecha presentación</th>
                         <th width="10%">Medio presentación</th>
@@ -129,6 +130,7 @@ if (isset($_POST["export_data"])) {
                 <tbody>
                     <?php foreach ($quejas_competencia as $queja) : ?>
                         <tr>
+                            <td><?php echo remove_junk(ucwords($queja['id_queja_date'])) ?></td>
                             <td>
                                 <?php echo remove_junk(ucwords($queja['folio_queja'])) ?>
                             </td>

@@ -6,6 +6,7 @@ require_once('includes/load.php');
 $user = current_user();
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
+$id_grupo=2;
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -55,6 +56,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
     </div>
 </div>
 
+<?php if(($nivel_user <= 2) ){?>
 <div class="container-fluid">
     <div class="full-box tileO-container">
         <a href="add_gestion.php?a=1" class="tileO">
@@ -65,15 +67,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="consejo.php" class="tileO">
-            <div class="tileO-tittle">Actas sesión de consejo</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    receipt_long
-                </span>
-
-            </div>
-        </a>
+<?php }?>
+       
         <a href="eventos_pres.php" class="tileO">
             <div class="tileO-tittle">Actividades</div>
             <div class="tileO-icon">
@@ -82,6 +77,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+<?php if(($nivel_user <= 2) ){?>		
         <a href="add_gestion.php?a=3" class="tileO">
             <div class="tileO-tittle">Amicus Curiae</div>
             <div class="tileO-icon">
@@ -90,6 +86,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+<?php }?>		
+<?php if(($nivel_user <= 2) ){?>		
         <a href="#" class="tileO">
             <div class="tileO-tittle">Ámparo</div>
             <div class="tileO-icon">
@@ -98,6 +96,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+<?php }?>		
+<?php if(($nivel_user <= 2) ){?>		
         <a href="add_gestion.php?a=2" class="tileO">
             <div class="tileO-tittle">Controversia Const.</div>
             <div class="tileO-icon">
@@ -106,20 +106,14 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="convenios.php" class="tileO">
-            <div class="tileO-tittle">Convenios</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    description
-                </span>
-            </div>
-        </a>
+<?php }?>       
         <a href="gestiones.php" class="tileO">
             <div class="tileO-tittle">Gestión Jurisdiccional</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
+		<!--
         <a href="#" class="tileO">
             <div class="tileO-tittle">Opinión Consultiva</div>
             <div class="tileO-icon">
@@ -128,6 +122,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+		-->
         <a href="correspondencia.php" class="tileO">
             <div class="tileO-tittle">Oficios</div>
             <div class="tileO-icon">
@@ -152,7 +147,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="informes_areas.php" class="tile">
+        <a href="informes_areas.php?a=2" class="tile">
             <div class="tile-tittle">Informe Actividades</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -173,6 +168,15 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     file_open
+                </span>
+            </div>
+        </a>
+		
+		<a href="competencia.php" class="tile">
+            <div class="tile-tittle" style="font-size: 12px;">Conflictos Competenciales</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    find_in_page
                 </span>
             </div>
         </a>

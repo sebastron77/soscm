@@ -23,13 +23,14 @@ if ($nivel_user == 21) :
 endif;
 ?>
 <?php
+$year = date("Y");
 $c_user = count_by_id('users', 'id_user');
 $c_trabajadores = count_by_id('detalles_usuario', 'id_det_usuario');
 $c_areas = count_by_id('area', 'id_area');
 $c_cargos = count_by_id('cargos', 'id_cargos');
-$c_orientacion = count_by_id_orientacion('orientacion_canalizacion', 'id_or_can');
-$c_canalizacion = count_by_id_canalizacion('orientacion_canalizacion', 'id_or_can');
-$c_quejas = count_by_id('quejas_dates', 'id_queja_date');
+$c_orientacion = count_by_id_orientacion('orientacion_canalizacion', 'id_or_can',$year);
+$c_canalizacion = count_by_id_canalizacion('orientacion_canalizacion', 'id_or_can',$year);
+$c_quejas = count_by_id_quejas('quejas_dates', 'id_queja_date',$year);
 $c_actuaciones = count_by_id('actuaciones', 'id_actuacion');
 $c_convenios = count_by_id('convenios', 'id_convenio');
 $c_consejo = count_by_id('consejo', 'id_acta_consejo');
@@ -37,6 +38,11 @@ $c_actividades = count_by_id('eventos_presidencia', 'id_eventos_presidencia');
 $c_colaboraciones = count_by_id('colaboraciones', 'id_colaboraciones');
 $c_informe = count_by_id('informe_actividades_areas', 'id_info_act_areas');
 $c_eventos = count_by_id('eventos', 'id_evento');
+$c_entregables = count_by_id('entregables', 'id_entregables');
+$c_competencia = count_by_competencias();
+$c_mediacion = count_by_mediacion();
+$c_capacitaciones = count_by_id('capacitaciones', 'id_capacitacion');
+$c_recomendaciones = count_by_id('recomendaciones', 'id_recomendacion');
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -49,7 +55,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 <div class="container-fluid">
 	<div class="full-box tile-container">
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="areas.php" <?php endif; ?> class="tile">
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="areas.php" <?php endif; ?> class="tile">
 			<div class="tile-tittle">Áreas</div>
 			<div class="tile-icon">
 				<span class="material-symbols-outlined" style="font-size:95px;">domain</span>
@@ -58,7 +64,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 		</a>
 
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="users.php" <?php endif; ?> class="tile">
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="users.php" <?php endif; ?> class="tile">
 			<div class="tile-tittle">Trabajadores</div>
 			<div class="tile-icon">
 				<svg xmlns="http://www.w3.org/2000/svg" width="100px" height="100px" fill="#455a64" class="bi bi-person-video3" viewBox="0 0 16 16">
@@ -70,7 +76,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 			</div>
 		</a>
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="quejas.php" <?php endif; ?> class="tile">
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="quejas.php" <?php endif; ?> class="tile">
 			<div class="tile-tittle">Quejas</div>
 			<div class="tile-icon">
 				<svg width="100px" height="100px" fill="#455a64" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -82,7 +88,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 			</div>
 		</a>
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="orientaciones.php" <?php endif; ?> class="tile">
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="orientaciones.php" <?php endif; ?> class="tile">
 			<div class="tile-tittle">Orientaciones</div>
 			<div class="tile-icon">
 				<span class="material-symbols-rounded" style="font-size:95px;">psychology_alt</span>
@@ -91,7 +97,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 			</div>
 		</a>
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="canalizaciones.php" <?php endif; ?> class="tile">
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="canalizaciones.php" <?php endif; ?> class="tile">
 			<div class="tile-tittle">Canalizaciones</div>
 			<div class="tile-icon">
 				<span class="material-symbols-rounded" style="font-size:95px;">
@@ -102,7 +108,29 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 			</div>
 		</a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="actuaciones.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="recomendaciones_antes.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Recomendaciones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    auto_stories
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_recomendaciones['total']; ?> Registradas</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="mediacion.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Mediación/Conciliación</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    diversity_3
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p><?php echo $c_mediacion['total']; ?> Registradas</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="actuaciones.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Actuaciones</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -113,7 +141,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="convenios.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="convenios.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Convenios</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -124,7 +152,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="convenios.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="consejo.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Actas de consejo</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -135,7 +163,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="eventos_pres.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="eventos_pres.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Actividades Pres.</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -146,7 +174,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="colaboraciones_ud.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="colaboraciones_ud.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Colaboraciones</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -157,7 +185,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 		
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="informes_areas.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="informes_areas.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Informe Actividades</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -168,7 +196,7 @@ $c_eventos = count_by_id('eventos', 'id_evento');
             </div>
         </a>
 
-		<a style="text-decoration:none;" <?php if ($nivel_user == 1) : ?> href="eventos.php" <?php endif; ?> class="tile">		 
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="eventos.php" <?php endif; ?> class="tile">		 
             <div class="tile-tittle">Eventos Áreas</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -178,6 +206,41 @@ $c_eventos = count_by_id('eventos', 'id_evento');
 				<p><?php echo $c_eventos['total']; ?> Registrados</p>
             </div>
         </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="competencia.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle" style="    font-size: 12px;">Conflictos Competenciales</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    find_in_page
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_competencia['total']; ?> Registradas</p>
+            </div>
+        </a>
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="agenda_entregables.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Entregables</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    photo_album
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_entregables['total']; ?> Registrados</p>
+            </div>
+        </a>
+
+		
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="capacitaciones.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Capacitaciones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    supervisor_account
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_capacitaciones['total']; ?> Registrados</p>
+            </div>
+        </a>
+
 
 	</div>
 </div>

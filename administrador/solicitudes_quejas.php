@@ -59,6 +59,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
     <div class="full-box tile-container">
+        <?php if($nivel_user != 19):?>
         <a href="quejas.php" class="tile">
             <div class="tile-tittle">Quejas</div>
             <div class="tile-icon">
@@ -123,7 +124,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="informes_areas.php" class="tile">
+        <a href="informes_areas.php?a=4" class="tile">
             <div class="tile-tittle">Informe Actividades</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -148,10 +149,19 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             </div>
         </a>
         <a href="competencia.php" class="tile">
-            <div class="tile-tittle">Competencia</div>
+            <div class="tile-tittle" style="font-size: 12px;">Conflictos Competenciales</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     find_in_page
+                </span>
+            </div>
+        </a>
+        <?php endif;?>
+        <a href="mediacion.php" class="tile">
+            <div class="tile-tittle">Mediación/Conciliación</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    diversity_3
                 </span>
             </div>
         </a>

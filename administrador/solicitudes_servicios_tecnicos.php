@@ -3,10 +3,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Solicitudes - Centro Servicios Técnicos';
 require_once('includes/load.php');
 $user = current_user();
-$id_usuario = $user['id'];
-$user = current_user();
-$nivel = $user['user_level'];
-$id_user = $user['id'];
+$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 if (($nivel_user > 2 && $nivel_user < 7)) :
     redirect('home.php');

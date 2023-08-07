@@ -42,10 +42,10 @@ page_require_level(1);
         <table class="datatable table table-bordered table-striped">
           <thead class="thead-purple">
             <tr style="height: 10px;"">
-              <th style="width: 1%;">#</th>
+              <th style=" width: 1%;">#</th>
               <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
               <th style="width: 10%;">Nombre(s)</th>
-              <th style="width: 15%;">Apellidos</th>
+              <th style="width: 12%;">Apellidos</th>
               <th style="width: 5%;">Correo</th>
               <th style="width: 5%;">Celular</th>
               <th style="width: 17%;">Área y Cargo</th>
@@ -75,7 +75,7 @@ page_require_level(1);
                   <td class="text-center">
                     <div class="btn-group">
                       <a href="ver_info_detalle.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-md btn-info" data-toggle="tooltip" title="Ver información">
-                        <i class="glyphicon glyphicon-eye-open"></i>
+                        <i class="glyphicon glyphicon-eye-open" style="margin-top: 8px"></i>
                       </a>
                       <?php if ($nivel == 1) : ?>
                         <?php if ($a_detalle['estatus_detalle'] == 0) : ?>
@@ -84,13 +84,13 @@ page_require_level(1);
                           </a>
                         <?php else : ?>
                           <a href="inactivate_detalle_usuario.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" title="Inactivar" data-toggle="tooltip">
-                            <span class="glyphicon glyphicon-ban-circle"></span>
+                            <span class="glyphicon glyphicon-ban-circle" style="margin-top: 8px"></span>
                           </a>
                         <?php endif; ?>
-                        <!-- <a href="delete_detalle_usuario.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-delete btn-md" title="Eliminar" data-toggle="tooltip" onclick="return confirm('¿Seguro que deseas eliminar este trabajador? También se eliminarán su usuario, asignaciones y resguardos.');">
-                          <span class="glyphicon glyphicon-trash"></span>
-                        </a> -->
                       <?php endif; ?>
+                      <a href="edit_detalle_usuario.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: orange; border-color:orange" title="Curriculum" data-toggle="tooltip">
+                        <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">school</span>
+                      </a>
                     </div>
                   </td>
                 <?php endif ?>

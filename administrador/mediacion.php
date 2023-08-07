@@ -1,7 +1,7 @@
 
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
-$page_title = 'Lista de quejas';
+$page_title = 'Mediación';
 require_once('includes/load.php');
 ?>
 <?php
@@ -12,17 +12,7 @@ $nivel = $user['user_level'];
 $nivel_user = $user['user_level'];
 $id_u = $user['id_user'];
 $area_user = muestra_area($id_u);
-$notificacion = notificacion();
-
-if (($nivel_user <= 2) || ($nivel_user == 7) || ($nivel_user == 21) || ($nivel_user == 50)) {
-    $quejas_libro = find_all_quejas_admin($ejercicio);
-} else {
-    if ($area_user['id_det_usuario'] == 92) {
-        $quejas_libro = find_all_quejas_lc($ejercicio);
-    } else {
-        $quejas_libro = find_all_quejas($area_user['id_area'], $area_user['id_det_usuario'],$ejercicio);
-    }
-}
+$quejas_libro = find_all_quejas(48, 97,$ejercicio);   
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -40,6 +30,7 @@ if ($nivel_user == 50) {
     page_require_level_exacto(50);
 }
 
+
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
@@ -49,7 +40,7 @@ endif;
 if ($nivel_user > 7 && $nivel_user < 19) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19 && $nivel_user < 21) :
+if ($nivel_user > 19 && $nivel_user <50) :
     redirect('home.php');
 endif;
 
@@ -117,22 +108,10 @@ if (isset($_POST["export_data"])) {
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Lista de Quejas</span>
+                    <span>Lista de Quejas en Mediación <?php echo $ejercicio?></span>
                 </strong>
-<a href="quejas.php?anio=<?php echo $anio;?>" style="margin-left: 10px" class="btn btn-info pull-right">Ver <?php echo $anio?></a>                
-                <a href="seach_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Búsqueda General</a>				
-                <?php if (($nivel == 1) || ($id_u == 3)) : ?>
-                    <a href="quejas_publicas.php" class="btn btn-primary position-relative" style="float: right; margin-top: 0px; margin-right: 5px; margin-left: 10px;">
-                        Quejas en Línea
-                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                            <?php echo $notificacion['total']; ?>
-                            <span class="visually-hidden">unread messages</span>
-                        </span>
-                    </a>
-                <?php endif; ?>
-                <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
-                    <a href="add_queja.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar Queja</a>
-                <?php endif; ?>
+
+                <a href="mediacion.php?anio=<?php echo $anio;?>" style="margin-left: 10px" class="btn btn-info pull-right">Ver <?php echo $anio?></a>   
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -22px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
@@ -143,7 +122,7 @@ if (isset($_POST["export_data"])) {
             <table class="datatable table table-bordered table-striped">
                 <thead class="thead-purple">
                     <tr>
-                        <th width="1%">Folio</th>
+                        <th width="2%">Folio</th>
                         <th width="1%">Fecha presentación</th>
                         <th width="10%">Medio presentación</th>
                         <th width="10%">Área Asignada</th>
@@ -193,33 +172,18 @@ if (isset($_POST["export_data"])) {
                             </td>
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>&t=0" title="Ver información">
-                                        <!-- <i class="glyphicon glyphicon-eye-open" style="color: #1f4c88; font-size: 25px;"></i> -->
+                                    <a href="ver_info_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>&t=1" title="Ver información">
                                         <img src="medios/ver_info.png" style="width: 31px; height: 30.5px; border-radius: 15%; margin-right: -2px;">
                                     </a>&nbsp;
-                                    <?php if (($nivel == 1) || ($nivel == 5) || ($nivel == 50)) : ?>
-                                        <a href="edit_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Editar">
-                                            <!-- <span class="glyphicon glyphicon-edit" style="color: black; font-size: 25px;"></span> -->
-                                            <img src="medios/editar2.png" style="width: 31px; height: 30.5px; border-radius: 15%; margin-right: -2px;">                                            
-                                        </a>&nbsp;
-                                        <a href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Acuerdos">
-                                            <!-- <span style="color: #14b823; font-size: 25px;" href="acuerdos_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" class="glyphicon glyphicon-file"></span> -->
+                                    <?php if (($nivel == 1) || ($nivel == 19) || ($nivel == 50)) : ?>
+                                        
+                                        <a href="acuerdos_queja_mediacion.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Acuerdos">                                            
                                             <img src="medios/acuerdos2.png" style="width: 31px; height: 30.5px; margin-right: -2px;">
-                                        </a>&nbsp;
-                                        <a href="procesal_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Estado Procesal">
-                                            <!-- <span  style="color: #e275c7; font-size: 25px;" class="glyphicon glyphicon-exclamation-sign"></span> -->
-                                            <img src="medios/estado_procesal2.png" style="width: 31px; height: 30.5px; margin-right: -2px;">
-                                        </a>&nbsp;
-                                        <a href="seguimiento_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Resolución">
-                                            <!-- <span  style="color: #ff6a5b; font-size: 25px;" class="glyphicon glyphicon-arrow-right"></span> -->
-                                            <img src="medios/resolucion2.png" style="width: 31px; height: 30.5px; border-radius: 15%; ">
-                                        </a>&nbsp;
-                                        <?php if ((($id_u <= 2) || ($id_u == 3)) && $queja['id_cat_med_pres'] == 5) : ?>
-                                            <a href="convertir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Convertir">
-                                                <!-- <span class="glyphicon glyphicon-retweet"></span> -->
-                                                <img src="medios/linea.png" alt="" srcset="">
-                                            </a>
-                                        <?php endif; ?>
+                                        </a>&nbsp;                                     
+                                       
+									    <a href="remitir_queja.php?id=<?php echo (int) $queja['id_queja_date']; ?>" title="Remitir">                                                
+                                            <img src="medios/remitir.png" style="width: 31px; height: 30.5px; margin-right: -2px;" >
+                                        </a>
                                     <?php endif; ?>
                                 </div>
                             </td>
