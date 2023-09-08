@@ -94,6 +94,44 @@ a {
   margin-bottom: 10px;
 }
 
+.login-page4 {
+  width: 800px;
+  height: 100%;
+  margin: 7% auto;
+  padding: 0 10px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  color: #3a3d44;
+  box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
+  margin-top: -5px;
+}
+.login-page4 .text-center {
+  margin-bottom: 10px;
+}
+
+.login-page5 {
+  width: 700px;
+  height: 100%;
+  margin: 7% auto;
+  padding: 0 10px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  color: #3a3d44;
+  box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
+  margin-top: -5px;
+}
+.login-page6 {
+  width: 500px;
+  height: 100%;
+  margin: 7% auto;
+  padding: 0 10px;
+  background-color: #ffffff;
+  border-radius: 15px;
+  color: #3a3d44;
+  box-shadow: 6px 20px 10px rgba(0, 0, 0, 0.082);
+  margin-top: -5px;
+}
+
 h1 {
   font-family: "Montserrat", sans-serif;
 

@@ -226,6 +226,22 @@ function find_by_id($table, $id, $nombre_id)
 /*--------------------------------------------------------------*/
 /*  Funcion para encontrar datos por su id en una tabla
 /*--------------------------------------------------------------*/
+function find_by_id_rel_cur($id)
+{
+  global $db;
+  $id = (int)$id;
+    $sql = $db->query("SELECT d.nombre, d.apellidos, ca.id_rel_cur_acad, ca.id_rel_detalle_usuario, ca.estudios, ca.institucion, ca.grado, ca.cedula_profesional, ca.archivo_comprobatorio, ca.observaciones FROM rel_curriculum_academico ca
+                      LEFT JOIN detalles_usuario d
+                      ON d.id_det_usuario = ca.id_rel_detalle_usuario
+    WHERE ca.id_rel_detalle_usuario='{$db->escape($id)}' LIMIT 1");
+    if ($result = $db->fetch_assoc($sql))
+      return $result;
+    else
+      return null;
+}
+/*--------------------------------------------------------------*/
+/*  Funcion para encontrar datos por su id en una tabla
+/*--------------------------------------------------------------*/
 function find_by_id_user($table, $id, $nombre_id)
 {
   global $db;
@@ -5419,5 +5435,269 @@ function count_by_competencias()
     $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
+}
+
+
+
+
+
+/*--------------------------------------------*/
+/* Funcion que encuentra la descripcion de un di */
+/*--------------------------------------------*/
+function find_campo_id($table, $id, $nombre_id,$columna)
+{
+  global $db;
+  if (tableExists($table)) {
+    $sql = ("SELECT {$db->escape($columna)} FROM {$db->escape($table)} WHERE {$db->escape($nombre_id)}='{$db->escape($id)}'");
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  }
+}
+
+/*--------------------------------------------*/
+/* Funcion que encuentra la descripcion de un di */
+/*--------------------------------------------*/
+
+function web_accesos($tipo)
+{
+  global $db;
   
+  $sql  = "SELECT modulo, COUNT(id_statistics) as total FROM statistics GROUP BY modulo"; 
+  
+  return find_by_sql($sql);
+}
+
+/*--------------------------------------------*/
+/* Funcion que encuentra los recursos de revision */
+/*--------------------------------------------*/
+
+function find_all_procesosUT($tipo_accion)
+{
+	global $db;
+  $sql = "SELECT * FROM recursos_decuncias WHERE tipo_accion='".$tipo_accion."';";
+  $result = find_by_sql($sql);
+  return $result;  
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para contar los recursos y denuncias para saber su cantidad total */
+/*------------------------------------------------------------------------*/
+function count_by_procesoUT($tipo_accion)
+{
+	global $db;
+    $sql    = "SELECT COUNT(id_recursos_decuncias) AS total FROM recursos_decuncias WHERE tipo_accion='".$tipo_accion."';";    
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de solicitudes-catalogos */
+/*------------------------------------------------------------------------*/
+
+function solEstadistica($tabla,$nombre_id, $nombre_campo)
+{
+  global $db;
+  $sql  = "SELECT {$db->escape($nombre_campo)} as nombre, COUNT(id_solicitudes_informacion) as total, color_estadistica 
+			FROM solicitudes_informacion   
+			LEFT JOIN {$db->escape($tabla)}  USING({$db->escape($nombre_id)}) 
+			GROUP BY {$db->escape($nombre_id)};";
+  return find_by_sql($sql);
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de solicitudes-status */
+/*------------------------------------------------------------------------*/
+
+function solstatus()
+{
+  global $db;
+  $sql  = "SELECT IF(fecha_respuesta is null,0,1) as tipo, COUNT(id_solicitudes_informacion) as total
+			FROM solicitudes_informacion  
+			GROUP BY IF(fecha_respuesta is null,0,1);";
+  return find_by_sql($sql);
+}
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de solicitudes-status */
+/*------------------------------------------------------------------------*/
+
+
+function solicanios($anio)
+{
+  global $db;
+  $sql  = "SELECT MONTH(fecha_presentacion) as mes, COUNT(id_solicitudes_informacion) as total
+FROM solicitudes_informacion  
+WHERE YEAR(fecha_presentacion)='{$db->escape($anio)}' 
+GROUP BY  MONTH(fecha_presentacion),YEAR(fecha_presentacion)  
+ORDER BY  MONTH(fecha_presentacion)";
+  return find_by_sql($sql);
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de solicitudes-status */
+/*------------------------------------------------------------------------*/
+
+function find_all_quejasMediacion($anio,$area)
+{
+  global $db;
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, q.id_cat_med_pres,mp.descripcion as medio_pres, 
+  au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, 
+  ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, IFNULL(em.descripcion,'') as estado_mediacion,  
+  CONCAT(du.nombre,' ',du.apellidos) as user_asignado";
+  $sql .= " FROM quejas_dates q";
+  $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
+  $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
+  $sql .= " LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
+  $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
+  $sql .= " LEFT JOIN area ar ON q.id_area_asignada = ar.id_area  ";
+  $sql .= " LEFT JOIN cat_est_procesal ep ON q.estado_procesal = ep.id_cat_est_procesal";
+  $sql .= " LEFT JOIN cat_estatus_mediacion em ON q.estado_mediacion = em.id_cat_estatus_mediacion";
+  $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
+  $sql .= " WHERE mediacion = '1' ";
+  if( $area > 0){
+  $sql .= " AND q.id_area_asignada =  {$area} ";
+  }
+  $sql .= " AND q.folio_queja LIKE '%/{$anio}-%' ";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de mediacion-status */
+/*------------------------------------------------------------------------*/
+
+function mediaciontatus($year)
+{
+  global $db;
+  $sql  = "SELECT IFNULL(b.descripcion ,'Sin Dato') as tipo, COUNT(id_queja_date) as total
+FROM quejas_dates a
+LEFT JOIN `cat_estatus_mediacion` b ON (a.`estado_mediacion`=b.`id_cat_estatus_mediacion`)
+WHERE mediacion=1";
+if((int) $year > 0){
+	$sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
+}
+$sql .= " GROUP BY estado_mediacion;";
+  return find_by_sql($sql);
+}
+
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de mediacion-catalogos */
+/*------------------------------------------------------------------------*/
+
+function medEstadistica($tabla,$nombre_id,$year)
+{
+  global $db;
+  $sql  = "SELECT COUNT(id_queja_date) as total, IFNULL(z.descripcion,'SD') as nombre
+FROM quejas_dates q
+LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso
+LEFT JOIN {$db->escape($tabla)} z USING({$db->escape($nombre_id)}) 
+WHERE mediacion=1 ";
+if((int) $year > 0){
+	$sql .= " AND q.folio_queja LIKE '%/{$year}-%' ";
+}
+$sql .= " GROUP BY cq.{$db->escape($nombre_id)};";
+  return find_by_sql($sql);
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de mediacion-autoridades */
+/*------------------------------------------------------------------------*/
+function medAutoridad($year)
+{
+  $sql  = "SELECT ca.`nombre_autoridad`, COUNT(a.`id_queja_date`) as total 
+  FROM `quejas_dates` a 
+  LEFT JOIN cat_autoridades ca ON a.`id_cat_aut` = ca.`id_cat_aut` 
+  WHERE mediacion=1";
+if((int) $year > 0){
+	$sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
+}
+$sql .= "   GROUP BY ca.`id_cat_aut`;";
+  return find_by_sql($sql);
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para estadistica de mediacion-areas */
+/*------------------------------------------------------------------------*/
+function medArea($year)
+{
+  $sql  = "SELECT b.`nombre_area`, COUNT(a.`id_queja_date`) as total 
+  FROM `quejas_dates` a 
+  LEFT JOIN area b ON a.`id_area_asignada` = b.`id_area` 
+  WHERE mediacion=1";
+if((int) $year > 0){
+	$sql .= " AND a.folio_queja LIKE '%/{$year}-%' ";
+}
+$sql .= "   GROUP BY a.`id_area_asignada`;";
+  return find_by_sql($sql);
+}
+
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+
+function find_all_curr($id)
+{
+  $sql = "SELECT ca.id_rel_cur_acad, d.nombre, d.apellidos, ca.estudios, ca.institucion, ca.grado as esc, ce.descripcion as grado, ca.cedula_profesional, ca.archivo_comprobatorio, ca.observaciones ";
+  $sql .= "FROM detalles_usuario d ";
+  $sql .= "LEFT JOIN rel_curriculum_academico ca ON d.id_det_usuario = ca.id_rel_detalle_usuario ";
+  $sql .= "LEFT JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = ca.grado ";
+  $sql .= "WHERE id_rel_detalle_usuario='{$id}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_by_id_curr($id)
+{
+  global $db;
+  $sql = $db->query("SELECT ca.id_rel_cur_acad, ca.id_rel_detalle_usuario, ca.estudios, ca.institucion, ca.cedula_profesional, ca.archivo_comprobatorio, 
+                      ca.grado, ca.observaciones, 
+                      ce.descripcion as escolaridad,
+                      d.nombre, d.apellidos 
+                      FROM rel_curriculum_academico ca
+                      LEFT JOIN cat_escolaridad ce ON ce.id_cat_escolaridad = ca.grado
+                      LEFT JOIN detalles_usuario d ON d.id_det_usuario = ca.id_rel_detalle_usuario
+                      WHERE id_rel_cur_acad = '{$id}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+function find_all_arCon($id)
+{
+  $sql = "SELECT ca.id_rel_area_con, ce.descripcion ";
+  $sql .= "FROM detalles_usuario d ";
+  $sql .= "LEFT JOIN rel_area_conocimiento ca ON d.id_det_usuario = ca.id_detalle_usuario ";
+  $sql .= "LEFT JOIN cat_area_conocimiento ce ON ce.id_cat_area_con = ca.tipo_area ";
+  $sql .= "WHERE id_detalle_usuario='{$id}'";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_by_id_ar_con($id)
+{
+  global $db;
+  $sql = $db->query("SELECT ra.id_rel_area_con, ra.id_detalle_usuario, ra.tipo_area, ra.nombre_carrera, ra.especialidad, d.nombre, d.apellidos 
+                      FROM rel_area_conocimiento ra
+                      LEFT JOIN cat_area_conocimiento ac ON ac.id_cat_area_con = ra.tipo_area
+                      LEFT JOIN detalles_usuario d ON d.id_det_usuario = ra.id_detalle_usuario
+                      WHERE id_rel_area_con = '{$id}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+function find_all_exp_lab($id)
+{
+  $sql = "SELECT * FROM rel_curriculum_laboral WHERE id_detalle_usuario = '{$id}'";
+  $result = find_by_sql($sql);
+  return $result;
 }
