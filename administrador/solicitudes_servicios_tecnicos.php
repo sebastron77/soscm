@@ -5,7 +5,11 @@ require_once('includes/load.php');
 $user = current_user();
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
-if (($nivel_user > 2 && $nivel_user < 7)) :
+
+if (($nivel_user > 2 && $nivel_user < 4)) :
+    redirect('home.php');
+endif;
+if (($nivel_user > 4 && $nivel_user < 7)) :
     redirect('home.php');
 endif;
 if (($nivel_user > 7 && $nivel_user < 9)) :
@@ -16,7 +20,6 @@ if ($nivel_user > 9) :
 endif;
 
 ?>
-
 
 <?php include_once('layouts/header.php'); ?>
 

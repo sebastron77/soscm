@@ -3,14 +3,9 @@ $page_title = 'Jornadas';
 require_once('includes/load.php');
 ?>
 <?php
-// page_require_level(4);
+
 $all_fichas = find_all_jornadas();
 $user = current_user();
-$nivel = $user['user_level'];
-// page_require_area(4);
-$user = current_user();
-$nivel = $user['user_level'];
-$id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
 
 if ($nivel_user <= 2) {

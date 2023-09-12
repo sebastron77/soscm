@@ -24,6 +24,14 @@ if ($nivel_user > 12) :
 endif;
 
 $cat_entidades = find_all('cat_entidad_fed');
+$generos = find_all('cat_genero');
+$nacionalidades = find_all('cat_nacionalidades');
+$municipios = find_all('cat_municipios');
+$escolaridades = find_all('cat_escolaridad');
+$ocupaciones = find_all('cat_ocupaciones');
+$grupos_vuln = find_all('cat_grupos_vuln');
+$discapacidades = find_all('cat_discapacidades');
+$comunidades = find_all('cat_comunidades');
 $id_folio = last_id_folios();
 
 ?>
@@ -44,6 +52,19 @@ if (isset($_POST['add_colaboracion'])) {
         $localidad = remove_junk($db->escape($_POST['localidad']));
         $fecha_desparicion = remove_junk($db->escape($_POST['fecha_desparicion']));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
+		
+		$id_cat_gen = remove_junk($db->escape($_POST['id_cat_gen']));
+        $edad = remove_junk($db->escape($_POST['edad']));
+        $id_cat_nacionalidad = remove_junk($db->escape($_POST['id_cat_nacionalidad']));
+        $id_cat_escolaridad = remove_junk($db->escape($_POST['id_cat_escolaridad']));
+        $id_cat_ocup = remove_junk($db->escape($_POST['id_cat_ocup']));
+        $leer_escribir = remove_junk($db->escape($_POST['leer_escribir']));
+        $id_cat_disc = remove_junk($db->escape($_POST['id_cat_disc']));
+        $id_cat_grupo_vuln = remove_junk($db->escape($_POST['id_cat_grupo_vuln']));
+        $id_cat_comun = remove_junk($db->escape($_POST['id_cat_comun']));
+        $id_cat_ent_fed_origen = remove_junk($db->escape($_POST['id_cat_ent_fed_origen']));
+        $id_cat_mun_origen = remove_junk($db->escape($_POST['id_cat_mun_origen']));
+        $motivo_colaboracion = remove_junk($db->escape($_POST['motivo_colaboracion']));
         
 		//Suma el valor del id anterior + 1, para generar ese id para el nuevo resguardo
         //La variable $no_folio sirve para el numero de folio
@@ -107,8 +128,11 @@ if (isset($_POST['add_colaboracion'])) {
 		$dbh1 = new PDO('mysql:host=localhost;dbname=suigcedh', 'suigcedh', '9DvkVuZ915H!');
 		
 		$query = "INSERT INTO colaboraciones (";
-		$query .= "folio, solicitante, oficio_solicitud, desaparecido_nombre, desaparecido_paterno, desaparecido_materno, fecha_desparicion, id_cat_ent_fed,municipio, localidad, observaciones, user_creador, fecha_creacion) VALUES (";
-		$query .= " '{$folio}','{$solicitante}','{$name}','{$desaparecido_nombre}','{$desaparecido_paterno}','{$desaparecido_materno}','{$fecha_desparicion}','{$id_cat_ent_fed}','{$municipio}','{$localidad}','{$observaciones}','$id_user',NOW()";
+		$query .= "folio, solicitante, oficio_solicitud, desaparecido_nombre, desaparecido_paterno, desaparecido_materno, fecha_desparicion, id_cat_ent_fed,municipio, localidad, observaciones, ";
+		$query .= " id_cat_gen,edad,id_cat_nacionalidad,id_cat_escolaridad,id_cat_ocup,leer_escribir,id_cat_disc,id_cat_grupo_vuln,id_cat_comun,motivo_colaboracion,id_cat_ent_fed_origen,id_cat_mun_origen,user_creador, fecha_creacion) VALUES (";
+		$query .= " '{$folio}','{$solicitante}','{$name}','{$desaparecido_nombre}','{$desaparecido_paterno}','{$desaparecido_materno}','{$fecha_desparicion}','{$id_cat_ent_fed}','{$municipio}','{$localidad}','{$observaciones}',
+		'{$id_cat_gen}',{$edad}, '{$id_cat_nacionalidad}', '{$id_cat_escolaridad}', '{$id_cat_ocup}', '{$leer_escribir}', '{$id_cat_disc}', '{$id_cat_grupo_vuln}', '{$id_cat_comun}',
+		'{$motivo_colaboracion}', '{$id_cat_ent_fed_origen}', '{$id_cat_mun_origen}', '$id_user',NOW()";
 		$query .= ")";
 		
 		$query2 = "INSERT INTO folios (";
@@ -117,7 +141,7 @@ if (isset($_POST['add_colaboracion'])) {
             $query2 .= " '{$folio}','{$no_folio1}'";
             $query2 .= ")";
 		
-		 if ($db->query($query) && $db->query($query2)) {
+		 if ($dbh1->query($query) && $db->query($query2)) {
             //sucess
 			$id_colaboraciones = $dbh1->lastInsertId();
 			insertAccion($user['id_user'], '"'.$user['username'].'" agregó una Colaboración, Folio: '.$folio.'.', 1);
@@ -200,17 +224,23 @@ include_once('layouts/header.php'); ?>
         <div class="panel-body">
             <form method="post" action="add_colaboracion_ud.php" class="clearfix" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-5">
+                    <div class="col-md-4">
 					<div class="form-group">
                             <label for="no_informe">Quien lo solicita</label>
 						<input type="text" class="form-control" name="solicitante" required>
 					</div>
 				</div>
 			
-				<div class="col-md-5">
+				<div class="col-md-4">
 					<div class="form-group">
 						<label for="adjunto">Oficio Solicitud</label>
 						<input type="file" accept="application/pdf" class="form-control" name="oficio_adjunto" id="oficio_adjunto" required>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="form-group">
+						<label for="motivo_colaboracion">Motivo Colaboracion</label>
+						<input type="text" class="form-control" name="motivo_colaboracion"  required>
 					</div>
 				</div>
 			</div>
@@ -224,25 +254,147 @@ include_once('layouts/header.php'); ?>
         
 				
         <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-md-2">
 					<div class="form-group">
                             <label for="no_informe">Nombre</label>
 						<input type="text" class="form-control" name="desaparecido_nombre" required>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-2">
 					<div class="form-group">
                             <label for="no_informe">Apellido Paterno</label>
 						<input type="text" class="form-control" name="desaparecido_paterno" required>
 					</div>
 				</div>
-				<div class="col-md-4">
+				<div class="col-md-2">
 					<div class="form-group">
                             <label for="no_informe">Apellido Materno</label>
 						<input type="text" class="form-control" name="desaparecido_materno" required>
 					</div>
 				</div>
+       <div class="col-md-2">
+					<div class="form-group">
+						<label for="id_cat_gen">Género</label>
+						<select class="form-control" name="id_cat_gen">
+							<option value="">Escoge una opción</option>
+							<?php foreach ($generos as $genero) : ?>
+								<option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+						<label for="edad">Edad</label>
+						<input type="number" class="form-control" min="1" max="130" maxlength="4" name="edad" >
+					</div>
+				</div>
+				<div class="col-md-2">
+					<div class="form-group">
+                            <label for="no_informe">Entidad de Origen del Desaparecido</label>
+						<select class="form-control"  name="id_cat_ent_fed_origen" id="id_cat_ent_fed_origen" onchange="javascript:showMpio(this.value)">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($cat_entidades as $id_cat_ent_fed) : ?>
+                                    <option  value="<?php echo $id_cat_ent_fed['id_cat_ent_fed']; ?>" ><?php echo ucwords($id_cat_ent_fed['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>
+					</div>
+				</div>
         </div>
+				
+		<div class="row"> 
+		<div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_mun_origen" class="control-label">Municipio</label>
+                                <select class="form-control" name="id_cat_mun_origen">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($municipios as $municipio): ?>
+                                        <option  value="<?php echo $municipio['id_cat_mun']; ?>"><?php echo ucwords($municipio['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+				<div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_nacionalidad">Nacionalidad</label>
+                                <select class="form-control" name="id_cat_nacionalidad">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($nacionalidades as $nacionalidad) : ?>
+                                        <option  value="<?php echo $nacionalidad['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacionalidad['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+						
+						<div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_escolaridad">Escolaridad</label>
+                                <select class="form-control" name="id_cat_escolaridad">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($escolaridades as $escolaridad) : ?>
+                                        <option  value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_ocup">Ocupación</label>
+                                <select class="form-control" name="id_cat_ocup">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($ocupaciones as $ocupacion) : ?>
+                                        <option  value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="leer_escribir">¿Sabe leer y escribir?</label>
+                                <select class="form-control" name="leer_escribir">
+                                    <option value="">Escoge una opción</option>
+                                    <option value="Leer"> Leer</option>
+                                    <option value="Escribir">Escribir</option>
+                                    <option value="Ambos">Ambos</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_disc">¿Tiene alguna discapacidad?</label>
+                                <select class="form-control" name="id_cat_disc">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($discapacidades as $discapacidad) : ?>
+                                        <option  value="<?php echo $discapacidad['id_cat_disc']; ?>"><?php echo ucwords($discapacidad['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+						
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_grupo_vuln">Grupo Vulnerable</label>
+                                <select class="form-control" name="id_cat_grupo_vuln">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
+                                        <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label for="id_cat_comun">Comunidad</label>
+                                <select class="form-control" name="id_cat_comun">
+                                    <option value="">Escoge una opción</option>
+                                    <?php foreach ($comunidades as $comunidad) : ?>
+                                        <option  value="<?php echo $comunidad['id_cat_comun']; ?>"><?php echo ucwords($comunidad['descripcion']); ?></option>
+                                    <?php endforeach; ?>
+                                </select>
+                            </div>
+                        </div>
+		</div>
+        <br>
 				
 		<div class="row">
 				<div class="col-md-4">

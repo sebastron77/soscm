@@ -86,10 +86,14 @@ if (isset($_POST['edit_ficha'])) {
         }
 
         if ($name != '') {
-            $sql = "UPDATE fichas SET funcion='{$funcion}', num_queja='{$num_queja}', visitaduria='{$visitaduria}', area_solicitante='{$area_solicitante}', ocupacion='{$ocupacion}', escolaridad='{$escolaridad}', hechos='{$hechos}', autoridad='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', sexo='{$sexo}', grupo_vulnerable='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', ficha_adjunto='{$name}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
+            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}', num_queja='{$num_queja}', id_visitaduria='{$visitaduria}', id_area_solicitante='{$area_solicitante}', id_cat_ocup='{$ocupacion}', 
+			id_cat_escolaridad='{$escolaridad}', id_cat_der_vuln='{$hechos}', id_cat_aut='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', 
+			id_cat_gen='{$sexo}', id_cat_grupo_vuln='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', ficha_adjunto='{$name}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
         }
         if ($name == '') {
-            $sql = "UPDATE fichas SET funcion='{$funcion}', num_queja='{$num_queja}', visitaduria='{$visitaduria}', area_solicitante='{$area_solicitante}', ocupacion='{$ocupacion}', escolaridad='{$escolaridad}', hechos='{$hechos}', autoridad='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', sexo='{$sexo}', grupo_vulnerable='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
+            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}', num_queja='{$num_queja}', id_visitaduria='{$visitaduria}', id_area_solicitante='{$area_solicitante}', id_cat_ocup='{$ocupacion}', 
+			id_cat_escolaridad='{$escolaridad}', id_cat_der_vuln='{$hechos}', id_cat_aut='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', 
+			id_cat_gen='{$sexo}', id_cat_grupo_vuln='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
@@ -121,8 +125,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="funcion">Función</label>
                             <select class="form-control" name="funcion">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($funciones as $funcion) : ?>
-                                    <option <?php if ($funcion['id_cat_funcion'] === $e_ficha['funcion'])
+                                    <option <?php if ($funcion['id_cat_funcion'] === $e_ficha['id_cat_funcion'])
                                                 echo 'selected="selected"'; ?> value="<?php echo $funcion['id_cat_funcion']; ?>">
                                         <?php echo ucwords($funcion['descripcion']); ?></option>
                                 <?php endforeach; ?>
@@ -139,8 +144,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="area_solicitante">Área Solicitante</label>
                             <select class="form-control" name="area_solicitante">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($areas as $area) : ?>
-                                    <option <?php if ($area['id_area'] === $e_ficha['area_solicitante']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+                                    <option <?php if ($area['id_area'] === $e_ficha['id_area_solicitante']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -149,8 +155,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="ocupacion">Ocupacion</label>
                             <select class="form-control" name="ocupacion">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($ocupaciones as $ocupacion) : ?>
-                                    <option <?php if ($ocupacion['id_cat_ocup'] == $e_ficha['ocupacion']) echo 'selected="selected"'; ?> value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
+                                    <option <?php if ($ocupacion['id_cat_ocup'] == $e_ficha['id_cat_ocup']) echo 'selected="selected"'; ?> value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -161,8 +168,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="escolaridad">Escolaridad</label>
                             <select class="form-control" name="escolaridad">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($escolaridades as $estudios) : ?>
-                                    <option <?php if ($estudios['id_cat_escolaridad'] === $e_ficha['escolaridad']) echo 'selected="selected"'; ?> value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
+                                    <option <?php if ($estudios['id_cat_escolaridad'] === $e_ficha['id_cat_escolaridad']) echo 'selected="selected"'; ?> value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -171,8 +179,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="visitaduria">Visitaduria</label>
                             <select class="form-control" name="visitaduria">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($visitadurias as $visitaduria) : ?>
-                                    <option <?php if ($visitaduria['id_area'] === $e_ficha['visitaduria']) echo 'selected="selected"'; ?> value="<?php echo $visitaduria['id_area']; ?>"><?php echo ucwords($visitaduria['nombre_area']); ?></option>
+                                    <option <?php if ($visitaduria['id_area'] === $e_ficha['id_visitaduria']) echo 'selected="selected"'; ?> value="<?php echo $visitaduria['id_area']; ?>"><?php echo ucwords($visitaduria['nombre_area']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -181,8 +190,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="hechos">Presuntos hechos violatorios</label>
                             <select class="form-control" name="hechos">
+							<option value="">Escoge una opción</option>
                                 <?php foreach ($derechos_vuln as $derecho) : ?>
-                                    <option <?php if ($derecho['id_cat_der_vuln'] === $e_ficha['hechos']) echo 'selected="selected"'; ?> value="<?php echo $derecho['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho['descripcion']); ?></option>
+                                    <option <?php if ($derecho['id_cat_der_vuln'] === $e_ficha['id_cat_der_vuln']) echo 'selected="selected"'; ?> value="<?php echo $derecho['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -191,8 +201,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="autoridad">Autoridad señalada</label>
                             <select class="form-control" name="autoridad">
+							<option value="">Escoge una opción</option>
                             <?php foreach ($autoridades as $autoridad) : ?>
-                                <option <?php if ($autoridad['id_cat_aut'] === $e_ficha['autoridad']) echo 'selected="selected"'; ?> value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
+                                <option <?php if ($autoridad['id_cat_aut'] === $e_ficha['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
                             <?php endforeach; ?>
                             </select>
                         </div>
@@ -215,8 +226,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="sexo">Género</label>
                             <select class="form-control" name="sexo">
+							<option value="">Escoge una opción</option>
                             <?php foreach ($generos as $genero) : ?>
-                                <option <?php if ($genero['id_cat_gen'] === $e_ficha['sexo']) echo 'selected="selected"'; ?> value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
+                                <option <?php if ($genero['id_cat_gen'] === $e_ficha['id_cat_gen']) echo 'selected="selected"'; ?> value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
                             <?php endforeach; ?>
                             </select>
                         </div>
@@ -225,8 +237,9 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="grupo_vulnerable">Grupo Vulnerable</label>
                             <select class="form-control" name="grupo_vulnerable">
+							<option value="">Escoge una opción</option>
                             <?php foreach ($grupos as $grupo) : ?>
-                                <option <?php if ($grupo['id_cat_grupo_vuln'] === $e_ficha['grupo_vulnerable']) echo 'selected="selected"'; ?> value="<?php echo $autoridad['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo['descripcion']); ?></option>
+                                <option <?php if ($grupo['id_cat_grupo_vuln'] === $e_ficha['id_cat_grupo_vuln']) echo 'selected="selected"'; ?> value="<?php echo $grupo['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo['descripcion']); ?></option>
                             <?php endforeach; ?>
                             </select>
                         </div>
@@ -243,6 +256,7 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="resultado">Resultado</label>
                             <select class="form-control" name="resultado">
+							<option value="">Escoge una opción</option>
                                 <option <?php if ($e_ficha['resultado'] === 'Positivo') echo 'selected="selected"'; ?> value="Positivo">Positivo</option>
                                 <option <?php if ($e_ficha['resultado'] === 'Negativo') echo 'selected="selected"'; ?> value="Negativo">Negativo</option>
                                 <option <?php if ($e_ficha['resultado'] === 'No aplica') echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>
@@ -253,6 +267,7 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="documento_emitido">Documento Emititdo</label>
                             <select class="form-control" name="documento_emitido">
+							<option value="">Escoge una opción</option>
                                 <option <?php if ($e_ficha['documento_emitido'] === 'Certificado Médico')  echo 'selected="selected"'; ?> value="Certificado Médico">Certificado Médico</option>
                                 <option <?php if ($e_ficha['documento_emitido'] === 'Opinión Médica')  echo 'selected="selected"'; ?> value="Opinión Médica">Opinión Médica</option>
                                 <option <?php if ($e_ficha['documento_emitido'] === 'No Aplica')  echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>

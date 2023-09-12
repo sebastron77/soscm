@@ -19,6 +19,10 @@ if ($nivel_user == 7) {
 if ($nivel_user == 21) {
     page_require_level_exacto(21);
 }
+if ($nivel_user == 51) {
+    page_require_level_exacto(51);
+}
+
 if ($nivel_user == 19) {
     redirect('home.php');
 }
@@ -28,10 +32,11 @@ endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
+if ($nivel_user > 7 && $nivel_user < 21) :
     redirect('home.php');
 endif;
-if ($nivel_user > 19 && $nivel_user < 21) :
+
+if ($nivel_user > 21 && $nivel_user < 50) :
     redirect('home.php');
 endif;
 ?>
@@ -57,7 +62,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-
+	<!--
+<?php if (($nivel_user < 51) ) : ?>
         <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
@@ -66,31 +72,28 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+<?php endif ?>
+<?php if (($nivel_user < 51) ) : ?>		
         <a href="gestiones.php" class="tileO">
             <div class="tileO-tittle">Gestión Jurisdiccional</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">send_time_extension</span>
             </div>
         </a>
+<?php endif ?>
+}
 
-        <a href="correspondencia.php" class="tileO">
-            <div class="tileO-tittle">Oficios</div>
+        <a href="agendas.php" class="tileO">
+            <div class="tileO-tittle">Agenda de Proyectos</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
-                    history_edu
+                    collections_bookmark
                 </span>
             </div>
         </a>
-
-        <a href="informes_areas.php" class="tileO">
-            <div class="tileO-tittle">Informe de Actividades</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    add_chart
-                </span>
-            </div>
-        </a>
-
+        
+        
+-->
         <a href="informes.php" class="tileO">
             <div class="tileO-tittle">Informe Trimestral/Anual</div>
             <div class="tileO-icon">
@@ -118,15 +121,6 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
             </div>
         </a>
 
-        <a href="agendas.php" class="tileO">
-            <div class="tileO-tittle">Agenda de Proyectos</div>
-            <div class="tileO-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    collections_bookmark
-                </span>
-            </div>
-        </a>
-        
         <a href="eventos.php" class="tile">
             <div class="tile-tittle">Eventos</div>
             <div class="tile-icon">
@@ -135,7 +129,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <a href="informes_areas.php" class="tile">
+        <a href="informes_areas.php?a=3" class="tile">
             <div class="tile-tittle">Informe Actividades</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

@@ -1,19 +1,19 @@
+
 <?php
 $page_title = 'Fichas Técnicas - Área Médica';
 require_once('includes/load.php');
 ?>
 <?php
 $user = current_user();
-$nivel = $user['user_level'];
-$user = current_user();
-$nivel = $user['user_level'];
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
+$ejercicio = isset($_GET['anio']) ? $_GET['anio'] : '2023';
+$anio = $ejercicio == 2023?2022:2023;
 
 if (($nivel_user == 1) || ($nivel_user == 2) || ($nivel_user == 22) || ($nivel_user == 7)) {
-    $all_fichas = find_all_fichas();
+    $all_fichas = find_all_fichas($ejercicio);
 } else {
-    $all_fichas = find_all_fichasUser($id_user);
+    $all_fichas = find_all_fichasUser($ejercicio,$id_user);
 }
 
 if ($nivel_user <= 2) {
@@ -90,6 +90,7 @@ if (isset($_POST["export_data"])) {
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Fichas técnicas - Área Médica</span>
                 </strong>
+				<a href="fichas.php?anio=<?php echo $anio;?>" style="margin-left: 10px" class="btn btn-info pull-right">Ver <?php echo $anio?></a>      
                 <?php if (($nivel_user <= 2) || ($nivel_user == 4) || ($nivel_user == 9) || ($nivel_user == 22)) : ?>
                     <a href="add_ficha.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar ficha</a>
                 <?php endif; ?>
@@ -129,6 +130,9 @@ if (isset($_POST["export_data"])) {
                                 $resultado = str_replace("/", "-", $folio_editar);
                                 ?>
                                 <td class="text-center">
+								<?php 
+								if($a_ficha['ficha_adjunto'] != ''){
+								?>
                                 <a target="_blank" style="color: #0094FF;" href="uploads/fichastecnicas/medica/<?php echo $resultado . '/' . $a_ficha['ficha_adjunto']; ?>">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
                                             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z" />
@@ -136,6 +140,7 @@ if (isset($_POST["export_data"])) {
                                         </svg>
                                     </a>
                             
+								<?php } ?>
                             </td>
                                 <?php if (($nivel_user <= 2) || ($nivel_user == 4) || ($nivel_user == 9) || ($nivel_user == 22)) : ?>
                                     <td class="text-center">

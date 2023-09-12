@@ -7,7 +7,7 @@ function conexion() {
 
 $pdo = conexion();
 $keyword = '%'.$_POST['palabra2'].'%';
-$sql = "SELECT id_cat_agrav, nombre, paterno, materno FROM cat_agraviados WHERE nombre LIKE (:keyword) ORDER BY nombre ASC LIMIT 0, 20";
+$sql = "SELECT id_cat_agrav, nombre, paterno, materno FROM cat_agraviados WHERE nombre LIKE (:keyword) ORDER BY nombre ASC LIMIT 0, 30";
 $query = $pdo->prepare($sql);
 $query->bindParam(':keyword', $keyword, PDO::PARAM_STR);
 $query->execute();

@@ -75,6 +75,7 @@
       <li><a href="cat_edo_queja.php">Estado de la Queja</a> </li>
       <li><a href="cat_medio_presentacion.php">Medio de Presentación</a> </li>
       <li><a href="cat_tipo_ambito.php">Tipo de Ambito</a> </li>
+      <li><a href="cat_tipo_solicitud.php">Tipo de Solicitud de Información</a> </li>
     </ul>
   </li>
   
@@ -90,6 +91,9 @@
       <li><a href="tabla_estadistica_quejas.php">Quejas</a></li>
       <li><a href="tabla_estadistica_orientacion.php">Orientaciones</a></li>
       <li><a href="tabla_estadistica_canalizacion.php">Canalizaciones</a></li>      
+      <li><a href="tabla_estadistica_mediacion.php">Mediación</a></li>      
+      <li><a href="tabla_estadistica_solicitudes.php">Solicitudes</a></li>      
+      <li><a href="est_acceso_web.php">Acceso Páginas</a></li>      
     </ul>
   </li>
   

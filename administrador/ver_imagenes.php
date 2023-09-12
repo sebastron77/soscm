@@ -4,10 +4,9 @@ error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Estadística de Quejas';
 require_once('includes/load.php');
 $carpeta = $_GET['carpeta'];
-?>
-<?php
 
-$a_ficha = find_by_id('jornadas', (int)$_GET['id'], 'id_jornada');
+
+//$a_ficha = find_by_id('jornadas', (int)$_GET['id'], 'id_jornada');
 // $tipo_ficha = find_tipo_ficha((int)$_GET['id']);
 $user = current_user();
 $nivel = $user['user_level'];

@@ -4,19 +4,30 @@ require_once('includes/load.php');
 ?>
 <?php
 $user = current_user();
-$nivel = $user['user_level'];
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
+$area = isset($_GET['a']) ? $_GET['a'] : '0';
+
 
 // Identificamos a que área pertenece el usuario logueado
-$area_user = area_usuario2($id_user);
-$area = $area_user['nombre_area'];
+$date_user = area_usuario2($id_user);
+$user_area = $date_user['id_area'];
+$nombre_area = $date_user['nombre_area'];
 
+$area_informe = find_by_id('area', $area, 'id_area');
+
+if($area > 0){
+	$all_informe = find_all_informes_areas($area);
+}else{
+    $all_informe = find_all_informes_areasAdmin();	
+}
+/*
 if (($nivel_user <= 2) || ($nivel_user == 7)) {
     $all_informe = find_all_informes_areasAdmin();
 } else {
     $all_informe = find_all_informes_areas($area);
-}
+}*/
+
 
 $conexion = mysqli_connect("localhost", "suigcedh", "9DvkVuZ915H!");
 mysqli_set_charset($conexion, "utf8");
@@ -68,9 +79,15 @@ if (isset($_POST["export_data"])) {
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Informes de Actividades <?php echo $area ?></span>
+                    <span>Informes de Actividades <?php echo $area_informe['nombre_area'] ?></span>
                 </strong>
-                <a href="add_informe_areas.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar informe</a>
+<?php if( ($nivel_user < 2) || $user_area==$area){?>				
+<?php 	if($area == 3 && $nivel_user == 51){?>				
+                <a href="add_informe_areas.php?a=<?php echo $area?>" style="margin-left: 10px" class="btn btn-info pull-right">Agregar informe<?php echo  $nivel_user;?></a>
+<?php } else{ ?>				
+                <a href="add_informe_areas.php?a=<?php echo $area?>" style="margin-left: 10px" class="btn btn-info pull-right">Agregar informe</a>
+<?php } ?>				
+<?php } ?>				
                 <form action=" <?php echo $_SERVER["PHP_SELF"]; ?>" method="post">
                     <button style="float: right; margin-top: -20px" type="submit" id="export_data" name='export_data' value="Export to excel" class="btn btn-excel">Exportar a Excel</button>
                 </form>
@@ -81,7 +98,10 @@ if (isset($_POST["export_data"])) {
             <table class="datatable table table-bordered table-striped">
                 <thead class="thead-purple">
                     <tr style="height: 10px;">
-                        <th class="text-center" style="width: 3%;">Folio</th>
+                        <th class="text-center" style="width: 3%;">Folio</th>	
+<?php if($area == 0){?>						
+                        <th class="text-center" style="width: 3%;">Área</th>	
+<?php }?>						
                         <th class="text-center" style="width: 5%;">No. Informe</th>
                         <th class="text-center" style="width: 5%;">Oficio de Entrega</th>
                         <th class="text-center" style="width: 7%;">Fecha de Informe</th>
@@ -98,6 +118,9 @@ if (isset($_POST["export_data"])) {
                         ?>
                         <tr>
                             <td><?php echo remove_junk(ucwords($a_informe['folio'])) ?></td>
+							<?php if($area == 0){?>						
+                        <td><?php echo remove_junk(ucwords($a_informe['nombre_area'])) ?></td>
+<?php }?>
                             <td class="text-center"><?php echo remove_junk(ucwords($a_informe['no_informe'])) ?></td>
 
                             <td style="text-align: center;">

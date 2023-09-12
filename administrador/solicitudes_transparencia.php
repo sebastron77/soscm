@@ -34,15 +34,8 @@ endif;
 
 <div class="container-fluid">
     <div class="full-box tile-container">
-        <a href="#" class="tile">
-            <div class="tile-tittle">Informe Anual(IMAIP)</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    book
-                </span>
-            </div>
-        </a>
-        <a href="#" class="tile">
+        
+        <a href="solicitudes_ut.php" class="tile">
             <div class="tile-tittle" style="font-size: 13px;">Solicitudes de Información</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -51,7 +44,7 @@ endif;
                 <i class="fas fa-user-tie"></i>
             </div>
         </a>
-		<a href="#" class="tile">
+		<a href="recursos_ut.php" class="tile">
             <div class="tile-tittle">Recursos Revisión</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -60,7 +53,7 @@ endif;
                 <i class="fas fa-user-tie"></i>
             </div>
         </a>
-        <a href="#" class="tile">
+        <a href="denuncias_ut.php" class="tile">
             <div class="tile-tittle">Denuncias</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -70,7 +63,7 @@ endif;
             </div>
         </a>
       
-        <a href="#" class="tile">
+        <a href="capacitaciones.php" class="tile">
             <div class="tile-tittle">Capacitaciones</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

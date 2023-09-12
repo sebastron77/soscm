@@ -74,7 +74,7 @@ if (isset($_POST['add_ficha'])) {
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
         if ($move && $name != '') {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,funcion,num_queja,visitaduria,area_solicitante,ocupacion,escolaridad,hechos,autoridad,nombre_usuario,edad,sexo,grupo_vulnerable,fecha_intervencion,resultado,documento_emitido,nombre_especialista,clave_documento,ficha_adjunto,fecha_creacion,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,nombre_especialista,clave_documento,ficha_adjunto,fecha_creacion,tipo_ficha,quien_creo";
             $query .= ") VALUES (";
             $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$nombre_especialista}','{$clave_documento}','{$name}','{$creacion}',1,'{$id_user}'";
             $query .= ")";
@@ -86,7 +86,7 @@ if (isset($_POST['add_ficha'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,funcion,num_queja,visitaduria,area_solicitante,ocupacion,escolaridad,hechos,autoridad,nombre_usuario,edad,sexo,grupo_vulnerable,fecha_intervencion,resultado,documento_emitido,nombre_especialista,clave_documento,fecha_creacion,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,nombre_especialista,clave_documento,fecha_creacion,tipo_ficha,quien_creo";
             $query .= ") VALUES (";
             $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$nombre_especialista}','{$clave_documento}','{$creacion}',1,'{$id_user}'";
             $query .= ")";

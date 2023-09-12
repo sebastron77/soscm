@@ -26,8 +26,8 @@ if ($nivel == 6) {
 if ($nivel == 7) {
     redirect('home.php');
 }
-?>
-<?php
+
+
 $e_jornada = find_by_id_jornadas((int)$_GET['id']);
 if (!$e_jornada) {
     $session->msg("d", "id de jornada no encontrado.");

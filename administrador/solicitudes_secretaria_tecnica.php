@@ -11,11 +11,19 @@ $busca_area = area_usuario($id_usuario);
 $otro = $busca_area['id'];
 
 $nivel_user = $user['user_level'];
-
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel_user == 51) {
+    page_require_level_exacto(51);
+}
 if (($nivel_user > 2 && $nivel_user < 7)) :
     redirect('home.php');
 endif;
-if ($nivel_user > 7) :
+if (($nivel_user > 7 && $nivel_user < 50)) :
     redirect('home.php');
 endif;
 
@@ -44,42 +52,7 @@ $c_cargos          = count_by_id('cargos');
 
 
 <div class="row" style="margin-top: 10px;">
-    <!-- <div class="col-md-3" style="height: 13.5rem;">
-        <div class="panel panel-box clearfix">
-            <div class="panel-icon pull-left" style="background: #114987;">
-                <svg style="width:40px;height:68px" viewBox="0 0 24 24">
-                    <path fill="white" d="M7.5,5.6L5,7L6.4,4.5L5,2L7.5,3.4L10,2L8.6,4.5L10,7L7.5,5.6M19.5,15.4L22,14L20.6,16.5L22,19L19.5,17.6L17,19L18.4,16.5L17,14L19.5,15.4M22,2L20.6,4.5L22,7L19.5,5.6L17,7L18.4,4.5L17,2L19.5,3.4L22,2M13.34,12.78L15.78,10.34L13.66,8.22L11.22,10.66L13.34,12.78M14.37,7.29L16.71,9.63C17.1,10 17.1,10.65 16.71,11.04L5.04,22.71C4.65,23.1 4,23.1 3.63,22.71L1.29,20.37C0.9,20 0.9,19.35 1.29,18.96L12.96,7.29C13.35,6.9 14,6.9 14.37,7.29Z" />
-                </svg>
-            </div>
-            <div class="panel-value pull-right">
-                <p style="font-size: 16px; margin-top:5%; color:white;">Resoluciones</p>
-                <div style="margin-top:-3%;">
-                    <?php if ($nivel_user <= 2) : ?>
-                        <a href="add_resolucion.php" class="btn btn-success btn-sm">Agregar</a>
-                    <?php endif; ?>
-                    <a href="resoluciones.php" class="btn btn-primary btn-sm">Ver</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
-    <!-- <div class="col-md-3" style="height: 13.5rem;">
-        <div class="panel panel-box clearfix">
-            <div class="panel-icon pull-left" style="background: #114987;">
-                <svg style="width:40px;height:68px" viewBox="0 0 24 24">
-                    <path fill="white" d="M12,5.5A3.5,3.5 0 0,1 15.5,9A3.5,3.5 0 0,1 12,12.5A3.5,3.5 0 0,1 8.5,9A3.5,3.5 0 0,1 12,5.5M5,8C5.56,8 6.08,8.15 6.53,8.42C6.38,9.85 6.8,11.27 7.66,12.38C7.16,13.34 6.16,14 5,14A3,3 0 0,1 2,11A3,3 0 0,1 5,8M19,8A3,3 0 0,1 22,11A3,3 0 0,1 19,14C17.84,14 16.84,13.34 16.34,12.38C17.2,11.27 17.62,9.85 17.47,8.42C17.92,8.15 18.44,8 19,8M5.5,18.25C5.5,16.18 8.41,14.5 12,14.5C15.59,14.5 18.5,16.18 18.5,18.25V20H5.5V18.25M0,20V18.5C0,17.11 1.89,15.94 4.45,15.6C3.86,16.28 3.5,17.22 3.5,18.25V20H0M24,20H20.5V18.25C20.5,17.22 20.14,16.28 19.55,15.6C22.11,15.94 24,17.11 24,18.5V20Z" />
-                </svg>
-            </div>
-            <div class="panel-value pull-right">
-                <p style="font-size: 16px; margin-top:4%; color:white;">Consejo de la CEDH</p>
-                <div style="margin-top:-2%;">
-                    <?php if ($nivel_user <= 2) : ?>
-                        <a href="add_consejo.php" class="btn btn-success btn-sm">Agregar</a>
-                    <?php endif; ?>
-                    <a href="consejo.php" class="btn btn-primary btn-sm">Ver</a>
-                </div>
-            </div>
-        </div>
-    </div> -->
+   
     <div class="col-md-3" style="height: 13.5rem;">
         <div class="panel panel-box clearfix">
             <div class="panel-icon pull-left" style="background: rgb(0,95,255); background: linear-gradient(90deg, rgba(0,95,255,1) 0%, rgba(0,67,133,1) 50%, rgba(0,42,83,1) 100%); display: grid; place-content: center;">

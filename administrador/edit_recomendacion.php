@@ -12,13 +12,23 @@ $nivel = $user['user_level'];
 $nivel_user = $user['user_level'];
 $id_user = $user['id_user'];
 
+if ($nivel_user <= 2) {
+    page_require_level(2);
+}
+if ($nivel_user == 5) {
+    page_require_level_exacto(5);
+}
+if ($nivel_user == 7) {
+    page_require_level_exacto(7);
+}
+if ($nivel_user == 50) {
+    page_require_level_exacto(50);
+}
+
 if ($nivel_user > 2 && $nivel_user < 5) :
     redirect('home.php');
 endif;
 if ($nivel_user > 5 && $nivel_user < 7) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 7) :
     redirect('home.php');
 endif;
 ?>
@@ -132,22 +142,34 @@ if (isset($_POST['edit_recomendacion'])) {
         }
 
         if ($name != '' && $name2 != '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', recomendacion_adjunto_publico='{$name2}', sintesis_rec='$nameRecSint', traduccion='$nameRecTrad', lectura_facil='$nameRecLF' 
+            if($e_recomendacion['sintesis_rec'] != '') $sint = $e_recomendacion['sintesis_rec']; else {$sint = $nameRecSint;}
+            if($e_recomendacion['traduccion'] != '') $trad = $e_recomendacion['traduccion']; else {$trad = $nameRecTrad;}
+            if($e_recomendacion['lectura_facil'] != '') $lect = $e_recomendacion['lectura_facil']; else {$lect = $nameRecLF;}
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', recomendacion_adjunto_publico='{$name2}', sintesis_rec='$sint', traduccion='$trad', lectura_facil='$lect' 
             WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name != '' && $name2 == '') {
-            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
+            if($e_recomendacion['sintesis_rec'] != '') $sint = $e_recomendacion['sintesis_rec']; else {$sint = $nameRecSint;}
+            if($e_recomendacion['traduccion'] != '') $trad = $e_recomendacion['traduccion']; else {$trad = $nameRecTrad;}
+            if($e_recomendacion['lectura_facil'] != '') $lect = $e_recomendacion['lectura_facil']; else {$lect = $nameRecLF;}
+            $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto='{$name}', sintesis_rec='$sint',traduccion='$trad',lectura_facil='$lect' WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name == '' && $name2 != '') {
+            if($e_recomendacion['sintesis_rec'] != '') $sint = $e_recomendacion['sintesis_rec']; else {$sint = $nameRecSint;}
+            if($e_recomendacion['traduccion'] != '') $trad = $e_recomendacion['traduccion']; else {$trad = $nameRecTrad;}
+            if($e_recomendacion['lectura_facil'] != '') $lect = $e_recomendacion['lectura_facil']; else {$lect = $nameRecLF;}
             $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', recomendacion_adjunto_publico='{$name2}', 
-            sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
+            sintesis_rec='$sint',traduccion='$trad',lectura_facil='$lect' WHERE id_recomendacion='{$db->escape($id)}'";
         }
 
         if ($name == '' && $name2 == '') {
+            if($e_recomendacion['sintesis_rec'] != '') $sint = $e_recomendacion['sintesis_rec']; else {$sint = $nameRecSint;}
+            if($e_recomendacion['traduccion'] != '') $trad = $e_recomendacion['traduccion']; else {$trad = $nameRecTrad;}
+            if($e_recomendacion['lectura_facil'] != '') $lect = $e_recomendacion['lectura_facil']; else {$lect = $nameRecLF;}
             $sql = "UPDATE recomendaciones SET folio_queja='{$folio_queja}', numero_recomendacion='{$numero_recomendacion}', servidor_publico='{$servidor_publico}', fecha_recomendacion='{$fecha_acuerdo}', observaciones='{$observaciones}', 
-            sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF' WHERE id_recomendacion='{$db->escape($id)}'";
+            sintesis_rec='$sint',traduccion='$trad',lectura_facil='$lect' WHERE id_recomendacion='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {

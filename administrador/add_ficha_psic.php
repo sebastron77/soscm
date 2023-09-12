@@ -1,17 +1,12 @@
 <?php header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Ficha Técnica - Área Psicológica';
 require_once('includes/load.php');
+$id_folio = last_id_folios();
 $user = current_user();
-$detalle = $user['id_user'];
-$id_folio = last_id_folios_general();
 page_require_level(4);
 $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
 $otro = $busca_area['id_area'];
-$areas = find_all_area_orden('area');
-page_require_area(4);
-$id_user = $user['id_user'];
-$busca_area = area_usuario($id_user);
 $areas = find_all_area_orden('area');
 $funciones = find_all_funcion_P();
 $ocupaciones = find_all_order('cat_ocupaciones', 'descripcion');
@@ -56,8 +51,8 @@ if (isset($_POST['add_ficha_psic'])) {
             $no_folio1 = sprintf('%04d', 1);
         } else {
             foreach ($id_folio as $nuevo) {
-                $nuevo_id_folio = (int)$nuevo['id'] + 1;
-                $no_folio1 = sprintf('%04d', (int)$nuevo['id'] + 1);
+                $nuevo_id_folio = (int)$nuevo['contador'] + 1;
+                $no_folio1 = sprintf('%04d', (int)$nuevo['contador'] + 1);
             }
         }
         // Se crea el número de folio
@@ -80,7 +75,7 @@ if (isset($_POST['add_ficha_psic'])) {
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
         if ($move && $name != '') {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,funcion,num_queja,visitaduria,area_solicitante,ocupacion,escolaridad,hechos,autoridad,nombre_usuario,edad,sexo,grupo_vulnerable,fecha_intervencion,resultado,documento_emitido,ficha_adjunto,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,ficha_adjunto,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
             $query .= ") VALUES (";
             $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$name}','{$creacion}','{$protocolo_estambul}','{$nombre_especialista}','{$clave_documento}',2,'{$id_user}'";
             $query .= ")";
@@ -92,7 +87,7 @@ if (isset($_POST['add_ficha_psic'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,funcion,num_queja,visitaduria,area_solicitante,ocupacion,escolaridad,hechos,autoridad,nombre_usuario,edad,sexo,grupo_vulnerable,fecha_intervencion,resultado,documento_emitido,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
             $query .= ") VALUES (";
             $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$creacion}','{$protocolo_estambul}','{$nombre_especialista}','{$clave_documento}',2,'{$id_user}'";
             $query .= ")";
@@ -178,8 +173,8 @@ include_once('layouts/header.php'); ?>
                             <label for="escolaridad">Escolaridad</label>
                             <select class="form-control" name="escolaridad">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($escolaridades as $escolaridad) : ?>
-                                    <option value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
+                                <?php foreach ($escolaridades as $estudios) : ?>
+                                    <option value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

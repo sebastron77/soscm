@@ -39,7 +39,7 @@ $(document).ready(function(){
 					if($(this).val() == 't'){
 						pagina = "busquedglobal.php";
 					}else{
-						pagina = "nada.php";
+						pagina = "";
 					}
 				}
 			}
@@ -67,18 +67,18 @@ $(document).ready(function(){
                         <div class="form-group">
                             <label for="nombreQ">Tipo Solicitud</label>
 							<select class="form-control" name="tipo_solicitud" id="tipo_solicitud">
-                                <option value="">Escoge una opción</option>                                
+                                <option value="0">Escoge una opción</option>                                
                                     <option value="q">Quejas</option>
-                                    <!--<option value="o">Orientaciones</option>
+                                    <option value="o">Orientaciones</option>
                                     <option value="c">Canalizaciones</option>
-                                    <option value="a">Otras Actuaciones</option>
+                                    <!--<option value="a">Otras Actuaciones</option>
                                     <option value="t">Todo</option> -->
                             </select>
                         </div>
                     </div>
 				</div>
                 <div class="row" style="margin-top: 2%">
-                    <iframe id="acctionURL" src=""   style="position:absoluta; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:650px; border:none; margin:0; padding:0; overflow:hidden;"> </iframe>
+                    <iframe id="acctionURL" src=""   style="position:absoluta; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:750px; border:none; margin:0; padding:0; overflow:hidden;"> </iframe>
 
 
                 </div>

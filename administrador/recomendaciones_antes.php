@@ -138,7 +138,7 @@ if (isset($_POST["export_data"])) {
                                     </a>
                                 </td>
 
-                            <?php if (($nivel == 1) || ($nivel == 5)) : ?>
+                            <?php if (($nivel == 1) || ($nivel == 5)  || ($nivel == 50)) : ?>
                                 <td class="text-center">
                                     <div class="btn-group">
                                         <a href="edit_recomendacion.php?id=<?php echo (int)$a_recomendacion['id_recomendacion']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip">

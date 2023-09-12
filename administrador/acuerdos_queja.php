@@ -12,6 +12,7 @@ if (!$e_detalle) {
 $user = current_user();
 $nivel = $user['user_level'];
 $users = find_all('users');
+$id_user = $user['id_user'];
 $area = find_all_areas_quejas();
 $acuerdos_quejas = find_acuerdo_quejas((int) $_GET['id']);
 
@@ -68,8 +69,8 @@ if (isset($_POST['acuerdo_queja'])) {
         }
 
 
-        $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,fecha_alta) 
-                    VALUES ({$id},'{$tipo_acuerdo}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},NOW());";
+        $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,user_creador,fecha_alta) 
+                    VALUES ({$id},'{$tipo_acuerdo}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},{$id_user},NOW());";
 
         if ($db->query($query)) {
             //sucess
@@ -233,7 +234,7 @@ if (isset($_POST['acuerdo_queja'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="id_tipo_resolucion">Documento de Acuerdo en Versión Pública</label>
-                            <input id="acuerdo_adjunto_publico" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto_publico">
+                            <input id="acuerdo_adjunto_publico" type="file" accept="application/pdf" class="form-control" name="acuerdo_adjunto_publico" required>
                         </div>
                     </div>
                     <div class="col-md-2">

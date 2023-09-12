@@ -5,11 +5,12 @@ $user = current_user();
 $detalle = $user['id_user'];
 $id_folio = last_id_folios_general();
 page_require_level(4);
+//page_require_area(4);
 $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
 $otro = $busca_area['id_area'];
 $areas = find_all_area_orden('area');
-page_require_area(4);
+
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_jornada'])) {
@@ -80,7 +81,7 @@ if (isset($_POST['add_jornada'])) {
         }
 
         $query = "INSERT INTO jornadas (";
-        $query .= "folio,nombre_actividad,objetivo_actividad,area_responsable,mujeres,hombres,lgbtiq,fecha_actividad,alcance,colaboracion_institucional,creacion,carpeta,creador";
+        $query .= "folio,nombre_actividad,objetivo_actividad,area_responsable,mujeres,hombres,lgbtiq,fecha_actividad,alcance,colaboracion_institucional,creacion,carpeta,fin_actividad,creador";
         $query .= ") VALUES (";
         $query .= " '{$folio}','{$nombre_actividad}','{$objetivo_actividad}','{$area_responsable}','{$mujeres}','{$hombres}','{$lgbtiq}','{$fecha_actividad}','{$alcance}','{$colaboracion_institucional}','{$creacion}','{$folio_carpeta}','{$fin_actividad}','{$id_user}'";
         $query .= ")";

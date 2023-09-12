@@ -23,6 +23,7 @@ $cat_est_procesal = find_all_estatus_procesal();
 $cat_municipios = find_all_cat_municipios();
 $cat_entidad = find_all_cat_entidad();
 $cat_tipo_ambito = find_all('cat_tipo_ambito');
+$cat_estatus_mediacion = find_all('cat_estatus_mediacion');
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -62,8 +63,10 @@ if (isset($_POST['edit_queja'])) {
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
         $id_cat_mun = remove_junk($db->escape($_POST['id_cat_mun']));
         $revision_presidencia = remove_junk($db->escape($_POST['revision_presidencia']));
+		
+        $mediacion = ($_POST['mediacion']==null?'':$db->escape($_POST['mediacion']));
         // $transferir = remove_junk($db->escape($_POST['transferir']));
-        $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
+        $descripcion_hechos = (remove_junk($db->escape($_POST['descripcion_hechos'])));
         date_default_timezone_set('America/Mexico_City');
         $fecha_actualizacion = date('Y-m-d H:i:s');
 
@@ -100,15 +103,25 @@ if (isset($_POST['edit_queja'])) {
             $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}', archivo='{$name}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0, revision_presidencia='$revision_presidencia' WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0, 
+					revision_presidencia='$revision_presidencia' ";
+					if($mediacion != null){
+					$sql .= ",mediacion='$mediacion' ";
+					}
+					$sql .= " WHERE id_queja_date='{$db->escape($id)}'";
         }
         if ($name == '') {
             $sql = "UPDATE quejas_dates SET fecha_presentacion='{$fecha_presentacion}', id_cat_med_pres='{$id_cat_med_pres}', id_cat_aut='{$id_cat_aut}',
                     observaciones='{$observaciones}', id_cat_quejoso='$id_cat_quejoso', id_cat_agraviado='$id_cat_agraviado', id_user_asignado='$id_user_asignado', 
                     id_area_asignada='$id_area_asignada', id_estatus_queja=NULL, estado_procesal='{$id_cat_est_procesal}', dom_calle='$dom_calle', dom_numero='$dom_numero', dom_colonia='$dom_colonia', 
-                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', notificacion = 0, revision_presidencia='$revision_presidencia' WHERE id_queja_date='{$db->escape($id)}'";
+                    id_cat_mun='$id_cat_mun', descripcion_hechos='$descripcion_hechos', fecha_actualizacion='$fecha_actualizacion', 
+					notificacion = 0, revision_presidencia='$revision_presidencia' ";
+					if($mediacion != null){
+					$sql .= ",mediacion='$mediacion' ";
+					}
+					$sql .= " WHERE id_queja_date='{$db->escape($id)}'";
         }
-
+echo $sql;
         // $carpeta = 'uploads/quejas/' . $folio2 . '/imagenes';
 
         // if (!is_dir($carpeta)) {
@@ -381,7 +394,7 @@ if (isset($_POST['edit_queja'])) {
                         <label for="imagen">Añadir imagen(es): </label>
                         <input class="form-control" name="imagen[]" id="imagen" type="file" multiple />
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <label for="revision_presidencia">Enviar a análisis: </label>
                         <select class="form-control" name="revision_presidencia">
                             <option value="">Escoge una opción</option>
@@ -389,6 +402,16 @@ if (isset($_POST['edit_queja'])) {
                             <option <?php if ($e_detalle['revision_presidencia'] === '0') echo 'selected="selected"'; ?> value="0">No</option>
                         </select>
                     </div>
+					<?php if ($e_detalle['mediacion'] === '0') { ?>
+					<div class="col-md-2">
+                        <label for="mediacion">Enviar a Mediación: </label>
+                        <select class="form-control" name="mediacion">
+                            <option value="">Escoge una opción</option>                               
+                            <option <?php if ($e_detalle['mediacion'] === '1') echo 'selected="selected"'; ?> value="1">Sí</option>
+                            <option <?php if ($e_detalle['mediacion'] === '0') echo 'selected="selected"'; ?> value="0">No</option>
+                        </select>
+                    </div>
+					<?php } ?>
                 </div>
                 <div class="row">
                     <div class="col-md-6">

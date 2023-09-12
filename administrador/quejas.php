@@ -152,7 +152,7 @@ if (isset($_POST["export_data"])) {
                         <th width="5%">Quejoso</th>
                         <th width="5%">Estado Procesal</th>
                         <th width="1%">Tipo Resolución</th>
-                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 21) || ($nivel == 50)) : ?>
+                        <?php if (($nivel <= 2) || ($nivel == 5) || ($nivel == 7) || ($nivel == 19) || ($nivel == 21) || ($nivel == 50)) : ?>
                             <th width="5%;" class="text-center">Acciones</th>
                         <?php endif; ?>
                     </tr>

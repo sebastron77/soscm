@@ -19,6 +19,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
   <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker3.min.css" />
   <link rel="stylesheet" href="libs/css/main.css" />
+  <link rel="stylesheet" href="libs/css/organigrama.css" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
@@ -252,9 +253,9 @@
 
       <?php elseif ($user['user_level'] === '4') : ?>
         <!-- Área médica y psicológica -->
-        <?php include_once('area_medica.php'); ?>
+        <?php include_once('area_medica_menu.php'); ?>
 
-      <?php elseif ($user['user_level'] === '5' || $user['user_level'] === '19' || $user['user_level'] === '20' || $user['user_level'] === '50') : ?>
+      <?php elseif ($user['user_level'] === '5' || $user['user_level'] === '20' || $user['user_level'] === '50') : ?>
         <!-- Orientación y quejas -->
         <?php include_once('quejas_menu.php'); ?>
 
@@ -309,10 +310,18 @@
       <?php elseif ($user['user_level'] === '18') : ?>
         <!-- Presidencia y Secretaría Técnica -->
         <?php include_once('oficialia_menu.php'); ?>
+		
+		<?php elseif ($user['user_level'] === '19') : ?>
+        <!-- Presidencia y Secretaría Técnica -->
+        <?php include_once('mediacion_menu.php'); ?>
 
       <?php elseif ($user['user_level'] === '21') : ?>
         <!-- Presidencia y Secretaría Técnica -->
         <?php include_once('consejo_menu.php'); ?>
+
+      <?php elseif ($user['user_level'] === '51') : ?>
+        <!-- Presidencia y Secretaría Técnica -->
+        <?php include_once('operador_tecnica_menu.php'); ?>
 
       <?php endif; ?>
     </div>

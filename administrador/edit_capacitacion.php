@@ -19,7 +19,7 @@ $nivel = $user['user_level'];
 
 $id_user = $user['id_user'];
 
-$existe = ($grupos ? 1 : 0);
+$existe= ($grupos?1:0);
 
 ?>
 
@@ -51,10 +51,10 @@ if (isset($_POST['edit_capacitacion'])) {
         $modalidad   = remove_junk($db->escape($_POST['modalidad']));
         $depto   = remove_junk($db->escape($_POST['id_area']));
         $capacitador   = remove_junk($db->escape($_POST['capacitador']));
-        $asistentes = $_POST['asistentes'];
-        $id_cat_grupo_vuln = $_POST['id_cat_grupo_vuln'];
-
-        $sql = "UPDATE capacitaciones SET 
+	$asistentes = $_POST['asistentes'];
+		$id_cat_grupo_vuln = $_POST['id_cat_grupo_vuln'];
+        
+         $sql = "UPDATE capacitaciones SET 
 		 nombre_capacitacion='{$nombre}', 
 		 tipo_capacitacion='{$tipo_capacitacion}', 
 		 tipo_evento='{$tipo_evento}', 
@@ -78,8 +78,8 @@ if (isset($_POST['edit_capacitacion'])) {
 		 asistentes_80='{$asistentes_80}' 
 		 WHERE id_capacitacion='{$db->escape($id)}'";
         $result1 = $db->query($sql);
-
-        if ($result1 && $db->affected_rows() === 1) {
+		      
+        if ($result1 && $db->affected_rows() === 1) {		
             //$session->msg('s', "Información Actualizada ");
             insertAccion($user['id_user'], '"' . $user['username'] . '" editó capacitación, Folio: ' . $folio . '.', 2);
             //redirect('capacitaciones.php', false);
@@ -87,19 +87,20 @@ if (isset($_POST['edit_capacitacion'])) {
             $session->msg('d', ' Lo siento no se actualizaron los datos.');
             //redirect('edit_capacitacion.php?id=' . $id, false);
         }
-
-        $query = "DELETE FROM rel_capacitacion_grupos WHERE id_capacitacion =" . $id;
+		
+		$query = "DELETE FROM rel_capacitacion_grupos WHERE id_capacitacion =" . $id;
         $result = $db->query($query);
-
-        for ($i = 0; $i < sizeof($asistentes); $i = $i + 1) {
-            if ($id_cat_grupo_vuln[$i] !== '') {
-                $queryInsert4 = "INSERT INTO rel_capacitacion_grupos (id_capacitacion,id_cat_grupo_vuln,no_asistentes) VALUES('$id','$id_cat_grupo_vuln[$i]','$asistentes[$i]')";
-                $db->query($queryInsert4);
-            }
-        }
-
+        
+				for ($i = 0; $i < sizeof($asistentes); $i = $i + 1) {
+										if($id_cat_grupo_vuln[$i] !== '' && $id_cat_grupo_vuln[$i] > 0){
+						$queryInsert4 = "INSERT INTO rel_capacitacion_grupos (id_capacitacion,id_cat_grupo_vuln,no_asistentes) VALUES('$id','$id_cat_grupo_vuln[$i]','$asistentes[$i]')";					
+						$db->query($queryInsert4);
+					}
+				}            
+        
         $session->msg('s', "Información Actualizada ");
         redirect('capacitaciones.php', false);
+		
     } else {
         $session->msg("d", $errors);
         redirect('edit_capacitacion.php?id=' . (int)$e_detalle['id'], false);
@@ -107,43 +108,46 @@ if (isset($_POST['edit_capacitacion'])) {
 }
 ?>
 
-<script type="text/javascript">
-    $(document).ready(function() {
-
-
-        $("#addRow").click(function() {
-            var html = '';
-            html += '<div id="inputFormRow">';
-            html += '	<div class="col-md-4">';
-            html += '		 <input type="number"  class="form-control" max="1000" name="asistentes[]" > ';
-            html += '	</div>';
-            html += '	<div class="col-md-4">';
-            html += '		<select class="form-control" name="id_cat_grupo_vuln[]">';
-            html += '                <option value="">Escoge una opción</option>';
-            <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
+<script type="text/javascript">	
+		
+	$(document).ready(function() {
+		
+		
+		$("#addRow").click(function() {	
+			var html = '';
+				html += '<div id="inputFormRow">';
+				html += '	<div class="col-md-4">';
+				html += '		 <input type="number"  class="form-control" max="10000" name="asistentes[]" > ';
+				html += '	</div>';
+				html += '	<div class="col-md-4">';
+				html += '		<select class="form-control" name="id_cat_grupo_vuln[]">';
+                html += '                <option value="">Escoge una opción</option>';
+                               <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                 html += '                   <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>';
-            <?php endforeach; ?>
-            html += '            </select>';
-            html += '	</div>';
-            html += '	<div class="col-md-2">';
-            html += '	<button type="button" class="btn btn-outline-danger" id="removeRow" > ';
-            html += '   	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">';
-            html += '			<path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>';
-            html += '			<path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708L8 8.293Z"></path>';
-            html += '		</svg>';
-            html += '  	</button>';
-            html += '	</div> <br><br>';
-            html += '</div> ';
+                               <?php endforeach; ?>
+                html += '            </select>';
+				html += '	</div>';
+				html += '	<div class="col-md-2">';
+				html += '	<button type="button" class="btn btn-outline-danger" id="removeRow" > ';
+				html += '   	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">';
+				html += '			<path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>';
+				html += '			<path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708L8 8.293Z"></path>';
+				html += '		</svg>';
+				html += '  	</button>';			
+				html += '	</div> <br><br>';
+				html += '</div> ';
 
-            $('#newRow').append(html);
-        });
-
-
-        $(document).on('click', '#removeRow', function() {
-            $(this).closest('#inputFormRow').remove();
-        });
-
-    });
+				$('#newRow').append(html);
+		});
+		
+		
+		$(document).on('click', '#removeRow', function() {
+				$(this).closest('#inputFormRow').remove();
+			});
+	
+	});
+	
+	
 </script>
 <?php include_once('layouts/header.php'); ?>
 <?php echo display_msg($msg); ?>
@@ -158,11 +162,11 @@ if (isset($_POST['edit_capacitacion'])) {
         <div class="panel-body">
             <form method="post" action="edit_capacitacion.php?id=<?php echo (int)$e_detalle['id_capacitacion']; ?>" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="col-md-2">
+				<div class="col-md-2">
                         <div class="form-group">
                             <label for="nombre_capacitacion">Tipo de Divulgación</label>
                             <select class="form-control" name="tipo_capacitacion" required>
-                                <option value="">Escoge una opción</option>
+                                <option value="" >Escoge una opción</option>
                                 <option value="Impartida" <?php if ($e_detalle['tipo_capacitacion'] === 'Impartida') echo 'selected="selected"'; ?>>Impartida</option>
                                 <option value="Tomada" <?php if ($e_detalle['tipo_capacitacion'] === 'Tomada') echo 'selected="selected"'; ?>>Tomada</option>
                             </select>
@@ -194,7 +198,7 @@ if (isset($_POST['edit_capacitacion'])) {
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
+					<div class="col-md-2">
                         <div class="form-group">
                             <label for="modalidad">Modalidad</label>
                             <select class="form-control" name="modalidad">
@@ -212,7 +216,7 @@ if (isset($_POST['edit_capacitacion'])) {
                     </div>
                 </div>
                 <div class="row">
-
+					
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="fecha">Fecha</label><br>
@@ -232,22 +236,22 @@ if (isset($_POST['edit_capacitacion'])) {
                             <input type="text" class="form-control" name="lugar" value="<?php echo remove_junk($e_detalle['lugar']); ?>">
                         </div>
                     </div>
-
-
+                    
+                    
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="depto_org">Departamento/Organización</label>
-                            <select class="form-control" name="id_area">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($areas_all as $area) : ?>
-                                    <option <?php if ($area['id_area'] === $e_detalle['id_area']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+							<select class="form-control" name="id_area">
+								<option value="">Escoge una opción</option>
+									<?php foreach ($areas_all as $area) : ?>
+										<option <?php if ($area['id_area'] === $e_detalle['id_area']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+									<?php endforeach; ?>
+								</select>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-
+                    
                     <div class="col-md-4">
                         <div class="form-group">
                             <label for="capacitador">Capacitador</label>
@@ -269,166 +273,165 @@ if (isset($_POST['edit_capacitacion'])) {
                         </div>
                     </div> -->
                 </div>
-
-                <div class="row">
-                    <h3 style="font-weight:bold;">
-                        <span class="material-symbols-outlined">checklist</span>
-                        Asistentes
-                    </h3>
-                    <div class="col-md-3">
+				
+				<div class="row">
+				 <h3 style="font-weight:bold;">
+                    <span class="material-symbols-outlined">checklist</span>
+                    Asistentes
+                </h3>
+					 <div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">Hombres</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_hombres" value="<?php echo remove_junk(($e_detalle['asistentes_hombres'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_hombres" value="<?php echo remove_junk(($e_detalle['asistentes_hombres'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">Mujeres</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_mujeres" value="<?php echo remove_junk(($e_detalle['asistentes_mujeres'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_mujeres" value="<?php echo remove_junk(($e_detalle['asistentes_mujeres'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">No Binarios</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_nobinario" value="<?php echo remove_junk(($e_detalle['asistentes_nobinario'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_nobinario" value="<?php echo remove_junk(($e_detalle['asistentes_nobinario'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">Otros</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_otros" value="<?php echo remove_junk(($e_detalle['asistentes_otros'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_otros" value="<?php echo remove_junk(($e_detalle['asistentes_otros'])); ?>" >
                         </div>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-3">
+				</div>
+				
+				<div class="row">				 
+					 <div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">De 0 a 11 años</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_10" value="<?php echo remove_junk(($e_detalle['asistentes_10'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_10" value="<?php echo remove_junk(($e_detalle['asistentes_10'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">De 12 a 17 años</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_20" value="<?php echo remove_junk(($e_detalle['asistentes_20'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_20" value="<?php echo remove_junk(($e_detalle['asistentes_20'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">De 18 a 30 años</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_30" value="<?php echo remove_junk(($e_detalle['asistentes_30'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_30" value="<?php echo remove_junk(($e_detalle['asistentes_30'])); ?>" >
                         </div>
                     </div>
-                    <div class="col-md-3">
+					<div class="col-md-3">
                         <div class="form-group">
                             <label for="no_asistentes">De 31 a 40 años</label>
-                            <input type="number" class="form-control" max="1000" name="asistentes_40" value="<?php echo remove_junk(($e_detalle['asistentes_40'])); ?>">
+                            <input type="number"  class="form-control" max="10000" name="asistentes_40" value="<?php echo remove_junk(($e_detalle['asistentes_40'])); ?>" >
                         </div>
                     </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="no_asistentes">De 41 a 50 años</label>
-                                <input type="number" class="form-control" max="1000" name="asistentes_50" value="<?php echo remove_junk(($e_detalle['asistentes_50'])); ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="no_asistentes">De 51 a 60 años</label>
-                                <input type="number" class="form-control" max="1000" name="asistentes_60" value="<?php echo remove_junk(($e_detalle['asistentes_60'])); ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="no_asistentes">De 60 o más</label>
-                                <input type="number" class="form-control" max="1000" name="asistentes_70" value="<?php echo remove_junk(($e_detalle['asistentes_70'])); ?>">
-                            </div>
-                        </div>
-                        <div class="col-md-3">
-                            <div class="form-group">
-                                <label for="no_asistentes">Sin dato</label>
-                                <input type="number" class="form-control" max="1000" name="asistentes_80" value="<?php echo remove_junk(($e_detalle['asistentes_80'])); ?>">
-                            </div>
+					
+					<div class="row">				 
+					 <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="no_asistentes">De 41 a 50 años</label>
+                            <input type="number"  class="form-control" max="10000" name="asistentes_50" value="<?php echo remove_junk(($e_detalle['asistentes_50'])); ?>" >
                         </div>
                     </div>
-                    <div class="row">
-                        <h3 style="font-weight:bold;">
-                            <span class="material-symbols-outlined">checklist</span>
-                            Grupos Vulnerables
-                        </h3>
-                        <div id="inputFormRow">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="no_informe">No. Asistentes</label>
-                                    <?php if ($existe == 0) { ?>
-                                        <input type="number" class="form-control" max="1000" name="asistentes[]">
-                                    <?php } ?>
-                                </div>
-                            </div>
-
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label for="adjunto">Grupo Vulnerable</label>
-                                    <?php if ($existe == 0) { ?>
-                                        <select class="form-control" name="id_cat_grupo_vuln[]">
-                                            <option value="">Escoge una opción</option>
-                                            <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
-                                                <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
-                                    <?php } ?>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <button type="button" class="btn btn-success" id="addRow" name="addRow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clipboard2-plus-fill" viewBox="0 0 16 16">
-                                            <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>
-                                            <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8.5 6.5V8H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V9H6a.5.5 0 0 1 0-1h1.5V6.5a.5.5 0 0 1 1 0Z"></path>
-                                        </svg>
-                                    </button>
-
-                                </div>
-                            </div>
+					<div class="col-md-3">
+                        <div class="form-group">
+                            <label for="no_asistentes">De 51 a 60 años</label>
+                            <input type="number"  class="form-control" max="10000" name="asistentes_60" value="<?php echo remove_junk(($e_detalle['asistentes_60'])); ?>" >
                         </div>
                     </div>
-
-                    <div class="row" id="newRow">
-                        <?php
-
-                        foreach ($grupos as $grupo_cap) :
-
-                        ?>
-                            <div id="inputFormRow">
-                                <div class="col-md-4">
-                                    <input type="number" class="form-control" max="1000" name="asistentes[]" value="<?php echo remove_junk(($grupo_cap['no_asistentes'])); ?>">
-                                </div>
-                                <div class="col-md-4">
-                                    <select class="form-control" name="id_cat_grupo_vuln[]">
-                                        <option value="">Escoge una opción</option>
-                                        <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
-                                            <option <?php if ($grupo_cap['id_cat_grupo_vuln'] === $grupo_vuln['id_cat_grupo_vuln']) echo 'selected="selected"'; ?> value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
-                                        <?php endforeach; ?>
-                                    </select>
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-outline-danger" id="removeRow">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">
-                                            <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>
-                                            <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708L8 8.293Z"></path>
-                                        </svg>
-                                    </button>
-                                </div> <br><br>
-                            </div>
-                        <?php endforeach;
-
-                        ?>
-
+					<div class="col-md-3">
+                        <div class="form-group">
+                            <label for="no_asistentes">60 o más</label>
+                            <input type="number"  class="form-control" max="10000" name="asistentes_70" value="<?php echo remove_junk(($e_detalle['asistentes_70'])); ?>" >
+                        </div>
                     </div>
-                </div>
-
+					<div class="col-md-3">
+                        <div class="form-group">
+                            <label for="no_asistentes">Sin Dato</label>
+                            <input type="number"  class="form-control" max="10000" name="asistentes_80" value="<?php echo remove_junk(($e_detalle['asistentes_80'])); ?>" >
+                        </div>
+                    </div>
+				</div>
+			<div class="row">
+				 <h3 style="font-weight:bold;">
+                    <span class="material-symbols-outlined">checklist</span>
+                    Grupos Vulnerables
+                </h3>
+				<div id="inputFormRow">
+					<div class="col-md-4">
+						<div class="form-group">
+								<label for="no_informe">No. Asistentes</label>	
+									<?php if($existe==0){?>
+										<input type="number"  class="form-control" max="10000" name="asistentes[]" >						
+									<?php }?>
+						</div>
+					</div>
+			
+					<div class="col-md-4">
+						<div class="form-group">
+							<label for="adjunto">Grupo Vulnerable</label>
+							<?php if($existe==0){?>
+										<select class="form-control" name="id_cat_grupo_vuln[]">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
+                                    <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                            </select>						
+									<?php }?>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						<button type="button" class="btn btn-success" id="addRow" name="addRow" >
+							<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-clipboard2-plus-fill" viewBox="0 0 16 16">
+							  <path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>
+							  <path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8.5 6.5V8H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V9H6a.5.5 0 0 1 0-1h1.5V6.5a.5.5 0 0 1 1 0Z"></path>
+							</svg>
+						</button>
+							
+						</div>
+					</div>	
+				</div>
+			</div>
+		
+			<div class="row" id="newRow">
+			<?php 
+				
+			foreach ($grupos as $grupo_cap) :
+				
+			?>
+				<div id="inputFormRow">
+						<div class="col-md-4">
+							 <input type="number"  class="form-control" max="100000" name="asistentes[]" value="<?php echo remove_junk(($grupo_cap['no_asistentes'])); ?>"> 
+						</div>
+						<div class="col-md-4">
+							<select class="form-control" name="id_cat_grupo_vuln[]">
+									<option value="">Escoge una opción</option>
+								   <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
+									 <option  <?php if ($grupo_cap['id_cat_grupo_vuln'] === $grupo_vuln['id_cat_grupo_vuln']) echo 'selected="selected"'; ?> value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
+								   <?php endforeach; ?>
+							   </select>
+						</div>
+						<div class="col-md-2">
+						<button type="button" class="btn btn-outline-danger" id="removeRow" > 
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clipboard2-x-fill" viewBox="0 0 16 16">
+								<path d="M10 .5a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5.5.5 0 0 1-.5.5.5.5 0 0 0-.5.5V2a.5.5 0 0 0 .5.5h5A.5.5 0 0 0 11 2v-.5a.5.5 0 0 0-.5-.5.5.5 0 0 1-.5-.5Z"></path>
+								<path d="M4.085 1H3.5A1.5 1.5 0 0 0 2 2.5v12A1.5 1.5 0 0 0 3.5 16h9a1.5 1.5 0 0 0 1.5-1.5v-12A1.5 1.5 0 0 0 12.5 1h-.585c.055.156.085.325.085.5V2a1.5 1.5 0 0 1-1.5 1.5h-5A1.5 1.5 0 0 1 4 2v-.5c0-.175.03-.344.085-.5ZM8 8.293l1.146-1.147a.5.5 0 1 1 .708.708L8.707 9l1.147 1.146a.5.5 0 0 1-.708.708L8 9.707l-1.146 1.147a.5.5 0 0 1-.708-.708L7.293 9 6.146 7.854a.5.5 0 1 1 .708-.708L8 8.293Z"></path>
+							</svg>
+						</button>	</div> <br><br>		
+						</div>
+						<?php endforeach; 
+						
+							?>
+							
+				</div>
+			</div>
+			
                 <div class="form-group clearfix">
                     <a href="capacitaciones.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
@@ -436,6 +439,6 @@ if (isset($_POST['edit_capacitacion'])) {
                     <button type="submit" name="edit_capacitacion" class="btn btn-primary" value="subir">Guardar</button>
                 </div>
             </form>
-        </div>
     </div>
-    <?php include_once('layouts/footer.php'); ?>
+</div>
+<?php include_once('layouts/footer.php'); ?>

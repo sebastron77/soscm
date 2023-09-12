@@ -88,11 +88,11 @@ function find_by_violentados($tableA, $tableB, $id)
     return null;
 }
 
-function find_all_quejas($id, $user)
+function find_all_quejas($id, $user,$anio)
 {
   global $db;
   $id = (int)$id;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, q.id_cat_med_pres,mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
   $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
   $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
@@ -102,27 +102,13 @@ function find_all_quejas($id, $user)
   $sql .= " LEFT JOIN cat_est_procesal ep ON q.estado_procesal = ep.id_cat_est_procesal";
   $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
   $sql .= " WHERE q.id_area_asignada = '{$db->escape($id)}' AND du.id_det_usuario = '{$db->escape($user)}'";
+  $sql .= " AND q.folio_queja LIKE '%/{$anio}-%' ";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_competencia()
+function find_all_quejas_lc($anio)
 {
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
-  $sql .= " FROM quejas_dates q";
-  $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
-  $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
-  $sql .= " LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
-  $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
-  $sql .= " LEFT JOIN area ar ON q.id_area_asignada = ar.id_area  ";
-  $sql .= " LEFT JOIN cat_est_procesal ep ON q.estado_procesal = ep.id_cat_est_procesal";
-  $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
-  $sql .= " WHERE q.revision_presidencia = 1";
-  $result = find_by_sql($sql);
-  return $result;
-}
-function find_all_quejas_lc()
-{
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado, ";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, q.id_cat_med_pres, mp.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,id_user_asignado, ";
   $sql .= " cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.fecha_creacion, q.archivo, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
   $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
@@ -133,13 +119,14 @@ function find_all_quejas_lc()
   $sql .= " LEFT JOIN `cat_est_procesal` ep ON q.`estado_procesal` = `ep`.id_cat_est_procesal";
   $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
   $sql .= " WHERE q.id_area_asignada = 23";
+  $sql .= " AND q.folio_queja LIKE '%/{$anio}-%' ";
   $result = find_by_sql($sql);
   return $result;
 }
-function find_all_quejas_admin()
+function find_all_quejas_admin($anio)
 {
   // global $db;
-  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion, ar.nombre_area,CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion,q.id_cat_med_pres, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion, ar.nombre_area,CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
   $sql .= " FROM quejas_dates q";
   $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
   $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
@@ -148,6 +135,7 @@ function find_all_quejas_admin()
   $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
   $sql .= " LEFT JOIN `area` ar ON q.`id_area_asignada` = ar.id_area  ";
   $sql .= " LEFT JOIN `detalles_usuario` du ON q.`id_user_asignado` =  du.id_det_usuario";
+  $sql .= " WHERE q.folio_queja LIKE '%/{$anio}-%' ";
   $sql .= " ORDER BY q.id_queja_date DESC";
   $result = find_by_sql($sql);
   return $result;
@@ -222,22 +210,6 @@ function find_by_id($table, $id, $nombre_id)
     else
       return null;
   }
-}
-/*--------------------------------------------------------------*/
-/*  Funcion para encontrar datos por su id en una tabla
-/*--------------------------------------------------------------*/
-function find_by_id_rel_cur($id)
-{
-  global $db;
-  $id = (int)$id;
-    $sql = $db->query("SELECT d.nombre, d.apellidos, ca.id_rel_cur_acad, ca.id_rel_detalle_usuario, ca.estudios, ca.institucion, ca.grado, ca.cedula_profesional, ca.archivo_comprobatorio, ca.observaciones FROM rel_curriculum_academico ca
-                      LEFT JOIN detalles_usuario d
-                      ON d.id_det_usuario = ca.id_rel_detalle_usuario
-    WHERE ca.id_rel_detalle_usuario='{$db->escape($id)}' LIMIT 1");
-    if ($result = $db->fetch_assoc($sql))
-      return $result;
-    else
-      return null;
 }
 /*--------------------------------------------------------------*/
 /*  Funcion para encontrar datos por su id en una tabla
@@ -508,11 +480,11 @@ function count_by_id($table, $nombre_id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de orientacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_orientacion($table, $nombre_id)
+function count_by_id_orientacion($table, $nombre_id,$year)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 1";
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 1 AND folio LIKE '%/{$year}-%' ";
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -521,11 +493,11 @@ function count_by_id_orientacion($table, $nombre_id)
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de canalizacion para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_canalizacion($table, $nombre_id)
+function count_by_id_canalizacion($table, $nombre_id,$year)
 {
   global $db;
   if (tableExists($table)) {
-    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 2";
+    $sql    = "SELECT COUNT(" . $db->escape($nombre_id) . ") AS total FROM " . $db->escape($table) . " WHERE tipo_solicitud = 2 AND folio LIKE '%/{$year}-%' ";
     $result = $db->query($sql);
     return ($db->fetch_assoc($result));
   }
@@ -791,7 +763,7 @@ function midetalle($id)
 /*----------------------------------------------*/
 /* Funcion que encuentra todas las orientaciones */
 /*----------------------------------------------*/
-function find_all_orientaciones()
+function find_all_orientaciones($anio)
 {
   global $db;
   $sql = "SELECT o.id_or_can as idor,o.folio,o.correo_electronico,o.nombre_completo,o.nivel_estudios,o.ocupacion,o.edad,o.telefono,o.extension,o.sexo,o.calle_numero,
@@ -800,15 +772,15 @@ function find_all_orientaciones()
   $sql .= " FROM orientacion_canalizacion as o";
   $sql .= " LEFT JOIN users as u ON u.id_user = o.id_creador";
   $sql .= " LEFT JOIN cat_medio_pres as cmp ON cmp.id_cat_med_pres = o.medio_presentacion ";
-  // $sql .= " LEFT JOIN cat_municipios as mp ON mp.id_cat_mun = o.id_cat_mun ";
-  $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=1";
+   $sql .= " LEFT JOIN cat_municipios as mp ON mp.id_cat_mun = o.id_cat_mun ";
+  $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=1 AND o.folio LIKE '%/{$anio}-%' ;";
   return find_by_sql($sql);
 }
 
 /*----------------------------------------------*/
 /* Funcion que encuentra todas las orientaciones */
 /*----------------------------------------------*/
-function find_all_canalizaciones()
+function find_all_canalizaciones($anio)
 {
   global $db;
   $sql = "SELECT o.id_or_can as idcan,o.folio,o.correo_electronico,o.nombre_completo,cesc.descripcion,ocup.descripcion,o.edad,o.telefono, o.extension,gen.descripcion as gen,
@@ -825,7 +797,7 @@ function find_all_canalizaciones()
   $sql .= " LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = o.nacionalidad";
   $sql .= " LEFT JOIN cat_medio_pres med ON med.id_cat_med_pres = o.medio_presentacion";
   // $sql .= " LEFT JOIN cat_municipios as mp ON mp.id_cat_mun = o.id_cat_mun ";
-  $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=2";
+  $sql .= " LEFT JOIN detalles_usuario as d ON d.id_det_usuario = u.id_detalle_user WHERE tipo_solicitud=2 AND o.folio LIKE '%/{$anio}-%' ;";
   return find_by_sql($sql);
 }
 
@@ -943,7 +915,7 @@ function find_by_id_queja($id)
           q.id_tipo_resolucion, q.id_tipo_ambito,q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, q.fecha_avocamiento, 
           q.id_cat_mun, q.incompetencia, q.causa_incomp, q.fecha_acuerdo_incomp, q.desechamiento, q.razon_desecha, q.forma_conclusion, q.fecha_conclusion, 
           q.estado_procesal as est_pro, q.descripcion_acumulacion, q.archivo_acumulacion,
-          IFNULL(q.observaciones,'') as observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, q.revision_presidencia, 
+          IFNULL(q.observaciones,'') as observaciones, q.a_quien_se_traslada, cq.nombre as nombre_quejoso, cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, 
           ca.nombre as nombre_agraviado, ca.paterno as paterno_agraviado, ca.materno as materno_agraviado, q.fecha_creacion, q.fecha_actualizacion, eq.descripcion as estatus_queja, 
           q.archivo, q.dom_calle, q.dom_numero, q.dom_colonia, q.descripcion_hechos, tr.descripcion as tipo_resolucion, re.id_rel_recom, q.fecha_termino, ta.descripcion as tipo_ambito,
           u.username, a.nombre_area, q.fecha_vencimiento,q.descripcion_sin_materia, q.archivo_sin_materia,q.archivo_sin_materia, q.archivo_anv, q.fecha_desistimiento, 
@@ -952,8 +924,7 @@ function find_by_id_queja($id)
           oc.descripcion as ocup, cq.email, ce.descripcion as escolaridad, cgv.descripcion as gv, cg.descripcion as genero,cn.descripcion as nacionalidad, cq.calle_quejoso, 
           cq.numero_quejoso, cq.colonia_quejoso, cm.descripcion as mun, q.localidad, fo.id_folio, CONCAT(du.nombre,' ',du.apellidos) as user_asignado, q.num_anv, q.fecha_anv, 
           q.observaciones_anv, q.archivo_anv, q.anv_publico, q.ent_fed,etp.descripcion as estado_procesal,etp.id_cat_est_procesal, CONCAT(du2.nombre,' ',du2.apellidos) as user_creador,
-          q.descripcion_falta_interes, q.archivo_falta_interes, q.descripcion_cm, q.archivo_cm, q.descripcion_improcedencia, q.archivo_improcedencia,
-          q.sintesis_rec, q.traduccion, q.lectura_facil
+          q.descripcion_falta_interes, q.archivo_falta_interes, q.descripcion_cm, q.archivo_cm, q.descripcion_improcedencia, q.archivo_improcedencia,q.revision_presidencia,q.mediacion,q.estado_mediacion
           FROM quejas_dates q
           LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres
           LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut
@@ -1182,7 +1153,7 @@ function area_usuario($id_usuario)
   global $db;
   $id_usuario = (int)$id_usuario;
 
-  $sql = $db->query("SELECT g.nivel_grupo, a.id_area
+  $sql = $db->query("SELECT g.nivel_grupo, a.id_area  
                       FROM  grupo_usuarios g
                       LEFT JOIN users u ON u.user_level = g.nivel_grupo
                       LEFT JOIN detalles_usuario d ON u.id_detalle_user = d.id_det_usuario 
@@ -1311,7 +1282,10 @@ function find_all_areas_quejas()
 }
 function find_all_area_userQ()
 {
-  $sql = "SELECT u.user_level, d.id_det_usuario, d.nombre, d.apellidos FROM users as u INNER JOIN detalles_usuario as d ON u.id_detalle_user = d.id_det_usuario WHERE u.user_level = 5 OR
+  $sql = "SELECT u.user_level, d.id_det_usuario, d.nombre, d.apellidos 
+  FROM users as u 
+  INNER JOIN detalles_usuario as d ON u.id_detalle_user = d.id_det_usuario 
+  WHERE u.user_level = 5 OR
   u.user_level = 50 ORDER BY d.nombre;";
   $result = find_by_sql($sql);
   return $result;
@@ -4859,7 +4833,7 @@ function last_id_consejo()
 /*--------------------------------------------------*/
 function find_all_informes_areasAdmin()
 {
-  $sql = "SELECT * FROM informe_actividades_areas";
+  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area ;";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -4868,7 +4842,7 @@ function find_all_informes_areasAdmin()
 /*-------------------------------------------------------------*/
 function find_all_informes_areas($area)
 {
-  $sql = "SELECT * FROM informe_actividades_areas WHERE area_creacion='{$area}'";
+  $sql = "SELECT * FROM informe_actividades_areas a LEFT JOIN area b ON a.area_creacion= id_area WHERE area_creacion='{$area}'";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -4970,7 +4944,7 @@ function find_all_agendas_area($area)
 function find_area_usuario()
 {
   global $db;
-  $sql  = "SELECT d.nombre, d.apellidos, a.nombre_area ";
+  $sql  = "SELECT d.nombre, d.apellidos, a.nombre_area, a.id_area ";
   $sql .= "FROM detalles_usuario d ";
   $sql .= "LEFT JOIN cargos c ON d.id_cargo = c.id_cargos ";
   $sql .= "LEFT JOIN area a ON a.id_area = c.id_area ";
@@ -5083,7 +5057,7 @@ WHERE b.id_user= " . $user;
 /*--------------------------------------------------*/
 function find_all_env_correspondenciaAdmin()
 {
-  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+  $sql = "SELECT c.id_env_corresp, c.folio, IFNULL(c.fecha_en_que_se_turna,'') as fecha_en_que_se_turna, IFNULL(c.fecha_espera_respuesta,'') as fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
           FROM envio_correspondencia c
           LEFT JOIN area a ON c.se_turna_a_area = a.id_area";
   $result = find_by_sql($sql);
@@ -5094,7 +5068,7 @@ function find_all_env_correspondenciaAdmin()
 /*-------------------------------------------------------------*/
 function find_all_env_correspondencia($area)
 {
-  $sql = "SELECT c.id_env_corresp, c.folio, c.fecha_en_que_se_turna, c.fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
+  $sql = "SELECT c.id_env_corresp, c.folio, IFNULL(c.fecha_en_que_se_turna,'') as fecha_en_que_se_turna, IFNULL(c.fecha_espera_respuesta,'') as fecha_espera_respuesta, c.asunto, c.medio_envio, a.nombre_area 
           FROM envio_correspondencia c
           LEFT JOIN area a ON c.se_turna_a_area = a.id_area WHERE area_creacion='{$area}'";
   $result = find_by_sql($sql);
@@ -5146,9 +5120,9 @@ function find_all_env_correspondencia2($area)
 /*------------------------------------------------------------------*/
 /* Ver losoficios de colaboracion de un folio*/
 /*------------------------------------------------------------------*/
-function find_oficios_colaboracion($id, $tipo)
+function find_oficios_colaboracion($id,$tipo)
 {
-  $sql = "SELECT * FROM rel_colaboracion_oficios WHERE id_colaboraciones= " . $id . " AND tipo_documento='" . $tipo . "'";
+  $sql = "SELECT * FROM rel_colaboracion_oficios WHERE id_colaboraciones= ".$id." AND tipo_documento='".$tipo."'";
 
   $result = find_by_sql($sql);
   return $result;
@@ -5159,7 +5133,7 @@ function find_oficios_colaboracion($id, $tipo)
 /*------------------------------------------------------------------*/
 function find_quejas_area($area)
 {
-  $sql = "SELECT id_queja_date as id, folio_queja as folio FROM quejas_dates WHERE id_area_asignada= " . $area;
+  $sql = "SELECT id_queja_date as id, folio_queja as folio FROM quejas_dates WHERE id_area_asignada= ".$area;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5167,15 +5141,15 @@ function find_quejas_area($area)
 /*------------------------------------------------------------------*/
 /* Ver las orientaciones/canalizaciones por area */
 /*------------------------------------------------------------------*/
-function find_orican_area($area, $tipo)
+function find_orican_area($area,$tipo)
 {
   $sql = "SELECT id_or_can as id, folio 
 FROM orientacion_canalizacion a 
 LEFT JOIN users b ON  a.id_creador=b.id_user 
 LEFT JOIN detalles_usuario c ON b.id_detalle_user= c.id_det_usuario  
 LEFT JOIN cargos d ON d.id_cargos= c.id_cargo
-WHERE d.id_area= " . $area .
-    "  AND tipo_solicitud= " . $tipo;
+WHERE d.id_area= ".$area.
+"  AND tipo_solicitud= ".$tipo;
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5186,7 +5160,7 @@ WHERE d.id_area= " . $area .
 /*------------------------------------------------------------------*/
 function find_dialectos($tipo)
 {
-  $sql = "SELECT DISTINCT lengua FROM `orientacion_canalizacion` WHERE tipo_solicitud=" . $tipo . " GRoup BY lengua  ORDER BY lengua";
+  $sql = "SELECT DISTINCT lengua FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY lengua  ORDER BY lengua";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5197,33 +5171,91 @@ function find_dialectos($tipo)
 /*------------------------------------------------------------------*/
 function find_localidadesOC($tipo)
 {
-  $sql = "SELECT DISTINCT municipio_localidad FROM `orientacion_canalizacion` WHERE tipo_solicitud=" . $tipo . " GRoup BY municipio_localidad  ORDER BY municipio_localidad";
+  $sql = "SELECT DISTINCT municipio_localidad FROM `orientacion_canalizacion` WHERE tipo_solicitud=".$tipo." GRoup BY municipio_localidad  ORDER BY municipio_localidad";
   $result = find_by_sql($sql);
   return $result;
 }
 
+
+function find_all_competencia()
+{
+  $sql = "SELECT q.id_queja_date, q.folio_queja, q.fecha_presentacion, mp.descripcion as medio_pres, au.nombre_autoridad, cq.nombre as nombre_quejoso,cq.paterno as paterno_quejoso, cq.materno as materno_quejoso, ep.descripcion as est_proc, ctr.descripcion as id_tipo_resolucion,ar.nombre_area, CONCAT(du.nombre,' ',du.apellidos) as user_asignado ";
+  $sql .= " FROM quejas_dates q";
+  $sql .= " LEFT JOIN cat_medio_pres mp ON mp.id_cat_med_pres = q.id_cat_med_pres";
+  $sql .= " LEFT JOIN cat_autoridades au ON au.id_cat_aut = q.id_cat_aut";
+  $sql .= " LEFT JOIN cat_quejosos cq ON cq.id_cat_quejoso = q.id_cat_quejoso";
+  $sql .= " LEFT JOIN cat_tipo_res ctr ON ctr.id_cat_tipo_res = q.id_tipo_resolucion ";
+  $sql .= " LEFT JOIN area ar ON q.id_area_asignada = ar.id_area  ";
+  $sql .= " LEFT JOIN cat_est_procesal ep ON q.estado_procesal = ep.id_cat_est_procesal";
+  $sql .= " LEFT JOIN detalles_usuario du ON q.id_user_asignado =  du.id_det_usuario";
+  $sql .= " WHERE q.revision_presidencia = 1";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+/*------------------------------------------------------------------------*/
+/* Funcion para contar los ID de algun campo para saber su cantidad total */
+/*------------------------------------------------------------------------*/
+function count_by_competencias()
+{
+  global $db;
+  
+    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  
+}
+
+
+
+/*------------------------------------------------------------------*/
+/* Ver todas las quejas que han sido agregadas al libro electrónico */
+/*------------------------------------------------------------------*/
+function find_eventos_area($id_area)
+{
+  $sql = "SELECT a.*, b.nombre_area FROM eventos a  LEFT JOIN area as b ON a.area_creacion = b.id_area WHERE area_creacion=".$id_area;
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+
+
+function find_documentos_gestion($id)
+{
+    return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
+}
+
+
 /*----------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Médica*/
 /*----------------------------------------------------------------*/
-function find_all_fichas()
+function find_all_fichas($anio)
 {
   $sql = "SELECT f.id_ficha, f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, a2.nombre_area as area_solicitante, aut.nombre_autoridad as autoridad
           FROM fichas f
-          LEFT JOIN cat_funcion fun ON f.funcion = fun.id_cat_funcion
-          LEFT JOIN area a ON  a.id_area = f.visitaduria
-          LEFT JOIN area a2 ON  a2.id_area = f.area_solicitante
-          LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.autoridad WHERE tipo_ficha = 1";
+          LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+          LEFT JOIN area a ON a.id_area = f.id_visitaduria
+		 LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
+		 LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut 
+		 WHERE tipo_ficha = 1  
+		 AND f.folio LIKE '%/{$anio}-%' ;";
   $result = find_by_sql($sql);
   return $result;
 }
 /*----------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Médica*/
 /*----------------------------------------------------------------*/
-function find_all_fichasUser($id_user)
+function find_all_fichasUser($anio,$id_user)
 {
   global $db;
   $results = array();
-  $sql = "SELECT * FROM fichas WHERE tipo_ficha = 1 AND quien_creo = '{$id_user}'";
+  $sql = "SELECT f.id_ficha, f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, a2.nombre_area as area_solicitante, aut.nombre_autoridad as autoridad
+          FROM fichas f 
+          LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+		 LEFT JOIN area a ON a.id_area = f.id_visitaduria
+		 LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
+		 LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut
+		 WHERE tipo_ficha = 1 AND quien_creo = '{$id_user}' AND f.folio LIKE '%/{$anio}-%' ;";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5248,17 +5280,18 @@ function find_by_id_ficha($id_ficha, $tipo)
         a2.nombre_area as area_solicitante, aut.nombre_autoridad as autoridad, ocup.descripcion as ocupacion,
         esc.descripcion as escolaridad, dv.descripcion as hechos, f.fecha_intervencion, f.resultado,
         f.documento_emitido, f.nombre_especialista, f.clave_documento, f.nombre_usuario, gv.descripcion as grupo,
-        f.edad, s.descripcion as sexo
+        f.edad, s.descripcion as sexo,f.id_cat_funcion, f.id_visitaduria,f.id_area_solicitante,f.id_cat_aut,f.id_cat_ocup,f.id_cat_escolaridad,
+		f.id_cat_der_vuln,f.id_cat_gen,f.id_cat_grupo_vuln ,protocolo_estambul,id_ficha
         FROM fichas f
-        LEFT JOIN cat_funcion fun ON f.funcion = fun.id_cat_funcion
-        LEFT JOIN area a ON  a.id_area = f.visitaduria
-        LEFT JOIN area a2 ON  a2.id_area = f.area_solicitante
-        LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.autoridad
-        LEFT JOIN cat_ocupaciones ocup ON ocup.id_cat_ocup = f.ocupacion
-        LEFT JOIN cat_escolaridad esc ON esc.id_cat_escolaridad = f.escolaridad
-        LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = f.hechos
-        LEFT JOIN cat_genero s ON s.id_cat_gen = f.sexo
-        LEFT JOIN cat_grupos_vuln gv ON gv.id_cat_grupo_vuln = f.grupo_vulnerable
+        LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+        LEFT JOIN area a ON  a.id_area = f.id_visitaduria
+        LEFT JOIN area a2 ON  a2.id_area = f.id_area_solicitante
+        LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut
+        LEFT JOIN cat_ocupaciones ocup ON ocup.id_cat_ocup = f.id_cat_ocup
+        LEFT JOIN cat_escolaridad esc ON esc.id_cat_escolaridad = f.id_cat_escolaridad
+        LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = f.id_cat_der_vuln
+        LEFT JOIN cat_genero s ON s.id_cat_gen = f.id_cat_gen
+        LEFT JOIN cat_grupos_vuln gv ON gv.id_cat_grupo_vuln = f.id_cat_grupo_vuln
         WHERE tipo_ficha = '{$tipo}' AND id_ficha = '{$id_ficha}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
@@ -5266,7 +5299,7 @@ function find_by_id_ficha($id_ficha, $tipo)
     return null;
 }
 
-function find_by_id_ficha2($id_ficha, $tipo)
+function find_by_id_ficha2($id_ficha,$tipo)
 {
   global $db;
   $sql = $db->query("SELECT f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, 
@@ -5275,14 +5308,14 @@ function find_by_id_ficha2($id_ficha, $tipo)
         f.documento_emitido, f.nombre_especialista, f.clave_documento, dv.descripcion as hecho_violatorio, f.nombre_usuario,
         f.edad, s.descripcion as sexo
         FROM fichas f
-        LEFT JOIN cat_funcion fun ON f.funcion = fun.id_cat_funcion
-        LEFT JOIN area a ON  a.id_area = f.visitaduria
-        LEFT JOIN area a2 ON  a2.id_area = f.area_solicitante
-        LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.autoridad
-        LEFT JOIN cat_ocupaciones ocup ON ocup.id_cat_ocup = f.ocupacion
-        LEFT JOIN cat_escolaridad esc ON esc.id_cat_escolaridad = f.escolaridad
-        LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = f.grupo_vulnerable
-        LEFT JOIN cat_genero s ON s.id_cat_gen = f.sexo
+        LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+        LEFT JOIN area a ON  a.id_area = f.id_visitaduria
+        LEFT JOIN area a2 ON  a2.id_area = f.id_area_solicitante
+        LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut
+        LEFT JOIN cat_ocupaciones ocup ON ocup.id_cat_ocup = f.id_cat_ocup
+        LEFT JOIN cat_escolaridad esc ON esc.id_cat_escolaridad = f.id_cat_escolaridad
+        LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = f.id_cat_der_vuln
+        LEFT JOIN cat_genero s ON s.id_cat_gen = f.id_cat_gen
         WHERE tipo_ficha = '{$tipo}' AND id_ficha = '{$id_ficha}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
@@ -5290,31 +5323,33 @@ function find_by_id_ficha2($id_ficha, $tipo)
     return null;
 }
 
-function find_documentos_gestion($id)
-{
-  return find_by_sql("SELECT * FROM rel_gestiones WHERE id_gestion = '{$id}'");
-}
-
 /*---------------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Psicológica*/
 /*---------------------------------------------------------------------*/
-function find_all_fichas2()
+function find_all_fichas2($anio)
 {
   $sql = "SELECT f.id_ficha, f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, a2.nombre_area as area_solicitante, aut.nombre_autoridad as autoridad
           FROM fichas f
-          LEFT JOIN cat_funcion fun ON f.funcion = fun.id_cat_funcion
-          LEFT JOIN area a ON  a.id_area = f.visitaduria
-          LEFT JOIN area a2 ON  a2.id_area = f.area_solicitante
-          LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.autoridad WHERE tipo_ficha = 2";
+          LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+		 LEFT JOIN area a ON a.id_area = f.id_visitaduria
+		 LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
+		 LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut
+		 WHERE tipo_ficha = 2 AND f.folio LIKE '%/{$anio}-%' ;";
   $result = find_by_sql($sql);
   return $result;
 }
 /*----------------------------------------------------------------*/
 /* Funcion que encuentra todas las fichas técnicas del Área Médica*/
 /*----------------------------------------------------------------*/
-function find_all_fichasUser2($id_user)
+function find_all_fichasUser2($anio,$id_user)
 {
-  $sql = "SELECT * FROM fichas WHERE tipo_ficha = 2 AND quien_creo = '{$id_user}'";
+  $sql = "SELECT  f.id_ficha, f.folio, fun.descripcion as funcion, f.num_queja, f.ficha_adjunto, a.nombre_area as visitaduria, a2.nombre_area as area_solicitante, aut.nombre_autoridad as autoridad
+          FROM fichas f 
+          LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
+		 LEFT JOIN area a ON a.id_area = f.id_visitaduria
+		 LEFT JOIN area a2 ON a2.id_area = f.id_area_solicitante
+		 LEFT JOIN cat_autoridades aut ON aut.id_cat_aut = f.id_cat_aut
+		 WHERE tipo_ficha = 2 AND quien_creo = '{$id_user}' AND f.folio LIKE '%/{$anio}-%' ;";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5342,7 +5377,7 @@ function find_all_jornadas()
   $result = find_by_sql($sql);
   return $result;
 }
-/*----------------------------------------------------------------------------*/
+  /*----------------------------------------------------------------------------*/
 /* Funcion que encuentra una jornada por id, que ayudara al momento de editar */
 /*----------------------------------------------------------------------------*/
 function find_by_id_jornadas($id)
@@ -5362,20 +5397,24 @@ function find_by_id_jornadas($id)
 /*------------------------------------------------------------------*/
 function last_id_entregable()
 {
+  global $db;
   $sql = "SELECT * FROM entregables ORDER BY id_entregables DESC LIMIT 1";
   $result = find_by_sql($sql);
   return $result;
 }
+
 
 /*----------------------------------------------*/
 /* Funcion que encuentra todos los entregables */
 /*----------------------------------------------*/
 function find_all_entregables()
 {
-  $sql = "SELECT  id_entregables,  folio,  tipo_estregable,  id_cat_ejes_estrategicos,  id_cat_agendas,  a.descripcion,  liga_acceso,  no_isbn,  b.descripcion  as nombre_eje,  c.descripcion as nombre_agenda
-  FROM entregables a
-  LEFT JOIN `cat_ejes_estrategicos` b USING(id_cat_ejes_estrategicos)
-  LEFT JOIN `cat_agendas` c USING(id_cat_agendas)";
+  global $db;
+  $results = array();
+  $sql = "SELECT  id_entregables,  folio,  tipo_estregable,  id_cat_ejes_estrategicos,  id_cat_agendas,  a.descripcion,  liga_acceso,  no_isbn,  b.descripcion as nombre_eje,  c.descripcion as nombre_agenda
+FROM entregables a
+LEFT JOIN `cat_ejes_estrategicos` b USING(id_cat_ejes_estrategicos)
+LEFT JOIN `cat_agendas` c USING(id_cat_agendas)";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -5383,7 +5422,7 @@ function find_all_entregables()
 /*------------------------------------------------------------------*/
 /* Funcion para encontrar el ultimo id la tabla */
 /*------------------------------------------------------------------*/
-function last_id_table($table, $nombre_id)
+function last_id_table($table,$nombre_id)
 {
   $sql = "SELECT * FROM {$table} ORDER BY {$nombre_id} DESC LIMIT 1";
   $result = find_by_sql($sql);
@@ -5396,27 +5435,34 @@ function last_id_table($table, $nombre_id)
 function count_by_mediacion()
 {
   global $db;
-  $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates q WHERE  q.id_area_asignada = '48'";
-  $result = $db->query($sql);
-  return ($db->fetch_assoc($result));
+  
+    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates q WHERE  mediacion = '1'";
+    $result = $db->query($sql);
+    return ($db->fetch_assoc($result));
+  
 }
+
 
 /*----------------------------------------------*/
 /* Funcion que encuentra los grupos vulnerables de una capacitacion */
 /*----------------------------------------------*/
 function find_all_grupos($capacitacion)
 {
+  global $db;
+  $results = array();
   $sql = "SELECT 	id_rel_capacitacion_grupos,   id_capacitacion,  id_cat_grupo_vuln,  descripcion,  no_asistentes 
-		FROM  rel_capacitacion_grupos a LEFT JOIN cat_grupos_vuln USING(id_cat_grupo_vuln)  
-		WHERE id_capacitacion =" . $capacitacion;
+		  FROM  rel_capacitacion_grupos a LEFT JOIN cat_grupos_vuln USING(id_cat_grupo_vuln)  
+		  WHERE id_capacitacion =".$capacitacion;
   $result = find_by_sql($sql);
   return $result;
 }
 
+
+
 /*------------------------------------------------------------------------*/
 /* Funcion para contar los ID de quejas para saber su cantidad total */
 /*------------------------------------------------------------------------*/
-function count_by_id_quejas($table, $nombre_id, $year)
+function count_by_id_quejas($table, $nombre_id,$year)
 {
   global $db;
   if (tableExists($table)) {
@@ -5425,20 +5471,6 @@ function count_by_id_quejas($table, $nombre_id, $year)
     return ($db->fetch_assoc($result));
   }
 }
-/*------------------------------------------------------------------------*/
-/* Funcion para contar los ID de algun campo para saber su cantidad total */
-/*------------------------------------------------------------------------*/
-function count_by_competencias()
-{
-  global $db;
-  
-    $sql    = "SELECT COUNT(id_queja_date) AS total FROM quejas_dates WHERE revision_presidencia=1 ";
-    $result = $db->query($sql);
-    return ($db->fetch_assoc($result));
-}
-
-
-
 
 
 /*--------------------------------------------*/
@@ -5633,15 +5665,6 @@ $sql .= "   GROUP BY a.`id_area_asignada`;";
   return find_by_sql($sql);
 }
 
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
 

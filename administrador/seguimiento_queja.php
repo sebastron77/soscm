@@ -176,41 +176,19 @@ if (isset($_POST['seguimiento_queja'])) {
             $typeRecP = $_FILES['adjunto_rec_publico']['type'];
             $tempRecP = $_FILES['adjunto_rec_publico']['tmp_name'];
 
-            $nameRecSint = $_FILES['sintesis_rec']['name'];
-            $sizeRecSint = $_FILES['sintesis_rec']['size'];
-            $typeRecSint = $_FILES['sintesis_rec']['type'];
-            $tempRecSint = $_FILES['sintesis_rec']['tmp_name'];
-
-            $nameRecTrad = $_FILES['traduccion']['name'];
-            $sizeRecTrad = $_FILES['traduccion']['size'];
-            $typeRecTrad = $_FILES['traduccion']['type'];
-            $tempRecTrad = $_FILES['traduccion']['tmp_name'];
-
-            $nameRecLF = $_FILES['lectura_facil']['name'];
-            $sizeRecLF = $_FILES['lectura_facil']['size'];
-            $typeRecLF = $_FILES['lectura_facil']['type'];
-            $tempRecLF = $_FILES['lectura_facil']['tmp_name'];
-
             if (is_dir($carpetaRec)) {
                 $moveRec = move_uploaded_file($tempRec, $carpetaRec . "/" . $nameRec);
                 $moveRecP = move_uploaded_file($tempRecP, $carpetaRec . "/" . $nameRecP);
-                $moveRecSint = move_uploaded_file($tempRecSint, $carpetaRec . "/" . $nameRecSint);
-                $moveRecTrad = move_uploaded_file($tempRecTrad, $carpetaRec . "/" . $nameRecTrad);
-                $moveRecLF = move_uploaded_file($tempRecLF, $carpetaRec . "/" . $nameRecLF);
             } else {
                 mkdir($carpetaRec, 0777, true);
                 $moveRec = move_uploaded_file($tempRec, $carpetaRec . "/" . $nameRec);
                 $moveRecP = move_uploaded_file($tempRecP, $carpetaRec . "/" . $nameRecP);
-                $moveRecSint = move_uploaded_file($tempRecSint, $carpetaRec . "/" . $nameRecSint);
-                $moveRecTrad = move_uploaded_file($tempRecTrad, $carpetaRec . "/" . $nameRecTrad);
-                $moveRecLF = move_uploaded_file($tempRecLF, $carpetaRec . "/" . $nameRecLF);
             }
 
             $sql5 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='$num_recomendacion',servidor_publico='$servidor_publico',
                     fecha_recomendacion='$fecha_recomendacion',observaciones_recomendacion='$observaciones_recomendacion',adjunto_recomendacion='$nameRec',
-                    adjunto_rec_publico='$nameRecP',sintesis_rec='$nameRecSint',traduccion='$nameRecTrad',lectura_facil='$nameRecLF',
-                    id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',
+                    adjunto_rec_publico='$nameRecP',id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',fecha_desistimiento=NULL,archivo_desistimiento='',
                     num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',archivo_sin_materia='', descripcion_falta_interes='',archivo_falta_interes='',
                     fecha_falta_interes=NULL,descripcion_acumulacion='', archivo_acumulacion='',fecha_acumulacion=NULL,fecha_cm=NULL,descripcion_cm='', archivo_cm='',
                     fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
@@ -222,8 +200,7 @@ if (isset($_POST['seguimiento_queja'])) {
         if (($razon_desecha != '') && ($id_tipo_resolucion == 6)) {
             $sql6 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
                     a_quien_se_traslada='',desechamiento=1,razon_desecha='$razon_desecha',num_recomendacion='',servidor_publico='',fecha_recomendacion=NULL,
-                    observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',sintesis_rec='',traduccion='',lectura_facil='',
-                    archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',archivo_sin_materia='',fecha_desistimiento=NULL, 
+                    observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',archivo_sin_materia='',fecha_desistimiento=NULL, 
                     descripcion_falta_interes='',archivo_falta_interes='',fecha_falta_interes=NULL,descripcion_acumulacion='', archivo_acumulacion='',
                     fecha_acumulacion=NULL,fecha_cm=NULL,descripcion_cm='', archivo_cm='',fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
                     WHERE id_queja_date='{$db->escape($id)}'";
@@ -250,8 +227,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='',servidor_publico='',fecha_recomendacion=NULL,
                     observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',
                     descripcion_falta_interes='{$descripcion_falta_interes}',archivo_falta_interes='{$nameFI}',fecha_falta_interes='$fecha_creacion',
-                    descripcion_sin_materia='',archivo_sin_materia='', fecha_cm=NULL,descripcion_cm='',archivo_cm='',fecha_desistimiento=NULL,archivo_desistimiento='',sintesis_rec='',traduccion='',lectura_facil='',
-                    num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='', anv_publico='',descripcion_acumulacion='', archivo_acumulacion='',
+                    descripcion_sin_materia='',archivo_sin_materia='', fecha_cm=NULL,descripcion_cm='',archivo_cm='',fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='', anv_publico='',descripcion_acumulacion='', archivo_acumulacion='',
                     fecha_acumulacion=NULL,fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
                     WHERE id_queja_date='{$db->escape($id)}'";
             $result3 = $db->query($sql3);
@@ -279,8 +255,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_falta_interes='',
                     archivo_falta_interes='',fecha_falta_interes=NULL,descripcion_sin_materia='',archivo_sin_materia='', 
                     descripcion_acumulacion='$descripcion_acumulacion', archivo_acumulacion='$nameA',fecha_acumulacion='$fecha_creacion',fecha_cm=NULL,descripcion_cm='', 
-                    archivo_cm='',fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='', anv_publico='',sintesis_rec='',traduccion='',lectura_facil='',
-                    fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
+                    archivo_cm='',fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='', anv_publico='',fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
                     WHERE id_queja_date='{$db->escape($id)}'";
             $result8 = $db->query($sql8);
             insertAccion($user['id_user'], '"' . $user['username'] . '" dió seguimiento a queja como "Acumulación", Folio: ' . $folio_editar . '.', 2);
@@ -304,8 +279,7 @@ if (isset($_POST['seguimiento_queja'])) {
 
             $sql8 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='',servidor_publico='',fecha_recomendacion=NULL,
-                    observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_falta_interes='',sintesis_rec='',traduccion='',lectura_facil='',
-                    archivo_falta_interes='',fecha_falta_interes=NULL,descripcion_sin_materia='',archivo_sin_materia='', descripcion_acumulacion='', 
+                    observaciones_recomendacion='',adjunto_recomendacion='',adjunto_rec_publico='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_falta_interes='',archivo_falta_interes='',fecha_falta_interes=NULL,descripcion_sin_materia='',archivo_sin_materia='', descripcion_acumulacion='', 
                     archivo_acumulacion='', fecha_acumulacion=NULL,fecha_cm='$fecha_creacion', descripcion_cm='$descripcion_cm', archivo_cm='$nameCM',
                     fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='', anv_publico='',
                     fecha_improcedencia=NULL, descripcion_improcedencia='', archivo_improcedencia=''
@@ -333,8 +307,7 @@ if (isset($_POST['seguimiento_queja'])) {
             $sql10 = "UPDATE quejas_dates SET fecha_actualizacion='$fecha_actualizacion',incompetencia='0',causa_incomp='',fecha_acuerdo_incomp=NULL,
                     a_quien_se_traslada='',desechamiento=0,razon_desecha='',num_recomendacion='',id_tipo_resolucion='$id_tipo_resolucion',descripcion_sin_materia='',
                     fecha_desistimiento='{$fecha_desistimiento}',archivo_desistimiento='{$nameDesis}',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',
-                    archivo_sin_materia='',descripcion_falta_interes='',archivo_falta_interes='',fecha_falta_interes=NULL,fecha_cm=NULL,descripcion_cm='', archivo_cm='',sintesis_rec='',traduccion='',lectura_facil='',
-                    descripcion_acumulacion='', archivo_acumulacion='',fecha_acumulacion=NULL,fecha_cm=NULL, descripcion_cm='', archivo_cm='',fecha_improcedencia=NULL, 
+                    archivo_sin_materia='',descripcion_falta_interes='',archivo_falta_interes='',fecha_falta_interes=NULL,fecha_cm=NULL,descripcion_cm='', archivo_cm='',descripcion_acumulacion='', archivo_acumulacion='',fecha_acumulacion=NULL,fecha_cm=NULL, descripcion_cm='', archivo_cm='',fecha_improcedencia=NULL, 
                     descripcion_improcedencia='', archivo_improcedencia=''
                     WHERE id_queja_date='{$db->escape($id)}'";
             $result10 = $db->query($sql10);
@@ -363,8 +336,7 @@ if (isset($_POST['seguimiento_queja'])) {
                     archivo_falta_interes='',fecha_falta_interes=NULL,descripcion_sin_materia='',archivo_sin_materia='', descripcion_acumulacion='', 
                     archivo_acumulacion='', fecha_acumulacion=NULL,fecha_cm=NULL, descripcion_cm='', archivo_cm='',fecha_improcedencia='$fecha_creacion', 
                     descripcion_improcedencia='$descripcion_improcedencia', 
-                    archivo_improcedencia='$nameImpro',fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',sintesis_rec='',traduccion='',lectura_facil='',
-                    anv_publico=''
+                    archivo_improcedencia='$nameImpro',fecha_desistimiento=NULL,archivo_desistimiento='',num_anv='',fecha_anv=NULL,observaciones_anv='',archivo_anv='',anv_publico=''
             WHERE id_queja_date='{$db->escape($id)}'";
 
             $result8 = $db->query($sql8);
@@ -678,231 +650,182 @@ if (isset($_POST['seguimiento_queja'])) {
                                                                                                                                                         </label>
                                                                                                                                                     </div>
                                                                                                                                                     </div>
-                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                                                                                                        <div class="col-md-4" id="recomendacion7">
+
+                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 6) : ?>
+                                                                                                                                                        <div class="col-md-4" id="desechamiento2">
                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                                                                                                            <div class="col-md-4" id="recomendacion7" style="display: none">
+                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 6) : ?>
+                                                                                                                                                            <div class="col-md-4" id="desechamiento2" style="display: none">
                                                                                                                                                             <?php endif; ?>
                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                <label for="sintesis_rec">Síntesis</label>
-                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="sintesis_rec" id="sintesis_rec">
-                                                                                                                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                    <?php echo remove_junk($e_detalle['sintesis_rec']); ?>
-                                                                                                                                                                </label>
+                                                                                                                                                                <label for="razon_desecha">Razón Desechamiento (Si la hay)</label>
+                                                                                                                                                                <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40" rows="3"><?php echo $e_detalle['razon_desecha'] ?></textarea>
                                                                                                                                                             </div>
                                                                                                                                                             </div>
-
-
-
-                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                                                                                                                <div class="col-md-4" id="recomendacion8">
+                                                                                                                                                            <div class="col-md-2" style="display: none">
+                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                    <label for="incompetencia">Incompetencia</label>
+                                                                                                                                                                    <select class="form-control" name="incompetencia" id="incompetencia">
+                                                                                                                                                                        <?php if ($e_detalle['incompetencia'] == 0) : ?>
+                                                                                                                                                                            <option value="0">No</option>
+                                                                                                                                                                        <?php endif; ?>
+                                                                                                                                                                        <?php if ($e_detalle['incompetencia'] == 1) : ?>
+                                                                                                                                                                            <option value="1">Sí</option>
+                                                                                                                                                                        <?php endif; ?>
+                                                                                                                                                                    </select>
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <div class="col-md-2" style="display: none">
+                                                                                                                                                                <div class="form-group">
+                                                                                                                                                                    <label for="desechamiento">Desechamiento</label>
+                                                                                                                                                                    <select class="form-control" name="desechamiento" id="desechamiento">
+                                                                                                                                                                        <?php if ($e_detalle['desechamiento'] == 0) : ?>
+                                                                                                                                                                            <option value="0">No</option>
+                                                                                                                                                                        <?php endif; ?>
+                                                                                                                                                                        <?php if ($e_detalle['desechamiento'] == 1) : ?>
+                                                                                                                                                                            <option value="1">Sí</option>
+                                                                                                                                                                        <?php endif; ?>
+                                                                                                                                                                    </select>
+                                                                                                                                                                </div>
+                                                                                                                                                            </div>
+                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 7) : ?>
+                                                                                                                                                                <div class="col-md-4" id="faltainteres">
                                                                                                                                                                 <?php endif; ?>
-                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                                                                                                                    <div class="col-md-4" id="recomendacion8" style="display: none">
+                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 7) : ?>
+                                                                                                                                                                    <div class="col-md-4" id="faltainteres" style="display: none">
                                                                                                                                                                     <?php endif; ?>
                                                                                                                                                                     <div class="form-group">
-                                                                                                                                                                        <label for="traduccion">Traducción</label>
-                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="traduccion" id="traduccion">
-                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                            <?php echo remove_junk($e_detalle['traduccion']); ?>
-                                                                                                                                                                        </label>
+                                                                                                                                                                        <label for="descripcion_falta_interes">Descripción (Falta de Interés)</label>
+                                                                                                                                                                        <textarea class="form-control" name="descripcion_falta_interes" id="descripcion_falta_interes" cols="40" rows="3"><?php echo $e_detalle['descripcion_falta_interes'] ?></textarea>
                                                                                                                                                                     </div>
                                                                                                                                                                     </div>
-
-
-
-
-                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 5) : ?>
-                                                                                                                                                                        <div class="col-md-4" id="recomendacion9">
+                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 7) : ?>
+                                                                                                                                                                        <div class="col-md-4" id="faltainteres2">
                                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 5) : ?>
-                                                                                                                                                                            <div class="col-md-4" id="recomendacion9" style="display: none">
+                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 7) : ?>
+                                                                                                                                                                            <div class="col-md-4" id="faltainteres2" style="display: none">
                                                                                                                                                                             <?php endif; ?>
                                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                                <label for="lectura_facil">Lectura Fácil</label>
-                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="lectura_facil" id="lectura_facil">
+                                                                                                                                                                                <label for="archivo_falta_interes">Archivo (Falta de Interés)</label>
+                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_falta_interes" id="archivo_falta_interes">
                                                                                                                                                                                 <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                    <?php echo remove_junk($e_detalle['lectura_facil']); ?>
+                                                                                                                                                                                    <?php echo remove_junk($e_detalle['archivo_falta_interes']); ?>
                                                                                                                                                                                 </label>
                                                                                                                                                                             </div>
                                                                                                                                                                             </div>
 
-                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 6) : ?>
-                                                                                                                                                                                <div class="col-md-4" id="desechamiento2">
+                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 8) : ?>
+                                                                                                                                                                                <div class="col-md-4" id="acumulacion">
                                                                                                                                                                                 <?php endif; ?>
-                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 6) : ?>
-                                                                                                                                                                                    <div class="col-md-4" id="desechamiento2" style="display: none">
+                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 8) : ?>
+                                                                                                                                                                                    <div class="col-md-4" id="acumulacion" style="display: none">
                                                                                                                                                                                     <?php endif; ?>
                                                                                                                                                                                     <div class="form-group">
-                                                                                                                                                                                        <label for="razon_desecha">Razón Desechamiento (Si la hay)</label>
-                                                                                                                                                                                        <textarea class="form-control" name="razon_desecha" id="razon_desecha" cols="40" rows="3"><?php echo $e_detalle['razon_desecha'] ?></textarea>
+                                                                                                                                                                                        <label for="descripcion_acumulacion">Descripción (Acumulación)</label>
+                                                                                                                                                                                        <textarea class="form-control" name="descripcion_acumulacion" id="descripcion_acumulacion" cols="40" rows="3"><?php echo $e_detalle['descripcion_acumulacion'] ?></textarea>
                                                                                                                                                                                     </div>
                                                                                                                                                                                     </div>
-                                                                                                                                                                                    <div class="col-md-2" style="display: none">
-                                                                                                                                                                                        <div class="form-group">
-                                                                                                                                                                                            <label for="incompetencia">Incompetencia</label>
-                                                                                                                                                                                            <select class="form-control" name="incompetencia" id="incompetencia">
-                                                                                                                                                                                                <?php if ($e_detalle['incompetencia'] == 0) : ?>
-                                                                                                                                                                                                    <option value="0">No</option>
-                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                                <?php if ($e_detalle['incompetencia'] == 1) : ?>
-                                                                                                                                                                                                    <option value="1">Sí</option>
-                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                            </select>
-                                                                                                                                                                                        </div>
-                                                                                                                                                                                    </div>
-                                                                                                                                                                                    <div class="col-md-2" style="display: none">
-                                                                                                                                                                                        <div class="form-group">
-                                                                                                                                                                                            <label for="desechamiento">Desechamiento</label>
-                                                                                                                                                                                            <select class="form-control" name="desechamiento" id="desechamiento">
-                                                                                                                                                                                                <?php if ($e_detalle['desechamiento'] == 0) : ?>
-                                                                                                                                                                                                    <option value="0">No</option>
-                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                                <?php if ($e_detalle['desechamiento'] == 1) : ?>
-                                                                                                                                                                                                    <option value="1">Sí</option>
-                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                            </select>
-                                                                                                                                                                                        </div>
-                                                                                                                                                                                    </div>
-                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 7) : ?>
-                                                                                                                                                                                        <div class="col-md-4" id="faltainteres">
+                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 8) : ?>
+                                                                                                                                                                                        <div class="col-md-4" id="acumulacion2">
                                                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 7) : ?>
-                                                                                                                                                                                            <div class="col-md-4" id="faltainteres" style="display: none">
+                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 8) : ?>
+                                                                                                                                                                                            <div class="col-md-4" id="acumulacion2" style="display: none">
                                                                                                                                                                                             <?php endif; ?>
                                                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                                                <label for="descripcion_falta_interes">Descripción (Falta de Interés)</label>
-                                                                                                                                                                                                <textarea class="form-control" name="descripcion_falta_interes" id="descripcion_falta_interes" cols="40" rows="3"><?php echo $e_detalle['descripcion_falta_interes'] ?></textarea>
+                                                                                                                                                                                                <label for="archivo_acumulacion">Archivo (Acumulación)</label>
+                                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_acumulacion" id="archivo_acumulacion">
+                                                                                                                                                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
+                                                                                                                                                                                                    <?php echo remove_junk($e_detalle['archivo_acumulacion']); ?>
+                                                                                                                                                                                                </label>
                                                                                                                                                                                             </div>
                                                                                                                                                                                             </div>
-                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 7) : ?>
-                                                                                                                                                                                                <div class="col-md-4" id="faltainteres2">
+
+                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 9) : ?>
+                                                                                                                                                                                                <div class="col-md-4" id="conc_med">
                                                                                                                                                                                                 <?php endif; ?>
-                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 7) : ?>
-                                                                                                                                                                                                    <div class="col-md-4" id="faltainteres2" style="display: none">
+                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 9) : ?>
+                                                                                                                                                                                                    <div class="col-md-4" id="conc_med" style="display: none">
                                                                                                                                                                                                     <?php endif; ?>
                                                                                                                                                                                                     <div class="form-group">
-                                                                                                                                                                                                        <label for="archivo_falta_interes">Archivo (Falta de Interés)</label>
-                                                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_falta_interes" id="archivo_falta_interes">
-                                                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                                            <?php echo remove_junk($e_detalle['archivo_falta_interes']); ?>
-                                                                                                                                                                                                        </label>
+                                                                                                                                                                                                        <label for="descripcion_cm">Descripción (Conciliación/Mediación)</label>
+                                                                                                                                                                                                        <textarea class="form-control" name="descripcion_cm" id="descripcion_cm" cols="40" rows="3"><?php echo $e_detalle['descripcion_cm'] ?></textarea>
                                                                                                                                                                                                     </div>
                                                                                                                                                                                                     </div>
-
-                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 8) : ?>
-                                                                                                                                                                                                        <div class="col-md-4" id="acumulacion">
+                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 9) : ?>
+                                                                                                                                                                                                        <div class="col-md-4" id="conc_med2">
                                                                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 8) : ?>
-                                                                                                                                                                                                            <div class="col-md-4" id="acumulacion" style="display: none">
+                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 9) : ?>
+                                                                                                                                                                                                            <div class="col-md-4" id="conc_med2" style="display: none">
                                                                                                                                                                                                             <?php endif; ?>
                                                                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                                                                <label for="descripcion_acumulacion">Descripción (Acumulación)</label>
-                                                                                                                                                                                                                <textarea class="form-control" name="descripcion_acumulacion" id="descripcion_acumulacion" cols="40" rows="3"><?php echo $e_detalle['descripcion_acumulacion'] ?></textarea>
+                                                                                                                                                                                                                <label for="archivo_cm">Archivo (Conciliación/Mediación)</label>
+                                                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_cm" id="archivo_cm">
+                                                                                                                                                                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
+                                                                                                                                                                                                                    <?php echo remove_junk($e_detalle['archivo_cm']); ?>
+                                                                                                                                                                                                                </label>
                                                                                                                                                                                                             </div>
                                                                                                                                                                                                             </div>
-                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 8) : ?>
-                                                                                                                                                                                                                <div class="col-md-4" id="acumulacion2">
+
+                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
+                                                                                                                                                                                                                <div class="col-md-2" id="desistimiento">
                                                                                                                                                                                                                 <?php endif; ?>
-                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 8) : ?>
-                                                                                                                                                                                                                    <div class="col-md-4" id="acumulacion2" style="display: none">
+                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
+                                                                                                                                                                                                                    <div class="col-md-2" id="desistimiento" style="display: none">
                                                                                                                                                                                                                     <?php endif; ?>
                                                                                                                                                                                                                     <div class="form-group">
-                                                                                                                                                                                                                        <label for="archivo_acumulacion">Archivo (Acumulación)</label>
-                                                                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_acumulacion" id="archivo_acumulacion">
-                                                                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                                                            <?php echo remove_junk($e_detalle['archivo_acumulacion']); ?>
-                                                                                                                                                                                                                        </label>
+                                                                                                                                                                                                                        <label for="fecha_desistimiento">Fecha de Desistimiento</label>
+                                                                                                                                                                                                                        <input type="date" class="form-control" name="fecha_desistimiento" value="<?php echo $e_detalle['fecha_desistimiento']; ?>">
                                                                                                                                                                                                                     </div>
                                                                                                                                                                                                                     </div>
-
-                                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 9) : ?>
-                                                                                                                                                                                                                        <div class="col-md-4" id="conc_med">
+                                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
+                                                                                                                                                                                                                        <div class="col-md-3" id="desistimiento2">
                                                                                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 9) : ?>
-                                                                                                                                                                                                                            <div class="col-md-4" id="conc_med" style="display: none">
+                                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
+                                                                                                                                                                                                                            <div class="col-md-3" id="desistimiento2" style="display: none">
                                                                                                                                                                                                                             <?php endif; ?>
                                                                                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                                                                                <label for="descripcion_cm">Descripción (Conciliación/Mediación)</label>
-                                                                                                                                                                                                                                <textarea class="form-control" name="descripcion_cm" id="descripcion_cm" cols="40" rows="3"><?php echo $e_detalle['descripcion_cm'] ?></textarea>
+                                                                                                                                                                                                                                <label for="archivo_desistimiento">Archivo de Desistimiento</label>
+                                                                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_desistimiento" id="archivo_desistimiento">
+                                                                                                                                                                                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
+                                                                                                                                                                                                                                    <?php echo remove_junk($e_detalle['archivo_desistimiento']); ?>
+                                                                                                                                                                                                                                </label>
                                                                                                                                                                                                                             </div>
                                                                                                                                                                                                                             </div>
-                                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 9) : ?>
-                                                                                                                                                                                                                                <div class="col-md-4" id="conc_med2">
+                                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 11) : ?>
+                                                                                                                                                                                                                                <div class="col-md-4" id="improcedencia">
                                                                                                                                                                                                                                 <?php endif; ?>
-                                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 9) : ?>
-                                                                                                                                                                                                                                    <div class="col-md-4" id="conc_med2" style="display: none">
+                                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 11) : ?>
+                                                                                                                                                                                                                                    <div class="col-md-4" id="improcedencia" style="display: none">
                                                                                                                                                                                                                                     <?php endif; ?>
                                                                                                                                                                                                                                     <div class="form-group">
-                                                                                                                                                                                                                                        <label for="archivo_cm">Archivo (Conciliación/Mediación)</label>
-                                                                                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_cm" id="archivo_cm">
-                                                                                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                                                                            <?php echo remove_junk($e_detalle['archivo_cm']); ?>
-                                                                                                                                                                                                                                        </label>
+                                                                                                                                                                                                                                        <label for="descripcion_improcedencia">Descripción (Improcedencia)</label>
+                                                                                                                                                                                                                                        <textarea class="form-control" name="descripcion_improcedencia" id="descripcion_improcedencia" cols="40" rows="3"><?php echo $e_detalle['descripcion_improcedencia'] ?></textarea>
                                                                                                                                                                                                                                     </div>
                                                                                                                                                                                                                                     </div>
-
-                                                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
-                                                                                                                                                                                                                                        <div class="col-md-2" id="desistimiento">
+                                                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 11) : ?>
+                                                                                                                                                                                                                                        <div class="col-md-4" id="improcedencia2">
                                                                                                                                                                                                                                         <?php endif; ?>
-                                                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
-                                                                                                                                                                                                                                            <div class="col-md-2" id="desistimiento" style="display: none">
+                                                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 11) : ?>
+                                                                                                                                                                                                                                            <div class="col-md-4" id="improcedencia2" style="display: none">
                                                                                                                                                                                                                                             <?php endif; ?>
                                                                                                                                                                                                                                             <div class="form-group">
-                                                                                                                                                                                                                                                <label for="fecha_desistimiento">Fecha de Desistimiento</label>
-                                                                                                                                                                                                                                                <input type="date" class="form-control" name="fecha_desistimiento" value="<?php echo $e_detalle['fecha_desistimiento']; ?>">
+                                                                                                                                                                                                                                                <label for="archivo_improcedencia">Archivo (Improcedencia)</label>
+                                                                                                                                                                                                                                                <input type="file" accept="application/pdf" class="form-control" name="archivo_improcedencia" id="archivo_improcedencia">
+                                                                                                                                                                                                                                                <label style="font-size:12px; color:#E3054F;">Archivo Actual:
+                                                                                                                                                                                                                                                    <?php echo remove_junk($e_detalle['archivo_improcedencia']); ?>
+                                                                                                                                                                                                                                                </label>
                                                                                                                                                                                                                                             </div>
                                                                                                                                                                                                                                             </div>
-                                                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 10) : ?>
-                                                                                                                                                                                                                                                <div class="col-md-3" id="desistimiento2">
-                                                                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 10) : ?>
-                                                                                                                                                                                                                                                    <div class="col-md-3" id="desistimiento2" style="display: none">
-                                                                                                                                                                                                                                                    <?php endif; ?>
-                                                                                                                                                                                                                                                    <div class="form-group">
-                                                                                                                                                                                                                                                        <label for="archivo_desistimiento">Archivo de Desistimiento</label>
-                                                                                                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_desistimiento" id="archivo_desistimiento">
-                                                                                                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                                                                                            <?php echo remove_junk($e_detalle['archivo_desistimiento']); ?>
-                                                                                                                                                                                                                                                        </label>
-                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                    <?php if ($e_detalle['id_tipo_resolucion'] == 11) : ?>
-                                                                                                                                                                                                                                                        <div class="col-md-4" id="improcedencia">
-                                                                                                                                                                                                                                                        <?php endif; ?>
-                                                                                                                                                                                                                                                        <?php if ($e_detalle['id_tipo_resolucion'] != 11) : ?>
-                                                                                                                                                                                                                                                            <div class="col-md-4" id="improcedencia" style="display: none">
-                                                                                                                                                                                                                                                            <?php endif; ?>
-                                                                                                                                                                                                                                                            <div class="form-group">
-                                                                                                                                                                                                                                                                <label for="descripcion_improcedencia">Descripción (Improcedencia)</label>
-                                                                                                                                                                                                                                                                <textarea class="form-control" name="descripcion_improcedencia" id="descripcion_improcedencia" cols="40" rows="3"><?php echo $e_detalle['descripcion_improcedencia'] ?></textarea>
-                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                            <?php if ($e_detalle['id_tipo_resolucion'] == 11) : ?>
-                                                                                                                                                                                                                                                                <div class="col-md-4" id="improcedencia2">
-                                                                                                                                                                                                                                                                <?php endif; ?>
-                                                                                                                                                                                                                                                                <?php if ($e_detalle['id_tipo_resolucion'] != 11) : ?>
-                                                                                                                                                                                                                                                                    <div class="col-md-4" id="improcedencia2" style="display: none">
-                                                                                                                                                                                                                                                                    <?php endif; ?>
-                                                                                                                                                                                                                                                                    <div class="form-group">
-                                                                                                                                                                                                                                                                        <label for="archivo_improcedencia">Archivo (Improcedencia)</label>
-                                                                                                                                                                                                                                                                        <input type="file" accept="application/pdf" class="form-control" name="archivo_improcedencia" id="archivo_improcedencia">
-                                                                                                                                                                                                                                                                        <label style="font-size:12px; color:#E3054F;">Archivo Actual:
-                                                                                                                                                                                                                                                                            <?php echo remove_junk($e_detalle['archivo_improcedencia']); ?>
-                                                                                                                                                                                                                                                                        </label>
-                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                    </div>
-                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                <div class="form-group clearfix">
-                                                                                                                                                                                                                                                                    <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-                                                                                                                                                                                                                                                                        Regresar
-                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                    <button type="submit" name="seguimiento_queja" class="btn btn-primary" value="subir">Guardar</button>
-                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                </div>
                                                                                                                                                                                                                                         </div>
+                                                                                                                                                                                                                                        <div class="form-group clearfix">
+                                                                                                                                                                                                                                            <a href="quejas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+                                                                                                                                                                                                                                                Regresar
+                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                            <button type="submit" name="seguimiento_queja" class="btn btn-primary" value="subir">Guardar</button>
+                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                </div>
             </form>
         </div>
     </div>
@@ -922,9 +845,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("desechamiento2").style.display = "none";
             document.getElementById("sinmateria").style.display = "none";
             document.getElementById("sinmateria2").style.display = "none";
@@ -954,9 +874,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("desechamiento2").style.display = "none";
             document.getElementById("sinmateria").style.display = "none";
             document.getElementById("sinmateria2").style.display = "none";
@@ -988,9 +905,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("desechamiento2").style.display = "none";
             document.getElementById("anv").style.display = "none";
             document.getElementById("anv3").style.display = "none";
@@ -1021,9 +935,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("desechamiento2").style.display = "none";
             document.getElementById("anv").style.display = "inline-block";
             document.getElementById("anv3").style.display = "inline-block";
@@ -1051,9 +962,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "inline-block";
             document.getElementById("recomendacion5").style.display = "inline-block";
             document.getElementById("recomendacion6").style.display = "inline-block";
-            document.getElementById("recomendacion7").style.display = "inline-block";
-            document.getElementById("recomendacion8").style.display = "inline-block";
-            document.getElementById("recomendacion9").style.display = "inline-block";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";
@@ -1085,9 +993,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";
@@ -1122,9 +1027,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("desechamiento2").style.display = "none";
             document.getElementById("anv").style.display = "none";
             document.getElementById("anv3").style.display = "none";
@@ -1153,9 +1055,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";
@@ -1186,9 +1085,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";
@@ -1219,9 +1115,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";
@@ -1252,9 +1145,6 @@ if (isset($_POST['seguimiento_queja'])) {
             document.getElementById("recomendacion4").style.display = "none";
             document.getElementById("recomendacion5").style.display = "none";
             document.getElementById("recomendacion6").style.display = "none";
-            document.getElementById("recomendacion7").style.display = "none";
-            document.getElementById("recomendacion8").style.display = "none";
-            document.getElementById("recomendacion9").style.display = "none";
             document.getElementById("incompetencia2").style.display = "none";
             document.getElementById("incompetencia3").style.display = "none";
             document.getElementById("incompetencia4").style.display = "none";

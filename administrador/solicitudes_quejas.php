@@ -59,7 +59,6 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
 
 <div class="container-fluid">
     <div class="full-box tile-container">
-        <?php if($nivel_user != 19):?>
         <a href="quejas.php" class="tile">
             <div class="tile-tittle">Quejas</div>
             <div class="tile-icon">
@@ -68,6 +67,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+		<?php if (($nivel_user != 19) ) : ?>
+										
         <a href="orientaciones.php" class="tile">
             <div class="tile-tittle">Orientaciones</div>
             <div class="tile-icon">
@@ -75,6 +76,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 <i class="fas fa-user-tie"></i>
             </div>
         </a>
+		<?php endif ?>
+		<?php if (($nivel_user != 19) ) : ?>
         <a href="canalizaciones.php" class="tile">
             <div class="tile-tittle">Canalizaciones</div>
             <div class="tile-icon">
@@ -84,6 +87,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 <i class="fas fa-user-tie"></i>
             </div>
         </a>
+		<?php endif ?>
+		<?php if (($nivel_user != 19) ) : ?>
         <a href="quejosos.php" class="tile">
             <div class="tile-tittle">Promoventes</div>
             <div class="tile-icon">
@@ -92,6 +97,9 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+				<?php endif ?>
+		<?php if (($nivel_user != 19) ) : ?>
+
         <a href="agraviados.php" class="tile">
             <div class="tile-tittle">Agraviados</div>
             <div class="tile-icon">
@@ -100,6 +108,9 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+				<?php endif ?>
+		<?php if (($nivel_user != 19) ) : ?>
+
         <a href="actuaciones.php" class="tile">
             <div class="tile-tittle">Actuaciones</div>
             <div class="tile-icon">
@@ -108,11 +119,24 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+				<?php endif ?>
+		<?php if (($nivel_user < 2)|| ($nivel_user == 7)|| ($nivel_user == 50) ) : ?>
+
         <a href="recomendaciones_antes.php" class="tile">
             <div class="tile-tittle">Recom. antes de 2023</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     auto_stories
+                </span>
+            </div>
+        </a>
+				<?php endif ?>
+
+		<a href="mediacion.php" class="tile">
+            <div class="tile-tittle">Mediación/Conciliación</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    diversity_3
                 </span>
             </div>
         </a>
@@ -148,6 +172,8 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
+		<?php if (($nivel_user != 19) ) : ?>
+
         <a href="competencia.php" class="tile">
             <div class="tile-tittle" style="font-size: 12px;">Conflictos Competenciales</div>
             <div class="tile-icon">
@@ -156,15 +182,7 @@ $c_cargos = count_by_id('cargos', 'id_cargos');
                 </span>
             </div>
         </a>
-        <?php endif;?>
-        <a href="mediacion.php" class="tile">
-            <div class="tile-tittle">Mediación/Conciliación</div>
-            <div class="tile-icon">
-                <span class="material-symbols-rounded" style="font-size:95px;">
-                    diversity_3
-                </span>
-            </div>
-        </a>
+		<?php endif ?>
     </div>
 </div>
 <?php include_once('layouts/footer.php'); ?>

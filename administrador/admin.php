@@ -43,6 +43,10 @@ $c_competencia = count_by_competencias();
 $c_mediacion = count_by_mediacion();
 $c_capacitaciones = count_by_id('capacitaciones', 'id_capacitacion');
 $c_recomendaciones = count_by_id('recomendaciones', 'id_recomendacion');
+$c_comunicados = count_by_id('comunicados', 'id_comunicados');
+$c_solicitudes = count_by_id('solicitudes_informacion', 'id_solicitudes_informacion');
+$c_recursos = count_by_procesoUT('Recurso Revisión');
+$c_denuncias = count_by_procesoUT('Denuncia');
 ?>
 <?php include_once('layouts/header.php'); ?>
 
@@ -238,6 +242,63 @@ $c_recomendaciones = count_by_id('recomendaciones', 'id_recomendacion');
                 </span>
 				<i class="fas fa-user-tie"></i>
 				<p> <?php echo $c_capacitaciones['total']; ?> Registrados</p>
+            </div>
+        </a>
+
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="comunicados_prensa.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Comunicados Prensa</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    card_membership
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_comunicados['total']; ?> Registrados</p>
+            </div>
+        </a>
+
+
+		<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="entrevistas.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Entrevistas</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    3p
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_comunicados['total']; ?> Registradas</p>
+            </div>
+        </a>
+
+<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="solicitudes_ut.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Solicitude Informacion</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    contact_support
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_solicitudes['total']; ?> Registradas</p>
+            </div>
+        </a>
+
+<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="recursos_ut.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Recursos Revisión</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    warning
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_recursos['total']; ?> Registradas</p>
+            </div>
+        </a>
+
+
+<a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="denuncias_ut.php" <?php endif; ?> class="tile">		 
+            <div class="tile-tittle">Denuncias</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    sync_problem
+                </span>
+				<i class="fas fa-user-tie"></i>
+				<p> <?php echo $c_denuncias['total']; ?> Registradas</p>
             </div>
         </a>
 

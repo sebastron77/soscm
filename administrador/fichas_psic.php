@@ -4,13 +4,12 @@ require_once('includes/load.php');
 ?>
 <?php
 // page_require_level(4);
-$all_fichas = find_all_fichas2();
+
 $user = current_user();
-$nivel = $user['user_level'];
-$user = current_user();
-$nivel = $user['user_level'];
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
+$ejercicio = isset($_GET['anio']) ? $_GET['anio'] : '2023';
+$anio = $ejercicio == 2023?2022:2023;
 
 if ($nivel_user <= 2) {
     page_require_level(2);
@@ -33,9 +32,9 @@ endif;
 
 
 if (($nivel_user == 1) || ($nivel_user == 2) || ($nivel_user == 22) || ($nivel_user == 7)) {
-    $all_fichas = find_all_fichas2();
+    $all_fichas = find_all_fichas2($ejercicio);
 } else {
-    $all_fichas = find_all_fichasUser2($id_user);
+    $all_fichas = find_all_fichasUser2($ejercicio,$id_user);
 }
 
 $conexion = mysqli_connect ("localhost", "suigcedh", "9DvkVuZ915H!");
@@ -88,8 +87,9 @@ if (isset($_POST["export_data"])) {
             <div class="panel-heading clearfix">
                 <strong>
                     <span class="glyphicon glyphicon-th"></span>
-                    <span>Fichas técnicas - Área Psicológica</span>
+                    <span>Fichas técnicas - Área Psicológica <?php echo $id_user;?></span>
                 </strong>
+				<a href="fichas_psic.php?anio=<?php echo $anio;?>" style="margin-left: 10px" class="btn btn-info pull-right">Ver <?php echo $anio?></a>      
                 <?php if (($nivel_user <= 2) || ($nivel_user == 4)) : ?>
                     <a href="add_ficha_psic.php" style="margin-left: 10px" class="btn btn-info pull-right">Agregar ficha</a>
                 <?php endif; ?>

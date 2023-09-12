@@ -1,3 +1,4 @@
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
@@ -20,11 +21,12 @@ $area = $area_user['id_area'];
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_env_correspondencia'])) {
 
-    $req_fields = array('fecha_emision', 'asunto', 'medio_envio');
+    $req_fields = array('no_oficio','fecha_emision', 'asunto', 'medio_envio');
     validate_fields($req_fields);
 
     if (empty($errors)) {
         $fecha_emision   = remove_junk($db->escape($_POST['fecha_emision']));
+        $no_oficio   = remove_junk($db->escape($_POST['no_oficio']));
         $asunto   = remove_junk($db->escape($_POST['asunto']));
         $medio_envio   = remove_junk($db->escape($_POST['medio_envio']));
         $se_turna_a_area   = remove_junk($db->escape($_POST['se_turna_a_area']));
@@ -65,59 +67,24 @@ if (isset($_POST['add_env_correspondencia'])) {
         $temp = $_FILES['oficio_enviado']['tmp_name'];
 
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
+		
+		$query = "INSERT INTO envio_correspondencia (";
+		$query .= "folio,no_oficio,fecha_emision,asunto,medio_envio,se_turna_a_area,tipo_tramite,observaciones,area_creacion,fecha_creacion,user_creador";
+		if ($name != ''){
+			$query .= ", oficio_enviado ";
+		}	
+		$query .= ") VALUES (";
+		$query .= " '{$folio}','{$no_oficio}','{$fecha_emision}','{$asunto}','{$medio_envio}','{$se_turna_a_area}','{$tipo_tramite}','{$observaciones}','{$area}','{$creacion}','{$id_user}'";
+		if ($name != ''){
+			$query .= ", '{$name}' ";
+		}
+		$query .= ")";
 
-        if (($move && $name == '') && ($fecha_en_que_se_turna == '') && ($fecha_espera_respuesta == '')) {
-            $query = "INSERT INTO envio_correspondencia (";
-            $query .= "folio,fecha_emision,asunto,medio_envio,se_turna_a_area,tipo_tramite,observaciones,area_creacion,fecha_creacion,user_creador";
-            $query .= ") VALUES (";
-            $query .= " '{$folio}','{$fecha_emision}','{$asunto}','{$medio_envio}','{$se_turna_a_area}','{$tipo_tramite}','{$observaciones}','{$area}','{$creacion}','{$id_user}'";
-            $query .= ")";
-
-            $query2 = "INSERT INTO folios (";
+		$query2 = "INSERT INTO folios (";
             $query2 .= "folio, contador";
             $query2 .= ") VALUES (";
             $query2 .= " '{$folio}','{$no_folio1}'";
             $query2 .= ")";
-        }
-        if (($move && $name == '') && ($fecha_en_que_se_turna != '') && ($fecha_espera_respuesta != '')) {
-            $query = "INSERT INTO envio_correspondencia (";
-            $query .= "folio,fecha_emision,asunto,medio_envio,se_turna_a_area,fecha_en_que_se_turna,fecha_espera_respuesta,tipo_tramite,observaciones,area_creacion,fecha_creacion,user_creador";
-            $query .= ") VALUES (";
-            $query .= " '{$folio}','{$fecha_emision}','{$asunto}','{$medio_envio}','{$se_turna_a_area}','{$fecha_en_que_se_turna}','{$fecha_espera_respuesta}','{$tipo_tramite}','{$observaciones}','{$area}','{$creacion}','{$id_user}'";
-            $query .= ")";
-
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
-        }
-        if (($move && $name != '') && ($fecha_en_que_se_turna == '') && ($fecha_espera_respuesta == '')) {
-            $query = "INSERT INTO envio_correspondencia (";
-            $query .= "folio,fecha_emision,asunto,medio_envio,se_turna_a_area,tipo_tramite,oficio_enviado,observaciones,area_creacion,fecha_creacion,user_creador";
-            $query .= ") VALUES (";
-            $query .= " '{$folio}','{$fecha_emision}','{$asunto}','{$medio_envio}','{$se_turna_a_area}','{$tipo_tramite}','{$name}','{$observaciones}','{$area}','{$creacion}','{$id_user}'";
-            $query .= ")";
-
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
-        }
-        if (($move && $name != '') && ($fecha_en_que_se_turna != '') && ($fecha_espera_respuesta != '')) {
-            $query = "INSERT INTO envio_correspondencia (";
-            $query .= "folio,fecha_emision,asunto,medio_envio,se_turna_a_area,fecha_en_que_se_turna,fecha_espera_respuesta,tipo_tramite,oficio_enviado,observaciones,area_creacion,fecha_creacion,user_creador";
-            $query .= ") VALUES (";
-            $query .= " '{$folio}','{$fecha_emision}','{$asunto}','{$medio_envio}','{$se_turna_a_area}','{$fecha_en_que_se_turna}','{$fecha_espera_respuesta}','{$tipo_tramite}','{$name}','{$observaciones}','{$area}','{$creacion}','{$id_user}'";
-            $query .= ")";
-
-            $query2 = "INSERT INTO folios (";
-            $query2 .= "folio, contador";
-            $query2 .= ") VALUES (";
-            $query2 .= " '{$folio}','{$no_folio1}'";
-            $query2 .= ")";
-        }
 
         if ($db->query($query) && $db->query($query2)) {
             //sucess
@@ -159,6 +126,12 @@ include_once('layouts/header.php'); ?>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
+                            <label for="asunto">No. Oficio</label>
+                            <input type="text" class="form-control" name="no_oficio" required>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
                             <label for="fecha_emision">Fecha de Emisión de Oficio                                
                             </label>
                             <input type="date" class="form-control" name="fecha_emision" required>
@@ -182,6 +155,8 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="se_turna_a_area">Área a la que se turna</label>
@@ -192,18 +167,16 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="fecha_en_que_se_turna">Fecha en que destinatario recibió el oficio</label>
-                            <input type="date" class="form-control" name="fecha_en_que_se_turna">
+                            <input type="date" class="form-control" name="fecha_en_que_se_turna" required>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="fecha_espera_respuesta">Fecha en que se espera respuesta</label>
-                            <input type="date" class="form-control" name="fecha_espera_respuesta">
+                            <input type="date" class="form-control" name="fecha_espera_respuesta" required>
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -214,18 +187,20 @@ include_once('layouts/header.php'); ?>
                                 <option value="Respuesta">Respuesta</option>
                                 <option value="Conocimiento">Conocimiento</option>
                                 <option value="Circular">Circular</option>
+								<option value="Invitación">Invitación</option>
+                                <option value="Solicitud">Solicitud</option>
                                 <option value="Trámite de Queja">Trámite de Queja</option>
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="oficio_enviado">Adjuntar Oficio en Digital</label>
                             <input type="file" accept="application/pdf" class="form-control" name="oficio_enviado" id="oficio_enviado">
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="observaciones">Observaciones</label>

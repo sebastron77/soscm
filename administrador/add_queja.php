@@ -1,3 +1,4 @@
+
 <script type="text/javascript" src="libs/js/quejoso.js"></script>
 <script type="text/javascript" src="libs/js/agraviado.js"></script>
 <?php
@@ -75,7 +76,7 @@ if (isset($_POST['add_queja'])) {
         $dom_calle = remove_junk($db->escape($_POST['dom_calle']));
         $dom_numero = remove_junk($db->escape($_POST['dom_numero']));
         $dom_colonia = remove_junk($db->escape($_POST['dom_colonia']));
-        $descripcion_hechos = remove_junk($db->escape($_POST['descripcion_hechos']));
+        $descripcion_hechos = ( remove_junk($db->escape($_POST['descripcion_hechos'])));
         $observaciones = remove_junk($db->escape($_POST['observaciones']));
         // $id_estatus_queja = remove_junk($db->escape($_POST['id_estatus_queja']));
         $ent_fed = remove_junk($db->escape($_POST['ent_fed']));
@@ -171,7 +172,7 @@ if (isset($_POST['add_queja'])) {
 
         if ($db->query($query2)) {
             //sucess
-            $session->msg('s', " La queja ha sido agregada con éxito.");
+            $session->msg('s', " La queja ha sido agregada con éxito. El No. de Expediente asignado es ".$folio);
             insertAccion($user['id_user'], '"' . $user['username'] . '" agregó queja, Folio: ' . $folio . '.', 1);
             redirect('quejas.php', false);
         } else {
@@ -190,7 +191,7 @@ include_once('layouts/header.php'); ?>
 <?php echo display_msg($msg); ?>
 <div class="row">
     <div class="panel panel-default">
-        <div class="panel-heading">
+        <div class="panel-heading" style="    height: 50px;">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
                 <span>Agregar Queja</span>
@@ -198,7 +199,7 @@ include_once('layouts/header.php'); ?>
         </div>
 
 
-        <div class="panel-heading" style="text-align: right;">
+        <div class="panel-heading" style="text-align: right; height: 80px;">
             <button type="button" class="btn btn-success" onclick="javascript:window.open('./add_quejoso_On.php','popup','width=600,height=600');">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-add" viewBox="0 0 16 16">
                     <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Zm.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0Zm-2-6a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM8 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"></path>

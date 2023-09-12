@@ -25,11 +25,10 @@ if ($nivel == 6) {
 }
 if ($nivel == 7) {
     page_require_level_exacto(7);
-}
+}?>
+<script>
 
-
-
-?>
+</script>
 <?php include_once('layouts/header.php'); ?>
 
 <div class="row">
@@ -38,10 +37,25 @@ if ($nivel == 7) {
     </div>
 </div>
 
+<div class="row" style="TEXT-ALIGN: center; width: 50%;     margin: 0 auto">
+			<div class="panel panel-default">
+			<div class="col-md-12">
+                        <div class="form-group">
+                            <label for="autoridad">Ejercicio</label>
+                             <select class="form-control" name="years" id="years" >
+                                <option value="0">Escoge una opción</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                            </select>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
 
 <div class="container-fluid">
     <div class="full-box tile-container">
-        <a href="est_med_pres.php?id=1" class="tileA">
+        
+        <a href="est_med_pres.php?id=1" class="tileA"> 
             <div class="tileA-tittle">Medio Presentación</div>
             <div class="tileA-icon">
                 <span class="material-symbols-rounded" style="font-size: 95px;">

@@ -1,3 +1,4 @@
+
 <?php
 error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Estado Procesal de Queja';
@@ -12,6 +13,7 @@ if (!$e_detalle) {
 }
 $user = current_user();
 $nivel = $user['user_level'];
+$id_user = $user['id_user'];
 
 $cat_medios_pres = find_all_medio_pres();
 $cat_autoridades = find_all_aut_res();
@@ -68,16 +70,16 @@ if (isset($_POST['procesal_queja'])) {
 
         $query = "DELETE FROM rel_queja_der_gral WHERE id_queja_date =" . $id;
         if ($db->query($query)) {
-            echo "Registro eliminado con éxito.";
+          //  echo "Registro eliminado con éxito.";
         } else {
-            echo "ERROR: No se pudo eliminar registro $consulta. ";
+          //  echo "ERROR: No se pudo eliminar registro $consulta. ";
         }
 
         $query = "DELETE FROM rel_queja_der_vuln WHERE id_queja_date =" . $id;
         if ($db->query($query)) {
-            echo "Registro eliminado con éxito.";
+            //echo "Registro eliminado con éxito.";
         } else {
-            echo "ERROR: No se pudo eliminar registro $consulta. ";
+           // echo "ERROR: No se pudo eliminar registro $consulta. ";
         }
 
 
@@ -115,13 +117,13 @@ if (isset($_POST['procesal_queja'])) {
                 $move2 = move_uploaded_file($temp2, $carpeta . "/" . $name_publico);
             }
 
-            $Procesal = find_by_id('cat_est_procesal', (int) $e_detalle['estado_procesal'], 'id_cat_est_procesal');
+            $Procesal = find_by_id('cat_est_procesal', (int) $estado_procesal, 'id_cat_est_procesal');
 
             $estadoProcesal = $Procesal['descripcion'];
 
 
-            $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,fecha_alta) 
-            VALUES ({$id},'{$estadoProcesal}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},NOW());";
+            $query = "INSERT INTO rel_queja_acuerdos ( id_queja_date, tipo_acuerdo,fecha_acuerdo,acuerdo_adjunto,acuerdo_adjunto_publico,sintesis_documento,publico,origen_acuerdo,user_creador,fecha_alta) 
+            VALUES ({$id},'{$estadoProcesal}','{$fecha_acuerdo}','{$name}','{$name_publico}','{$sintesis_documento}',{$publico},'Procesal',{$id_user},NOW());";
 
             if ($db->query($query)) {
                 //sucess

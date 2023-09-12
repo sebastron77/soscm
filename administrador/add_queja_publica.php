@@ -1,7 +1,9 @@
 <?php
+setcookie('suigecedh','',time() - 1);
 error_reporting(E_ALL ^ E_NOTICE);
 $page_title = 'Presenta tu Queja';
 require_once('includes/load.php');
+include("includes/statistics.php");
 $user = current_user();
 $id_queja = last_id_quejaR();
 $id_folio = last_id_folios();
@@ -48,13 +50,21 @@ $cat_entidad = find_all_cat_entidad();
     </style>
 </head>
 
-<script type="text/javascript">
+	<script type="text/javascript">
+	history.forward();
 
-</script>
+	function nobackbutton(){
+		
+	   window.location.hash="no-back-button";
+	   window.location.hash="Again-No-back-button" //chrome
+	   window.onhashchange=function(){window.location.hash="no-back-button";}
+		
+	}
+	</script>
 <?php header('Content-type: text/html; charset=utf-8'); ?>
 
 
-<body style="font-family: 'Questrial', sans-serif; background-color: #F2F3F8;">
+<body style="font-family: 'Questrial', sans-serif; background-color: #F2F3F8;" onload="nobackbutton();">
     <form method="post" action="exce_queja_publica.php" enctype="multipart/form-data">
         <nav class="title-main headerp" style="z-index: 20">
             <li class="title-tex" style="">
@@ -103,7 +113,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_mun">Municipio <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_mun">
+                                    <select class="form-control form-select" name="id_cat_mun" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($cat_municipios as $id_cat_municipio) : ?>
                                             <option value="<?php echo $id_cat_municipio['id_cat_mun']; ?>"><?php echo ucwords($id_cat_municipio['descripcion']); ?></option>
@@ -145,7 +155,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="autoridad_responsable">Autoridad Responsable <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="autoridad_responsable">
+                                    <select class="form-control form-select" name="autoridad_responsable" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($cat_autoridades as $autoridades) : ?>
                                             <option value="<?php echo $autoridades['id_cat_aut']; ?>"><?php echo ucwords($autoridades['nombre_autoridad']); ?></option>
@@ -194,7 +204,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-3">
                                 <div class="form-group">
                                     <label for="id_cat_genQ">Género <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_genQ">
+                                    <select class="form-control form-select" name="id_cat_genQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($generos as $genero) : ?>
                                             <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
@@ -211,7 +221,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_escolaridadQ">Escolaridad <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_escolaridadQ">
+                                    <select class="form-control form-select" name="id_cat_escolaridadQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($escolaridades as $escolaridad) : ?>
                                             <option value="<?php echo $escolaridad['id_cat_escolaridad']; ?>"><?php echo ucwords($escolaridad['descripcion']); ?></option>
@@ -222,7 +232,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_ocupQ">Ocupación <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_ocupQ">
+                                    <select class="form-control form-select" name="id_cat_ocupQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($ocupaciones as $ocupacion) : ?>
                                             <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
@@ -236,7 +246,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_grupo_vulnQ">Grupo Vulnerable <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_grupo_vulnQ">
+                                    <select class="form-control form-select" name="id_cat_grupo_vulnQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($grupos_vuln as $grupo_vuln) : ?>
                                             <option value="<?php echo $grupo_vuln['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo_vuln['descripcion']); ?></option>
@@ -247,7 +257,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_comunQ">Comunidad Indígena <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_comunQ">
+                                    <select class="form-control form-select" name="id_cat_comunQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($comunidades as $comunidad) : ?>
                                             <option value="<?php echo $comunidad['id_cat_comun']; ?>"><?php echo ucwords($comunidad['descripcion']); ?></option>
@@ -258,7 +268,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="leer_escribirQ">¿Sabe leer y escribir? <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="leer_escribirQ">
+                                    <select class="form-control form-select" name="leer_escribirQ" required>
                                         <option value="">Escoge una opción</option>
                                         <option value="Leer">Leer</option>
                                         <option value="Escribir">Escribir</option>
@@ -271,7 +281,7 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_discQ">¿Tiene alguna discapacidad? <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_discQ">
+                                    <select class="form-control form-select" name="id_cat_discQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($discapacidades as $discapacidad) : ?>
                                             <option value="<?php echo $discapacidad['id_cat_disc']; ?>"><?php echo ucwords($discapacidad['descripcion']); ?></option>
@@ -282,13 +292,13 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="emailQ">Email <span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" name="emailQ">
+                                    <input type="text" class="form-control" name="emailQ" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_nacionalidadQ">Nacionalidad <span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_nacionalidadQ">
+                                    <select class="form-control form-select" name="id_cat_nacionalidadQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($nacionalidades as $nacionalidad) : ?>
                                             <option value="<?php echo $nacionalidad['id_cat_nacionalidad']; ?>"><?php echo ucwords($nacionalidad['descripcion']); ?></option>
@@ -302,25 +312,25 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="calleQ"> Calle<span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" name="calleQ">
+                                    <input type="text" class="form-control" name="calleQ" required>
                                 </div>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
                                     <label for="numeroQ">Núm.<span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" name="numeroQ">
+                                    <input type="text" class="form-control" name="numeroQ" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="coloniaQ">Colonia<span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" name="coloniaQ">
+                                    <input type="text" class="form-control" name="coloniaQ" required>
                                 </div>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label for="codigo_postalQ">Código Postal<span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" name="codigo_postalQ">
+                                    <input type="text" class="form-control" name="codigo_postalQ" required>
                                 </div>
                             </div>
 
@@ -329,13 +339,13 @@ $cat_entidad = find_all_cat_entidad();
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="telefonoQ">Teléfono<span style="color:red;font-weight:bold">*</span></label>
-                                    <input type="text" class="form-control" maxlength="10" name="telefonoQ">
+                                    <input type="text" class="form-control" maxlength="10" name="telefonoQ" required>
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="id_cat_munQ">Municipio<span style="color:red;font-weight:bold">*</span></label>
-                                    <select class="form-control form-select" name="id_cat_munQ">
+                                    <select class="form-control form-select" name="id_cat_munQ" required>
                                         <option value="">Escoge una opción</option>
                                         <?php foreach ($municipios as $municipio) : ?>
                                             <option value="<?php echo $municipio['id_cat_mun']; ?>"><?php echo ucwords($municipio['descripcion']); ?></option>
