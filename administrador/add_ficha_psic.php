@@ -1,12 +1,14 @@
 <?php header('Content-type: text/html; charset=utf-8');
 $page_title = 'Agregar Ficha Técnica - Área Psicológica';
+error_reporting(E_ALL ^ E_NOTICE);
 require_once('includes/load.php');
-$id_folio = last_id_folios();
 $user = current_user();
-page_require_level(4);
+$detalle = $user['id_user'];
+$id_folio = last_id_folios();
+$pacientes = find_all_pacientes();
+// page_require_level(4);
 $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
-$otro = $busca_area['id_area'];
 $areas = find_all_area_orden('area');
 $funciones = find_all_funcion_P();
 $ocupaciones = find_all_order('cat_ocupaciones', 'descripcion');
@@ -16,33 +18,31 @@ $autoridades = find_all_aut_res();
 $generos = find_all('cat_genero');
 $grupos = find_all_order('cat_grupos_vuln', 'id_cat_grupo_vuln');
 $derechos_vuln = find_all_order('cat_der_vuln', 'descripcion');
+$folios = find_all('folios');
+// page_require_area(4);
+
+if (isset($_GET['num_queja'])) {
+    $opcion = $_GET['num_queja'];
+    // echo $opcion;
+    $prueba1 = find_by_id_paciente2($opcion);
+}
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_ficha_psic'])) {
 
-    $req_fields = array('funcion', 'area_solicitante', 'visitaduria', 'ocupacion', 'escolaridad', 'hechos', 'autoridad', 'nombre_usuario', 'edad', 'sexo', 'grupo_vulnerable', 'fecha_intervencion', 'resultado', 'documento_emitido', 'nombre_especialista', 'clave_documento');
-    validate_fields($req_fields);
 
     if (empty($errors)) {
         $funcion   = remove_junk($db->escape($_POST['funcion']));
         $num_queja   = remove_junk($db->escape($_POST['num_queja']));
         $visitaduria   = remove_junk($db->escape($_POST['visitaduria']));
         $area_solicitante   = remove_junk($db->escape($_POST['area_solicitante']));
-        $ocupacion   = remove_junk(($db->escape($_POST['ocupacion'])));
-        $escolaridad   = remove_junk(($db->escape($_POST['escolaridad'])));
-        $hechos   = remove_junk(($db->escape($_POST['hechos'])));
-        $autoridad   = remove_junk(($db->escape($_POST['autoridad'])));
-        $nombre_usuario   = remove_junk($db->escape($_POST['nombre_usuario']));
-        $edad   = remove_junk($db->escape($_POST['edad']));
-        $sexo   = remove_junk($db->escape($_POST['sexo']));
-        $grupo_vulnerable   = remove_junk($db->escape($_POST['grupo_vulnerable']));
+        $derechos_vuln   = remove_junk(($db->escape($_POST['derechos_vuln'])));
         $fecha_intervencion   = remove_junk($db->escape($_POST['fecha_intervencion']));
         $resultado   = remove_junk($db->escape($_POST['resultado']));
         $documento_emitido   = remove_junk($db->escape($_POST['documento_emitido']));
-        $adjunto   = remove_junk($db->escape($_POST['adjunto']));
-        $protocolo_estambul   = remove_junk($db->escape($_POST['protocolo_estambul']));
         $nombre_especialista   = remove_junk($db->escape($_POST['nombre_especialista']));
         $clave_documento   = remove_junk($db->escape($_POST['clave_documento']));
+        $protocolo_estambul   = remove_junk($db->escape($_POST['protocolo_estambul']));
         date_default_timezone_set('America/Mexico_City');
         $creacion = date('Y-m-d');
 
@@ -72,12 +72,14 @@ if (isset($_POST['add_ficha_psic'])) {
         $type = $_FILES['adjunto']['type'];
         $temp = $_FILES['adjunto']['tmp_name'];
 
+        $ocup = $prueba1['id_ocupacion'];
+
         $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
         if ($move && $name != '') {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,ficha_adjunto,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_der_vuln,fecha_intervencion,resultado,documento_emitido,ficha_adjunto,fecha_creacion,tipo_ficha,nombre_especialista,protocolo_estambul,clave_documento,quien_creo";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$name}','{$creacion}','{$protocolo_estambul}','{$nombre_especialista}','{$clave_documento}',2,'{$id_user}'";
+            $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$derechos_vuln}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$name}','{$creacion}',2,'{$nombre_especialista}','{$protocolo_estambul}','{$clave_documento}','{$id_user}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -87,9 +89,9 @@ if (isset($_POST['add_ficha_psic'])) {
             $query2 .= ")";
         } else {
             $query = "INSERT INTO fichas (";
-            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_ocup,id_cat_escolaridad,id_cat_der_vuln,id_cat_aut,nombre_usuario,edad,id_cat_gen,id_cat_grupo_vuln,fecha_intervencion,resultado,documento_emitido,fecha_creacion,protocolo_estambul,nombre_especialista,clave_documento,tipo_ficha,quien_creo";
+            $query .= "folio,id_cat_funcion,num_queja,id_visitaduria,id_area_solicitante,id_cat_der_vuln,fecha_intervencion,resultado,documento_emitido,fecha_creacion,tipo_ficha,nombre_especialista,protocolo_estambul,clave_documento,quien_creo";
             $query .= ") VALUES (";
-            $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$ocupacion}','{$escolaridad}','{$hechos}','{$autoridad}','{$nombre_usuario}','{$edad}','{$sexo}','{$grupo_vulnerable}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$creacion}','{$protocolo_estambul}','{$nombre_especialista}','{$clave_documento}',2,'{$id_user}'";
+            $query .= " '{$folio}','{$funcion}','{$num_queja}','{$visitaduria}','{$area_solicitante}','{$derechos_vuln}','{$fecha_intervencion}','{$resultado}','{$documento_emitido}','{$creacion}',2,'{$nombre_especialista}','{$protocolo_estambul}','{$clave_documento}','{$id_user}'";
             $query .= ")";
 
             $query2 = "INSERT INTO folios (";
@@ -113,9 +115,19 @@ if (isset($_POST['add_ficha_psic'])) {
     }
 }
 ?>
+<script type="text/javascript">
+    function buscar() {
+        var opcion = document.getElementById('num_queja').value;
+        window.location.href = 'http://localhost/sistemageneralquejas/administrador/add_ficha_psic.php?num_queja=' + opcion;
+    }
+</script>
+
 <?php header('Content-type: text/html; charset=utf-8');
 include_once('layouts/header.php'); ?>
 <?php echo display_msg($msg); ?>
+<?php
+
+?>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -127,6 +139,20 @@ include_once('layouts/header.php'); ?>
         <div class="panel-body">
             <form method="post" action="add_ficha_psic.php" enctype="multipart/form-data">
                 <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="num_queja">Expediente</label>
+                            <select class="form-control" name="num_queja" id="num_queja" onchange="return buscar();">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($pacientes as $paciente) : ?>
+                                    <option value="<?php echo $paciente['folio_expediente']; ?>"><?php echo ucwords($paciente['folio']); ?></option>
+                                    <?php if ($paciente['folio_expediente'] == $_GET['num_queja']) : ?>
+                                        <option style="visibility: hidden; font-size:1%;" value="<?php echo $paciente['folio_expediente']; ?>" selected><?php echo ucwords($paciente['folio']); ?></option>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="funcion">Función</label>
@@ -138,43 +164,13 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="num_queja">No. de Queja</label>
-                            <input type="text" class="form-control" name="num_queja">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div class="form-group">
                             <label for="area_solicitante">Área Solicitante</label>
                             <select class="form-control" name="area_solicitante">
                                 <option value="">Escoge una opción</option>
                                 <?php foreach ($areas as $area) : ?>
                                     <option value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <label for="ocupacion">Ocupacion</label>
-                            <select class="form-control" name="ocupacion">
-                                <option>Escoge una opción</option>
-                                <?php foreach ($ocupaciones as $ocupacion) : ?>
-                                    <option value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="escolaridad">Escolaridad</label>
-                            <select class="form-control" name="escolaridad">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($escolaridades as $estudios) : ?>
-                                    <option value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -190,60 +186,61 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="hechos">Presuntos hechos violatorios</label>
-                            <select class="form-control" name="hechos">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($derechos_vuln as $derecho_vuln) : ?>
-                                    <option value="<?php echo $derecho_vuln['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho_vuln['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="nombre_usuario">Nombre del usuario</label>
+                            <input type="text" class="form-control" value="<?php echo $prueba1['nombre'] . " " . $prueba1['paterno'] . " " . $prueba1['materno'] ?>" readonly>
+                            <input type="text" class="form-control" name="nombre_usuario" placeholder="Nombre Completo" value="<?php echo $prueba1['id_paciente']?>" hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="edad">Edad</label>
+                            <input type="number" class="form-control" min="1" max="120" name="edad" value="<?php echo $prueba1['edad'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="sexo">Género</label>
+                            <input type="text" class="form-control" value="<?php echo $prueba1['genero'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="autoridad">Autoridad señalada</label>
-                            <select class="form-control" name="autoridad">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($autoridades as $autoridad) : ?>
-                                    <option value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="ocupacion">Ocupación</label>
+                            <input type="text" class="form-control" value="<?php echo $prueba1['ocupacion'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="escolaridad">Escolaridad</label>
+                            <input type="text" class="form-control" value="<?php echo $prueba1['escolaridad'] ?>" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="nombre_usuario">Nombre del usuario</label>
-                            <input type="text" class="form-control" name="nombre_usuario" placeholder="Nombre Completo" required>
-                        </div>
-                    </div>
-                    <div class="col-md-1">
-                        <div class="form-group">
-                            <label for="edad">Edad</label>
-                            <input type="number" class="form-control" min="1" max="120" name="edad" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="sexo">Género</label>
-                            <select class="form-control" name="sexo">
-                                <option value="">Escoge una opción</option>
-                                <?php foreach ($generos as $genero) : ?>
-                                    <option value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
                             <label for="grupo_vulnerable">Grupo Vulnerable</label>
-                            <select class="form-control" name="grupo_vulnerable">
+                            <input type="text" class="form-control" value="<?php echo $prueba1['grupo_vulnerable'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label for="autoridad_responsable">Autoridad señalada</label>
+                            <input type="text" class="form-control" value="<?php echo $prueba1['nombre_autoridad'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="derechos_vuln">Presunto Derecho Vulnerado</label>
+                            <select class="form-control" name="derechos_vuln">
                                 <option value="">Escoge una opción</option>
-                                <?php foreach ($grupos as $grupo) : ?>
-                                    <option value="<?php echo $grupo['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo['descripcion']); ?></option>
+                                <?php foreach ($derechos_vuln as $derecho_vuln) : ?>
+                                    <option value="<?php echo $derecho_vuln['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho_vuln['descripcion']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -256,17 +253,7 @@ include_once('layouts/header.php'); ?>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="protocolo_estambul">Protocolo de Estambul</label>
-                            <select class="form-control" name="protocolo_estambul">
-                                <option value="">Escoge una opción</option>
-                                <option value="Aplicado">Aplicado</option>
-                                <option value="No Aplicado">No Aplicado</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="resultado">Resultado</label>
                             <select class="form-control" name="resultado">
@@ -277,15 +264,21 @@ include_once('layouts/header.php'); ?>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="documento_emitido">Documento Emititdo</label>
+                            <label for="documento_emitido">Documento Emitido</label>
                             <select class="form-control" name="documento_emitido">
                                 <option value="">Escoge una opción</option>
-                                <option value="Dictamen psicológico">Dictamen psicológico</option>
-                                <option value="Informe psicológico">Informe psicológico</option>
+                                <option value="Dictamen Psicológico">Dictamen Psicológico</option>
+                                <option value="Informe Psicológico">Informe Psicológico</option>
                                 <option value="No Aplica">No Aplica</option>
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="clave_documento">Clave del documento</label>
+                            <input type="text" class="form-control" name="clave_documento" placeholder="Clave de documento">
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -296,8 +289,12 @@ include_once('layouts/header.php'); ?>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="nombre_usuario">Clave del documento</label>
-                            <input type="text" class="form-control" name="clave_documento" placeholder="Insertar la clave del documento">
+                            <label for="protocolo_estambul">Protocolo de Estambul</label>
+                            <select class="form-control" name="protocolo_estambul">
+                                <option value="">Escoge una opción</option>
+                                <option value="Aplicado">Aplicado</option>
+                                <option value="No Aplicado">No Aplicado</option>
+                            </select>
                         </div>
                     </div>
                     <div class="col-md-3">

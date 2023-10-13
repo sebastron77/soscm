@@ -6,12 +6,10 @@ $user = current_user();
 $detalle = $user['id_user'];
 $id_folio = last_id_folios();
 $id_info_a = last_id_info_areas();
-// page_require_level(2);
 $id_user = $user['id_user'];
 $areas = find_all('area');
 $area_user = area_usuario2($id_user);
 $area_creacion = $area_user['nombre_area'];
-
 ?>
 <?php header('Content-type: text/html; charset=utf-8');
 if (isset($_POST['add_informe_areas'])) {

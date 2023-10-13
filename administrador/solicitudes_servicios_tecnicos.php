@@ -51,6 +51,14 @@ endif;
                 </span>
             </div>
         </a>
+        <a href="sesiones.php" class="tile">
+            <div class="tile-tittle">Sesiones</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    cognition
+                </span>
+            </div>
+        </a>
         <a href="jornadas.php" class="tile">
             <div class="tile-tittle">Jornadas</div>
             <div class="tile-icon">
@@ -96,6 +104,14 @@ endif;
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     file_open
+                </span>
+            </div>
+        </a>
+        <a href="pacientes.php" class="tile">
+            <div class="tile-tittle">Pacientes</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    patient_list
                 </span>
             </div>
         </a>

@@ -564,6 +564,7 @@ option {
   background: #ffffff;
   color: #3a3d44;
 }
+
 textarea.form-control:focus {
   background: #e3e3e3;
   color: #3a3d44;

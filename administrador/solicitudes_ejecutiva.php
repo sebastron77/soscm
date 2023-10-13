@@ -11,32 +11,20 @@ if ($nivel_user <= 2) {
     page_require_level(2);
 }
 if ($nivel_user == 3) {
-    page_require_level_exacto(3);
+    page_require_level(3);
+}
+if ($nivel_user == 4) {
+    redirect('home.php');
 }
 if ($nivel_user == 5) {
     redirect('home.php');
 }
+if ($nivel_user == 6) {
+    redirect('home.php');
+}
 if ($nivel_user == 7) {
-    page_require_level(7);
-}
-if ($nivel_user == 21) {
-    page_require_level_exacto(21);
-}
-if ($nivel_user == 19) {
     redirect('home.php');
 }
-if ($nivel_user > 3 && $nivel_user < 5) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 5 && $nivel_user < 7) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 7) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 19 && $nivel_user < 21) :
-    redirect('home.php');
-endif;
 ?>
 
 <?php
@@ -115,6 +103,22 @@ $c_user = count_by_id('users', 'id_user');
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     file_open
+                </span>
+            </div>
+        </a>
+        <a href="acciones_vinculacion.php" class="tile">
+            <div class="tile-tittle">Acciones Vinculación</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    compare_arrows
+                </span>
+            </div>
+        </a>
+        <a href="solicitudes_cotrapem.php" class="tile">
+            <div class="tile-tittle">COTRAPEM</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    balance
                 </span>
             </div>
         </a>

@@ -48,6 +48,9 @@
   <script src="https://harvesthq.github.io/chosen/chosen.jquery.js"></script>
 
 
+  <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous"> -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
   <script language="javascript">
     function myFunction() {
       var popup = document.getElementById("myPopup");
@@ -68,6 +71,14 @@
     function myFunction5() {
       var popup5 = document.getElementById("myPopup5");
       popup5.classList.toggle("show");
+    }
+    function myFunction6() {
+      var popup6 = document.getElementById("myPopup6");
+      popup6.classList.toggle("show");
+    }
+    function myFunction7() {
+      var popup7 = document.getElementById("myPopup7");
+      popup7.classList.toggle("show");
     }
 
     $(document).ready(function() {

@@ -5,11 +5,10 @@ require_once('includes/load.php');
 <?php
 $user = current_user();
 $nivel = $user['user_level'];
-$areas = find_all_area_orden('area');
-$tipo_ficha = find_tipo_ficha((int)$_GET['id']);
 $id_user = $user['id_user'];
 $busca_area = area_usuario($id_user);
-$funciones = find_all('cat_funcion');
+$areas = find_all_area_orden('area');
+$funciones = find_all_funcion_M();
 $ocupaciones = find_all_order('cat_ocupaciones', 'descripcion');
 $escolaridades = find_all('cat_escolaridad');
 $visitadurias = find_all_visitadurias();
@@ -17,6 +16,7 @@ $autoridades = find_all_aut_res();
 $generos = find_all('cat_genero');
 $grupos = find_all_order('cat_grupos_vuln', 'id_cat_grupo_vuln');
 $derechos_vuln = find_all_order('cat_der_vuln', 'descripcion');
+$folios = find_all('folios');
 
 if ($nivel <= 2) {
     page_require_level(2);
@@ -38,16 +38,14 @@ if ($nivel == 7) {
 }
 ?>
 <?php
-$e_ficha = find_by_id('fichas',(int)$_GET['id'], 'id_ficha');
+$e_ficha = find_ficha_completa((int)$_GET['id']);
 if (!$e_ficha) {
     $session->msg("d", "id de ficha no encontrado.");
     redirect('fichas.php');
 }
 ?>
 <?php
-if (isset($_POST['edit_ficha'])) {
-    $req_fields = array('funcion', 'num_queja', 'area_solicitante', 'visitaduria', 'ocupacion', 'escolaridad', 'hechos', 'autoridad', 'nombre_usuario', 'edad', 'sexo', 'grupo_vulnerable', 'fecha_intervencion', 'resultado', 'documento_emitido');
-    validate_fields($req_fields);
+if (isset($_POST['update'])) {
     if (empty($errors)) {
         $id = (int)$e_ficha['id_ficha'];
         $funcion   = remove_junk($db->escape($_POST['funcion']));
@@ -56,7 +54,7 @@ if (isset($_POST['edit_ficha'])) {
         $area_solicitante   = remove_junk($db->escape($_POST['area_solicitante']));
         $ocupacion   = remove_junk(($db->escape($_POST['ocupacion'])));
         $escolaridad   = remove_junk(($db->escape($_POST['escolaridad'])));
-        $hechos   = remove_junk(($db->escape($_POST['hechos'])));
+        $derechos_vuln   = remove_junk(($db->escape($_POST['derechos_vuln'])));
         $autoridad   = remove_junk(($db->escape($_POST['autoridad'])));
         $nombre_usuario   = remove_junk($db->escape($_POST['nombre_usuario']));
         $edad   = remove_junk($db->escape($_POST['edad']));
@@ -73,10 +71,10 @@ if (isset($_POST['edit_ficha'])) {
         $resultado = str_replace("/", "-", $folio_editar);
         $carpeta = 'uploads/fichastecnicas/medica/' . $resultado;
 
-        $name = $_FILES['ficha_adjunto']['name'];
-        $size = $_FILES['ficha_adjunto']['size'];
-        $type = $_FILES['ficha_adjunto']['type'];
-        $temp = $_FILES['ficha_adjunto']['tmp_name'];
+        $name = $_FILES['adjunto']['name'];
+        $size = $_FILES['adjunto']['size'];
+        $type = $_FILES['adjunto']['type'];
+        $temp = $_FILES['adjunto']['tmp_name'];
 
         if (is_dir($carpeta)) {
             $move =  move_uploaded_file($temp, $carpeta . "/" . $name);
@@ -86,14 +84,12 @@ if (isset($_POST['edit_ficha'])) {
         }
 
         if ($name != '') {
-            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}', num_queja='{$num_queja}', id_visitaduria='{$visitaduria}', id_area_solicitante='{$area_solicitante}', id_cat_ocup='{$ocupacion}', 
-			id_cat_escolaridad='{$escolaridad}', id_cat_der_vuln='{$hechos}', id_cat_aut='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', 
-			id_cat_gen='{$sexo}', id_cat_grupo_vuln='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', ficha_adjunto='{$name}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
+            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}',id_visitaduria='{$visitaduria}',
+            id_area_solicitante='{$area_solicitante}',id_cat_der_vuln='{$derechos_vuln}',fecha_intervencion='{$fecha_intervencion}',resultado='{$resultado2}', documento_emitido='{$documento_emitido}', ficha_adjunto='{$name}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
         }
         if ($name == '') {
-            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}', num_queja='{$num_queja}', id_visitaduria='{$visitaduria}', id_area_solicitante='{$area_solicitante}', id_cat_ocup='{$ocupacion}', 
-			id_cat_escolaridad='{$escolaridad}', id_cat_der_vuln='{$hechos}', id_cat_aut='{$autoridad}', nombre_usuario='{$nombre_usuario}',edad='{$edad}', 
-			id_cat_gen='{$sexo}', id_cat_grupo_vuln='{$grupo_vulnerable}', fecha_intervencion='{$fecha_intervencion}', resultado='{$resultado2}', documento_emitido='{$documento_emitido}', nombre_especialista='{$nombre_especialista}', clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
+            $sql = "UPDATE fichas SET id_cat_funcion='{$funcion}',id_visitaduria='{$visitaduria}',
+            id_area_solicitante='{$area_solicitante}',id_cat_der_vuln='{$derechos_vuln}',fecha_intervencion='{$fecha_intervencion}',resultado='{$resultado2}',documento_emitido='{$documento_emitido}',nombre_especialista='{$nombre_especialista}',clave_documento='{$clave_documento}' WHERE id_ficha='{$db->escape($id)}'";
         }
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
@@ -115,62 +111,40 @@ if (isset($_POST['edit_ficha'])) {
         <div class="panel-heading">
             <strong>
                 <span class="glyphicon glyphicon-th"></span>
-                <span>Editar ficha - Área Médica</span>
+                <span>Editar Ficha Técnica - Área Médica</span>
             </strong>
         </div>
         <div class="panel-body">
-            <form method="post" action="edit_ficha.php?id=<?php echo (int)$e_ficha['id_ficha']; ?>" enctype="multipart/form-data">
+            <form method="post" action="edit_ficha.php?id=<?php echo $e_ficha['id_ficha']; ?>" enctype="multipart/form-data">
                 <div class="row">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="num_queja">Expediente</label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['exp_ficha']; ?>" readonly>
+                        </div>
+                    </div>
                     <div class="col-md-3">
                         <div class="form-group">
                             <label for="funcion">Función</label>
                             <select class="form-control" name="funcion">
-							<option value="">Escoge una opción</option>
+                                <option value="">Escoge una opción</option>|
                                 <?php foreach ($funciones as $funcion) : ?>
-                                    <option <?php if ($funcion['id_cat_funcion'] === $e_ficha['id_cat_funcion'])
-                                                echo 'selected="selected"'; ?> value="<?php echo $funcion['id_cat_funcion']; ?>">
-                                        <?php echo ucwords($funcion['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-2">
-                        <div class="form-group">
-                            <label for="num_queja">No. de Queja</label>
-                            <input type="text" class="form-control" value="<?php echo remove_junk($e_ficha['num_queja']); ?>" name="num_queja" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="area_solicitante">Área Solicitante</label>
-                            <select class="form-control" name="area_solicitante">
-							<option value="">Escoge una opción</option>
-                                <?php foreach ($areas as $area) : ?>
-                                    <option <?php if ($area['id_area'] === $e_ficha['id_area_solicitante']) echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?></option>
+                                    <option <?php if ($funcion['id_cat_funcion'] == $e_ficha['id_cat_funcion'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $funcion['id_cat_funcion']; ?>"><?php echo ucwords($funcion['descripcion']); ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-group">
-                            <label for="ocupacion">Ocupacion</label>
-                            <select class="form-control" name="ocupacion">
-							<option value="">Escoge una opción</option>
-                                <?php foreach ($ocupaciones as $ocupacion) : ?>
-                                    <option <?php if ($ocupacion['id_cat_ocup'] == $e_ficha['id_cat_ocup']) echo 'selected="selected"'; ?> value="<?php echo $ocupacion['id_cat_ocup']; ?>"><?php echo ucwords($ocupacion['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="escolaridad">Escolaridad</label>
-                            <select class="form-control" name="escolaridad">
-							<option value="">Escoge una opción</option>
-                                <?php foreach ($escolaridades as $estudios) : ?>
-                                    <option <?php if ($estudios['id_cat_escolaridad'] === $e_ficha['id_cat_escolaridad']) echo 'selected="selected"'; ?> value="<?php echo $estudios['id_cat_escolaridad']; ?>"><?php echo ucwords($estudios['descripcion']); ?></option>
+                            <label for="area_solicitante">Área Solicitante</label>
+                            <select class="form-control" name="area_solicitante">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($areas as $area) : ?>
+                                    <option <?php if ($area['id_area'] == $e_ficha['id_area_solicitante'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $area['id_area']; ?>"><?php echo ucwords($area['nombre_area']); ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -179,134 +153,171 @@ if (isset($_POST['edit_ficha'])) {
                         <div class="form-group">
                             <label for="visitaduria">Visitaduria</label>
                             <select class="form-control" name="visitaduria">
-							<option value="">Escoge una opción</option>
+                                <option value="">Escoge una opción</option>
                                 <?php foreach ($visitadurias as $visitaduria) : ?>
-                                    <option <?php if ($visitaduria['id_area'] === $e_ficha['id_visitaduria']) echo 'selected="selected"'; ?> value="<?php echo $visitaduria['id_area']; ?>"><?php echo ucwords($visitaduria['nombre_area']); ?></option>
+                                    <option <?php if ($visitaduria['id_area'] == $e_ficha['id_visitaduria'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $visitaduria['id_area']; ?>"><?php echo ucwords($visitaduria['nombre_area']); ?>
+                                    </option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
+
+                </div>
+                <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="hechos">Presuntos hechos violatorios</label>
-                            <select class="form-control" name="hechos">
-							<option value="">Escoge una opción</option>
-                                <?php foreach ($derechos_vuln as $derecho) : ?>
-                                    <option <?php if ($derecho['id_cat_der_vuln'] === $e_ficha['id_cat_der_vuln']) echo 'selected="selected"'; ?> value="<?php echo $derecho['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho['descripcion']); ?></option>
-                                <?php endforeach; ?>
-                            </select>
+                            <label for="nombre_usuario">Nombre del usuario
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['nombre'] . " " . $e_ficha['paterno'] . " " . $e_ficha['materno'] ?>" readonly>
+                            <input type="text" class="form-control" name="nombre_usuario" placeholder="Nombre Completo" value="<?php echo $e_ficha['id_paciente'] ?>" hidden>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="form-group">
+                            <label for="edad">Edad
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction2()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup2" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="number" class="form-control" min="1" max="120" name="edad" value="<?php echo $e_ficha['edad'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label for="sexo">Género
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction3()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup3" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['genero'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="autoridad">Autoridad señalada</label>
-                            <select class="form-control" name="autoridad">
-							<option value="">Escoge una opción</option>
-                            <?php foreach ($autoridades as $autoridad) : ?>
-                                <option <?php if ($autoridad['id_cat_aut'] === $e_ficha['id_cat_aut']) echo 'selected="selected"'; ?> value="<?php echo $autoridad['id_cat_aut']; ?>"><?php echo ucwords($autoridad['nombre_autoridad']); ?></option>
-                            <?php endforeach; ?>
-                            </select>
+                            <label for="ocupacion">Ocupación
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction4()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup4" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['ocupacion'] ?>" readonly>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="escolaridad">Escolaridad
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction5()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup5" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['escolaridad'] ?>" readonly>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="nombre_usuario">Nombre del usuario</label>
-                            <input type="text" class="form-control" name="nombre_usuario" placeholder="Nombre Completo" value="<?php echo remove_junk($e_ficha['nombre_usuario']); ?>" required>
+                            <label for="grupo_vulnerable">Grupo Vulnerable
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction6()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup6" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['gv'] ?>" readonly>
                         </div>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-4">
                         <div class="form-group">
-                            <label for="edad">Edad</label>
-                            <input type="number" class="form-control" min="1" max="120" name="edad" value="<?php echo remove_junk($e_ficha['edad']); ?>" required>
+                            <label for="autoridad_responsable">Autoridad señalada
+                                <div style="margin-left: 10px;" class="popup caja" onclick="myFunction7()">
+                                    <p style="font-size: 14px;">?</p>
+                                    <span class="popuptext" id="myPopup7" style="width: 100px">Información No Modificable.</span>
+                                </div>
+                            </label>
+                            <input type="text" class="form-control" value="<?php echo $e_ficha['autoridad'] ?>" readonly>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="form-group">
-                            <label for="sexo">Género</label>
-                            <select class="form-control" name="sexo">
-							<option value="">Escoge una opción</option>
-                            <?php foreach ($generos as $genero) : ?>
-                                <option <?php if ($genero['id_cat_gen'] === $e_ficha['id_cat_gen']) echo 'selected="selected"'; ?> value="<?php echo $genero['id_cat_gen']; ?>"><?php echo ucwords($genero['descripcion']); ?></option>
-                            <?php endforeach; ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="grupo_vulnerable">Grupo Vulnerable</label>
-                            <select class="form-control" name="grupo_vulnerable">
-							<option value="">Escoge una opción</option>
-                            <?php foreach ($grupos as $grupo) : ?>
-                                <option <?php if ($grupo['id_cat_grupo_vuln'] === $e_ficha['id_cat_grupo_vuln']) echo 'selected="selected"'; ?> value="<?php echo $grupo['id_cat_grupo_vuln']; ?>"><?php echo ucwords($grupo['descripcion']); ?></option>
-                            <?php endforeach; ?>
+                            <label for="derechos_vuln">Presunto Derecho Vulnerado</label>
+                            <select class="form-control" name="derechos_vuln">
+                                <option value="">Escoge una opción</option>
+                                <?php foreach ($derechos_vuln as $derecho_vuln) : ?>
+                                    <option value="<?php echo $derecho_vuln['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho_vuln['descripcion']); ?></option>
+                                <?php endforeach; ?>
+                                <?php foreach ($derechos_vuln as $derecho_vuln) : ?>
+                                    <option <?php if ($derecho_vuln['id_cat_der_vuln'] == $e_ficha['id_cat_der_vuln'])
+                                                echo 'selected="selected"'; ?> value="<?php echo $derecho_vuln['id_cat_der_vuln']; ?>"><?php echo ucwords($derecho_vuln['descripcion']); ?>
+                                    </option>
+                                <?php endforeach; ?>
                             </select>
                         </div>
                     </div>
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="fecha_intervencion">Fecha de Intervención</label>
-                            <input type="date" class="form-control" value="<?php echo remove_junk($e_ficha['fecha_intervencion']); ?>" name="fecha_intervencion" required>
+                            <input type="date" class="form-control" name="fecha_intervencion" value="<?php echo $e_ficha['fecha_intervencion'] ?>" required>
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="resultado">Resultado</label>
                             <select class="form-control" name="resultado">
-							<option value="">Escoge una opción</option>
-                                <option <?php if ($e_ficha['resultado'] === 'Positivo') echo 'selected="selected"'; ?> value="Positivo">Positivo</option>
-                                <option <?php if ($e_ficha['resultado'] === 'Negativo') echo 'selected="selected"'; ?> value="Negativo">Negativo</option>
-                                <option <?php if ($e_ficha['resultado'] === 'No aplica') echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>
+                                <option value="">Escoge una opción</option>
+                                <option <?php if ($e_ficha['resultado'] == 'Positivo') echo 'selected="selected"'; ?> value="Positivo">Positivo</option>
+                                <option <?php if ($e_ficha['resultado'] == 'Negativo') echo 'selected="selected"'; ?> value="Negativo">Negativo</option>
+                                <option <?php if ($e_ficha['resultado'] == 'No Aplica') echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
-                            <label for="documento_emitido">Documento Emititdo</label>
+                            <label for="documento_emitido">Documento Emitido</label>
                             <select class="form-control" name="documento_emitido">
-							<option value="">Escoge una opción</option>
-                                <option <?php if ($e_ficha['documento_emitido'] === 'Certificado Médico')  echo 'selected="selected"'; ?> value="Certificado Médico">Certificado Médico</option>
-                                <option <?php if ($e_ficha['documento_emitido'] === 'Opinión Médica')  echo 'selected="selected"'; ?> value="Opinión Médica">Opinión Médica</option>
-                                <option <?php if ($e_ficha['documento_emitido'] === 'No Aplica')  echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>
+                                <option value="">Escoge una opción</option>
+                                <option <?php if ($e_ficha['documento_emitido'] == 'Certificado Médico') echo 'selected="selected"'; ?> value="Certificado Médico">Certificado Médico</option>
+                                <option <?php if ($e_ficha['documento_emitido'] == 'Opinión Médica') echo 'selected="selected"'; ?> value="Opinión Médica">Opinión Médica</option>
+                                <option <?php if ($e_ficha['documento_emitido'] == 'No Aplica') echo 'selected="selected"'; ?> value="No Aplica">No Aplica</option>
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <label for="nombre_especialista">Especialista que emite</label>
-                            <input type="text" class="form-control" name="nombre_especialista" value="<?php echo remove_junk($e_ficha['nombre_especialista']); ?>" placeholder="Nombre Completo del especialista" required>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
                         <div class="form-group">
                             <label for="clave_documento">Clave del documento</label>
-                            <input type="text" class="form-control" name="clave_documento" value="<?php echo remove_junk($e_ficha['clave_documento']); ?>" placeholder="Insertar la clave del documento" required>
-                        </div>
-                    </div>                    
-                </div>
-                <div class="row">
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label for="ficha_adjunto">Ficha Adjunta</label>
-                                <input type="file" accept="application/pdf" class="form-control" name="ficha_adjunto" id="ficha_adjunto" value="uploads/fichastecnicas/<?php echo $e_ficha['ficha_adjunto']; ?>">
-                                <label style="font-size:12px; color:#E3054F;">Archivo Actual: <?php echo remove_junk($e_ficha['ficha_adjunto']); ?></label>
-                            </div>
+                            <input type="text" class="form-control" name="clave_documento" value="<?php echo $e_ficha['clave_documento']; ?>">
                         </div>
                     </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="nombre_usuario">Especialista que emite</label>
+                            <input type="text" class="form-control" name="nombre_especialista" value="<?php echo $e_ficha['nombre_especialista']; ?>">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="adjunto">Adjuntar documento emitido</label>
+                            <input type="file" accept="application/pdf" class="form-control" name="adjunto" id="adjunto">
+                            <label style="font-size:12px; color:#E3054F;">Archivo Actual:
+                                <?php echo remove_junk($e_ficha['ficha_adjunto']); ?>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group clearfix">
-                <?php if ($tipo_ficha['tipo_ficha'] == 1) : ?>
                     <a href="fichas.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                         Regresar
                     </a>
-                <?php else : ?>
-                    <a href="fichas_psic.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-                        Regresar
-                    </a>
-                <?php endif; ?>
-                    <button type="submit" name="edit_ficha" class="btn btn-primary">Guardar</button>
+                    <button type="submit" name="update" class="btn btn-info">Actualizar</button>
                 </div>
             </form>
         </div>
