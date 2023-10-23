@@ -5804,7 +5804,7 @@ function find_all_sesiones()
 function find_by_ficha($id_ficha)
 {
   global $db;
-        $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,f.num_queja,f.ficha_adjunto,a.nombre_area as visitaduria,a2.nombre_area as area_solicitante, dv.descripcion as hechos,f.fecha_intervencion,f.resultado,f.documento_emitido,f.nombre_especialista,f.clave_documento,
+  $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,f.num_queja,f.ficha_adjunto,a.nombre_area as visitaduria,a2.nombre_area as area_solicitante, dv.descripcion as hechos,f.fecha_intervencion,f.resultado,f.documento_emitido,f.nombre_especialista,f.clave_documento,
         f.id_cat_funcion,f.id_visitaduria,f.id_area_solicitante,f.id_cat_der_vuln,f.protocolo_estambul,f.id_ficha
         FROM fichas f
         LEFT JOIN cat_funcion fun ON f.id_cat_funcion = fun.id_cat_funcion
@@ -5820,7 +5820,7 @@ function find_by_ficha($id_ficha)
 function find_ficha_completa($id_ficha)
 {
   global $db;
-        $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,f.num_queja,f.ficha_adjunto,a.nombre_area as visitaduria,a2.nombre_area as area_solicitante, dv.descripcion as hechos,f.fecha_intervencion,f.resultado,f.documento_emitido,f.nombre_especialista,f.clave_documento,
+  $sql = $db->query("SELECT f.folio,fun.descripcion as funcion,f.num_queja,f.ficha_adjunto,a.nombre_area as visitaduria,a2.nombre_area as area_solicitante, dv.descripcion as hechos,f.fecha_intervencion,f.resultado,f.documento_emitido,f.nombre_especialista,f.clave_documento,
         f.id_cat_funcion,f.id_visitaduria,f.id_area_solicitante,f.id_cat_der_vuln,f.protocolo_estambul,f.id_ficha, fo.folio as exp_ficha, 
         oc.descripcion as ocupacion,esc.descripcion as escolaridad,aut.nombre_autoridad as autoridad,p.nombre,p.paterno,p.materno,p.edad,gen.descripcion as genero,gv.descripcion as gv,f.tipo_ficha
         FROM fichas f
@@ -5856,7 +5856,7 @@ function find_all_accionesV()
 function find_by_accionV($id_accionV)
 {
   global $db;
-        $sql = $db->query("SELECT av.id_accionV, av.folio, av.fecha, av.lugar, av.nombre_actividad, av.descripcion, av.participantes,
+  $sql = $db->query("SELECT av.id_accionV, av.folio, av.fecha, av.lugar, av.nombre_actividad, av.descripcion, av.participantes,
         aut.nombre_autoridad, av.modalidad, av.observaciones, av.inst_procedencia, av.carpeta, av.creador, av.fecha_creacion
         FROM acciones_vinculacion av
         LEFT JOIN cat_autoridades aut ON av.inst_procedencia = aut.id_cat_aut
@@ -5869,7 +5869,7 @@ function find_by_accionV($id_accionV)
 function find_by_id_sesionCotrapem($id_sesion)
 {
   global $db;
-        $sql = $db->query("SELECT id_sesion, folio, fecha, lugar, acuerdos
+  $sql = $db->query("SELECT id_sesion, folio, fecha, lugar, acuerdos
         FROM cotrapem
         WHERE id_sesion = '{$id_sesion}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
@@ -5888,13 +5888,49 @@ function find_all_actividadesCotrapem()
 function find_by_id_actividadCotrapem($id_sesion)
 {
   global $db;
-        $sql = $db->query("SELECT ac.id_actividadCotrapem, ac.folio, ac.tipo_actividad, ac.modalidad, ac.fecha, ac.municipio, ac.lugar,
+  $sql = $db->query("SELECT ac.id_actividadCotrapem, ac.folio, ac.tipo_actividad, ac.modalidad, ac.fecha, ac.municipio, ac.lugar,
         ac.instituciones_participantes, ac.publico_dirige, ac.hombres, ac.mujeres, ac.no_binarios, ac.total, ac.area_responsable, ac.observaciones, 
         m.descripcion as municipio, a.nombre_area
         FROM actividades_cotrapem ac
         LEFT JOIN area a ON a.id_area = ac.area_responsable
         LEFT JOIN cat_municipios m ON m.id_cat_mun = ac.municipio
         WHERE ac.id_actividadCotrapem = '{$id_sesion}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+function find_all_ss()
+{
+  $sql = "SELECT ss.id_servicio_social, ss.nombre_prestador, ss.paterno_prestador, ss.materno_prestador, c.descripcion as carrera, ss.institucion, 
+                  ss.fecha_inicio, ss.fecha_termino
+          FROM servicio_social ss
+          LEFT JOIN cat_carreras c ON c.id_cat_carrera = ss.carrera";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_by_id_ss($id_ss)
+{
+  global $db;
+  $sql = $db->query("SELECT ss.id_servicio_social, ss.modalidad, ss.nombre_prestador, ss.paterno_prestador, ss.materno_prestador, g.id_cat_gen, 
+                    g.descripcion as genero, ss.edad, nac.descripcion as nacionalidad, ent.descripcion as entidad, mun.descripcion as municipio, 
+                    esc.descripcion as escolaridad, ss.tiene_discapacidad, disc.descripcion as discapacidad, ss.pertenece_gv, gv.descripcion as gv, 
+                    ss.pertenece_comunidad, com.descripcion as comunidad, c.descripcion as carrera, ss.institucion, ss.fecha_inicio, ss.fecha_termino, 
+                    ss.total_horas, ss.observaciones, ss.carta_presentacion, ss.oficio_aceptacion, ss.informe_bim1, ss.informe_bim2, ss.informe_bim3, 
+                    ss.informe_global, ss.evaluacion_uReceptora, ss.oficio_terminacion, nac.id_cat_nacionalidad, ent.id_cat_ent_fed, mun.id_cat_mun, 
+                    esc.id_cat_escolaridad, disc.id_cat_disc, gv.id_cat_grupo_vuln, com.id_cat_comun, c.id_cat_carrera
+                    FROM servicio_social ss
+                    LEFT JOIN cat_carreras c ON c.id_cat_carrera = ss.carrera
+                    LEFT JOIN cat_genero g ON g.id_cat_gen = ss.genero
+                    LEFT JOIN cat_nacionalidades nac ON nac.id_cat_nacionalidad = ss.nacionalidad
+                    LEFT JOIN cat_entidad_fed ent ON ent.id_cat_ent_fed = ss.entidad
+                    LEFT JOIN cat_municipios mun ON mun.id_cat_mun = ss.municipio
+                    LEFT JOIN cat_escolaridad esc ON esc.id_cat_escolaridad = ss.escolaridad
+                    LEFT JOIN cat_discapacidades disc ON disc.id_cat_disc = ss.discapacidad
+                    LEFT JOIN cat_grupos_vuln gv ON gv.id_cat_grupo_vuln = ss.grupo_vulnerable
+                    LEFT JOIN cat_comunidades com ON com.id_cat_comun = ss.comunidad
+                    WHERE ss.id_servicio_social = '{$id_ss}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
   else

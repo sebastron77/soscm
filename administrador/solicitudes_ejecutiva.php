@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Secretaría Técnica';
+$page_title = 'Secretaría Ejecutiva';
 require_once('includes/load.php');
 ?>
 <?php
@@ -36,7 +36,6 @@ $c_user = count_by_id('users', 'id_user');
 <a href="solicitudes.php" class="btn btn-info">Regresar a Áreas</a><br><br>
 <h1 style="color: #3a3d44;"> Solicitudes Secretaría Ejecutiva</h1>
 
-
 <div class="row">
     <div class="col-md-12">
         <?php echo display_msg($msg); ?>
@@ -45,8 +44,8 @@ $c_user = count_by_id('users', 'id_user');
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-               
-		 
+
+
         <a href="consejo.php" class="tileO">
             <div class="tileO-tittle">Actas sesión de consejo</div>
             <div class="tileO-icon">
@@ -56,7 +55,7 @@ $c_user = count_by_id('users', 'id_user');
 
             </div>
         </a>
-		
+
         <a href="convenios.php" class="tileO">
             <div class="tileO-tittle">Convenios</div>
             <div class="tileO-icon">
@@ -65,7 +64,7 @@ $c_user = count_by_id('users', 'id_user');
                 </span>
             </div>
         </a>
-		
+
         <a href="informes_areas.php" class="tileO">
             <div class="tileO-tittle">Informe de Actividades</div>
             <div class="tileO-icon">
@@ -119,6 +118,14 @@ $c_user = count_by_id('users', 'id_user');
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
                     balance
+                </span>
+            </div>
+        </a>
+        <a href="servicio_social.php" class="tile">
+            <div class="tile-tittle">Servicio Social</div>
+            <div class="tile-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    person_raised_hand
                 </span>
             </div>
         </a>
