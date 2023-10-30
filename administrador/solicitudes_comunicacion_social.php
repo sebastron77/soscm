@@ -5,6 +5,7 @@ require_once('includes/load.php');
 $user = current_user();
 $id_user = $user['id_user'];
 $nivel_user = $user['user_level'];
+$area = 46;
 
 if (($nivel_user > 2 && $nivel_user < 7)) :
     redirect('home.php');
@@ -13,11 +14,9 @@ if (($nivel_user > 7 && $nivel_user < 15)) :
     redirect('home.php');
 endif;
 if ($nivel_user > 15) :
-    redirect('home.php');
+    page_require_level(15);
 endif;
-
 ?>
-
 
 <?php include_once('layouts/header.php'); ?>
 
@@ -33,19 +32,70 @@ endif;
 
 <div class="container-fluid">
     <div class="full-box tileO-container">
-
-		
-	   
-        <a href="comunicados_presa.php" class="tileO">
-            <div class="tileO-tittle">Cominicados Prensa</div>
+        <a href="comunicados_prensa.php" class="tileO">
+            <div class="tileO-tittle">Comunicados Prensa</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
-                    card_membership
+                    newsmode
                 </span>
             </div>
         </a>
-		
-        <a href="informes_areas.php?a=46" class="tileO">
+
+        <a href="disenios.php" class="tileO">
+            <div class="tileO-tittle">Diseños</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    design_services
+                </span>
+            </div>
+        </a>
+
+        <a href="actividad_especial.php" class="tileO">
+            <div class="tileO-tittle">Actividad Especial</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    ambient_screen
+                </span>
+            </div>
+        </a>
+
+        <a href="entrevistas.php" class="tileO">
+            <div class="tileO-tittle">Entrevistas</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    mic
+                </span>
+            </div>
+        </a>
+
+        <a href="difusion.php" class="tileO">
+            <div class="tileO-tittle">Difusión</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    campaign
+                </span>
+            </div>
+        </a>
+
+        <a href="otras_acciones.php" class="tileO">
+            <div class="tileO-tittle">Otras Acciones</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    category
+                </span>
+            </div>
+        </a>
+
+        <a href="sintesis_diaria.php" class="tileO">
+            <div class="tileO-tittle">Síntesis Diaria</div>
+            <div class="tileO-icon">
+                <span class="material-symbols-rounded" style="font-size:95px;">
+                    rate_review
+                </span>
+            </div>
+        </a>
+
+        <a href="informes_areas.php?a=<?php echo $area ?>" class="tileO">
             <div class="tileO-tittle">Informe de Actividades</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -54,7 +104,7 @@ endif;
             </div>
         </a>
 
-        <a href="capacitaciones.php" class="tileO">
+        <a href="capacitaciones.php?a=<?php echo $area ?>" class="tileO">
             <div class="tileO-tittle">Capacitaciones</div>
             <div class="tileO-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">
@@ -62,7 +112,7 @@ endif;
                 </span>
             </div>
         </a>
-       
+
         <a href="eventos.php" class="tile">
             <div class="tile-tittle">Eventos</div>
             <div class="tile-icon">
@@ -71,7 +121,7 @@ endif;
                 </span>
             </div>
         </a>
-		 <a href="env_correspondencia.php" class="tile">
+        <a href="env_correspondencia.php" class="tile">
             <div class="tile-tittle">Corresp. Int. Enviada</div>
             <div class="tile-icon">
                 <span class="material-symbols-rounded" style="font-size:95px;">

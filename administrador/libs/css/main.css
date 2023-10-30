@@ -324,7 +324,7 @@ header > .logo {
   z-index: 10;
   left: 0;
   top: 0;
-  padding: 65px 0 0;
+  padding: 60px 0 0;
   height: 100%;
   width: 260px;
   background: #ffffff;
@@ -350,19 +350,19 @@ header > .logo {
 .sidebar ul li a,
 ul.submenu li a {
   color: rgb(58, 61, 68);
-  font-size: 13px;
+  font-size: 12px;
   display: block;
   overflow: hidden;
   position: relative;
   white-space: nowrap;
   text-decoration: none;
   text-align: left;
-  margin-left: -10px;
+  margin-left: -15px;
 }
 .sidebar ul li a span,
 .sidebar ul li i {
   font-size: 14px;
-  font-weight: 300;
+  font-weight: 200;
   letter-spacing: 1px;
   text-shadow: 0 0.45px rgba(58, 61, 68, 1);
 }
@@ -382,15 +382,15 @@ ul.submenu li a:hover {
   color: #5900ff;
 }
 ul.submenu li a {
-  padding-left: 40px;
-  padding: 5px 40px; /*Para que esten mas pegados los submodulos*/
+  padding-left: 30px;
+  padding: 1px 40px; /*Para que esten mas pegados los submodulos*/
 }
 ul.submenu li:before {
   content: "";
   display: block;
   position: absolute;
   z-index: 1;
-  left: 25px;
+  left: 20px;
   top: 0;
   bottom: 0;
   border: 1px dotted #6200ff;
@@ -401,8 +401,8 @@ ul.submenu li a:before {
   display: inline-block;
   position: absolute;
   width: 7px;
-  left: 25px;
-  top: 14px;
+  left: 20px;
+  top: 10px;
   border-top: 1px dotted #6200ff;
 }
 

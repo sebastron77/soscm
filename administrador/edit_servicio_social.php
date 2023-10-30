@@ -229,7 +229,7 @@ if (isset($_POST['update'])) {
         $result = $db->query($sql);
         if ($result && $db->affected_rows() === 1) {
             $session->msg('s', "Expediente Actualizado");
-            insertAccion($user['id_user'], '"' . $user['username'] . '" actualizó expediente de servicio social de: ' . $nombre . ' ' . $apellidos . '.', 2);
+            insertAccion($user['id_user'], '"' . $user['username'] . '" actualizó expediente de servicio social de: ' . $nombre_prestador . ' ' . $paterno_prestador . ' ' .$materno_prestador . '.', 2);
             redirect('edit_servicio_social.php?id=' . (int)$e_detalle['id_servicio_social'], false);
         } else {
             $session->msg('d', ' Lo sentimos, no se pudo actualizar el expediente.' . $sql);

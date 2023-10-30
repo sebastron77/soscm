@@ -4,7 +4,7 @@ require_once('includes/load.php');
 ?>
 <?php
 // page_require_level(5);
-$all_orientaciones = find_all_orientaciones();
+$all_orientaciones = find_all_orientaciones(2023);
 $user = current_user();
 $nivel = $user['user_level'];
 $id_user = $user['id_user'];

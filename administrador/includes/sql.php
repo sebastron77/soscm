@@ -5936,3 +5936,55 @@ function find_by_id_ss($id_ss)
   else
     return null;
 }
+function find_all_difusion()
+{
+  $sql = "SELECT dif.id_difusion, dif.folio, dif.fecha, dif.tipo_difusion, td.descripcion as tipd, dif.tema, dif.link, dif.entrevistado, dif.medio
+          FROM difusion dif
+          LEFT JOIN cat_tipo_difusion td ON td.id_cat_tipo_dif = dif.tipo_difusion";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
+function find_by_id_difusion($id_dif)
+{
+  global $db;
+  $sql = $db->query("SELECT dif.id_difusion, dif.folio, dif.fecha, dif.tipo_difusion, td.descripcion as tipd, dif.tema, dif.link, dif.entrevistado, dif.pdf,
+  dif.medio
+                    FROM difusion dif
+                    LEFT JOIN cat_tipo_difusion td ON td.id_cat_tipo_dif = dif.tipo_difusion
+                    WHERE dif.id_difusion = '{$id_dif}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+function find_all_otras_acciones()
+{
+  $sql = "SELECT oa.id_otra_accion, oa.folio, oa.fecha, oa.accion, oa.tema, oa.area_solicita, oa.archivo, coa.descripcion as otra_ac, a.nombre_area
+          FROM otras_acciones oa
+          LEFT JOIN cat_otras_acciones coa ON coa.id_cat_otra_accion = oa.accion
+          LEFT JOIN area a ON a.id_area = oa.area_solicita";
+  $result = find_by_sql($sql);
+  return $result;
+}
+function find_by_id_accion($id_dif)
+{
+  global $db;
+  $sql = $db->query("SELECT oa.id_otra_accion, oa.folio, oa.fecha, oa.accion, oa.tema, oa.area_solicita, oa.archivo, coa.descripcion as otra_ac, a.nombre_area
+                    FROM otras_acciones oa
+                    LEFT JOIN cat_otras_acciones coa ON coa.id_cat_otra_accion = oa.accion
+                    LEFT JOIN area a ON a.id_area = oa.area_solicita                    
+                    WHERE oa.id_otra_accion = '{$id_dif}' LIMIT 1");
+  if ($result = $db->fetch_assoc($sql))
+    return $result;
+  else
+    return null;
+}
+
+function find_all_status($table)
+{
+  global $db;
+  if (tableExists($table)) {
+    return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE estatus = 1");
+  }
+}
