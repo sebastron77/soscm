@@ -2,7 +2,7 @@
   require_once('includes/load.php');
   
    if ($nivel == 1) {
-    page_require_level_exacto();
+    page_require_level_exacto(1);
 }   
 if ($nivel == 5) {
     page_require_level_exacto(5);

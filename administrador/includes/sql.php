@@ -5988,3 +5988,14 @@ function find_all_status($table)
     return find_by_sql("SELECT * FROM " . $db->escape($table) . " WHERE estatus = 1");
   }
 }
+
+/*--------------------------------------------------------------*/
+/* Funcion para mostrar las acuerdo de recomendaciones
+/*--------------------------------------------------------------*/
+function find_acuerdo_rec($id)
+{
+  global $db;
+  $sql  = "SELECT * FROM acuerdos_recomendaciones 
+            WHERE id_recomendacion = '{$id}'";
+  return $db->query($sql);
+}
