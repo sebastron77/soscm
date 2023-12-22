@@ -4,30 +4,48 @@ require_once('includes/load.php');
 
 page_require_level(1);
 $groups = find_all('grupo_usuarios');
-$trabajadores = find_all_trabajadores();
 $user = current_user();
+$cat_municipios = find_all_cat_municipios();
 ?>
 <?php
 if (isset($_POST['add_user'])) {
-
-  $req_fields = array('detalle-usuario', 'username', 'contraseña', 'level');
-  validate_fields($req_fields);
-
   if (empty($errors)) {
-    $detalle   = remove_junk($db->escape($_POST['detalle-usuario']));
     $username   = remove_junk($db->escape($_POST['username']));
     $password   = remove_junk($db->escape($_POST['contraseña']));
     $user_level = (int)$db->escape($_POST['level']);
     $password = sha1($password);
-    $query = "INSERT INTO users (";
-    $query .= "id_detalle_user,username,password,user_level,status";
+
+    $nombre   = remove_junk($db->escape($_POST['nombre']));
+    $apellidos   = remove_junk($db->escape($_POST['apellidos']));
+    $sexo   = remove_junk($db->escape($_POST['sexo']));
+    $correo   = remove_junk($db->escape($_POST['correo']));
+    $municipio   = remove_junk($db->escape($_POST['municipio']));
+    $estado   = remove_junk($db->escape($_POST['estado']));
+    $telefono   = remove_junk($db->escape($_POST['telefono']));
+
+
+    $conn = new PDO('mysql:host=localhost;dbname=soscm', 'suigcedh', '9DvkVuZ915H!');
+    // set the PDO error mode to exception
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $query = "INSERT INTO detalles_usuario (";
+    $query .= "nombre,apellidos,sexo,correo,municipio,estado,telefono,estatus_detalle";
     $query .= ") VALUES (";
-    $query .= " '{$detalle}', '{$username}', '{$password}', '{$user_level}','1'";
+    $query .= " '{$nombre}','{$apellidos}','{$sexo}','{$correo}','{$municipio}','{$estado}','{$telefono}','1'";
     $query .= ")";
-    if ($db->query($query)) {
+
+    $conn->exec($query);
+    $last_id = $conn->lastInsertId();
+
+    $query2 = "INSERT INTO users (";
+    $query2 .= "id_detalle_user,username,password,user_level,status";
+    $query2 .= ") VALUES (";
+    $query2 .= " '{$last_id}', '{$username}', '{$password}', '{$user_level}','1'";
+    $query2 .= ")";
+
+    if ($db->query($query2)) {
       //sucess
       $session->msg('s', " La cuenta de usuario ha sido creada con éxito.");
-      insertAccion($user['id_user'], '"'.$user['username'].'" agregó el usuario: '.$username.'.', 1);
+      insertAccion($user['id_user'], '"' . $user['username'] . '" agregó el usuario: ' . $username . '.', 1);
       redirect('add_user.php', false);
     } else {
       //failed
@@ -47,48 +65,109 @@ if (isset($_POST['add_user'])) {
     <div class="panel-heading">
       <strong>
         <span class="glyphicon glyphicon-th"></span>
-        <span>Agregar usuario</span>
+        <span>Datos Generales del Usuario</span>
       </strong>
     </div>
     <div class="panel-body">
-      <div class="col-md-6">
-        <form method="post" action="add_user.php">
-          <div class="form-group">
-            <label for="level">Trabajador</label>
-            <select class="form-control" name="detalle-usuario">
-              <?php foreach ($trabajadores as $trabajador) : ?>
-                <option value="<?php echo $trabajador['detalleID']; ?>"><?php echo ucwords($trabajador['nombre']); ?> <?php echo ucwords($trabajador['apellidos']); ?></option>
-              <?php endforeach; ?>
-            </select>
+      <form method="post" action="add_user.php">
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="nombre">Nombre</label>
+              <input type="text" class="form-control" name="nombre" placeholder="Nombre(s)" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" class="form-control" name="username" placeholder="Nombre de usuario">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="apellidos">Apellidos</label>
+              <input type="text" class="form-control" name="apellidos" placeholder="Apellidos" required>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="contraseña">Contraseña</label>
-            <input type="password" class="form-control" name="contraseña" placeholder="Contraseña">
+          <div class="col-md-1">
+            <div class="form-group">
+              <label for="sexo">Género</label>
+              <select class="form-control" name="sexo">
+                <option value="">Escoge una Opción</option>
+                <option value="M">Mujer</option>
+                <option value="H">Hombre</option>
+                <option value="LGBT">LGBTTTIQ+</option>
+                <option value="NB">No Binario</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="level">Rol de usuario</label>
-            <select class="form-control" name="level">
-              <?php foreach ($groups as $group) : ?>
-                <option value="<?php echo $group['nivel_grupo']; ?>"><?php echo ucwords($group['nombre_grupo']); ?></option>
-              <?php endforeach; ?>
-            </select>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="telefono">Teléfono</label>
+              <input type="text" class="form-control" name="telefono">
+            </div>
           </div>
-          <div class="form-group clearfix">
-            <a href="users.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
-              Regresar
-            </a>
-            <button type="submit" name="add_user" class="btn btn-primary" style="background: #5c1699; border-color: #5c1699;">Guardar</button>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="correo">Correo</label>
+              <input type="text" class="form-control" name="correo" placeholder="ejemplo@correo.com" required>
+            </div>
           </div>
-        </form>
-      </div>
-
+        </div>
+        <div class="row">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="municipio">Municipio</label>
+              <select class="form-control" name="municipio">
+                <option value="">Escoge una opción</option>
+                <?php foreach ($cat_municipios as $id_cat_municipio) : ?>
+                  <option value="<?php echo $id_cat_municipio['id_cat_mun']; ?>"><?php echo ucwords($id_cat_municipio['descripcion']); ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="estado">Estado</label>
+              <input type="text" class="form-control" name="estado">
+            </div>
+          </div>
+        </div>
+        <strong><br>
+          <span class="glyphicon glyphicon-th"></span>
+          <span>DATOS DE CUENTA DEL USUARIO</span>
+        </strong>
+        <div class="row">
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" name="username" placeholder="Nombre de usuario">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="contraseña">Contraseña</label>
+              <input type="password" class="form-control" name="contraseña" placeholder="Contraseña">
+            </div>
+          </div>
+          <div class="col-md-3">
+            <div class="form-group">
+              <label for="level">Rol de usuario</label>
+              <select class="form-control" name="level">
+                <?php foreach ($groups as $group) : ?>
+                  <option value="<?php echo $group['nivel_grupo']; ?>"><?php echo ucwords($group['nombre_grupo']); ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group clearfix">
+          <a href="users.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+            Regresar
+          </a>
+          <button type="submit" name="add_user" class="btn btn-primary" style="background: #091d5d; border-color: #091d5d;">Guardar</button>
+        </div>
+      </form>
     </div>
 
   </div>
+
+</div>
 </div>
 
 <?php include_once('layouts/footer.php'); ?>

@@ -44,12 +44,12 @@ page_require_level(1);
             <tr style="height: 10px;"">
               <th style=" width: 1%;">#</th>
               <th style="width: 10%;">Nombre(s)</th>
-              <th style="width: 12%;">Apellidos</th>
-              <th style="width: 5%;">Correo</th>
-              <th style="width: 17%;">Área y Cargo</th>
+              <th style="width: 10%;">Apellidos</th>
+              <th style="width: 8%;">Correo</th>
+              <th style="width: 20%;">Área y Cargo</th>
               <th style="width: 1%;">Estatus</th>
               <?php if ($otro == 1 || $nivel_user == 1) : ?>
-                <th style="width: 10%;" class="text-center">Acciones</th>
+                <th style="width: 5%;" class="text-center">Acciones</th>
               <?php endif ?>
             </tr>
           </thead>
@@ -76,15 +76,6 @@ page_require_level(1);
                       </a>
                       <a href="edit_detalle_usuario.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 40px">
                         <span class="material-symbols-rounded" style="font-size: 20px; color: black; margin-top: 5px;">edit</span>
-                      </a>
-                      <a href="exp_general.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #D94F21; border-color:#D94F21; height: 40px" title="Expediente General" data-toggle="tooltip">
-                        <span class="material-symbols-rounded" style="font-size: 22px; color: white; margin-top: 5px;">folder_shared</span>
-                      </a>
-                      <a href="exp_ac_lab.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #0F6466; border-color:#0F6466; height: 40px" title="Expediente Académico" data-toggle="tooltip">
-                        <span class="material-symbols-rounded" style="font-size: 23px; color: white; margin-top: 5px;">school</span>
-                      </a>
-                      <a href="exp_laboral.php?id=<?php echo (int)$a_detalle['detalleID']; ?>" class="btn btn-danger btn-md" style=" background: #7D74DB; border-color:#7D74DB; height: 40px" title="Expediente Laboral" data-toggle="tooltip">
-                        <span class="material-symbols-rounded" style="font-size: 20px; color: white; margin-top: 5px;">work</span>
                       </a>
                       <?php if ($nivel == 1) : ?>
                         <?php if ($a_detalle['estatus_detalle'] == 0) : ?>

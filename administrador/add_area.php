@@ -51,24 +51,6 @@ if (isset($_POST['add'])) {
 }
 ?>
 
-
-<style>
-    .login-page2 {
-        width: 350px;
-        height: 470px;
-        margin: 7% auto;
-        padding: 0 20px;
-        background-color: #FFFFFF;
-        border-radius: 15px;
-        margin-top: 30px;
-    }
-
-    .login-page2 .text-center {
-        margin-bottom: 10px;
-    }
-</style>
-
-
 <?php include_once('layouts/header.php'); ?>
 <div class="login-page2">
     <div class="text-center">

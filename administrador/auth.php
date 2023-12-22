@@ -14,7 +14,7 @@ if (empty($errors)) {
     updateLastLogIn($user_id);
 
     
-    $session->msg("s", "Bienvenido al Sistema Único de Información y Gestión de la CEDH (SUIGCEDH)");
+    $session->msg("s", "Bienvenido al Sistema de Organizaciones de la Sociedad Civil de Derechos Humanos de Michoacán (SOSCDHM)");
     $user = current_user();
     $nivel = $user['user_level'];
     insertAccion($user['id_user'],'"'.$user['username'].'" inició sesión.',0);
@@ -27,7 +27,7 @@ if (empty($errors)) {
 
 
   } else {
-    $session->msg("d", "Nombre de usuario y/o contraseña incorrecto. O tu cuenta no está activada.");
+    $session->msg("d", "Usuario y/o contraseña incorrectos. O tu cuenta no está activa.");
     redirect('index.php', false);
   }
 

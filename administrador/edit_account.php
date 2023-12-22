@@ -86,21 +86,6 @@ if (isset($_POST['update'])) {
       </div>
     </div>
   </div>
-  <!-- <div class="col-md-6">
-    <div class="panel panel-default">
-      <div class="panel-heading clearfix">
-        <span class="glyphicon glyphicon-edit"></span>
-        <span>Editar mi cuenta</span>
-      </div>
-      <div class="panel-body">
-        <form method="post" action="edit_account.php?id=<?php echo (int)$user['id']; ?>" class="clearfix">
-          <div class="form-group clearfix" style=" display: flex; justify-content: center; align-items: center;">
-            <a href="change_password.php" title="change password" class="btn btn-danger pull-right">Cambiar contraseña</a>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div> -->
 </div>
 
 

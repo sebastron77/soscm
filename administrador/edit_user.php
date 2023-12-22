@@ -139,7 +139,7 @@ if (isset($_POST['update-pass'])) {
             <input type="password" class="form-control" name="password" placeholder="Ingresa la nueva contraseña" required>
           </div>
           <div class="form-group clearfix">
-            <button type="submit" name="update-pass" class="btn btn-danger pull-right">Cambiar</button>
+            <button type="submit" name="update-pass" class="btn btn-danger pull-right" style="font-size: 14px;">Cambiar</button>
           </div>
         </form>
       </div>

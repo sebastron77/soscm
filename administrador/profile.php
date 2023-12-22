@@ -7,15 +7,10 @@ require_once('includes/load.php');
 page_require_level(20);
 
 $usuarioid = $_SESSION['user_id'];
-//echo $usuarioid;
 $obtener_id_detalle_usuario = midetalle($usuarioid);
-//print json_encode ($obtener_id_detalle_usuario);
 $num = $obtener_id_detalle_usuario;
 $e_detalle = find_by_id('detalles_usuario', (int)$num[0][0], 'id_det_usuario');
-//$e_detalle_cargo = find_detalle_cargo((int)$num[0][0]);
 $cargos = find_all('cargos');
-
-//$asignaciones = misasignaciones((int)$num[0][0]);
 
 ?>
 <?php
@@ -31,13 +26,13 @@ endif;
   <div class="profile-block">
     <div class="col-md-4">
       <div class="panel profile">
-        <div class="jumbotron text-center" style="background: #7263F0; border-color: #7263F0;">
+        <div class="jumbotron text-center" style="background: #1573ac; border-color: #1573ac;">
           <img class="img-circle img-size-2" src="uploads/users/<?php echo $user_p['imagen']; ?>" alt="">
           <h3><?php echo first_character($user_p['username']); ?></h3>
         </div>
         <?php if ($user_p['id'] === $user['id']) : ?>
           <ul class="nav nav-pills nav-stacked">
-            <li><a href="edit_account.php" style="background: #FFFFFF; color: #7263F0; text-decoration: none;"> <i class="glyphicon glyphicon-edit"></i> Editar mi perfil</a></li>
+            <li><a href="edit_account.php" style="background: #FFFFFF; color: #1573ac; text-decoration: none;"> <i class="glyphicon glyphicon-edit"></i> Editar mi perfil</a></li>
           </ul>
         <?php endif; ?>
       </div>
@@ -70,7 +65,8 @@ endif;
           <div class="col-md-4">
             <div class="form-group">
               <label for="cargo">Cargo</label>
-              <input readonly type="text" class="form-control" name="cargo" value="<?php foreach ($cargos as $cargo) : if ($cargo['id_cargos'] === $e_detalle['id_cargo']) echo $cargo['nombre_cargo']; endforeach; ?>">
+              <input readonly type="text" class="form-control" name="cargo" value="<?php foreach ($cargos as $cargo) : if ($cargo['id_cargos'] === $e_detalle['id_cargo']) echo $cargo['nombre_cargo'];
+                                                                                    endforeach; ?>">
             </div>
           </div>
         </div>
