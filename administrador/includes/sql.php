@@ -761,6 +761,15 @@ function osc_by_id($id_osc)
   else
     return null;
 }
+function find_all_eventos2()
+{
+  $sql = "SELECT e.id_evento, e.id_osc, e.fecha, e.hora, e.lugar, e.tema, SUBSTRING(e.tema,1,50) as temaCorto, o.nombre
+          FROM eventos e
+          LEFT JOIN osc o ON o.id_osc = e.id_osc
+          ORDER BY e.fecha DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
 function find_all_eventos()
 {
   $sql = "SELECT e.id_evento, e.id_osc, e.fecha, e.hora, e.lugar, e.tema, o.nombre

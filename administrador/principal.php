@@ -6,13 +6,16 @@ require_once('includes/load.php');
 $osc = find_all('osc');
 $all_noticias = find_all_noticias2();
 $all_eventos = find_all_eventos();
+$all_eventos2 = find_all_eventos2();
 ?>
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Principal</title>
+    <!-- Agrega este enlace a Bootstrap en la sección head de tu HTML -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -202,6 +205,17 @@ $all_eventos = find_all_eventos();
         border-radius: 4px;
         text-align: center;
     }
+
+    .btn-cerrar {
+            font-size: 25px; /* Tamaño del texto */
+            padding: 0px 8px; /* Espacio interno (arriba y abajo, izquierda y derecha) */
+            background-color: #091d5d; /* Color de fondo */
+            color: white; /* Color del texto */
+            border: none; /* Elimina el borde */
+            border-radius: 2px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar el ratón */
+            margin-top: -2%;
+        }
 </style>
 
 <body class="body">
@@ -335,26 +349,23 @@ $all_eventos = find_all_eventos();
         </div>
         <div class="dias-mes" id="diasMes">
             <!-- Los días del mes se generarán dinámicamente con JavaScript -->
-            <?php
-            $eventos = find_all_eventos();
-
-            // Crear un array para organizar eventos por día
-            $eventosPorDia = array();
-
-            foreach ($eventos as $evento) {
-                $fecha = $evento['fecha'];
-                $titulo = $evento['tema'];
-
-                // Obtener el día de la fecha
-                $dia = date('d', strtotime($fecha));
-
-                // Organizar el evento por día en el array
-                $eventosPorDia[$dia][] = $titulo;
-            }
-
-            ?>
-
+            <!-- Modal -->
+            <div class="modal fade" id="eventoModal" tabindex="-1" aria-labelledby="eventoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header" style="height: 40px; background: #091d5d;">
+                            <p style="color: white; font-size: 20px; font-weight: bold;" class="modal-title" id="eventoModalLabel">Detalles del Evento</p>
+                            <button type="button" class="close btn-cerrar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        </div>
+                        <div class="modal-body" id="eventoModalBody">
+                            <!-- Contenido del modal generado dinámicamente por JavaScript -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+
     </div>
     <div class="footer">
         <br>
@@ -417,6 +428,10 @@ $all_eventos = find_all_eventos();
         const ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
         const ultimoDia = ultimoDiaMes.getDate();
         const eventos = <?php echo json_encode(find_all_eventos()); ?>;
+        // Antes de tu bucle para generar días del mes
+        const modalBody = document.getElementById('eventoModalBody');
+        const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+
 
         // Configurar el texto del encabezado con el mes y año actual
         headerMes.textContent = obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
@@ -439,14 +454,16 @@ $all_eventos = find_all_eventos();
         // Generar días del mes actual
         for (let dia = 1; dia <= ultimoDia; dia++) {
             const diaElemento = document.createElement('span');
-            // const txt = document.createTextNode("Hola");
-
-            // var texto = document.createTextNode(htmlCode);
-
-            // document.write(htmlCode);
             diaElemento.textContent = dia;
             const fechaDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia);
-            <?php foreach ($all_eventos as $evento) : ?>
+            <?php
+            $eventosPorFecha = array();
+
+            foreach ($all_eventos2 as $evento2) :
+                $fechaEvento = $evento2['fecha'];
+                $eventosPorFecha[$fechaEvento][] = $evento2;
+
+            ?>
                 // Obtener eventos para el día actual desde el array PHP           
                 diaElemento.title = obtenerNombreDia(new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia).getDay()) + ', ' + dia + ' ' + obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
 
@@ -464,16 +481,32 @@ $all_eventos = find_all_eventos();
 
                 //Recorremos todos los eventos
 
-                fechaEvento = '<?php echo $evento['fecha']; ?>';
-                const tema = document.createTextNode("<?php echo $evento['tema'] ?>");
+                fechaEvento = '<?php echo $evento2['fecha']; ?>';
+                var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?>");
+                var tema1 = document.createTextNode("<?php echo $evento2['tema'] ?>");
+                var tema2 = document.createTextNode("<?php echo $evento2['hora'] ?>");
+                var tema3 = document.createTextNode("<?php echo $evento2['lugar'] ?>");
+
 
                 //Comparamos las fechas de los eventos para ver si coinciden con los del calendario
                 if (fechaCompara == fechaEvento) {
+
                     diaElemento.appendChild(document.createElement("br"));
                     diaElemento.appendChild(tema);
+
+                    // var todo = "INFORMACIÓN DEL EVENTO\n\nTema: <?php echo $evento2['temaCorto']; ?>\nHora: <?php echo $evento2['hora']; ?>\nLugar: <?php echo $evento2['lugar']; ?>";
                     diaElemento.addEventListener('click', function() {
-                        alert('Día seleccionado: ' + "<?php echo $evento['tema'] ?>");
+                        // alert(todo);
+                        modalBody.innerHTML = `
+                            <p style="font-weight: bold;"><?php echo $evento2['tema'] ?></p>
+                            <p><strong>Fecha:</strong> <?php echo $evento2['fecha'] ?></p>
+                            <p style="margin-top: -3%;"><strong>Hora:</strong> <?php echo $evento2['hora'] ?></p>
+                            <p style="margin-top: -3%;"><strong>Lugar:</strong> <?php echo $evento2['lugar'] ?></p>
+                        `;
+                        // Abre el modal
+                        eventoModal.show();
                     });
+                    // console.log(todo);
                 }
             <?php endforeach; ?>
         }
