@@ -73,14 +73,22 @@ if (isset($_POST['edit_osc'])) {
                 move_uploaded_file($_FILES['logo']['tmp_name'][$i], $target_file);
             }
         }
-
+        if($_FILES['logo']['name'][0] != ''){
         $sql = "UPDATE osc SET nombre='{$nombre}', siglas='{$siglas}', logo='{$_FILES['logo']['name'][0]}', ambito='{$ambito}', objetivo='{$objetivo}', 
                 figura_juridica='{$figura_juridica}', datos_escritura_const='{$datos_escritura_const}', nombre_responsable='{$nombre_responsable}', 
                 calle_num='{$calle_num}', colonia='{$colonia}', cp='{$cp}', telefono='{$telefono}', web_oficial='{$web_oficial}', x='{$x}', 
                 facebook='{$facebook}', instagram='{$instagram}', youtube='{$youtube}', tiktok='{$tiktok}', correo_oficial='{$correo_oficial}', 
                 convenio_cedh='{$convenio_cedh}', region='{$region}' 
                 WHERE id_osc='{$db->escape($id)}'";
-
+        }
+        if($_FILES['logo']['name'][0] == ''){
+            $sql = "UPDATE osc SET nombre='{$nombre}', siglas='{$siglas}', ambito='{$ambito}', objetivo='{$objetivo}', 
+                    figura_juridica='{$figura_juridica}', datos_escritura_const='{$datos_escritura_const}', nombre_responsable='{$nombre_responsable}', 
+                    calle_num='{$calle_num}', colonia='{$colonia}', cp='{$cp}', telefono='{$telefono}', web_oficial='{$web_oficial}', x='{$x}', 
+                    facebook='{$facebook}', instagram='{$instagram}', youtube='{$youtube}', tiktok='{$tiktok}', correo_oficial='{$correo_oficial}', 
+                    convenio_cedh='{$convenio_cedh}', region='{$region}' 
+                    WHERE id_osc='{$db->escape($id)}'";
+            }
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información Actualizada ");
@@ -122,7 +130,7 @@ if (isset($_POST['edit_osc'])) {
                     <div class="col-md-2">
                         <div class="form-group">
                             <label for="logo">Adjuntar Logo</label>
-                            <input type='file' class="custom-file-input form-control" id="inputGroupFile01" name='logo[]' multiple />
+                            <input type='file' class="custom-file-input form-control" id="inputGroupFile01" name='logo[]' value="<?php echo $e_osc['logo']; ?>" multiple />
                         </div>
                     </div>
                     <div class="col-md-4">

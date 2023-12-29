@@ -745,12 +745,21 @@ function find_all_visitadurias()
 {
   return find_by_sql("SELECT id_area, nombre_area FROM area WHERE nombre_area LIKE 'V%' ORDER BY nombre_area");
 }
-
+function find_all_osc()
+{
+  $sql = "SELECT o.id_osc, o.nombre, o.siglas, o.logo, o.ambito, o.objetivo, o.figura_juridica, o.fecha_constitucion, o.datos_escritura_const, 
+  o.nombre_responsable, o.calle_num, o.colonia, o.cp, o.telefono, o.web_oficial, o.x, o.facebook, o.instagram, o.youtube, o.tiktok, o.correo_oficial, o.convenio_cedh, o.region, dv.descripcion as ambito_dv, a.nombre_area as region_a , o.info_publica
+  FROM osc o 
+  LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = o.ambito 
+  LEFT JOIN area a ON a.id_area = o.region ORDER BY o.nombre";
+  $result = find_by_sql($sql);
+  return $result;
+}
 function osc_by_id($id_osc)
 {
   global $db;
   $sql = $db->query("SELECT o.id_osc, o.nombre, o.siglas, o.logo, o.ambito, o.objetivo, o.figura_juridica, o.fecha_constitucion, o.datos_escritura_const, 
-            o.nombre_responsable, o.calle_num, o.colonia, o.cp, o.telefono, o.web_oficial, o.x, o.facebook, o.instagram, o.youtube, o.tiktok, o.correo_oficial, o.convenio_cedh, o.region, dv.descripcion as ambito_dv, a.nombre_area as region_a 
+            o.nombre_responsable, o.calle_num, o.colonia, o.cp, o.telefono, o.web_oficial, o.x, o.facebook, o.instagram, o.youtube, o.tiktok, o.correo_oficial, o.convenio_cedh, o.region, dv.descripcion as ambito_dv, a.nombre_area as region_a , o.info_publica
             FROM osc o 
             LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = o.ambito 
             LEFT JOIN area a ON a.id_area = o.region 

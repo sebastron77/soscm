@@ -3,7 +3,7 @@
 <?php
 require_once('includes/load.php');
 
-$osc = find_all('osc');
+$osc = find_all_osc();
 $all_noticias = find_all_noticias2();
 $all_eventos = find_all_eventos();
 $all_eventos2 = find_all_eventos2();
@@ -207,15 +207,22 @@ $all_eventos2 = find_all_eventos2();
     }
 
     .btn-cerrar {
-            font-size: 25px; /* Tamaño del texto */
-            padding: 0px 8px; /* Espacio interno (arriba y abajo, izquierda y derecha) */
-            background-color: #091d5d; /* Color de fondo */
-            color: white; /* Color del texto */
-            border: none; /* Elimina el borde */
-            border-radius: 2px; /* Bordes redondeados */
-            cursor: pointer; /* Cambia el cursor al pasar el ratón */
-            margin-top: -2%;
-        }
+        font-size: 25px;
+        /* Tamaño del texto */
+        padding: 0px 8px;
+        /* Espacio interno (arriba y abajo, izquierda y derecha) */
+        background-color: #091d5d;
+        /* Color de fondo */
+        color: white;
+        /* Color del texto */
+        border: none;
+        /* Elimina el borde */
+        border-radius: 2px;
+        /* Bordes redondeados */
+        cursor: pointer;
+        /* Cambia el cursor al pasar el ratón */
+        margin-top: -2%;
+    }
 </style>
 
 <body class="body">
@@ -278,7 +285,7 @@ $all_eventos2 = find_all_eventos2();
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $a_noticia['titulo_noticia']; ?></h5>
                             <p id="parrafoRecortado" class="card-text"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
-                            <a href="#" class="btn btn-primary btn-sm" style="margin-top: -3.5%; margin-left: 39%">Ir a noticia</a>
+                            <a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" class="btn btn-primary btn-sm" style="margin-top: -3.5%; margin-left: 39%">Ir a noticia</a>
                         </div>
                     </div>
                 </div>
@@ -306,16 +313,30 @@ $all_eventos2 = find_all_eventos2();
                 ?>
                 <!-- Modal -->
                 <div class="modal fade" id="imagenModal<?php echo $i2; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Imagen Grande <?php echo $i2 ?></h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <div class="modal-header" style="color: white; height: 40px; background: #091d5d;">
+                                <p class="modal-title" id="exampleModalLongTitle" style="color: white; font-size: 20px; font-weight: bold;"><?php echo $o['nombre'] ?></p>
+                                <button type="button" class="close btn-cerrar" style="margin-top: -10px;" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
                             <div class="modal-body">
-                                <p>Hola <?php echo $i2 ?></p>
+                                <p style="text-align: justify; font-size: 15px;"><strong>Siglas:</strong> <?php echo $o['siglas'] ?></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Ámbito:</strong> <?php echo $o['ambito_dv'] ?></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Objetivo:</strong> <?php echo $o['objetivo'] ?></p>
+                                <?php if ($o['info_publica'] == 1) : ?>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Domicilio:</strong> <?php echo $o['calle_num'] . ', Col. ' . $o['colonia'] . ', C.P. ' . $o['cp'] ?></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Teléfono:</strong> <?php echo $o['telefono'] ?></p>
+                                <?php endif; ?>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Web Oficial:</strong> <a href="<?php echo $o['web_oficial'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['web_oficial'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>X:</strong><a href="<?php echo $o['x'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['x'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Facebook:</strong><a href="<?php echo $o['facebook'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['facebook'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Instagram:</strong><a href="<?php echo $o['instagram'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['instagram'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Youtube:</strong><a href="<?php echo $o['youtube'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['youtube'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Tiktok:</strong><a href="<?php echo $o['tiktok'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['tiktok'] ?></a></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Correo Oficial:</strong> <?php echo $o['correo_oficial'] ?></p>
+                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Región:</strong> <?php echo $o['region_a'] ?></p>
                             </div>
                         </div>
                     </div>
@@ -483,9 +504,6 @@ $all_eventos2 = find_all_eventos2();
 
                 fechaEvento = '<?php echo $evento2['fecha']; ?>';
                 var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?>");
-                var tema1 = document.createTextNode("<?php echo $evento2['tema'] ?>");
-                var tema2 = document.createTextNode("<?php echo $evento2['hora'] ?>");
-                var tema3 = document.createTextNode("<?php echo $evento2['lugar'] ?>");
 
 
                 //Comparamos las fechas de los eventos para ver si coinciden con los del calendario
@@ -498,7 +516,7 @@ $all_eventos2 = find_all_eventos2();
                     diaElemento.addEventListener('click', function() {
                         // alert(todo);
                         modalBody.innerHTML = `
-                            <p style="font-weight: bold;"><?php echo $evento2['tema'] ?></p>
+                            <p style="font-size: 20px; font-weight: bold; text-align: center; color: #1573ac;"><?php echo $evento2['tema'] ?></p>
                             <p><strong>Fecha:</strong> <?php echo $evento2['fecha'] ?></p>
                             <p style="margin-top: -3%;"><strong>Hora:</strong> <?php echo $evento2['hora'] ?></p>
                             <p style="margin-top: -3%;"><strong>Lugar:</strong> <?php echo $evento2['lugar'] ?></p>
