@@ -13,6 +13,7 @@ $v_noticia = noticia_by_id((int) $_GET['id']);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Noticia</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="medios/favicon-16x16.png">
     <!-- Agrega este enlace a Bootstrap en la sección head de tu HTML -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 

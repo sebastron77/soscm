@@ -10,22 +10,32 @@ $all_eventos2 = find_all_eventos2();
 ?>
 
 <head>
+    <!-- Bootstrap CSS -->
     <meta charset="UTF-8">
+    <link rel="icon" type="image/png" sizes="16x16" href="medios/favicon-16x16.png">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Principal</title>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <!-- Agrega este enlace a Bootstrap en la sección head de tu HTML -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
     <link href="MyFont1.otf" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
     <link rel="stylesheet" href="libs/css/main.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,600,0,-25" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" integrity="...">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
 </head>
 <style>
     .body {
@@ -221,7 +231,7 @@ $all_eventos2 = find_all_eventos2();
         /* Bordes redondeados */
         cursor: pointer;
         /* Cambia el cursor al pasar el ratón */
-        margin-top: -2%;
+        margin-top: -3.5%;
     }
 </style>
 
@@ -231,7 +241,7 @@ $all_eventos2 = find_all_eventos2();
             <div class="logo pull-left" style="width: 15%;"><img border="0" src="medios/Imagen4.png" width="34px" title="CEDH" alt="" style="margin-left: 12%;" />
                 <div>
                     <p class="titulo" style="margin-top: -18.5%; margin-left: 28%; font-size:35px; font-weight:bold;">SOSCDH</p>
-                    <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.5%; margin-bottom:-9.8px; margin-left: 97%;">M</p>
+                    <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.9%; margin-bottom:-9.8px; margin-left: 98%;">M</p>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 3%; margin-top: -0.5%;">
@@ -316,8 +326,8 @@ $all_eventos2 = find_all_eventos2();
                     <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;" role="document">
                         <div class="modal-content">
                             <div class="modal-header" style="color: white; height: 40px; background: #091d5d;">
-                                <p class="modal-title" id="exampleModalLongTitle" style="color: white; font-size: 20px; font-weight: bold;"><?php echo $o['nombre'] ?></p>
-                                <button type="button" class="close btn-cerrar" style="margin-top: -10px;" data-dismiss="modal" aria-label="Close">
+                                <p class="modal-title" id="exampleModalLongTitle" style="color: white; font-size: 20px; font-weight: bold; margin-top: -12px;"><?php echo $o['nombre'] ?></p>
+                                <button type="button" class="btn-cerrar" style="margin-top: -16px;" data-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
@@ -375,8 +385,8 @@ $all_eventos2 = find_all_eventos2();
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header" style="height: 40px; background: #091d5d;">
-                            <p style="color: white; font-size: 20px; font-weight: bold;" class="modal-title" id="eventoModalLabel">Detalles del Evento</p>
-                            <button type="button" class="close btn-cerrar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <p style="color: white; font-size: 20px; font-weight: bold; margin-top: -12px;" class="modal-title" id="eventoModalLabel">Detalles del Evento</p>
+                            <button type="button" class="btn-cerrar" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         </div>
                         <div class="modal-body" id="eventoModalBody">
                             <!-- Contenido del modal generado dinámicamente por JavaScript -->
@@ -385,8 +395,6 @@ $all_eventos2 = find_all_eventos2();
                 </div>
             </div>
         </div>
-
-
     </div>
     <div class="footer">
         <br>
@@ -410,143 +418,146 @@ $all_eventos2 = find_all_eventos2();
         </div>
     </div>
 
-</body>
-<script>
-    // Número deseado de caracteres
-    const maxCaracteres = 50;
-    // Obtener el contenido original del párrafo
-    const parrafoOriginal = document.getElementById('parrafoRecortado').innerText;
-    const parrafoOriginal1 = document.getElementById('parrafoRecortado1').innerText;
-    const parrafoOriginal2 = document.getElementById('parrafoRecortado2').innerText;
-    // Recortar el contenido al número deseado de caracteres
-    const parrafoRecortado = parrafoOriginal.slice(0, 210);
-    const parrafoRecortado1 = parrafoOriginal1.slice(0, 210);
-    const parrafoRecortado2 = parrafoOriginal2.slice(0, 210);
-    // Mostrar el párrafo recortado
-    document.getElementById('parrafoRecortado').innerText = parrafoRecortado + '...';
-    document.getElementById('parrafoRecortado1').innerText = parrafoRecortado1 + '...';
-    document.getElementById('parrafoRecortado2').innerText = parrafoRecortado2 + '...';
+    <script>
+        // Número deseado de caracteres
+        const maxCaracteres = 50;
+        // Obtener el contenido original del párrafo
+        const parrafoOriginal = document.getElementById('parrafoRecortado').innerText;
+        // Recortar el contenido al número deseado de caracteres
+        const parrafoRecortado = parrafoOriginal.slice(0, 210);
+        // Mostrar el párrafo recortado
+        document.getElementById('parrafoRecortado').innerText = parrafoRecortado + '...';
 
-    function abrirPopup() {
-        document.getElementById("popup").style.display = "block";
-    }
-
-    function cerrarPopup() {
-        document.getElementById("popup").style.display = "none";
-    }
-</script>
-
-
-
-<script>
-    let fechaActual = new Date();
-
-    function mostrarCalendario() {
-        const headerMes = document.getElementById('nombreMes');
-        const diasMes = document.getElementById('diasMes');
-        const primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
-        const primerDiaSemana = primerDiaMes.getDay();
-        const ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
-        const ultimoDia = ultimoDiaMes.getDate();
-        const eventos = <?php echo json_encode(find_all_eventos()); ?>;
-        // Antes de tu bucle para generar días del mes
-        const modalBody = document.getElementById('eventoModalBody');
-        const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
-
-
-        // Configurar el texto del encabezado con el mes y año actual
-        headerMes.textContent = obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
-
-        // Limpiar días del mes anterior
-        diasMes.innerHTML = '';
-
-        // Agregar días vacíos del mes anterior
-        for (let i = primerDiaSemana; i > 0; i--) {
-            const diaAnterior = ultimoDiaMes.getDate() - i + 1;
-            const diaElemento = document.createElement('span');
-
-            const htmlCode = '<span><?php echo "Este es un texto PHP "; ?></span>';
-            diaElemento.textContent = diaAnterior;
-            diaElemento.title = obtenerNombreDia(new Date(fechaActual.getFullYear(), fechaActual.getMonth(), diaAnterior).getDay()) + ', ' + diaAnterior + ' ' + obtenerNombreMes(fechaActual.getMonth() - 1) + ' ' + fechaActual.getFullYear();
-            diasMes.appendChild(diaElemento);
-
+        function abrirPopup() {
+            document.getElementById("popup").style.display = "block";
         }
 
-        // Generar días del mes actual
-        for (let dia = 1; dia <= ultimoDia; dia++) {
-            const diaElemento = document.createElement('span');
-            diaElemento.textContent = dia;
-            const fechaDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia);
-            <?php
-            $eventosPorFecha = array();
+        function cerrarPopup() {
+            document.getElementById("popup").style.display = "none";
+        }
+    </script>
+    <script>
+        let fechaActual = new Date();
 
-            foreach ($all_eventos2 as $evento2) :
-                $fechaEvento = $evento2['fecha'];
-                $eventosPorFecha[$fechaEvento][] = $evento2;
+        const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+        const eventoModalBody = document.getElementById('eventoModalBody');
+        function mostrarCalendario() {
+            const headerMes = document.getElementById('nombreMes');
+            const diasMes = document.getElementById('diasMes');
+            const primerDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), 1);
+            const primerDiaSemana = primerDiaMes.getDay();
+            const ultimoDiaMes = new Date(fechaActual.getFullYear(), fechaActual.getMonth() + 1, 0);
+            const ultimoDia = ultimoDiaMes.getDate();
+            const eventos = <?php echo json_encode(find_all_eventos()); ?>;
+            // Antes de tu bucle para generar días del mes
+            // document.addEventListener('DOMContentLoaded', function() {
+// });
+            // ------------------------------------------------ Aquí hay un error ------------------------------------------------
+            // const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+            // document.addEventListener('DOMContentLoaded', function() {
+            //     const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+            // });
+            // -------------------------------------------------------------------------------------------------------------------
 
-            ?>
-                // Obtener eventos para el día actual desde el array PHP           
-                diaElemento.title = obtenerNombreDia(new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia).getDay()) + ', ' + dia + ' ' + obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
+            // Configurar el texto del encabezado con el mes y año actual
+            headerMes.textContent = obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
 
+            // Limpiar días del mes anterior
+            diasMes.innerHTML = '';
 
-                //Sumamos un día porque es un arreglo que empieza en 0, y para que coincidan los meses se suma el 1
-                var sumaMes = fechaActual.getMonth() + 1;
+            // Agregar días vacíos del mes anterior
+            for (let i = primerDiaSemana; i > 0; i--) {
+                const diaAnterior = ultimoDiaMes.getDate() - i + 1;
+                const diaElemento = document.createElement('span');
 
-                if (dia <= 9) {
-                    nDia = '0' + dia;
-                } else {
-                    nDia = dia;
-                };
-                fechaCompara = fechaActual.getFullYear() + '-' + sumaMes + '-' + nDia
+                // const htmlCode = '<span><?php echo "Este es un texto PHP "; ?></span>';
+                diaElemento.textContent = diaAnterior;
+                diaElemento.title = obtenerNombreDia(new Date(fechaActual.getFullYear(), fechaActual.getMonth(), diaAnterior).getDay()) + ', ' + diaAnterior + ' ' + obtenerNombreMes(fechaActual.getMonth() - 1) + ' ' + fechaActual.getFullYear();
                 diasMes.appendChild(diaElemento);
 
-                //Recorremos todos los eventos
+            }
 
-                fechaEvento = '<?php echo $evento2['fecha']; ?>';
-                var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?>");
+            // Generar días del mes actual
+            for (let dia = 1; dia <= ultimoDia; dia++) {
+                //Pone todos los días del mes en un span
+                const diaElemento = document.createElement('span');
+                diaElemento.textContent = dia;
+                //Usa un formato Mon Jan 01 2024 00:00:00 GMT-0600 (hora estándar central)
+                const fechaDia = new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia);
+
+                // ------------------------------------------ IBA DENTRO DEL FOR DE ABAJO ------------------------------------------
+                diaElemento.title = obtenerNombreDia(new Date(fechaActual.getFullYear(), fechaActual.getMonth(), dia).getDay()) + ', ' + dia + ' ' + obtenerNombreMes(fechaActual.getMonth()) + ' ' + fechaActual.getFullYear();
+                // console.log('diaElementotitle: ', diaElemento.title);
+                // ------------------------------------------------------------------------------------------------------------------
+                <?php
+                $eventosPorFecha = array();
+                foreach ($all_eventos2 as $evento2) : ?>
+                    //Sumamos un día porque es un arreglo que empieza en 0, y para que coincidan los meses se suma el 1
+                    var sumaMes = fechaActual.getMonth() + 1;
+
+                    if (dia <= 9) {
+                        nDia = '0' + dia;
+                    } else {
+                        nDia = dia;
+                    };
+                    if (sumaMes <= 9) {
+                        nMes = '0' + sumaMes;
+                    } else {
+                        nMes = sumaMes;
+                    };
+                    fechaCompara = fechaActual.getFullYear() + '-' + nMes + '-' + nDia
+                    diasMes.appendChild(diaElemento);
+                    // console.log('fechaCompara: ', fechaCompara);
+
+                    //Recorremos todos los eventos
+
+                    fechaEvento = '<?php echo $evento2['fecha']; ?>';
+                    var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?>");
 
 
-                //Comparamos las fechas de los eventos para ver si coinciden con los del calendario
-                if (fechaCompara == fechaEvento) {
+                    //Comparamos las fechas de los eventos para ver si coinciden con los del calendario
+                    if (fechaCompara == fechaEvento) {
+                        diaElemento.appendChild(document.createElement("br"));
+                        diaElemento.appendChild(tema);
 
-                    diaElemento.appendChild(document.createElement("br"));
-                    diaElemento.appendChild(tema);
 
-                    // var todo = "INFORMACIÓN DEL EVENTO\n\nTema: <?php echo $evento2['temaCorto']; ?>\nHora: <?php echo $evento2['hora']; ?>\nLugar: <?php echo $evento2['lugar']; ?>";
-                    diaElemento.addEventListener('click', function() {
-                        // alert(todo);
-                        modalBody.innerHTML = `
-                            <p style="font-size: 20px; font-weight: bold; text-align: center; color: #1573ac;"><?php echo $evento2['tema'] ?></p>
-                            <p><strong>Fecha:</strong> <?php echo $evento2['fecha'] ?></p>
-                            <p style="margin-top: -3%;"><strong>Hora:</strong> <?php echo $evento2['hora'] ?></p>
-                            <p style="margin-top: -3%;"><strong>Lugar:</strong> <?php echo $evento2['lugar'] ?></p>
-                        `;
-                        // Abre el modal
-                        eventoModal.show();
-                    });
-                    // console.log(todo);
-                }
-            <?php endforeach; ?>
+                        diaElemento.addEventListener('click', function() {
+                            var todo = "INFORMACIÓN DEL EVENTO\n\nTema: <?php echo $evento2['temaCorto']; ?>\nHora: <?php echo $evento2['hora']; ?>\nLugar: <?php echo $evento2['lugar']; ?>";
+                            // alert(todo);
+                            eventoModalBody.innerHTML = `
+                                <p style="font-size: 18px; font-weight: bold; text-align: center; color: #1573ac; margin-top: -12px"><?php echo $evento2['tema'] ?></p>
+                                <p style="margin-left: 15px"><strong>Fecha:</strong> <?php echo $evento2['fecha'] ?></p>
+                                <p style="margin-top: -3%; margin-left: 15px; margin-right: 15px"><strong>Hora:</strong> <?php echo $evento2['hora'] ?> </p>
+                                <p style="margin-top: -3%; margin-left: 15px; margin-right: 15px"><strong>Lugar:</strong> <?php echo $evento2['lugar'] ?></p>
+                            `;
+
+                            eventoModal.show();
+                        });
+
+                    }
+                <?php endforeach; ?>
+            }
         }
-    }
-
-    function cambiarMes(cambio) {
-        fechaActual.setMonth(fechaActual.getMonth() + cambio);
         mostrarCalendario();
-    }
+        function cambiarMes(cambio) {
+            fechaActual.setMonth(fechaActual.getMonth() + cambio);
+            console.log('Nuevo mes:', obtenerNombreMes(fechaActual.getMonth()), fechaActual.getFullYear());
 
-    function obtenerNombreMes(mes) {
-        const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-        return meses[mes];
-    }
+            mostrarCalendario();
+        }
+        function obtenerNombreMes(mes) {
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            return meses[mes];
+        }
 
-    function obtenerNombreDia(dia) {
-        const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-        return dias[dia];
-    }
+        function obtenerNombreDia(dia) {
+            const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            return dias[dia];
+        }
 
-    // Mostrar calendario al cargar la página
-    mostrarCalendario();
-</script>
+        // Mostrar calendario al cargar la página
+        // const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
+    </script>
+</body>
 
 </html>
