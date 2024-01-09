@@ -111,7 +111,7 @@ $v_noticia = noticia_by_id((int) $_GET['id']);
     <div class="container">
         <h1 style="margin-top: -0.5%; color: #091d5d;"><?php echo upper_case($v_noticia['titulo_noticia']); ?></h1>
         <hr style="color: #636363">
-        <img class="imgNoticia" style=" margin-top: 2%;" src="uploads/noticias/<?php echo str_replace(' ', '', $v_noticia['titulo_noticia']); ?>/<?php echo $v_noticia['imagen']; ?>">
+        <img class="imgNoticia" style=" margin-top: 2%;" src="uploads/noticias/<?php echo $v_noticia['id_noticia']; ?>/<?php echo $v_noticia['imagen']; ?>">
         <p style="margin-top: 2%; margin-left: 30px; margin-right: 30px; text-align: justify;"><?php echo $v_noticia['noticia'] ?></p>
     </div>
     <?php include_once('footer.php'); ?>

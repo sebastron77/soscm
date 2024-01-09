@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Datos trabajadores';
+$page_title = 'Datos OSC';
 require_once('includes/load.php');
 ?>
 <?php

@@ -53,7 +53,7 @@ page_require_level(1);
                                 <td><?php echo remove_junk($a_noticia['fecha']) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_noticia['titulo_noticia'])) ?></td>
                                 <td><?php $txt = substr($a_noticia['noticia'], 0, 200); echo $txt . '...'; ?></td>
-                                <td class="text-center"><a href="<?php echo 'uploads/noticias/' . $a_noticia['titulo_noticia'] . '/' . $a_noticia['imagen']; ?>" class="btn btn-warning btn-md" title="Ver Imágen" data-toggle="tooltip" style="height: 40px; background: #1573ac; border-color: #1573ac;" target="_blank">
+                                <td class="text-center"><a href="<?php echo 'uploads/noticias/' . str_replace(' ', '' ,$a_noticia['titulo_noticia']) . '/' . $a_noticia['imagen']; ?>" class="btn btn-warning btn-md" title="Ver Imágen" data-toggle="tooltip" style="height: 40px; background: #1573ac; border-color: #1573ac;" target="_blank">
                                         <span class="material-symbols-outlined" style="font-size: 22px; color: white; margin-top: 4px;">
                                             image
                                         </span>

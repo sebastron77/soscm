@@ -237,23 +237,23 @@ $all_eventos2 = find_all_eventos2();
 
 <body class="body">
     <nav class="navbar navbar-expand-lg bg-body-tertiary header">
-        <div class="container-fluid">
-            <div class="logo pull-left" style="width: 15%;"><img border="0" src="medios/Imagen4.png" width="34px" title="CEDH" alt="" style="margin-left: 12%;" />
+        <div class="container-fluid" style="margin-top: 5px;">
+            <div class="logo pull-left" style="width: 15%;"><img border="0" src="medios/Imagen4.png" width="34px" title="CEDH" style="margin-left: 1%;" />
                 <div>
-                    <p class="titulo" style="margin-top: -18.5%; margin-left: 28%; font-size:35px; font-weight:bold;">SOSCDH</p>
-                    <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.9%; margin-bottom:-9.8px; margin-left: 98%;">M</p>
+                    <p class="titulo" style="margin-top: -18.5%; margin-left: 18%; font-size:35px; font-weight:bold;">SOSCDH</p>
+                    <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.9%; margin-bottom:-9.8px; margin-left: 198px;">M</p>
                 </div>
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 3%; margin-top: -0.5%;">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="principal.php">Inicio</a>
+                        <a class="nav-link" href="principal.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="noticias.php" style="margin-left: 50%;">Noticias</a>
+                        <a class="nav-link" href="muestra_noticias.php" style="margin-left: 50px;">Noticias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="eventos.php" style="margin-left: 100%;">Eventos</a>
+                        <a class="nav-link" href="muestra_eventos.php" style="margin-left: 50px;">Eventos</a>
                     </li>
                 </ul>
             </div>
@@ -267,17 +267,15 @@ $all_eventos2 = find_all_eventos2();
         <!-- Indicators/dots -->
         <div class="carousel-indicators">
             <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
         </div>
 
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
             <?php foreach ($all_noticias as $a_noticia) : ?>
                 <div class="carousel-item active">
-                    <img src="uploads/noticias/<?php echo str_replace(' ', '', $a_noticia['titulo_noticia']); ?>/<?php echo $a_noticia['imagen']; ?>" alt="<?php echo $a_noticia['id_noticia'] ?>" class="d-block" style="width:100%">
+                    <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="d-block" style="width:100%">
                     <div class="carousel-caption" style="background: rgba(0, 0, 0, 0.3); border-radius: 5px; height:30%;">
-                        <h3 style="margin-top: -1%;"><?php echo $a_noticia['titulo_noticia']; ?></h3>
+                        <!-- <h3 style="margin-top: -1%;"><?php echo $a_noticia['titulo_noticia']; ?></h3> -->
                         <p style="margin-top: 0%;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
                     </div>
                 </div>
@@ -291,7 +289,7 @@ $all_eventos2 = find_all_eventos2();
             <?php foreach ($all_noticias as $a_noticia) : ?>
                 <div class="justify-content-center col-md-4" style="margin-left: 0px;">
                     <div class="card" style="width: 28rem; height: 33rem;">
-                        <img src="uploads/noticias/<?php echo str_replace(' ', '', $a_noticia['titulo_noticia']); ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="315px;" alt="...">
+                        <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="315px;" alt="...">
                         <div class="card-body">
                             <h5 class="card-title"><?php echo $a_noticia['titulo_noticia']; ?></h5>
                             <p id="parrafoRecortado" class="card-text"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>

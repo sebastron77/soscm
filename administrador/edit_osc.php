@@ -8,6 +8,7 @@ $nivel = $user['user_level'];
 $ambitos = find_all('cat_der_vuln');
 $visitadurias = find_all_visitadurias();
 $e_osc = osc_by_id((int)$_GET['id']);
+$municipios = find_all('cat_municipios');
 
 page_require_level(1);
 
@@ -272,8 +273,8 @@ if (isset($_POST['edit_osc'])) {
                             <label for="region">Región</label>
                             <select class="form-control" name="region">
                                 <option value="">Escoge una Opción</option>
-                                <?php foreach ($visitadurias as $visitaduria) : ?>
-                                    <option <?php if ($visitaduria['id_area'] == $e_osc['region']) echo 'selected="selected"'; ?> value="<?php echo $visitaduria['id_area']; ?>"><?php echo ucwords($visitaduria['nombre_area']); ?>
+                                <?php foreach ($municipios as $municipio1) : ?>
+                                    <option <?php if ($municipio1['id_cat_mun'] == $e_osc['region']) echo 'selected="selected"'; ?> value="<?php echo $municipio1['id_cat_mun']; ?>"><?php echo ucwords($municipio1['descripcion']); ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>

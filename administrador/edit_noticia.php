@@ -27,7 +27,7 @@ if (isset($_POST['edit_noticia'])) {
         $imagen = remove_junk($db->escape($_POST['imagen']));
 
         $titulo_noticia2 = str_replace(' ', '', $titulo_noticia);
-        $carpeta = 'uploads/noticias/' . $titulo_noticia2;
+        $carpeta = 'uploads/noticias/' . $id;
 
         if (!is_dir($carpeta)) {
             mkdir($carpeta, 0777, true);
@@ -39,11 +39,15 @@ if (isset($_POST['edit_noticia'])) {
         $temp = $_FILES['imagen']['tmp_name'];
 
         $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-
-
-        $sql = "UPDATE noticias SET id_osc='{$id_osc}', fecha='{$fecha}', titulo_noticia='{$titulo_noticia}', noticia='{$noticia}', imagen='{$name}'
+        
+        if ($_FILES['imagen']['name'][0] != '') {
+            $sql = "UPDATE noticias SET id_osc='{$id_osc}', fecha='{$fecha}', titulo_noticia='{$titulo_noticia}', noticia='{$noticia}', imagen='{$name}'
                 WHERE id_noticia='{$db->escape($id)}'";
-
+        }
+        if ($_FILES['imagen']['name'][0] == '') {
+            $sql = "UPDATE noticias SET id_osc='{$id_osc}', fecha='{$fecha}', titulo_noticia='{$titulo_noticia}', noticia='{$noticia}'
+                WHERE id_noticia='{$db->escape($id)}'";
+        }
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información Actualizada ");
@@ -91,19 +95,19 @@ if (isset($_POST['edit_noticia'])) {
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="titulo_noticia">Título de Noticia</label>
-                            <input type='text' class="form-control" name='titulo_noticia' value="<?php echo $e_noticia['titulo_noticia']?>"/>
+                            <input type='text' class="form-control" name='titulo_noticia' value="<?php echo $e_noticia['titulo_noticia'] ?>" />
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="form-group">
                             <label for="noticia">Noticia</label>
-                            <textarea class="form-control" name="noticia" id="noticia" cols="20" rows="10"><?php echo $e_noticia['noticia']?></textarea>
+                            <textarea class="form-control" name="noticia" id="noticia" cols="20" rows="10"><?php echo $e_noticia['noticia'] ?></textarea>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
                             <label for="imagen">Adjuntar Imágen</label>
-                            <input type='file' class="form-control" id="imagen" name='imagen' />
+                            <input type='file' class="form-control" id="imagen" name='imagen' value="<?php echo $e_noticia['imagen']; ?>"/>
                         </div>
                     </div>
                 </div>

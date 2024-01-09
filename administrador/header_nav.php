@@ -76,7 +76,7 @@
     a:hover {
         color: #43DBE0;
     }
-    
+
     h1 {
         font-weight: bold;
         text-align: center;
@@ -84,28 +84,28 @@
 </style>
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary header">
-        <div class="container-fluid">
-            <div class="logo pull-left" style="width: 15%;"><img border="0" src="medios/Imagen4.png" width="34px" title="CEDH" style="margin-left: 12%;" />
-                <div>
-                    <p class="titulo" style="margin-top: -18.5%; margin-left: 28%; font-size:35px; font-weight:bold;">SOSCDH</p>
-                    <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.5%; margin-bottom:-9.8px; margin-left: 97%;">M</p>
-                </div>
-            </div>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 3%; margin-top: -0.5%;">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="principal.php">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="noticias.php" style="margin-left: 50%;">Noticias</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="eventos.php" style="margin-left: 100%;">Eventos</a>
-                    </li>
-                </ul>
-            </div>
+    <div class="container-fluid"  style="margin-top: 5px;">
+        <div class="logo pull-left" style="width: 15%;"><img border="0" src="medios/Imagen4.png" width="34px" title="CEDH" style="margin-left: 12%;" />
             <div>
-                <a href="admin.php" style="color: black;">Iniciar Sesión</a>
+                <p class="titulo" style="margin-top: -18.5%; margin-left: 28%; font-size:35px; font-weight:bold;">SOSCDH</p>
+                <p style="font-family: My Font1; font-size: 49px; color:#1573ac; margin-top:-34.5%; margin-bottom:-9.8px; margin-left: 97%;">M</p>
             </div>
         </div>
-    </nav>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent" style="margin-left: 3%; margin-top: -0.5%;">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="principal.php">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="muestra_noticias.php" style="margin-left: 50px;">Noticias</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="muestra_eventos.php" style="margin-left: 50px;">Eventos</a>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <a href="admin.php" style="color: black;">Iniciar Sesión</a>
+        </div>
+    </div>
+</nav>
