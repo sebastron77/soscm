@@ -272,14 +272,14 @@ $all_eventos2 = find_all_eventos2();
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
             <?php foreach ($all_noticias as $a_noticia) : ?>
-                <div class="carousel-item active">
-                    <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="d-block" style="width:100%">
-                    <div class="carousel-caption" style="background: rgba(0, 0, 0, 0.3); border-radius: 5px; height:30%;">
-                        <!-- <h3 style="margin-top: -1%;"><?php echo $a_noticia['titulo_noticia']; ?></h3> -->
-                        <p style="margin-top: 0%;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
-                    </div>
-                </div>
             <?php endforeach; ?>
+            <div class="carousel-item active">
+                <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="d-block" style="width:100%">
+                <div class="carousel-caption" style="background: rgba(0, 0, 0, 0.3); border-radius: 5px; height:30%;">
+                    <h3 style="margin-top: -1%;"><?php echo $a_noticia['titulo_noticia']; ?></h3>
+                    <p style="margin-top: 0%;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
+                </div>
+            </div>
         </div>
 
     </div>
@@ -289,11 +289,11 @@ $all_eventos2 = find_all_eventos2();
             <?php foreach ($all_noticias as $a_noticia) : ?>
                 <div class="justify-content-center col-md-4" style="margin-left: 0px;">
                     <div class="card" style="width: 28rem; height: 33rem;">
-                        <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="315px;" alt="...">
+                        <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="300px;" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title"><?php echo $a_noticia['titulo_noticia']; ?></h5>
-                            <p id="parrafoRecortado" class="card-text"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
-                            <a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" class="btn btn-primary btn-sm" style="margin-top: -3.5%; margin-left: 39%">Ir a noticia</a>
+                            <h5 class="card-title" style="margin-top: -10px;"><?php echo $a_noticia['titulo_noticia']; ?></h5>
+                            <p class="card-text"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
+                            <a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" class="btn btn-primary btn-sm" style="margin-top: -1%; margin-left: 39%">Ir a noticia</a>
                         </div>
                     </div>
                 </div>
@@ -422,7 +422,7 @@ $all_eventos2 = find_all_eventos2();
         // Obtener el contenido original del párrafo
         const parrafoOriginal = document.getElementById('parrafoRecortado').innerText;
         // Recortar el contenido al número deseado de caracteres
-        const parrafoRecortado = parrafoOriginal.slice(0, 210);
+        const parrafoRecortado = parrafoOriginal.slice(0, 21);
         // Mostrar el párrafo recortado
         document.getElementById('parrafoRecortado').innerText = parrafoRecortado + '...';
 
@@ -439,6 +439,7 @@ $all_eventos2 = find_all_eventos2();
 
         const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
         const eventoModalBody = document.getElementById('eventoModalBody');
+
         function mostrarCalendario() {
             const headerMes = document.getElementById('nombreMes');
             const diasMes = document.getElementById('diasMes');
@@ -449,7 +450,7 @@ $all_eventos2 = find_all_eventos2();
             const eventos = <?php echo json_encode(find_all_eventos()); ?>;
             // Antes de tu bucle para generar días del mes
             // document.addEventListener('DOMContentLoaded', function() {
-// });
+            // });
             // ------------------------------------------------ Aquí hay un error ------------------------------------------------
             // const eventoModal = new bootstrap.Modal(document.getElementById('eventoModal'));
             // document.addEventListener('DOMContentLoaded', function() {
@@ -537,12 +538,14 @@ $all_eventos2 = find_all_eventos2();
             }
         }
         mostrarCalendario();
+
         function cambiarMes(cambio) {
             fechaActual.setMonth(fechaActual.getMonth() + cambio);
             console.log('Nuevo mes:', obtenerNombreMes(fechaActual.getMonth()), fechaActual.getFullYear());
 
             mostrarCalendario();
         }
+
         function obtenerNombreMes(mes) {
             const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
             return meses[mes];

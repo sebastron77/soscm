@@ -8,7 +8,7 @@ $nivel = $user['user_level'];
 $e_evento = evento_id((int)$_GET['id']);
 $oscs = find_all('osc');
 
-page_require_level(1);
+page_require_level(2);
 
 if (!$e_evento) {
     $session->msg("d", "id de evento no encontrado.");

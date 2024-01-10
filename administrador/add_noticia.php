@@ -2,7 +2,7 @@
 $page_title = 'Agregar Noticia';
 require_once('includes/load.php');
 
-page_require_level(1);
+page_require_level(2);
 $user = current_user();
 $id_user = $user['id_user'];
 $oscs = find_all('osc');
@@ -19,34 +19,37 @@ if (isset($_POST['add_noticia'])) {
         $creacion = date('Y-m-d');
 
         $titulo_noticia2 = str_replace(' ', '', $titulo_noticia);
-        $carpeta = 'uploads/noticias/' . $titulo_noticia2;
-
-        if (!is_dir($carpeta)) {
-            mkdir($carpeta, 0777, true);
-        }
-
+        
         $name = $_FILES['imagen']['name'];
         $size = $_FILES['imagen']['size'];
         $type = $_FILES['imagen']['type'];
         $temp = $_FILES['imagen']['tmp_name'];
 
-        $move = move_uploaded_file($temp, $carpeta . "/" . $name);
-
+        
+        $conn = new PDO('mysql:host=localhost;dbname=soscm', 'suigcedh', '9DvkVuZ915H!');
+        // set the PDO error mode to exception
+        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $query = "INSERT INTO noticias (";
         $query .= "id_osc, fecha, titulo_noticia, noticia, imagen, id_creador, fecha_creacion";
         $query .= ") VALUES (";
         $query .= " '{$id_osc}','{$fecha}','{$titulo_noticia}','{$noticia}','{$name}','{$id_user}','{$creacion}'";
         $query .= ")";
-        if ($db->query($query)) {
+
+        $conn->exec($query);
+        $last_id = $conn->lastInsertId();
+        $carpeta = 'uploads/noticias/' . $last_id;
+        if (!is_dir($carpeta)) {
+            mkdir($carpeta, 0777, true);
+        }
+        $move = move_uploaded_file($temp, $carpeta . "/" . $name);
+
+        
             //sucess
             $session->msg('s', " La noticia ha sido agregada con éxito.");
             insertAccion($user['id_user'], '"' . $user['username'] . '" agregó la noticia: ' . $titulo_noticia . '.', 1);
             redirect('noticias.php', false);
-        } else {
-            //failed
-            $session->msg('d', ' No se pudo agregar la noticia.');
-            redirect('add_noticia.php', false);
-        }
+        
+            
     } else {
         $session->msg("d", $errors);
         redirect('add_noticia.php', false);

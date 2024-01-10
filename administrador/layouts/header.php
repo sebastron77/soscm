@@ -250,13 +250,9 @@
         <!-- Sistemas (Administrador) -->
         <?php include_once('super_admin_menu.php'); ?>
 
-      <?php elseif ($user['user_level'] === '13') : ?>
+      <?php elseif ($user['user_level'] === '2') : ?>
         <!-- Presidencia y Secretaría Técnica -->
-        <?php include_once('sistemas_menu.php'); ?>
-
-      <?php elseif ($user['user_level'] === '16') : ?>
-        <!-- Presidencia y Secretaría Técnica -->
-        <?php include_once('orgInterno_menu.php'); ?>
+        <?php include_once('osc_menu.php'); ?>
 
       <?php endif; ?>
     </div>

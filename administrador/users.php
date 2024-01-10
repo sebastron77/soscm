@@ -40,13 +40,11 @@ page_require_level(1);
         <table class="datatable table table-striped table-bordered">
           <thead class="thead-purple">
             <tr>
-              <th class="text-center" style="width: 1px;">#</th>
+              <th class="text-center" style="width: 1%;">#</th>
               <!--SE PUEDE AGREGAR UN LINK QUE TE LLEVE A EDITAR EL USUARIO, COMO EN EL PANEL DE CONTROL EN ULTIMAS ASIGNACIONES-->
-              <th style="width: 20%;">Nombre</th>
-              <th style="width: 20%;">Apellidos</th>
-              <th style="width: 10%;">Usuario</th>
+              <th style="width: 15%;">Usuario</th>
               <?php if ($otro == 1) : ?>
-              <th class="text-center" style="width: 10%;">Rol de usuario</th>
+              <th class="text-center" style="width: 25%;">Rol de usuario</th>
               <?php endif ?>
               <th class="text-center" style="width: 5%;">Estado</th>
               <th style="width: 25%;">Último login</th>
@@ -59,9 +57,6 @@ page_require_level(1);
             <?php foreach ($all_users as $a_user) : ?>
               <tr>
                 <td class="text-center"><?php echo count_id(); ?></td>
-                <!-- <td class="text-center"><?php echo remove_junk(ucwords($a_user['id'])) ?></td> -->
-                <td><?php echo remove_junk(ucwords($a_user['nombre'])) ?></td>
-                <td><?php echo remove_junk(ucwords($a_user['apellidos'])) ?></td>
                 <td><?php echo remove_junk($a_user['username']) ?></td>
                 <?php if ($otro == 1) : ?>
                 <td class="text-center"><?php echo remove_junk(ucwords($a_user['nombre_grupo'])) ?></td>
@@ -92,17 +87,8 @@ page_require_level(1);
                           <a href="inactivate_user.php?id=<?php echo (int)$a_user['id_user']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
                             <i class="glyphicon glyphicon-ban-circle"></i>
                           </a>
-                          <!-- <a href="delete_user.php?id=<?php echo (int)$a_user['id_user']; ?>" class="btn btn-md btn-delete" data-toggle="tooltip" title="Eliminar" onclick="return confirm('¿Seguro que deseas eliminar este usuario?');">
-                            <i class="glyphicon glyphicon-trash"></i>
-                          </a> -->
                         <?php endif; ?>
                       <?php endif; ?>
-                      <!-- <?php if ($nivel == 2) : ?>
-                      <?php if ($a_user['status'] == 0) : ?>
-                        <span class="label label-default"><?php echo "Usuario inactivado. Pide al Super Administrador"; ?></span>
-                        <span class="label label-default"><?php echo "que lo active para poder editarlo."; ?></span>
-                      <?php endif; ?>
-                    <?php endif; ?> -->
                     </div>
                   </td>
                 <?php endif ?>

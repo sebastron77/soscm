@@ -6,24 +6,11 @@ require_once('includes/load.php');
 $user = current_user();
 $nivel_user = $user['user_level'];
 $year = date("Y");
-$c_user = count_by_id('users', 'id_user');
-$c_areas = count_by_id('area', 'id_area');
+$c_noticias = count_by_id('noticias', 'id_noticia');
+$c_osc = count_by_id('osc', 'id_osc');
+$c_eventos = count_by_id('eventos', 'id_evento');
+page_require_level(1);
 
-if ($nivel_user <= 2) {
-    page_require_level(2);
-}
-if ($nivel_user == 7) {
-    page_require_level_exacto(7);
-}
-if ($nivel_user > 2 && $nivel_user < 7) :
-    redirect('home.php');
-endif;
-if ($nivel_user > 7 && $nivel_user < 21) :
-    redirect('home.php');
-endif;
-if ($nivel_user == 21) :
-    page_require_level_exacto(21);
-endif;
 ?>
 
 <?php include_once('layouts/header.php'); ?>
@@ -46,34 +33,34 @@ endif;
 <div class="container-fluid">
     <div class="full-box tile-container">
 
-        <a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="osc.php" <?php endif; ?> class="tile">
+        <a style="text-decoration:none;" href="osc.php" class="tile">
             <div class="tile-tittle">OSC</div>
             <div class="tile-icon">
                 <span class="material-symbols-outlined" style="font-size:95px;">
                     diversity_3
                 </span>
-                <p> <?php echo $c_areas['total']; ?> Organizaciones Registradas</p>
+                <p> <?php echo $c_osc['total']; ?> Organizaciones Registradas</p>
             </div>
         </a>
 
-        <a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="noticias.php" <?php endif; ?> class="tile">
+        <a style="text-decoration:none;" href="noticias.php" class="tile">
             <div class="tile-tittle">Noticias</div>
-            
+
             <div class="tile-icon">
                 <span class="material-symbols-outlined" style="font-size:95px;">
                     newspaper
                 </span>
-                <p><?php echo $c_user['total']; ?> Noticias Publicadas</p>
+                <p><?php echo $c_noticias['total']; ?> Noticias Publicadas</p>
             </div>
         </a>
 
-        <a style="text-decoration:none;" <?php if ($nivel_user <= 2 || $nivel_user == 7) : ?> href="eventos.php" <?php endif; ?> class="tile">
+        <a style="text-decoration:none;" href="eventos.php" class="tile">
             <div class="tile-tittle">Eventos</div>
             <div class="tile-icon">
                 <span class="material-symbols-outlined" style="font-size:95px;">
                     event_note
                 </span>
-                <p><?php echo $c_user['total']; ?> Eventos Registrados</p>
+                <p><?php echo $c_eventos['total']; ?> Eventos Registrados</p>
             </div>
         </a>
     </div>

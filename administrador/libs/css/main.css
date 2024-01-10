@@ -83,7 +83,7 @@ p {
 
 .panel-default > .panel-heading {
   background-color: #ffffff;
-  border-bottom: 2.5px solid #091d5d;
+  /* border-bottom: 2.5px solid #091d5d; */
   font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.5px;

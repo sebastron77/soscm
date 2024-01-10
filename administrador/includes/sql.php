@@ -371,13 +371,10 @@ function current_user()
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 function find_all_cuentas()
 {
-  $sql = "SELECT u.id_user,u.id_detalle_user,d.nombre,d.apellidos,u.username,u.user_level,u.status,u.ultimo_login,";
-  $sql .= "g.nombre_grupo ";
-
+  $sql = "SELECT u.id_user, u.username, u.user_level, u.status, u.ultimo_login, g.nombre_grupo ";
   $sql .= "FROM users u ";
-  $sql .= "LEFT JOIN detalles_usuario d ON d.id_det_usuario = u.id_detalle_user ";
   $sql .= "LEFT JOIN grupo_usuarios g ";
-  $sql .= "ON g.nivel_grupo=u.user_level ORDER BY d.nombre";
+  $sql .= "ON g.nivel_grupo=u.user_level ORDER BY u.username";
   $result = find_by_sql($sql);
   return $result;
 }
@@ -405,16 +402,6 @@ function find_all_cargos2()
   return $result;
 }
 
-/*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-/* Función que encuentra todos los trabajadores */
-/*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-function find_all_trabajadores()
-{
-  $sql = "SELECT id_det_usuario as detalleID, nombre, apellidos, estatus_detalle ";
-  $sql .= "FROM detalles_usuario";
-  $result = find_by_sql($sql);
-  return $result;
-}
 
 /*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
 /* Función para actualizar la fecha del ultimo inicio de sesión de un usuario */
@@ -532,21 +519,6 @@ function midetalle($id)
   return find_by_sql($sql);
 }
 
-/*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-/* Función que encuentra todas los trabajadores de un área */
-/*------------------------------------------------------------------------------------------------------------------------------------------------------------*/
-function find_all_trabajadores_area($area)
-{
-  $sql = "SELECT d.id_det_usuario,d.nombre, d.apellidos, a.nombre_area 
-  FROM detalles_usuario as d 
-  LEFT JOIN cargos as c ON c.id_cargos = d.id_cargo 
-  LEFT JOIN area as a ON a.id_area = c.id_area 
-  WHERE a.id_area = '{$area}' 
-  ORDER BY d.nombre ASC";
-  $result = find_by_sql($sql);
-  return $result;
-}
-
 function find_all_localidades($id)
 {
   $sql = "SELECT * FROM cat_localidades WHERE id_cat_municipios = {$id} ORDER BY nnombre_localidad ASC";
@@ -595,12 +567,9 @@ function area_usuario($id_usuario)
   global $db;
   $id_usuario = (int)$id_usuario;
 
-  $sql = $db->query("SELECT g.nivel_grupo, a.id_area  
+  $sql = $db->query("SELECT g.nivel_grupo
                       FROM  grupo_usuarios g
                       LEFT JOIN users u ON u.user_level = g.nivel_grupo
-                      LEFT JOIN detalles_usuario d ON u.id_detalle_user = d.id_det_usuario 
-                      LEFT JOIN cargos c ON c.id_cargos= d.id_cargo 
-                      LEFT JOIN area a ON a.id_area = c.id_area 
                       WHERE u.id_user = '{$db->escape($id_usuario)}' LIMIT 1");
   if ($result = $db->fetch_assoc($sql))
     return $result;
@@ -741,10 +710,6 @@ function find_campo_id($table, $id, $nombre_id, $columna)
   }
 }
 
-function find_all_visitadurias()
-{
-  return find_by_sql("SELECT id_area, nombre_area FROM area WHERE nombre_area LIKE 'V%' ORDER BY nombre_area");
-}
 function find_all_osc()
 {
   $sql = "SELECT o.id_osc, o.nombre, o.siglas, o.logo, o.ambito, o.objetivo, o.figura_juridica, o.fecha_constitucion, o.datos_escritura_const, 
@@ -759,10 +724,10 @@ function osc_by_id($id_osc)
 {
   global $db;
   $sql = $db->query("SELECT o.id_osc, o.nombre, o.siglas, o.logo, o.ambito, o.objetivo, o.figura_juridica, o.fecha_constitucion, o.datos_escritura_const, 
-            o.nombre_responsable, o.calle_num, o.colonia, o.cp, o.telefono, o.web_oficial, o.x, o.facebook, o.instagram, o.youtube, o.tiktok, o.correo_oficial, o.convenio_cedh, o.region, dv.descripcion as ambito_dv, a.nombre_area as region_a , o.info_publica
+            o.nombre_responsable, o.calle_num, o.colonia, o.cp, o.telefono, o.web_oficial, o.x, o.facebook, o.instagram, o.youtube, o.tiktok, o.correo_oficial, o.convenio_cedh, o.region, dv.descripcion as ambito_dv, a.descripcion as region_a , o.info_publica
             FROM osc o 
             LEFT JOIN cat_der_vuln dv ON dv.id_cat_der_vuln = o.ambito 
-            LEFT JOIN area a ON a.id_area = o.region 
+            LEFT JOIN cat_municipios a ON a.id_cat_mun = o.region
             WHERE o.id_osc = '{$db->escape($id_osc)}' ORDER BY o.nombre");
 
   if ($result = $db->fetch_assoc($sql))
@@ -778,6 +743,7 @@ function find_all_eventos2()
           ORDER BY e.fecha DESC";
   $result = find_by_sql($sql);
   return $result;
+
 }
 function find_all_eventos()
 {
@@ -788,6 +754,18 @@ function find_all_eventos()
   $result = find_by_sql($sql);
   return $result;
 }
+
+function find_all_eventos_osc($id_osc)
+{
+  $sql = "SELECT e.id_evento, e.id_osc, e.fecha, e.hora, e.lugar, e.tema, o.nombre
+          FROM eventos e
+          LEFT JOIN osc o ON o.id_osc = e.id_osc
+          WHERE e.id_osc = $id_osc
+          ORDER BY e.fecha DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
 function evento_id($id_evento)
 {
   global $db;
@@ -813,13 +791,25 @@ function find_all_noticias()
 
 function find_all_noticias2()
 {
-  $sql = "SELECT n.id_noticia, n.id_osc, n.fecha, n.titulo_noticia, SUBSTRING(n.noticia,1,250) as noticia_all, n.imagen, o.nombre
+  $sql = "SELECT n.id_noticia, n.id_osc, n.fecha, n.titulo_noticia, SUBSTRING(n.noticia,1,215) as noticia_all, n.imagen, o.nombre
           FROM noticias n
           LEFT JOIN osc o ON o.id_osc = n.id_osc
           ORDER BY n.fecha DESC LIMIT 3";
   $result = find_by_sql($sql);
   return $result;
 }
+
+function find_all_noticias_osc($id_osc)
+{
+  $sql = "SELECT n.id_noticia, n.id_osc, n.fecha, n.titulo_noticia, n.noticia, n.imagen, o.nombre
+          FROM noticias n
+          LEFT JOIN osc o ON o.id_osc = n.id_osc
+          WHERE n.id_osc = $id_osc
+          ORDER BY n.fecha DESC";
+  $result = find_by_sql($sql);
+  return $result;
+}
+
 function noticia_by_id($id_noticia)
 {
   global $db;

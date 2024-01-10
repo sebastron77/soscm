@@ -6,11 +6,10 @@ require_once('includes/load.php');
 $user = current_user();
 $nivel = $user['user_level'];
 $ambitos = find_all('cat_der_vuln');
-$visitadurias = find_all_visitadurias();
 $e_osc = osc_by_id((int)$_GET['id']);
 $municipios = find_all('cat_municipios');
 
-page_require_level(1);
+page_require_level(2);
 
 if (!$e_osc) {
     $session->msg("d", "id de OSC no encontrado.");
@@ -44,6 +43,7 @@ if (isset($_POST['edit_osc'])) {
         $correo_oficial = remove_junk($db->escape($_POST['correo_oficial']));
         $convenio_cedh = remove_junk($db->escape($_POST['convenio_cedh']));
         $region = remove_junk($db->escape($_POST['region']));
+        $info_publica = remove_junk($db->escape($_POST['info_publica']));
 
         $carpeta = 'uploads/logos_osc/' . $siglas;
 
@@ -79,7 +79,7 @@ if (isset($_POST['edit_osc'])) {
                 figura_juridica='{$figura_juridica}', datos_escritura_const='{$datos_escritura_const}', nombre_responsable='{$nombre_responsable}', 
                 calle_num='{$calle_num}', colonia='{$colonia}', cp='{$cp}', telefono='{$telefono}', web_oficial='{$web_oficial}', x='{$x}', 
                 facebook='{$facebook}', instagram='{$instagram}', youtube='{$youtube}', tiktok='{$tiktok}', correo_oficial='{$correo_oficial}', 
-                convenio_cedh='{$convenio_cedh}', region='{$region}' 
+                convenio_cedh='{$convenio_cedh}', region='{$region}', info_publica='{$info_publica}'
                 WHERE id_osc='{$db->escape($id)}'";
         }
         if($_FILES['logo']['name'][0] == ''){
@@ -87,16 +87,16 @@ if (isset($_POST['edit_osc'])) {
                     figura_juridica='{$figura_juridica}', datos_escritura_const='{$datos_escritura_const}', nombre_responsable='{$nombre_responsable}', 
                     calle_num='{$calle_num}', colonia='{$colonia}', cp='{$cp}', telefono='{$telefono}', web_oficial='{$web_oficial}', x='{$x}', 
                     facebook='{$facebook}', instagram='{$instagram}', youtube='{$youtube}', tiktok='{$tiktok}', correo_oficial='{$correo_oficial}', 
-                    convenio_cedh='{$convenio_cedh}', region='{$region}' 
+                    convenio_cedh='{$convenio_cedh}', region='{$region}', info_publica='{$info_publica}'
                     WHERE id_osc='{$db->escape($id)}'";
             }
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información Actualizada ");
-            redirect('osc.php', false);
+            redirect('edit_osc.php?id=' . (int)$e_osc['id_osc'], false);
         } else {
             $session->msg('d', ' Lo sentimos, no se actualizó la información.');
-            redirect('osc.php', false);
+            redirect('edit_osc.php?id=' . (int)$e_osc['id_osc'], false);
         }
     } else {
         $session->msg("d", $errors);
@@ -105,6 +105,11 @@ if (isset($_POST['edit_osc'])) {
 }
 ?>
 <?php include_once('layouts/header.php'); ?>
+<div class="row">
+    <div class="col-md-12">
+        <?php echo display_msg($msg); ?>
+    </div>
+</div>
 <div class="row">
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -277,6 +282,15 @@ if (isset($_POST['edit_osc'])) {
                                     <option <?php if ($municipio1['id_cat_mun'] == $e_osc['region']) echo 'selected="selected"'; ?> value="<?php echo $municipio1['id_cat_mun']; ?>"><?php echo ucwords($municipio1['descripcion']); ?>
                                     </option>
                                 <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label for="info_publica">¿Deseas el domicilio de la OSC sea público?</label>
+                            <select class="form-control" name="info_publica">
+                                <option <?php if ($e_osc['info_publica'] == '1') echo 'selected="selected"'; ?> value="1">Sí</option>
+                                <option <?php if ($e_osc['info_publica'] == '0') echo 'selected="selected"'; ?> value="0">No</option>
                             </select>
                         </div>
                     </div>

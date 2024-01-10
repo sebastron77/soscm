@@ -2,7 +2,7 @@
 $page_title = 'Agregar Evento';
 require_once('includes/load.php');
 
-page_require_level(1);
+page_require_level(2);
 $user = current_user();
 $id_user = $user['id_user'];
 $oscs = find_all('osc');

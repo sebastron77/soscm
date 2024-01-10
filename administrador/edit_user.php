@@ -7,7 +7,7 @@ page_require_level(1);
 <?php
 $e_user = find_by_id('users', (int)$_GET['id'], 'id_user');
 $groups  = find_all('grupo_usuarios');
-$all_trabajadores = find_all_trabajadores();
+$oscs  = find_all('osc');
 if (!$e_user) {
   $session->msg("d", "id de usuario no encontrado.");
   redirect('users.php');
@@ -17,23 +17,23 @@ $nivel = $user['user_level'];
 ?>
 
 <?php
-//serror_reporting(E_ALL ^ E_NOTICE);
+// error_reporting(E_ALL ^ E_NOTICE);
 //Actualiza informacion basica del usuario
 if (isset($_POST['update'])) {
-  $req_fields = array('detalle','username');
+  $req_fields = array('username');
   validate_fields($req_fields);
   if (empty($errors)) {
     $id = (int)$e_user['id_user'];
     //$name = remove_junk((int)$db->escape($_POST['detalle-user']));
     $username = remove_junk($db->escape($_POST['username']));
-    $detalle = remove_junk($db->escape($_POST['detalle']));
     $level = remove_junk((int)$db->escape($_POST['level']));
+    $id_osc = remove_junk($db->escape($_POST['id_osc']));
     $status   = remove_junk((int)$db->escape($_POST['status']));
-    $sql = "UPDATE users SET id_detalle_user={$detalle}, username='{$username}', user_level='{$level}', status='{$status}' WHERE id_user='{$db->escape($id)}'";
+    $sql = "UPDATE users SET username='{$username}', user_level='{$level}', status='{$status}', osc='{$id_osc}' WHERE id_user='{$db->escape($id)}'";
     $result = $db->query($sql);
     if ($result && $db->affected_rows() === 1) {
       $session->msg('s', "Cuenta Actualizada ");
-      insertAccion($user['id_user'], '"'.$user['username'].'" editó el usuario: '.$username.'.', 1);
+      insertAccion($user['id_user'], '"' . $user['username'] . '" editó el usuario: ' . $username . '.', 1);
       redirect('edit_user.php?id=' . (int)$e_user['id_user'], false);
     } else {
       $session->msg('d', ' Lo siento no se actualizaron los datos.');
@@ -58,7 +58,7 @@ if (isset($_POST['update-pass'])) {
     $result = $db->query($sql);
     if ($result && $db->affected_rows() === 1) {
       $session->msg('s', "Se ha actualizado la contraseña del usuario. ");
-      insertAccion($user['id_user'], '"'.$user['username'].'" editó contraseña del usuario: '.$e_user['username'].'.', 2);
+      insertAccion($user['id_user'], '"' . $user['username'] . '" editó contraseña del usuario: ' . $e_user['username'] . '.', 2);
       redirect('edit_user.php?id=' . (int)$e_user['id_user'], false);
     } else {
       $session->msg('d', 'No se pudo actualizar la contraseña de usuario..');
@@ -84,32 +84,32 @@ if (isset($_POST['update-pass'])) {
       </div>
       <div class="panel-body">
         <form method="post" action="edit_user.php?id=<?php echo (int)$e_user['id_user']; ?>" class="clearfix">
-        <div class="form-group">
-            <label for="detalle">Trabajador</label>
-            <select class="form-control" name="detalle">
-                <?php foreach ($all_trabajadores as $trabajador) : ?>
-                    <option <?php if ($trabajador['detalleID'] === $e_user['id_detalle_user']) echo 'selected="selected"'; ?> value="<?php echo $trabajador['detalleID']; ?>"><?php echo ucwords($trabajador['nombre']." ".$trabajador['apellidos']); ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
           <div class="form-group">
             <label for="username" class="control-label">Usuario</label>
             <input type="text" class="form-control" name="username" value="<?php echo remove_junk($e_user['username']); ?>">
           </div>
           <?php if ($nivel == 1) : ?>
-          <div class="form-group">
-            <label for="level">Rol de usuario</label>
-            <select class="form-control" name="level">
-              <?php foreach ($groups as $group) : ?>
-                <option <?php if ($group['nivel_grupo'] === $e_user['user_level']) echo 'selected="selected"'; ?> value="<?php echo $group['nivel_grupo']; ?>"><?php echo ucwords($group['nombre_grupo']); ?></option>
-              <?php endforeach; ?>
-            </select>
-          </div>
+            <div class="form-group">
+              <label for="level">Rol de usuario</label>
+              <select class="form-control" name="level">
+                <?php foreach ($groups as $group) : ?>
+                  <option <?php if ($group['nivel_grupo'] === $e_user['user_level']) echo 'selected="selected"'; ?> value="<?php echo $group['nivel_grupo']; ?>"><?php echo ucwords($group['nombre_grupo']); ?></option>
+                <?php endforeach; ?>
+              </select>
+            </div>
             <div class="form-group">
               <label for="status">Estado</label>
               <select class="form-control" name="status">
                 <option <?php if ($e_user['status'] === '1') echo 'selected="selected"'; ?>value="1">Activo</option>
                 <option <?php if ($e_user['status'] === '0') echo 'selected="selected"'; ?> value="0">Inactivo</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="id_osc">OSC</label>
+              <select class="form-control" name="id_osc">
+                <?php foreach ($oscs as $osc) : ?>
+                  <option <?php if ($osc['id_osc'] === $e_user['osc']) echo 'selected="selected"'; ?> value="<?php echo $osc['id_osc']; ?>"><?php echo ucwords($osc['nombre']); ?></option>
+                <?php endforeach; ?>
               </select>
             </div>
           <?php endif ?>
