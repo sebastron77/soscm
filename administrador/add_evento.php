@@ -91,7 +91,7 @@ include_once('layouts/header.php'); ?>
                         </div>
                     </div>
                 </div>
-                <a href="osc.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
+                <a href="eventos.php" class="btn btn-md btn-success" data-toggle="tooltip" title="Regresar">
                     Regresar
                 </a>
                 <button type="submit" name="add_evento" class="btn btn-primary">Guardar</button>

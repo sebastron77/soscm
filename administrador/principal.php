@@ -7,6 +7,8 @@ $osc = find_all_osc();
 $all_noticias = find_all_noticias2();
 $all_eventos = find_all_eventos();
 $all_eventos2 = find_all_eventos2();
+header('Content-type: text/html; charset=utf-8');
+
 ?>
 
 <head>
@@ -117,8 +119,9 @@ $all_eventos2 = find_all_eventos2();
         flex-wrap: wrap;
         overflow: hidden;
         display: flex;
-        align-items: center;
+        /* align-items: center; */
         justify-content: center;
+        margin-left: -4.3%;
     }
 
     .footer {
@@ -264,10 +267,6 @@ $all_eventos2 = find_all_eventos2();
     </nav>
     <!-- Carousel -->
     <div id="demo" class="carousel slide" data-bs-ride="carousel">
-        <!-- Indicators/dots -->
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
-        </div>
 
         <!-- The slideshow/carousel -->
         <div class="carousel-inner">
@@ -275,9 +274,9 @@ $all_eventos2 = find_all_eventos2();
             <?php endforeach; ?>
             <div class="carousel-item active">
                 <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="d-block" style="width:100%">
-                <div class="carousel-caption" style="background: rgba(0, 0, 0, 0.3); border-radius: 5px; height:30%;">
-                    <h3 style="margin-top: -1%;"><?php echo $a_noticia['titulo_noticia']; ?></h3>
-                    <p style="margin-top: 0%;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
+                <div class="carousel-caption" style="background: rgba(0, 0, 0, 0.6); border-radius: 3px; height:30%;">
+                    <h6 style="margin-top: -1%; font-weight: bold;"><?php echo $a_noticia['titulo_noticia']; ?></h6>
+                    <p style="margin-top: 0%; font-size: 14px;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
                 </div>
             </div>
         </div>
@@ -288,12 +287,15 @@ $all_eventos2 = find_all_eventos2();
 
             <?php foreach ($all_noticias as $a_noticia) : ?>
                 <div class="justify-content-center col-md-4" style="margin-left: 0px;">
-                    <div class="card" style="width: 28rem; height: 33rem;">
-                        <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="300px;" alt="...">
+                    <div class="card" style="width: 30rem; height: 34rem;">
+                        <img src="uploads/noticias/<?php echo $a_noticia['id_noticia']; ?>/<?php echo $a_noticia['imagen']; ?>" class="card-img-top" height="295px;" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title" style="margin-top: -10px;"><?php echo $a_noticia['titulo_noticia']; ?></h5>
-                            <p class="card-text"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
-                            <a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" class="btn btn-primary btn-sm" style="margin-top: -1%; margin-left: 39%">Ir a noticia</a>
+                            <p class="card-title" style="margin-top: -14px; font-size: 14px; font-weight: bold; text-align: center;"><?php echo (ucwords($a_noticia['titulo_noticia'])); ?></p>
+                            <hr style="background-color:  rgba(0, 0, 0); margin-top: -1.5%; margin-bottom: 1%;">
+                            <p class="card-text" style=" text-align: justify; font-size: 14px;"><?php echo $a_noticia['noticia_all'] . '...'; ?></p>
+                            <div style="position: absolute; bottom: 0; left: 40%;transform: translateX(-50%); margin-bottom: 12px;">
+                                <a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" class="btn btn-primary btn-sm" style="margin-bottom: -1%; margin-left: 39%; font-size: 13px;">Ir a noticia</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -301,7 +303,7 @@ $all_eventos2 = find_all_eventos2();
         </div>
     </div>
     </div><br><br>
-    <div style="background-color: white; margin-top: -5px;">
+    <div style="background-color: white; margin-top: -1.5%;">
         <!-- <div style="background-color: white; border-radius: 10px; width:97%; margin-left: 1.5%; margin-top: -5px;"> -->
         <div class="image-container">
             <?php $i = 0;
@@ -312,43 +314,44 @@ $all_eventos2 = find_all_eventos2();
                 $i2 = $i2 + 1;
                 //echo $i; 
             ?>
-
-                <img class="img-round" src="uploads/logos_osc/<?php echo $o['siglas'] . '/' . $o['logo'] ?>" style="margin-top: 20px; margin-left: 9.5%;" alt="Imagen Miniatura" data-toggle="modal" data-target="#imagenModal<?php echo $i2; ?>">
-                <?php if ($i == 5) {
-                    $i = 0;
-                    echo '<br><br>';
-                }
-                ?>
-                <!-- Modal -->
-                <div class="modal fade" id="imagenModal<?php echo $i2; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header" style="color: white; height: 40px; background: #091d5d;">
-                                <p class="modal-title" id="exampleModalLongTitle" style="color: white; font-size: 20px; font-weight: bold; margin-top: -12px;"><?php echo $o['nombre'] ?></p>
-                                <button type="button" class="btn-cerrar" style="margin-top: -16px;" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                            <div class="modal-body">
-                                <p style="text-align: justify; font-size: 15px;"><strong>Siglas:</strong> <?php echo $o['siglas'] ?></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Ámbito:</strong> <?php echo $o['ambito_dv'] ?></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Objetivo:</strong> <?php echo $o['objetivo'] ?></p>
-                                <?php if ($o['info_publica'] == 1) : ?>
-                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Domicilio:</strong> <?php echo $o['calle_num'] . ', Col. ' . $o['colonia'] . ', C.P. ' . $o['cp'] ?></p>
-                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Teléfono:</strong> <?php echo $o['telefono'] ?></p>
-                                <?php endif; ?>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Web Oficial:</strong> <a href="<?php echo $o['web_oficial'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['web_oficial'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>X:</strong><a href="<?php echo $o['x'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['x'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Facebook:</strong><a href="<?php echo $o['facebook'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['facebook'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Instagram:</strong><a href="<?php echo $o['instagram'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['instagram'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Youtube:</strong><a href="<?php echo $o['youtube'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['youtube'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Tiktok:</strong><a href="<?php echo $o['tiktok'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['tiktok'] ?></a></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Correo Oficial:</strong> <?php echo $o['correo_oficial'] ?></p>
-                                <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Región:</strong> <?php echo $o['region_a'] ?></p>
+                <?php if ($o['estatus'] == 1) : ?>
+                    <img class="img-round" src="uploads/logos_osc/<?php echo $o['siglas'] . '/' . $o['logo'] ?>" style="margin-top: 20px; margin-left: 9.5%;" alt="Imagen Miniatura" data-toggle="modal" data-target="#imagenModal<?php echo $i2; ?>">
+                    <?php if ($i == 5) {
+                        $i = 0;
+                        echo '<br><br>';
+                    }
+                    ?>
+                    <!-- Modal -->
+                    <div class="modal fade" id="imagenModal<?php echo $i2; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" style="max-width: 800px;" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header" style="color: white; height: 40px; background: #091d5d;">
+                                    <p class="modal-title" id="exampleModalLongTitle" style="color: white; font-size: 20px; font-weight: bold; margin-top: -12px;"><?php echo $o['nombre'] ?></p>
+                                    <button type="button" class="btn-cerrar" style="margin-top: -16px;" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <p style="text-align: justify; font-size: 15px;"><strong>Siglas:</strong> <?php echo $o['siglas'] ?></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Ámbito:</strong> <?php echo $o['ambito_dv'] ?></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Objetivo:</strong> <?php echo $o['objetivo'] ?></p>
+                                    <?php if ($o['info_publica'] == 1) : ?>
+                                        <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Domicilio:</strong> <?php echo $o['calle_num'] . ', Col. ' . $o['colonia'] . ', C.P. ' . $o['cp'] ?></p>
+                                        <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Teléfono:</strong> <?php echo $o['telefono'] ?></p>
+                                    <?php endif; ?>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Web Oficial:</strong> <a href="<?php echo $o['web_oficial'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['web_oficial'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>X:</strong><a href="<?php echo $o['x'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['x'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Facebook:</strong><a href="<?php echo $o['facebook'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['facebook'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Instagram:</strong><a href="<?php echo $o['instagram'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['instagram'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Youtube:</strong><a href="<?php echo $o['youtube'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['youtube'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Tiktok:</strong><a href="<?php echo $o['tiktok'] ?>" style=" font-size: 15px; color:#091d5d;"> <?php echo $o['tiktok'] ?></a></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Correo Oficial:</strong> <?php echo $o['correo_oficial'] ?></p>
+                                    <p style="text-align: justify; margin-top: -10px; font-size: 15px;"><strong>Región:</strong> <?php echo $o['region_a'] ?></p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                <?php endif; ?>
             <?php endforeach; ?>
         </div><br><br>
     </div>

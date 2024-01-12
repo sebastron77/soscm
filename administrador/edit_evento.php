@@ -30,6 +30,7 @@ if (isset($_POST['edit_evento'])) {
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información del evento Actualizada ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó el evento: ' . $tema . '.', 2);
             redirect('eventos.php', false);
         } else {
             $session->msg('d', ' Lo sentimos, no se actualizó la información del evento.');

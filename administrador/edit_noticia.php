@@ -51,6 +51,7 @@ if (isset($_POST['edit_noticia'])) {
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información Actualizada ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó la noticia: ' . $titulo_noticia . '.', 2);
             redirect('noticias.php', false);
         } else {
             $session->msg('d', ' Lo sentimos, no se actualizó la información.');

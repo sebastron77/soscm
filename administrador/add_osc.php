@@ -51,11 +51,11 @@ if (isset($_POST['add_osc'])) {
         $query = "INSERT INTO osc (";
         $query .= "nombre, siglas, logo, ambito, objetivo, figura_juridica, fecha_constitucion, datos_escritura_const, nombre_responsable, calle_num, 
                     colonia, cp, telefono, web_oficial, x, facebook, instagram, youtube, tiktok, correo_oficial, convenio_cedh, region, info_publica,
-                    fecha_creacion";
+                    fecha_creacion,estatus";
         $query .= ") VALUES (";
         $query .= " '{$nombre}', '{$siglas}', '{$name}', '{$ambito}', '{$objetivo}', '{$figura_juridica}', '{$fecha_constitucion}', '{$datos_escritura_const}',
                     '{$nombre_responsable}', '{$calle_num}', '{$colonia}', '{$cp}', '{$telefono}', '{$web_oficial}', '{$x}', '{$facebook}', '{$instagram}', 
-                    '{$youtube}', '{$tiktok}', '{$correo_oficial}','{$convenio_cedh}','{$municipio}','{$info_publica}','{$creacion}'";
+                    '{$youtube}', '{$tiktok}', '{$correo_oficial}','{$convenio_cedh}','{$municipio}','{$info_publica}','{$creacion}',1";
         $query .= ")";
         if ($db->query($query)) {
             //sucess

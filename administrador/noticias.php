@@ -42,8 +42,9 @@ page_require_level(2);
             <div class="panel-body">
                 <table class="datatable table table-bordered table-striped">
                     <thead class="thead-purple">
-                        <tr style="height: 10px;"">
-                            <th style=" width: 9%;">Fecha</th>
+                        <tr style="height: 10px;">
+                            <th style=" width: 1%;">#</th>
+                            <th style=" width: 10%;">Fecha</th>
                             <th style=" width: 25%;">Nombre OSC</th>
                             <th style="width: 30%;">Titulo de Noticia</th>
                             <th style="width: 30%;">Prev. Noticia</th>
@@ -53,6 +54,7 @@ page_require_level(2);
                     <tbody>
                         <?php foreach ($all_noticias as $a_noticia) : ?>
                             <tr>
+                                <td class="text-center"><?php echo count_id(); ?></td>
                                 <td><?php echo remove_junk($a_noticia['fecha']) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_noticia['nombre'])) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_noticia['titulo_noticia'])) ?></td>

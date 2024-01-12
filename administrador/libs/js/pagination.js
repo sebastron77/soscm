@@ -5,8 +5,8 @@ var dataTable = $(".datatable").DataTable({
     lengthMenu: "Mostrar _MENU_ elementos",
     info: '<p class="siguiente">Mostrando del _START_ al _END_ de _TOTAL_ elementos en total</p>',
     paginate: {
-      previous: '<p class="siguiente">Anterior</p>',
-      next: '<p class="siguiente">Siguiente</p>',
+      previous: '<p class="siguiente" >Anterior</p>',
+      next: '<p class="siguiente" >Siguiente</p>',
       last: '<p class="siguiente">Ultimo</p>',
     },
   },

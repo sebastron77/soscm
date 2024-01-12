@@ -93,6 +93,7 @@ if (isset($_POST['edit_osc'])) {
         $result = $db->query($sql);
         if (($result && $db->affected_rows() === 1) || ($result && $db->affected_rows() === 0)) {
             $session->msg('s', "Información Actualizada ");
+            insertAccion($user['id_user'], '"' . $user['username'] . '" editó la OSC: ' . $nombre . '.', 2);
             redirect('edit_osc.php?id=' . (int)$e_osc['id_osc'], false);
         } else {
             $session->msg('d', ' Lo sentimos, no se actualizó la información.');

@@ -40,7 +40,7 @@ page_require_level(1);
                 <table class="datatable table table-bordered table-striped">
                     <thead class="thead-purple">
                         <tr style="height: 10px;"">
-                            <th style="width: 20%;">Nombre OSC</th>
+                            <th style=" width: 20%;">Nombre OSC</th>
                             <th style="width: 20%;">Web Oficial</th>
                             <th style="width: 20%;">Correo Oficial</th>
                             <th style="width: 4%;">Teléfono</th>
@@ -54,8 +54,8 @@ page_require_level(1);
                         <?php foreach ($all_osc as $a_osc) : ?>
                             <tr>
                                 <td><?php echo remove_junk(ucwords($a_osc['nombre'])) ?></td>
-                                <td><a href="<?php echo remove_junk($a_osc['web_oficial']) ?>"target="_blank"><?php echo remove_junk($a_osc['web_oficial']) ?></a></td>
-                                <td><?php echo remove_junk($a_osc['correo_oficial'])?></td>
+                                <td><a href="<?php echo remove_junk($a_osc['web_oficial']) ?>" target="_blank"><?php echo remove_junk($a_osc['web_oficial']) ?></a></td>
+                                <td><?php echo remove_junk($a_osc['correo_oficial']) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_osc['telefono'])) ?></td>
                                 <td><?php echo remove_junk(ucwords($a_osc['nombre_responsable'])) ?></td>
                                 <?php if ($otro == 1 || $nivel_user == 1) : ?>
@@ -66,7 +66,18 @@ page_require_level(1);
                                             </a>
                                             <a href="edit_osc.php?id=<?php echo (int)$a_osc['id_osc']; ?>" class="btn btn-warning btn-md" title="Editar" data-toggle="tooltip" style="height: 40px">
                                                 <span class="material-symbols-rounded" style="font-size: 20px; color: black; margin-top: 5px;">edit</span>
-                                            </a>                                            
+                                            </a>
+                                            <?php if ($nivel_user == 1) : ?>
+                                                <?php if ($a_osc['estatus'] == 0) : ?>
+                                                    <a href="activate_osc.php?id=<?php echo (int)$a_osc['id_osc']; ?>" class="btn btn-success btn-md" title="Activar" data-toggle="tooltip">
+                                                        <span class="glyphicon glyphicon-ok"></span>
+                                                    </a>
+                                                <?php else : ?>
+                                                    <a href="inactivate_osc.php?id=<?php echo (int)$a_osc['id_osc']; ?>" class="btn btn-md btn-danger" data-toggle="tooltip" title="Inactivar">
+                                                        <i class="glyphicon glyphicon-ban-circle"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                            <?php endif; ?>
                                         </div>
                                     </td>
                                 <?php endif ?>

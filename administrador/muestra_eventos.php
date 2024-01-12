@@ -51,7 +51,7 @@ $all_eventos = find_all_eventos();
                         <a class="nav-link" href="principal.php">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="muestra_eventoss.php" style="margin-left: 50px;">Noticias</a>
+                        <a class="nav-link" href="muestra_noticias.php" style="margin-left: 50px;">Noticias</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="muestra_eventos.php" style="margin-left: 50px;">Eventos</a>

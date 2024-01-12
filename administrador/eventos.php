@@ -36,7 +36,7 @@ page_require_level(2);
                     <span class="glyphicon glyphicon-th"></span>
                     <span>Lista de Eventos</span>
                 </strong>
-                <?php if ($nivel_user == 2) : ?>
+                <?php if ($nivel_user <= 2) : ?>
                     <a href="add_evento.php" class="btn btn-info pull-right">Agregar Evento</a>
                 <?php endif ?>
             </div>
@@ -44,9 +44,10 @@ page_require_level(2);
             <div class="panel-body">
                 <table class="datatable table table-bordered table-striped">
                     <thead class="thead-purple">
-                        <tr style="height: 10px;"">
+                        <tr style="height: 10px;">
+                            <th style=" width: 1%;">#</th>
                             <th style=" width: 30%;">Nombre OSC</th>
-                            <th style="width: 9%;">Fecha</th>
+                            <th style="width: 10%;">Fecha</th>
                             <th style="width: 2%;">Hora</th>
                             <th style="width: 30%;">Lugar</th>
                             <th style="width: 30%;">Tema</th>
@@ -56,6 +57,7 @@ page_require_level(2);
                     <tbody>
                         <?php foreach ($all_eventos as $a_evento) : ?>
                             <tr>
+                                <td class="text-center"><?php echo count_id(); ?></td>
                                 <td><?php echo remove_junk(ucwords($a_evento['nombre'])) ?></td>
                                 <td><?php echo $a_evento['fecha'] ?></td>
                                 <td><?php echo substr($a_evento['hora'], 0, -3) ?></td>

@@ -1,5 +1,5 @@
 <?php
-$page_title = 'Cuentas de usuarios';
+$page_title = 'Cuentas de OSCs';
 require_once('includes/load.php');
 ?>
 <?php
