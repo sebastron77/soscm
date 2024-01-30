@@ -77,9 +77,10 @@ $all_eventos = find_all_eventos();
                     <div class="panel-body">
                         <table class="datatable table table-bordered table-striped">
                             <thead class="thead-purple">
-                                <tr style="height: 10px;"">
-                                <th class="text-center" style=" width: 8%;">Fecha</th>
-                                <th class="text-center" style="width: 1%;">Hora</th>
+                                <tr style="height: 10px;">
+                                    <th style=" width: 1%;">#</th>
+                                    <th class="text-center" style=" width: 8%;">Fecha</th>
+                                    <th class="text-center" style="width: 1%;">Hora</th>
                                     <th class="text-center" style="width: 25%;">Lugar</th>
                                     <th class="text-center" style="width: 25%;">Tema</th>
                                     <th class="text-center" style="width: 25%;">OSC</th>
@@ -88,6 +89,7 @@ $all_eventos = find_all_eventos();
                             <tbody>
                                 <?php foreach ($all_eventos as $a_eventos) : ?>
                                     <tr>
+                                        <td class="text-center"><?php echo count_id(); ?></td>
                                         <td class="text-center"><?php echo remove_junk($a_eventos['fecha']) ?></td>
                                         <td><?php echo remove_junk(ucwords($a_eventos['hora'])) ?></td>
                                         <td><?php echo remove_junk(ucwords($a_eventos['lugar'])) ?></td>

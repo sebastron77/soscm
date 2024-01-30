@@ -514,7 +514,7 @@ header('Content-type: text/html; charset=utf-8');
                     //Recorremos todos los eventos
 
                     fechaEvento = '<?php echo $evento2['fecha']; ?>';
-                    var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?>");
+                    var tema = document.createTextNode("<?php echo $evento2['temaCorto'] ?> ...");
 
 
                     //Comparamos las fechas de los eventos para ver si coinciden con los del calendario

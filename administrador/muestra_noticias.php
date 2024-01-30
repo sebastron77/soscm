@@ -77,8 +77,9 @@ $all_noticias = find_all_noticias();
                     <div class="panel-body">
                         <table class="datatable table table-bordered table-striped">
                             <thead class="thead-purple">
-                                <tr style="height: 10px;"">
-                                <th class="text-center" style=" width: 10%;">Fecha Pub.</th>
+                                <tr style="height: 10px;">
+                                    <th style=" width: 1%;">#</th>
+                                    <th class="text-center" style=" width: 10%;">Fecha Pub.</th>
                                     <th class="text-center" style="width: 25%;">Nombre de OSC</th>
                                     <th class="text-center" style="width: 25%;">Titulo de Noticia</th>
                                     <th class="text-center" style="width: 25%;">Previa de Noticia</th>
@@ -87,6 +88,7 @@ $all_noticias = find_all_noticias();
                             <tbody>
                                 <?php foreach ($all_noticias as $a_noticia) : ?>
                                     <tr>
+                                        <td class="text-center"><?php echo count_id(); ?></td>
                                         <td class="text-center"><?php echo remove_junk($a_noticia['fecha']) ?></td>
                                         <td><?php echo remove_junk(ucwords($a_noticia['nombre'])) ?></td>
                                         <td><a href="ver_noticia.php?id=<?php echo (int)$a_noticia['id_noticia']; ?>" style="color: #0d3d7b;"><?php echo remove_junk(ucwords($a_noticia['titulo_noticia'])) ?></a></td>
